@@ -28,6 +28,7 @@ body {
     padding-right: 5%;
     color: white;
 }
+
 input[type="checkbox"], .ant-checkbox-inner {
     height: 0px !important;
     width: 0px !important;
@@ -160,6 +161,60 @@ input[type="checkbox"], .ant-checkbox-inner {
     font-weight: bold;
     color: white !important;
     text-align: center !important;
+}
+.pitInput {
+    width: 20%;
+    margin-bottom: 6%;
+    min-width: 35%;
+    height: 25% !important;
+    min-height: 25% !important;
+    border: 4px solid white !important;
+    border-radius: 25px;
+    background-color: #32a7dc;
+    font-size: 300% !important;
+    font-family: Audiowide !important;
+    font-weight: bold;
+    color: white !important;
+    text-align: center !important;
+
+}
+.pitComment {
+    width: 45%;
+    margin-bottom: 6%;
+    min-width: 35%;
+    height: 25% !important;
+    min-height: 25% !important;
+    border: 4px solid white !important;
+    border-radius: 25px;
+    background-color: #32a7dc;
+    font-size: 200% !important;
+    font-family: Audiowide !important;
+    font-weight: bold;
+    color: white !important;
+    text-align: center !important;
+
+}
+.pitBody {
+    margin: 0;
+    margin-bottom:1%;
+    font-family: Audiowide !important;
+    background-color: #32a7dc !important;
+    color: white;
+}
+.pitButton {
+    width: 35%;
+    min-width: 35%;
+    height: 20% !important;
+    min-height: 20% !important;
+    border: 4px solid white !important;
+    border-radius: 25px;
+    background-color: #32a7dc;
+    font-size: 275% !important;
+    font-family: Audiowide !important;
+    font-weight: bold;
+    color: white !important;
+    text-align: center !important;
+    display:inline-block
 }
 .pathbutton {
     width: 33%;
