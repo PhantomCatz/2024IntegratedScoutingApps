@@ -279,7 +279,7 @@ function MatchScout(props: any) {
             height='50rem'
             strokeWidth={8}
             strokeColor='#32a7dc'
-            backgroundImage={color ? field_blue : field_red}
+            backgroundImage={color ? field_red : field_blue}
             preserveBackgroundImageAspectRatio='xMidyMid meet'
             exportWithBackgroundImage={true}
             style={{paddingBottom: '5%'}}
@@ -501,11 +501,11 @@ function MatchScout(props: any) {
       <div className='banner'>
         <header>
           <a href='/scoutingapp'>
-            <img src={back} style={{height: 64 + 'px', paddingTop: '5%'}} alt=''></img>
+            <img src={back} style={{height: 64 + 'px', paddingTop: '5%'}} alt=''/>
           </a>
           <table>
             <td>
-              <img src={logo} style={{ height: 256 + 'px' }} alt='' ></img>
+              <img src={logo} style={{ height: 256 + 'px' }} alt=''/>
             </td>
             <td>
               <h1 style={{display: 'inline-block', textAlign: 'center'}}>Match Scout</h1>
@@ -538,10 +538,10 @@ function MatchScout(props: any) {
         onFinish={async event => {
           canvasRef.current?.exportImage('png').then(data => imageURI.current = data);
           await setNewMatchScout(event, imageURI.current as string);
-          // window.location.reload();
+          //window.location.reload();
         }}
       >
-        <Tabs defaultActiveKey="1" items={items} className='tabs' />
+        <Tabs defaultActiveKey="1" items={items} className='tabs'/>
       </Form>
     </body>
   );
