@@ -9,10 +9,12 @@
     font-family: Audiowide;
     src: url('../fonts/Audiowide-Regular.woff') format('woff');
 }
+
 @font-face {
     font-family: Figtree;
     src: url('../fonts/Figtree-VariableFont_wght.ttf') format('woff');
 }
+
 h2 {
     color: white;
     font-family: Figtree;
@@ -20,6 +22,7 @@ h2 {
     font-size: xxx-large !important;
     margin-bottom: 0 !important;
 }
+
 body {
     margin: 0;
     font-family: Audiowide !important;
@@ -28,16 +31,20 @@ body {
     padding-right: 5%;
     color: white;
 }
-input[type="checkbox"], .ant-checkbox-inner {
+
+input[type="checkbox"],
+.ant-checkbox-inner {
     height: 0px !important;
     width: 0px !important;
 }
+
 .ant-input {
     height: 20%;
     min-height: 20%;
     padding-top: 13px;
     padding-bottom: 13px;
 }
+
 .ant-tabs-tab {
     font-size: xxx-large !important;
     font-family: Figtree !important;
@@ -45,14 +52,19 @@ input[type="checkbox"], .ant-checkbox-inner {
     color: white !important;
     height: 15% !important;
     padding-top: 5% !important;
+    margin-top: 5%;
 }
+
 .ant-checkbox-checked {
     background-color: #61f761;
     border-color: #000000;
     width: 100%;
     border-radius: 20px;
     height: 118px;
-};
+}
+
+;
+
 .ant-select-selection-item {
     font-size: xxx-large !important;
     font-family: Figtree !important;
@@ -61,12 +73,14 @@ input[type="checkbox"], .ant-checkbox-inner {
     height: 15% !important;
     text-align: center !important;
 }
+
 .ant-input-number-input {
     font-family: Figtree !important;
     font-weight: bold !important;
     color: white !important;
     text-align: center !important;
 }
+
 .ant-form-item-explain-error {
     font-size: xxx-large !important;
     font-family: Figtree !important;
@@ -74,16 +88,20 @@ input[type="checkbox"], .ant-checkbox-inner {
     color: red !important;
     text-align: center !important;
 }
+
 .ant-select-item-option-content {
     font-size: xxx-large !important;
     font-family: Figtree !important;
     font-weight: bold !important;
     text-align: center !important;
 }
+
 .ant-select-selection-overflow-item {
     height: 118px !important;
 }
-.ant-select-selection-placeholder, .ant-select-selection-item {
+
+.ant-select-selection-placeholder,
+.ant-select-selection-item {
     height: 118px !important;
     line-height: 50px !important;
     background-color: #32a7dc !important;
@@ -96,7 +114,8 @@ input[type="checkbox"], .ant-checkbox-inner {
     justify-content: center !important;
     padding-right: 0px !important;
 }
-.ant-select-selector  {
+
+.ant-select-selector {
     width: 100% !important;
     height: 118px !important;
     background-color: transparent !important;
@@ -104,13 +123,16 @@ input[type="checkbox"], .ant-checkbox-inner {
     text-align: center !important;
     font-size: small;
 }
+
 .anticon {
     width: 0px !important;
     height: 0px !important;
 }
+
 .rc-virtual-list-holder {
     max-height: 50% !important;
 }
+
 .homebutton {
     width: 100%;
     min-width: 100%;
@@ -129,6 +151,7 @@ input[type="checkbox"], .ant-checkbox-inner {
     text-decoration: none;
     transition: none !important;
 }
+
 .mainbutton {
     width: 100%;
     min-width: 100%;
@@ -143,10 +166,12 @@ input[type="checkbox"], .ant-checkbox-inner {
     color: white !important;
 
 }
+
 .banner {
     font-size: 50px;
     vertical-align: top;
 }
+
 .input {
     width: 100%;
     min-width: 100%;
@@ -161,6 +186,7 @@ input[type="checkbox"], .ant-checkbox-inner {
     color: white !important;
     text-align: center !important;
 }
+
 .pathbutton {
     width: 33%;
     min-width: 33%;
@@ -175,6 +201,7 @@ input[type="checkbox"], .ant-checkbox-inner {
     color: white !important;
     text-align: center !important;
 }
+
 .input_checkbox {
     width: 100%;
     min-width: 100%;
@@ -188,4 +215,9 @@ input[type="checkbox"], .ant-checkbox-inner {
     font-weight: bold;
     color: white !important;
     text-align: center !important;
+}
+
+
+.ant-tabs-tab.ant-tabs-tab-active {
+    margin-top: 50 px !important;
 }
