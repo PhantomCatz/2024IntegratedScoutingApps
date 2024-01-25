@@ -5,20 +5,46 @@ import { useRef, useEffect, useState } from 'react';
 import { Tabs, Input, Form, Select, Checkbox, InputNumber, Flex, Button } from 'antd';
 import { ReactSketchCanvas, ReactSketchCanvasRef } from 'react-sketch-canvas';
 import type { TabsProps } from 'antd';
+
 import TextArea from 'antd/es/input/TextArea';
 
 function DataLookup(props: any) {
     const [form] = Form.useForm();
-    const [color, setColor] = useState(false);
-    const canvasRef = useRef<ReactSketchCanvasRef>(null);
     useEffect(() => document.title = props.title, [props.title]);
+    
     const eventname = process.env.REACT_APP_EVENTNAME;
-    let teamNum = 0;
-
-
+   
+   // let teamNum = '0';
+    const [teamNum, setTeamNum] = useState({ x: 0});
+   
+    async function handleChange() {
+        const body = {
+         
+            "team_number": teamNum,
+          
+        };
+        try {
+          await fetch(process.env.REACT_APP_FIREBASE_URL as string, {
+            method: "POST",
+            body: JSON.stringify(body),
+            headers: {
+              "Access-Control-Request-Headers": "Content-Type, Origin",
+              "Content-Type": "application/json",
+              "Origin": "localhost:3000",
+              "Database": "MatchScouting"
+            }
+          }).then(response => response.json()).then(data => console.log(data));
+        }
+        catch (err) {
+          console.log(err);
+        }
+      };
+      
+    
     function Search() {
         type FieldType = {
-            teamNum?: number;
+            //teamNum?: number;
+            teamNum? : number;
         };
 
 
@@ -26,8 +52,9 @@ function DataLookup(props: any) {
             <div>
                 <h2>Team Number</h2>
                 <Form.Item<FieldType> name="teamNum" rules={[{ required: true }]}>
-                    <InputNumber controls placeholder='Team' min={0} className="input" />
+                    <InputNumber controls placeholder='Team' min={0} className="lookupInput" />
                 </Form.Item>
+                <Input type="submit" value="Submit" className='submitLookupButton' />
             </div>
         );
     }
@@ -55,17 +82,17 @@ function DataLookup(props: any) {
                     </table>
                 </header>
             </div>
-            <Form
+             <Form
                 form={form}
                 onFinish={async event => {
-                    let imageURI = "";
-                    canvasRef.current?.exportImage('png').then(data => imageURI = data);
-                    console.log(imageURI);
-                    window.location.reload();
-                }}
-            >
-                <Tabs defaultActiveKey="1" items={items} className='tabs' />
-            </Form>
+                console.log(event.teamNum);
+                await handleChange();
+                // window.location.reload();
+        }}
+      >
+        <Tabs defaultActiveKey="1" items={items} className='tabs' />
+      </Form>
+            
         </body>
     );
 
