@@ -3,6 +3,10 @@ import logo from '../public/images/logo.png';
 import { Checkbox, Flex, Form, Input, InputNumber, Select, Tabs, TabsProps, Upload, message } from 'antd';
 import { useEffect, useState } from 'react';
 import {Button} from 'antd';
+<<<<<<< Updated upstream
+=======
+import back from '../public/images/back.png';
+>>>>>>> Stashed changes
 
 function PitScout(props: any) {
   const [form] = Form.useForm();
@@ -25,10 +29,26 @@ function PitScout(props: any) {
   ];
   return(
     <body>
+<<<<<<< Updated upstream
       <div className='banner'>
         <header>
           <img src={logo} style={{ height: 64 + 'px' }} alt=''></img>
           <h1>Pit Scout</h1>
+=======
+      <div>
+        <header className='banner'>
+          <a href='/scoutingapp'>
+            <img src={back} style={{height: 64 + 'px', paddingTop: '5%'}} alt=''></img>
+          </a>
+          <table>
+            <td>
+              <img src={logo} style={{height: 256 + 'px'}} alt=''></img>
+            </td>
+            <td>
+              <h1 style={{display: 'inline-block', textAlign: 'center'}}>Pit Scout</h1>
+            </td>
+          </table>
+>>>>>>> Stashed changes
         </header>
       </div>
       
@@ -160,13 +180,7 @@ function PitScout(props: any) {
           <Button style={{marginLeft: '25%', marginTop: '10%'}} className='pitButton'>Submit</Button>
       </div>
 
-      
-
-      
-
-      
-
-    </body>
+  </body>
   );
 }
 

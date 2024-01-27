@@ -175,7 +175,11 @@ input[type="checkbox"], .ant-checkbox-inner {
     font-weight: bold;
     color: white !important;
     text-align: center !important;
+<<<<<<< Updated upstream
 
+=======
+    background:transparent !important;
+>>>>>>> Stashed changes
 }
 .pitComment {
     width: 100%;
@@ -191,6 +195,11 @@ input[type="checkbox"], .ant-checkbox-inner {
     font-weight: bold;
     color: white !important;
     text-align: center !important;
+<<<<<<< Updated upstream
+=======
+    background:  transparent!important;
+
+>>>>>>> Stashed changes
 
 }
 .pitBody {
@@ -199,6 +208,7 @@ input[type="checkbox"], .ant-checkbox-inner {
     font-family: Audiowide !important;
     background-color: transparent !important;
     color: white;
+    background: transparent;
 }
 .pitButton {
     width: 49%;
