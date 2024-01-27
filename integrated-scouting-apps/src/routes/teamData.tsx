@@ -10,11 +10,13 @@ import { useParams, useSearchParams } from 'react-router-dom';
 function TeamData(props: any) {
   // const [params] = useSearchParams();
   
+  //  const params = useParams();
     
    const { team_number } = useParams();
    console.log(team_number);
    const [form] = Form.useForm();
- 
+  // console.log(team_number);
+//    const team_number = params.team_number;
    useEffect(() => document.title = props.title, [props.title]);
    const eventname = process.env.REACT_APP_EVENTNAME;
    
