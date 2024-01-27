@@ -4,6 +4,8 @@ import no_image from '../public/images/no_image.png';
 import { useRef, useEffect, useState } from 'react';
 import { Tabs, Input, Form, Select, Checkbox, InputNumber, Flex, Button } from 'antd';
 import type { TabsProps } from 'antd';
+import { Route } from 'react-router-dom';
+import TeamData from './teamData';
 
 
 function DataLookup(props: any) {
@@ -35,8 +37,11 @@ function DataLookup(props: any) {
                 onChange={(value) => setTeamNum(value ?? 0)}
                 />
             </Form.Item>
-            
+
+            {/* <a href='/scoutingapp/lookup/teamData'> */}
             <Input type="submit" value="Submit" className='submitLookupButton' name='submitButton'/>
+            {/* </a> */}
+            
           </div>
         );
       }
@@ -67,14 +72,16 @@ function DataLookup(props: any) {
             </div>
             <Form
                 form={form}
-                onFinish={async (values: { teamNum: any }) => {
-                    const { teamNum } = values;
-                    console.log("team Number:", teamNum);
-                    console.log("Firebase URL:", process.env.REACT_APP_FIREBASE_URL);
-                    console.log("event:", eventname);
-                   
-                    await handleChange(teamNum);
-                    form.resetFields(); 
+                onFinish={async (values: { team_number: any }) => {
+                    const { team_number } = values;
+                    console.log("team Number:", team_number);
+                    await handleChange(team_number);
+                    // form.resetFields(); 
+                    console.log('Navigating to:', `/scoutingapp/lookup/teamData/${teamNum}`);
+
+                    window.location.href = `/scoutingapp/lookup/teamData/${teamNum}`;
+                   // window.location.href = '/scoutingapp/lookup/teamData?team_number=' + teamNum;
+                    //<Route path="/scoutingapp/lookup/teamData/:team_number" Component={TeamData} />
 
                 }}
                 >
