@@ -1,5 +1,5 @@
 /**
- * @author Nathan Kwok, add more...
+ * @author Nathan Kwok, Juwon Ha, add more...
  * @since 2023-10-29
  * @version 1.0.0
  * @description CSS for the home page
@@ -136,8 +136,8 @@ input[type="checkbox"],
 .homebutton {
     width: 100%;
     min-width: 100%;
-    height: 45%;
-    min-height: 45%;
+    height: 50%;
+    min-height: 50%;
     margin-top: 10%;
     border: 4px solid white !important;
     border-radius: 100px;
