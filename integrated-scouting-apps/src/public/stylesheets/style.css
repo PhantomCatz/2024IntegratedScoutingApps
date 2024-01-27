@@ -280,4 +280,17 @@ input[type="checkbox"],
     padding-left: 20%;
 
 }
+.showTeamName{
+    display: 'inline-block'!important;
+    text-align: 'center'!important;
+    padding-bottom: 15% !important;
+    padding-left: 25% !important;
+}
 
+.data{
+    color: white;
+    font-family: Figtree;
+    font-weight: bold;
+    font-size: xxx-large !important;
+    margin-bottom: 0 !important;
+}
