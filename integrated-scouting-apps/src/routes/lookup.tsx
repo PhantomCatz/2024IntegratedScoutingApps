@@ -3,34 +3,58 @@ import logo from '../public/images/logo.png';
 import no_image from '../public/images/no_image.png';
 import { useRef, useEffect, useState } from 'react';
 import { Tabs, Input, Form, Select, Checkbox, InputNumber, Flex, Button } from 'antd';
-import { ReactSketchCanvas, ReactSketchCanvasRef } from 'react-sketch-canvas';
 import type { TabsProps } from 'antd';
-import TextArea from 'antd/es/input/TextArea';
+
 
 function DataLookup(props: any) {
     const [form] = Form.useForm();
-    const [color, setColor] = useState(false);
-    const canvasRef = useRef<ReactSketchCanvasRef>(null);
     useEffect(() => document.title = props.title, [props.title]);
+    
     const eventname = process.env.REACT_APP_EVENTNAME;
-    let teamNum = 0;
-
-
-    function Search() {
-        type FieldType = {
-            teamNum?: number;
+   
+   const [teamNum, setTeamNum] = useState(0);
+  
+   
+    async function handleChange(teamNum: number) {
+        const body = {
+         
+            "team_number": teamNum,
+            "match_event": eventname,
         };
-
-
+        try {
+          await fetch(process.env.REACT_APP_FIREBASE_URL as string, {
+            method: "POST",
+            body: JSON.stringify(body),
+            headers: {
+              "Access-Control-Request-Headers": "Content-Type, Origin",
+              "Content-Type": "application/json",
+              "Origin": "localhost:3000",
+              "Database": "MatchScouting"
+            }
+          }).then(response => response.json()).then(data => console.log(data));
+        }
+        catch (err) {
+          console.log(err);
+        }
+      };
+      
+      function Search() {
         return (
-            <div>
-                <h2>Team Number</h2>
-                <Form.Item<FieldType> name="teamNum" rules={[{ required: true }]}>
-                    <InputNumber controls placeholder='Team' min={0} className="input" />
-                </Form.Item>
-            </div>
+          <div>
+            <h2>Team Number</h2>
+            <Form.Item name="teamNum" rules={[{ required: true }]}>
+            <InputNumber
+                controls
+                placeholder='Team'
+                min={0}
+                className="lookupInput"
+                onChange={(value) => setTeamNum(value ?? 0)}
+                />
+            </Form.Item>
+            <Input type="submit" value="Submit" className='submitLookupButton' name='submitButton'/>
+          </div>
         );
-    }
+      }
     const items: TabsProps['items'] = [
         {
             key: '1',
@@ -57,15 +81,18 @@ function DataLookup(props: any) {
             </div>
             <Form
                 form={form}
-                onFinish={async event => {
-                    let imageURI = "";
-                    canvasRef.current?.exportImage('png').then(data => imageURI = data);
-                    console.log(imageURI);
-                    window.location.reload();
+                onFinish={async (values: { teamNum: any }) => {
+                    const { teamNum } = values;
+                    console.log("team Number:", teamNum);
+                    console.log("Firebase URL:", process.env.REACT_APP_FIREBASE_URL);
+                    console.log("event:", eventname);
+                    await handleChange(teamNum);
+                    form.resetFields(); 
                 }}
-            >
+                >
                 <Tabs defaultActiveKey="1" items={items} className='tabs' />
             </Form>
+            
         </body>
     );
 

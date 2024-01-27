@@ -32,6 +32,7 @@ function ScoutingPage(props: any) {
         <br></br>
         <Button className='mainbutton' href='/scoutingapp/picklists'>Picklists</Button>
       </div>
+      <iframe width="475" height="250" className='timer' src="https://vclock.com/embed/timer/#date=2024-02-28&title=Scouting+App+Done!&theme=1&ampm=1&sound=xylophone" frameBorder="0" allowFullScreen></iframe>
     </body>
   );
 }
