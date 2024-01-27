@@ -145,7 +145,7 @@ function MatchScout(props: any) {
       }
     }
     try {
-      await fetch(process.env.REACT_APP_FIREBASE_URL as string, {
+      await fetch(process.env.REACT_APP_MATCH_URL as string, {
         method: "POST",
         body: JSON.stringify(body),
         headers: {
