@@ -160,7 +160,7 @@ input[type="checkbox"],
     margin-top: 10%;
     border: 4px solid white !important;
     border-radius: 25px;
-    background-color: #32a7dc;
+    background-color: transparent;
     font-size: 500%;
     font-family: Audiowide;
     color: white !important;
@@ -179,7 +179,7 @@ input[type="checkbox"],
     min-height: 20% !important;
     border: 4px solid white !important;
     border-radius: 25px;
-    background-color: #32a7dc;
+    background-color: transparent;
     font-size: 500% !important;
     font-family: Figtree !important;
     font-weight: bold;
@@ -188,22 +188,80 @@ input[type="checkbox"],
     background: transparent !important;
 
 }
+.pitinput {
+    width: 100%;
+    margin-bottom:8%;
+    min-width: 100%;
+    height: 45% !important;
+    min-height: 45% !important;
+    border: 4px solid white !important;
+    border-radius: 25px;
+    background-color: transparent;
+    font-size: 500% !important;
+    font-family: Audiowide !important;
+    font-weight: bold;
+    color: white !important;
+    text-align: center !important;
 
-.pathbutton {
-    width: 33%;
-    min-width: 33%;
+}
+.pitComment {
+    width: 100%;
+    margin-bottom: 8%;
+    min-width: 100%;
     height: 20% !important;
     min-height: 20% !important;
     border: 4px solid white !important;
     border-radius: 25px;
-    background-color: #32a7dc;
+    background-color: transparent;
+    font-size: 500% !important;
+    font-family: Audiowide !important;
+    font-weight: bold;
+    color: white !important;
+    text-align: center !important;
+
+}
+.pitBody {
+    margin: 0;
+    margin-bottom:1%;
+    font-family: Audiowide !important;
+    background-color: transparent !important;
+    color: white;
+}
+.pitButton {
+    width: 49%;
+    min-width: 49%;
+    height: 45% !important;
+    min-height: 45% !important;
+    border: 4px solid white !important;
+    border-radius: 25px;
+    background-color: transparent;
+    font-size: 450% !important;
+    font-family: Audiowide !important;
+    font-weight: bold;
+    color: white !important;
+    text-align: center !important;
+    display:inline-block;
+    margin-bottom: 7%
+}
+.pathbutton {
+    width: 100%;
+    min-width: 100%;
+    height: 20% !important;
+    min-height: 20% !important;
+    border: 4px solid white !important;
+    border-radius: 25px;
+    background-color: transparent;
     font-size: 500% !important;
     font-family: Figtree !important;
     font-weight: bold;
     color: white !important;
     text-align: center !important;
 }
-
+::placeholder{
+    opacity: 0.18;
+    color: #000000;
+    font-family: Figtree;
+}
 .input_checkbox {
     width: 100%;
     min-width: 100%;
