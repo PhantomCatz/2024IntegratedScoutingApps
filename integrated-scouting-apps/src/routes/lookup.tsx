@@ -6,14 +6,12 @@ import { Tabs, Input, Form, Select, Checkbox, InputNumber, Flex, Button } from '
 import type { TabsProps } from 'antd';
 
 
-
 function DataLookup(props: any) {
     const [form] = Form.useForm();
     useEffect(() => document.title = props.title, [props.title]);
     
     const eventname = process.env.REACT_APP_EVENTNAME;
    
-   // let teamNum = '0';
    const [teamNum, setTeamNum] = useState(0);
   
    
@@ -57,23 +55,6 @@ function DataLookup(props: any) {
           </div>
         );
       }
-    // function Search() {
-    //     type FieldType = {
-    //         //teamNum?: number;
-    //         teamNum? : number;
-    //     };
-
-
-    //     return (
-    //         <div>
-    //             <h2>Team Number</h2>
-    //             <Form.Item<FieldType> name="teamNum" rules={[{ required: true }]}>
-    //                 <InputNumber controls placeholder='Team' min={0} className="lookupInput" />
-    //             </Form.Item>
-    //             <Input type="submit" value="Submit" className='submitLookupButton' name='submitButton'/>
-    //         </div>
-    //     );
-    // }
     const items: TabsProps['items'] = [
         {
             key: '1',
@@ -106,22 +87,11 @@ function DataLookup(props: any) {
                     console.log("Firebase URL:", process.env.REACT_APP_FIREBASE_URL);
                     console.log("event:", eventname);
                     await handleChange(teamNum);
-                    form.resetFields(); // Optionally reset form fields after submission
+                    form.resetFields(); 
                 }}
                 >
                 <Tabs defaultActiveKey="1" items={items} className='tabs' />
             </Form>
-
-             {/* <Form
-                form={form}
-                onFinish={async event => {
-                console.log(event.teamNum);
-                await handleChange(event.teamNum);
-               // window.location.reload();
-        }}
-      >
-        <Tabs defaultActiveKey="1" items={items} className='tabs' />
-      </Form> */}
             
         </body>
     );
