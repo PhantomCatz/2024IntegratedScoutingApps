@@ -19,19 +19,19 @@ function MatchScout(props: any) {
   const eventname = process.env.REACT_APP_EVENTNAME;
   let teamNum = 0;
 
-  async function setNewMatchScout(event: any, autoPath: string) {
+  async function setNewMatchScout(event: any) {
     const body = {
       "matchIdentifier": {
-        "initials": event.initials,
+        "Initials": event.initials,
         "robot_position": event.robotpos,
         "match_event": eventname,
-        "match_level": event.matchlevel + event.roundnum,
+        "match_level": event.matchlevel + (event.roundnum !== undefined ? event.roundnum : ""),
         "match_number": event.matchnum,
         "team_number": teamNum,
         "starting_position": event.startingloc,
       },
       "auto": {
-        "auto_preload": event.preloaded,
+        "auto_preLoad": event.preloaded,
         "auto_preload_scored": event.preloadscored,
         "auto_leave": event.leavespawn,
         "auto_amps_scored": event.auton_ampscored,
@@ -40,7 +40,8 @@ function MatchScout(props: any) {
         "auto_pieces_picked": event.piecespicked,
         "auto_missed_pieces_amp": event.auton_missedpiecesamp,
         "auto_missed_pieces_speaker": event.auton_missedpiecesspeaker,
-        "auto_path": autoPath,
+        "auto_path": imageURI.current,
+        "auto_total_points": 0,
         "auto_comments": event.auton_comments,
       },
       "teleop": {
@@ -56,6 +57,7 @@ function MatchScout(props: any) {
         "teleop_missed_pieces_amp": event.tele_missedpiecesamp,
         "teleop_missed_pieces_speaker": event.tele_missedpiecesspeaker,
         "teleop_scoring_location": event.tele_scoringloc,
+        "teleop_total_points": 0,
       },
       "engGame": {
         "EG_climbed": event.climbed,
@@ -71,23 +73,83 @@ function MatchScout(props: any) {
         "OA_robot_died": event.robotdied,
         "OA_was_defend": event.wasdefended,
         "OA_defend": event.defended,
-        "OA_pushing_rating": event.pushing,
+        "OA_pushing_rating": event.pushing, 
         "OA_counter_defense": event.counterdefense,
-        "OA_numbers_penalties": event.numpenalities,
+        "OA_numbers_penalties": event.numpenalties,
         "OA_penalties_comments": event.penaltiesincurred,
         "OA_comments": event.comments,
         "OA_driver_skill": event.driverskill,
       }
     };
+    const WORKING_TEST_DO_NOT_REMOVE_OR_YOU_WILL_BE_FIRED = {
+      "matchIdentifier": {
+        "Initials": "nk",
+        "robot_position": "red_3",
+        "match_event": "2024test",
+        "match_level": "qm",
+        "match_number": 1,
+        "team_number": 0,
+        "starting_position": "middle"
+      },
+      "auto": {
+        "auto_preLoad": true,
+        "auto_preload_scored": true,
+        "auto_leave": true,
+        "auto_amps_scored": 2,
+        "auto_speaker_scored": 1,
+        "auto_scoring_location": "both",
+        "auto_pieces_picked": [
+          0,0
+        ],
+        "auto_missed_pieces_amp": 3,
+        "auto_missed_pieces_speaker": 4,
+        "auto_path": "test",
+        "auto_total_points": 0,
+        "auto_comments": "test"
+      },
+      "teleop": {
+        "teleop_coop_pressed": true,
+        "teleop_coop_first": true,
+        "teleop_amps_scored": 1,
+        "teleop_speaker_scored": 1,
+        "teleop_times_amplify": 1,
+        "teleop_pieces_note_amplifying_scored": 12,
+        "teleop_ground": true,
+        "teleop_source": true,
+        "teleop_traverse_stage": true,
+        "teleop_missed_pieces_amp": 1,
+        "teleop_missed_pieces_speaker": 2,
+        "teleop_scoring_location": "both",
+        "teleop_total_points": 0
+      },
+      "engGame": {
+        "EG_climbed": true,
+        "EG_timeLeft_when_climb": 1,
+        "EG_parked": true,
+        "EG_trapScored": true,
+        "EG_harmony": false,
+        "EG_mic_score": true,
+        "EG_climbing_affect": true
+      },
+      "overAll": {
+        "OA_hoarded": true,
+        "OA_robot_died": false,
+        "OA_was_defend": true,
+        "OA_defend": true,
+        "OA_pushing_rating": 1,
+        "OA_counter_defense": 1,
+        "OA_numbers_penalties": 1,
+        "OA_penalties_comments": "test",
+        "OA_comments": "test",
+        "OA_driver_skill": 1
+      }
+    }
     try {
       await fetch(process.env.REACT_APP_FIREBASE_URL as string, {
         method: "POST",
         body: JSON.stringify(body),
         headers: {
-          "Access-Control-Request-Headers": "*",
           "Content-Type": "application/json",
-          "Origin": "localhost:3000",
-          "Database": "MatchScouting"
         }
       }).then(response => response.json()).then(data => console.log(data));
     }
@@ -112,7 +174,7 @@ function MatchScout(props: any) {
         setColor((team_color === "red" ? true : false));
         const team_num = form.getFieldValue('robotpos').substring(form.getFieldValue('robotpos').indexOf('_') + 1) - 1;
         const fullTeam = (data.alliances[team_color].team_keys[team_num] !== null ? data.alliances[team_color].team_keys[team_num] : 0);
-        teamNum = fullTeam.substring(3);
+        teamNum = Number(fullTeam.substring(3));
         console.log(teamNum);
       }
       else {
@@ -130,7 +192,7 @@ function MatchScout(props: any) {
         setColor((team_color === "red" ? true : false));
         const team_num = form.getFieldValue('robotpos').substring(form.getFieldValue('robotpos').indexOf('_') + 1) - 1;
         const fullTeam = (data.alliances[team_color].team_keys[team_num] !== null ? data.alliances[team_color].team_keys[team_num] : 0);
-        teamNum = fullTeam.substring(3);
+        teamNum = Number(fullTeam.substring(3));
         console.log(teamNum);
       }
     }
@@ -202,7 +264,7 @@ function MatchScout(props: any) {
           <Select placeholder='Starting Location' options={startingloc} className="input"/>
         </Form.Item>
         <h2>Preloaded</h2>
-        <Form.Item<FieldType> name="preloaded">
+        <Form.Item<FieldType> name="preloaded" valuePropName="checked">
           <Checkbox className='input_checkbox'/>
         </Form.Item>
       </div>
@@ -219,6 +281,7 @@ function MatchScout(props: any) {
       preloadscored: boolean,
       piecespicked: string,
       auton_comments: string,
+      imagepath: string,
     };
     const scoringloc = [
       { label: "Amp", value: "amp" },
@@ -237,39 +300,39 @@ function MatchScout(props: any) {
     return (
       <div>
         <h2>Speaker Scored</h2>
-        <Form.Item<FieldType> name="auton_speakerscored" rules={[{ required: true }]}>
-          <InputNumber controls placeholder='0' min={0} className="input"/>
+        <Form.Item<FieldType> name="auton_speakerscored" rules={[{ required: true, message: 'Please input the number of speaker notes scored!' }]}>
+          <InputNumber controls min={0} className="input"/>
         </Form.Item>
         <h2>Amp Scored</h2>
-        <Form.Item<FieldType> name="auton_ampscored" rules={[{ required: true }]}>
-          <InputNumber controls placeholder='0' min={0} className="input"/>
+        <Form.Item<FieldType> name="auton_ampscored" rules={[{ required: true, message: 'Please input the number of amp notes scored!' }]}>
+          <InputNumber controls min={0} className="input"/>
         </Form.Item>
         <h2>Missed Amp Pieces</h2>
-        <Form.Item<FieldType> name="auton_missedpiecesamp" rules={[{ required: true }]}>
-          <InputNumber controls placeholder='0' min={0} className="input"/>
+        <Form.Item<FieldType> name="auton_missedpiecesamp" rules={[{ required: true, message: 'Please input the number of missed amp pieces!' }]}>
+          <InputNumber controls min={0} className="input"/>
         </Form.Item>
         <h2>Missed Speaker Pieces</h2>
-        <Form.Item<FieldType> name="auton_missedpiecesspeaker" rules={[{ required: true }]}>
-          <InputNumber controls placeholder='0' min={0} className="input"/>
+        <Form.Item<FieldType> name="auton_missedpiecesspeaker" rules={[{ required: true, message: 'Please input the number of misssed speaker pieces!' }]}>
+          <InputNumber controls min={0} className="input"/>
         </Form.Item>
         <h2>Leave Spawn</h2>
-        <Form.Item<FieldType> name="leavespawn">
+        <Form.Item<FieldType> name="leavespawn" valuePropName="checked">
           <Checkbox className='input_checkbox'/>
         </Form.Item>
         <h2>Scoring Location</h2>
-        <Form.Item<FieldType> name="auton_scoringloc" rules={[{ required: true }]}>
-          <Select placeholder='Starting Location' options={scoringloc} className='input'/>
+        <Form.Item<FieldType> name="auton_scoringloc" rules={[{ required: true, message: 'Please input the scoring location!' }]}>
+          <Select placeholder='Scoring Location' options={scoringloc} className='input'/>
         </Form.Item>
         <h2>Preload Scored</h2>
-        <Form.Item<FieldType> name="preloadscored">
+        <Form.Item<FieldType> name="preloadscored" valuePropName="checked">
           <Checkbox className='input_checkbox'/>
         </Form.Item>
         <h2>Pieces Picked</h2>
-        <Form.Item<FieldType> name="piecespicked" rules={[{ required: true }]}>
+        <Form.Item<FieldType> name="piecespicked" rules={[{ required: true, message: 'Please input the pieces picked!' }]}>
           <Select placeholder='Pieces Picked' mode='multiple' options={piecespicked} className='input'/>
         </Form.Item>
         <h2>Comments</h2>
-        <Form.Item<FieldType> name="auton_comments" rules={[{ required: true }]}>
+        <Form.Item<FieldType> name="auton_comments" rules={[{ required: true, message: 'Please input the comments!' }]}>
           <TextArea placeholder='Comments' style={{verticalAlign: 'center'}} className='input'/>
         </Form.Item>
         <div style={{ alignContent: 'center' }}>
@@ -280,9 +343,9 @@ function MatchScout(props: any) {
             strokeWidth={8}
             strokeColor='#32a7dc'
             backgroundImage={color ? field_red : field_blue}
-            preserveBackgroundImageAspectRatio='xMidyMid meet'
             exportWithBackgroundImage={true}
             style={{paddingBottom: '5%'}}
+            onChange={(value) => {canvasRef.current?.exportImage('png').then(async data => imageURI.current = data);}}
           />
           <Flex justify='in-between' style={{paddingBottom: '10%'}}>
             <Button onClick={() => canvasRef.current?.undo()} className='pathbutton'>Undo</Button>
@@ -317,52 +380,52 @@ function MatchScout(props: any) {
     return (
       <div>
         <h2>Speaker Scored</h2>
-        <Form.Item<FieldType> name="tele_speakerscored" rules={[{ required: true }]}>
+        <Form.Item<FieldType> name="tele_speakerscored" rules={[{ required: true, message: 'Please input the number of speaker notes scored!' }]}>
           <InputNumber controls min={0} value={0} className="input"/>
         </Form.Item>
         <h2>Amp Scored</h2>
-        <Form.Item<FieldType> name="tele_ampscored" rules={[{ required: true }]}>
+        <Form.Item<FieldType> name="tele_ampscored" rules={[{ required: true, message: 'Please input the number of amp notes scored!' }]}>
           <InputNumber controls min={0} value={0} className="input"/>
         </Form.Item>
         <h2>Times Amplified</h2>
-        <Form.Item<FieldType> name="timesamplified" rules={[{ required: true }]}>
+        <Form.Item<FieldType> name="timesamplified" rules={[{ required: true, message: 'Please input the number of times the speaker was amplified!' }]}>
           <InputNumber controls min={0} value={0} className="input"/>
         </Form.Item>
         <h2>Ground Intake</h2>
-        <Form.Item<FieldType> name="groundintake">
+        <Form.Item<FieldType> name="groundintake" valuePropName="checked">
           <Checkbox className='input_checkbox'/>
         </Form.Item>
         <h2>Source Intake</h2>
-        <Form.Item<FieldType> name="sourceintake">
+        <Form.Item<FieldType> name="sourceintake" valuePropName="checked">
           <Checkbox className='input_checkbox'/>
         </Form.Item>
         <h2>Scoring Location</h2>
-        <Form.Item<FieldType> name="tele_scoringloc" rules={[{ required: true }]}>
+        <Form.Item<FieldType> name="tele_scoringloc" rules={[{ required: true, message: 'Please input the scoring location!' }]}>
           <Select placeholder='Scoring Location' options={scoringloc} className="input"/>
         </Form.Item>
         <h2>Amplified Score</h2>
-        <Form.Item<FieldType> name="amplifyscored" rules={[{ required: true }]}>
+        <Form.Item<FieldType> name="amplifyscored" rules={[{ required: true, message: 'Please input the number of notes scored during the amplifier period!' }]}>
           <InputNumber controls min={0} value={0} className="input"/>
         </Form.Item>
         <h2>Coopertition Pressed</h2>
-        <Form.Item<FieldType> name="cooppressed">
+        <Form.Item<FieldType> name="cooppressed" valuePropName="checked">
           <Checkbox className='input_checkbox'/> 
         </Form.Item>
         <h2>Cooperated First</h2>
-        <Form.Item<FieldType> name="cooppressed1st">
+        <Form.Item<FieldType> name="cooppressed1st" valuePropName="checked">
           <Checkbox className='input_checkbox'/>
         </Form.Item>
         <h2>Traversed Stage</h2>
-        <Form.Item<FieldType> name="traversedstage">
+        <Form.Item<FieldType> name="traversedstage" valuePropName="checked">
           <Checkbox className='input_checkbox'/>
         </Form.Item>
         <h2>Missed Amp Pieces</h2>
-        <Form.Item<FieldType> name="tele_missedpiecesamp" rules={[{ required: true }]}>
-          <InputNumber controls placeholder='0' min={0} className="input"/>
+        <Form.Item<FieldType> name="tele_missedpiecesamp" rules={[{ required: true, message: 'Please input the number of missed amp pieces!' }]}>
+          <InputNumber controls min={0} className="input"/>
         </Form.Item>
         <h2>Missed Speaker Pieces</h2>
-        <Form.Item<FieldType> name="tele_missedpiecesspeaker" rules={[{ required: true }]}>
-          <InputNumber controls placeholder='0' min={0} className="input"/>
+        <Form.Item<FieldType> name="tele_missedpiecesspeaker" rules={[{ required: true, message: 'Please input the number of missed speaker pieces!' }]}>
+          <InputNumber controls min={0} className="input"/>
         </Form.Item>
       </div>
     );
@@ -380,31 +443,31 @@ function MatchScout(props: any) {
     return (
       <div className='matchbody'>
         <h2>Climbed</h2>
-        <Form.Item<FieldType> name="climbed">
+        <Form.Item<FieldType> name="climbed" valuePropName="checked">
           <Checkbox className='input_checkbox'/>
         </Form.Item>
         <h2>Time Left</h2>
-        <Form.Item<FieldType> name="timeleft" rules={[{ required: true }]}>
+        <Form.Item<FieldType> name="timeleft" rules={[{ required: true, message: 'Please input the time left!' }]}>
           <InputNumber controls min={0} value={0} className="input"/>
         </Form.Item>
         <h2>Harmony</h2>
-        <Form.Item<FieldType> name="harmony">
+        <Form.Item<FieldType> name="harmony" valuePropName="checked">
           <Checkbox className='input_checkbox'/>
         </Form.Item>
         <h2>Spotlit</h2>
-        <Form.Item<FieldType> name="spotlit">
+        <Form.Item<FieldType> name="spotlit" valuePropName="checked">
           <Checkbox className='input_checkbox'/>
         </Form.Item>
         <h2>Climbing Affected</h2>
-        <Form.Item<FieldType> name="climbingaffected">
+        <Form.Item<FieldType> name="climbingaffected" valuePropName="checked">
           <Checkbox className='input_checkbox'/>
         </Form.Item>
         <h2>Parked</h2>
-        <Form.Item<FieldType> name="parked">
+        <Form.Item<FieldType> name="parked" valuePropName="checked">
           <Checkbox className='input_checkbox'/>
         </Form.Item>
         <h2>Trap Scored</h2>
-        <Form.Item<FieldType> name="trapscored">
+        <Form.Item<FieldType> name="trapscored" valuePropName="checked">
           <Checkbox className='input_checkbox'/>
         </Form.Item>
       </div>
@@ -426,43 +489,43 @@ function MatchScout(props: any) {
     return (
       <div className='matchbody'>
         <h2>Robot Died</h2>
-        <Form.Item<FieldType> name="robotdied">
+        <Form.Item<FieldType> name="robotdied" valuePropName="checked">
           <Checkbox className='input_checkbox'/>
         </Form.Item>
         <h2>Pushing (0-4)</h2>
-        <Form.Item<FieldType> name="pushing" rules={[{ required: true }]}>
+        <Form.Item<FieldType> name="pushing" rules={[{ required: true, message: 'Please input the pushing rating!' }]}>
           <InputNumber controls min={0} max={4} value={0} className="input"/>
         </Form.Item>
         <h2>Counterdefense (0-4)</h2>
-        <Form.Item<FieldType> name="counterdefense" rules={[{ required: true }]}>
+        <Form.Item<FieldType> name="counterdefense" rules={[{ required: true, message: 'Please input the counterdefense rating!' }]}>
           <InputNumber controls min={0} max={4} value={0} className="input"/>
         </Form.Item>
         <h2>Driver Skill (0-4)</h2>
-        <Form.Item<FieldType> name="driverskill" rules={[{ required: true }]}>
+        <Form.Item<FieldType> name="driverskill" rules={[{ required: true, message: 'Please input the driver skill rating!' }]}>
           <InputNumber controls min={0} max={4} value={0} className="input"/>
         </Form.Item>
         <h2>Defended</h2>
-        <Form.Item<FieldType> name="defended">
+        <Form.Item<FieldType> name="defended" valuePropName="checked">
           <Checkbox className='input_checkbox'/>
         </Form.Item>
         <h2>Hoarded</h2>
-        <Form.Item<FieldType> name="hoarded">
+        <Form.Item<FieldType> name="hoarded" valuePropName="checked">
           <Checkbox className='input_checkbox'/>
         </Form.Item>
         <h2>Was Defended</h2>
-        <Form.Item<FieldType> name="wasdefended">
+        <Form.Item<FieldType> name="wasdefended" valuePropName="checked">
           <Checkbox className='input_checkbox'/>
         </Form.Item>
         <h2>Num Penalties</h2>
-        <Form.Item<FieldType> name="numpenalties" rules={[{ required: true }]}>
+        <Form.Item<FieldType> name="numpenalties" rules={[{ required: true, message: 'Please input the number of penalties incurred!' }]}>
           <InputNumber controls min={0} value={0} className="input"/>
         </Form.Item>
         <h2>Penalties Incurred</h2>
-        <Form.Item<FieldType> name="penaltiesincurred" rules={[{ required: true }]}>
+        <Form.Item<FieldType> name="penaltiesincurred" rules={[{ required: true, message: 'Please describe the penalties incurred!' }]}>
           <TextArea placeholder='Penalties Incurred' style={{verticalAlign: 'center'}} className='input'/>
         </Form.Item>
         <h2>Comments</h2>
-        <Form.Item<FieldType> name="comments" rules={[{ required: true }]}>
+        <Form.Item<FieldType> name="comments" rules={[{ required: true, message: 'Please input the comments!' }]}>
           <TextArea placeholder='Comments' style={{verticalAlign: 'center'}} className='input'/>
         </Form.Item>
         <Input type="submit" value="Submit" className='input'/>
@@ -534,11 +597,20 @@ function MatchScout(props: any) {
           climbingaffected: false,
           parked: false,
           trapscored: false,
+
+          robotdied: false,
+          defended: false,
+          hoarded: false,
+          wasdefended: false,
         }}
         onFinish={async event => {
-          canvasRef.current?.exportImage('png').then(data => imageURI.current = data);
-          await setNewMatchScout(event, imageURI.current as string);
-          //window.location.reload();
+          try {
+            await setNewMatchScout(event);
+            window.location.reload();
+          }
+          catch (err) {
+            console.log(err);
+          }
         }}
       >
         <Tabs defaultActiveKey="1" items={items} className='tabs'/>
