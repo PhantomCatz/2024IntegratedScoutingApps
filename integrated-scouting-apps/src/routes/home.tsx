@@ -23,7 +23,7 @@ function HomePage(props: any) {
       </div>
       <div style={{height: '90vh'}}>
         <Button className='homebutton' href='/scoutingapp'>Scouting App</Button>
-        <Button className='homebutton' href='/dtf'>DTF</Button>
+        <Button className='homebutton' href='/dtfhome'>DTF</Button>
       </div> 
     </body>
   );

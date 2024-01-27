@@ -124,7 +124,7 @@ function PitScout(props: any) {
         >
           {imageUrl ? <img src={imageUrl} alt='' style={{ width: '100%' }} /> : uploadButton}
         </Upload>
-        <Input type="submit" value="Submit" className='submit'/>
+        <Input type="submit" value="Submit" className='input'/>
       </div>
     );
   }
