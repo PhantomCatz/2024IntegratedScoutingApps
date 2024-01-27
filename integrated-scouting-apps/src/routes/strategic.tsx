@@ -1,6 +1,7 @@
 import '../public/stylesheets/style.css';
 import logo from '../public/images/logo.png';
 import no_image from '../public/images/no_image.png';
+import back from '../public/images/back.png';
 import { useEffect } from 'react';
 import { Tabs, Input, Form, Select, InputNumber } from 'antd';
 import type { TabsProps } from 'antd';
@@ -114,10 +115,12 @@ function Strategic(props: any) {
     <body>
       <div className='banner'>
         <header>
-        <img src={no_image} style={{height: 64 + 'px', paddingTop: '5%'}} alt=''></img>
+          <a href='/scoutingapp'>
+            <img src={back} style={{height: 64 + 'px', paddingTop: '5%'}} alt=''/>
+          </a>
           <table>
             <td>
-              <img src={logo} style={{height: 256 + 'px'}} alt=''></img>
+              <img src={logo} style={{ height: 256 + 'px' }} alt=''/>
             </td>
             <td>
               <h1 style={{display: 'inline-block', textAlign: 'center'}}>Strategic Scout</h1>
