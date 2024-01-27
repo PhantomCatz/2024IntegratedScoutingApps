@@ -33,10 +33,9 @@ function PitScout(props: any) {
       </div>
       
       {/* robot pictures */}
-      <div style={{marginBottom:"20%"}}>
-        <h1 className='pitBody' style={{fontSize:'220%'}}>Robot Pictures</h1>
+      <div style={{marginBottom:"25%"}}>
+        <h1 className='pitBody' style={{fontSize:'270%'}}>Robot Pictures</h1>
         <Button style={{float:'left'}} className='pitButton'>Upload</Button>
-        <Button style={{float:'right'}}className='pitButton'>Upload</Button>
         
       </div>
 

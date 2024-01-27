@@ -161,8 +161,6 @@ input[type="checkbox"], .ant-checkbox-inner {
     color: white !important;
     text-align: center !important;
 }
-<<<<<<< Updated upstream
-=======
 .pitinput {
     width: 100%;
     margin-bottom:8%;
@@ -219,7 +217,6 @@ input[type="checkbox"], .ant-checkbox-inner {
     margin-bottom: 7%
 }
 
->>>>>>> Stashed changes
 .pathbutton {
     width: 100%;
     min-width: 100%;
@@ -234,15 +231,12 @@ input[type="checkbox"], .ant-checkbox-inner {
     color: white !important;
     text-align: center !important;
 }
-<<<<<<< Updated upstream
-=======
 
 ::placeholder{
     opacity: 0.18;
     color: #000000;
     font-family: Figtree;
 }
->>>>>>> Stashed changes
 .input_checkbox {
     width: 100%;
     min-width: 100%;
