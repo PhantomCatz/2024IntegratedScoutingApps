@@ -189,3 +189,17 @@ input[type="checkbox"], .ant-checkbox-inner {
     color: white !important;
     text-align: center !important;
 }
+.strategic-input {
+    width: 100%;
+    min-width: 100%;
+    height: 1000px !important;
+    min-height: 1000px !important;
+    border: 4px solid white !important;
+    border-radius: 25px;
+    background-color: #32a7dc;
+    font-size: 500% !important;
+    font-family: Figtree !important;
+    font-weight: bold;
+    color: white !important;
+    text-align: center !important;
+}
