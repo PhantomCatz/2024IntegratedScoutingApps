@@ -21,7 +21,7 @@ function HomePage(props: any) {
           </table>
         </header>
       </div>
-      <div style={{height: '90vh'}}>
+      <div style={{height: '1250px'}}>
         <Button className='homebutton' href='/scoutingapp'>Scouting App</Button>
         <Button className='homebutton' href='/dtf'>DTF</Button>
       </div> 
