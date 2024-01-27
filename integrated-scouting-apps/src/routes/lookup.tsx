@@ -3,10 +3,9 @@ import logo from '../public/images/logo.png';
 import no_image from '../public/images/no_image.png';
 import { useRef, useEffect, useState } from 'react';
 import { Tabs, Input, Form, Select, Checkbox, InputNumber, Flex, Button } from 'antd';
-import { ReactSketchCanvas, ReactSketchCanvasRef } from 'react-sketch-canvas';
 import type { TabsProps } from 'antd';
 
-import TextArea from 'antd/es/input/TextArea';
+
 
 function DataLookup(props: any) {
     const [form] = Form.useForm();
@@ -15,13 +14,14 @@ function DataLookup(props: any) {
     const eventname = process.env.REACT_APP_EVENTNAME;
    
    // let teamNum = '0';
-    const [teamNum, setTeamNum] = useState({ x: 0});
+   const [teamNum, setTeamNum] = useState(0);
+  
    
-    async function handleChange() {
+    async function handleChange(teamNum: number) {
         const body = {
          
             "team_number": teamNum,
-          
+            "match_event": eventname,
         };
         try {
           await fetch(process.env.REACT_APP_FIREBASE_URL as string, {
@@ -40,24 +40,40 @@ function DataLookup(props: any) {
         }
       };
       
-    
-    function Search() {
-        type FieldType = {
-            //teamNum?: number;
-            teamNum? : number;
-        };
-
-
+      function Search() {
         return (
-            <div>
-                <h2>Team Number</h2>
-                <Form.Item<FieldType> name="teamNum" rules={[{ required: true }]}>
-                    <InputNumber controls placeholder='Team' min={0} className="lookupInput" />
-                </Form.Item>
-                <Input type="submit" value="Submit" className='submitLookupButton' />
-            </div>
+          <div>
+            <h2>Team Number</h2>
+            <Form.Item name="teamNum" rules={[{ required: true }]}>
+            <InputNumber
+                controls
+                placeholder='Team'
+                min={0}
+                className="lookupInput"
+                onChange={(value) => setTeamNum(value ?? 0)}
+                />
+            </Form.Item>
+            <Input type="submit" value="Submit" className='submitLookupButton' name='submitButton'/>
+          </div>
         );
-    }
+      }
+    // function Search() {
+    //     type FieldType = {
+    //         //teamNum?: number;
+    //         teamNum? : number;
+    //     };
+
+
+    //     return (
+    //         <div>
+    //             <h2>Team Number</h2>
+    //             <Form.Item<FieldType> name="teamNum" rules={[{ required: true }]}>
+    //                 <InputNumber controls placeholder='Team' min={0} className="lookupInput" />
+    //             </Form.Item>
+    //             <Input type="submit" value="Submit" className='submitLookupButton' name='submitButton'/>
+    //         </div>
+    //     );
+    // }
     const items: TabsProps['items'] = [
         {
             key: '1',
@@ -82,16 +98,30 @@ function DataLookup(props: any) {
                     </table>
                 </header>
             </div>
-             <Form
+            <Form
+                form={form}
+                onFinish={async (values: { teamNum: any }) => {
+                    const { teamNum } = values;
+                    console.log("team Number:", teamNum);
+                    console.log("Firebase URL:", process.env.REACT_APP_FIREBASE_URL);
+                    console.log("event:", eventname);
+                    await handleChange(teamNum);
+                    form.resetFields(); // Optionally reset form fields after submission
+                }}
+                >
+                <Tabs defaultActiveKey="1" items={items} className='tabs' />
+            </Form>
+
+             {/* <Form
                 form={form}
                 onFinish={async event => {
                 console.log(event.teamNum);
-                await handleChange();
-                // window.location.reload();
+                await handleChange(event.teamNum);
+               // window.location.reload();
         }}
       >
         <Tabs defaultActiveKey="1" items={items} className='tabs' />
-      </Form>
+      </Form> */}
             
         </body>
     );
