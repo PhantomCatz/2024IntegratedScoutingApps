@@ -229,7 +229,6 @@ input[type="checkbox"],
     font-weight: bold;
     color: white !important;
     text-align: center !important;
-}
 
 .ant-tabs-tab,.ant-tabs-tab-active {
     margin-top: 50px !important;
