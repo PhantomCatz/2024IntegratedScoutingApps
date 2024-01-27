@@ -15,7 +15,6 @@ import Buh from './routes/buh';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import DataLookup from './routes/lookup';
 import TeamData from './routes/teamData';
-import { Switch } from 'antd';
 //  import Picklist from './routes/picklist';
 
 

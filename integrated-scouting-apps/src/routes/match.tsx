@@ -145,7 +145,7 @@ function MatchScout(props: any) {
       }
     }
     try {
-      await fetch(process.env.REACT_APP_FIREBASE_URL as string, {
+      await fetch(process.env.REACT_APP_MATCH_URL as string, {
         method: "POST",
         body: JSON.stringify(body),
         headers: {
@@ -233,9 +233,9 @@ function MatchScout(props: any) {
       { label: "B3", value: 'blue_3' },
     ];
     const startingloc = [
-      { label: "Left", value: "left" },
-      { label: "Middle", value: "middle" },
-      { label: "Right", value: 'right' },
+      { label: "Upper Speaker", value: "upper_s" },
+      { label: "Middle Speaker", value: "midde_s" },
+      { label: "Lower Speaker", value: 'lower_s' },
     ];
     return (
       <div>
