@@ -9,29 +9,13 @@ import type { TabsProps } from 'antd';
 function DataLookup(props: any) {
     const [form] = Form.useForm();
     useEffect(() => document.title = props.title, [props.title]);
-    
     const eventname = process.env.REACT_APP_EVENTNAME;
    
-   const [teamNum, setTeamNum] = useState(0);
+    const [teamNum, setTeamNum] = useState(0);
   
-   
     async function handleChange(teamNum: number) {
-        const body = {
-         
-            "team_number": teamNum,
-            "match_event": eventname,
-        };
         try {
-          await fetch(process.env.REACT_APP_FIREBASE_URL as string, {
-            method: "POST",
-            body: JSON.stringify(body),
-            headers: {
-              "Access-Control-Request-Headers": "Content-Type, Origin",
-              "Content-Type": "application/json",
-              "Origin": "localhost:3000",
-              "Database": "MatchScouting"
-            }
-          }).then(response => response.json()).then(data => console.log(data));
+          await fetch(process.env.REACT_APP_FIREBASE_URL as string + "?team_number=" + teamNum).then(response => response.json()).then(data => console.log(data));
         }
         catch (err) {
           console.log(err);
@@ -51,6 +35,7 @@ function DataLookup(props: any) {
                 onChange={(value) => setTeamNum(value ?? 0)}
                 />
             </Form.Item>
+            
             <Input type="submit" value="Submit" className='submitLookupButton' name='submitButton'/>
           </div>
         );
@@ -60,6 +45,7 @@ function DataLookup(props: any) {
             key: '1',
             label: 'Input',
             children: Search()
+
         }
     ];
     return (
@@ -86,8 +72,10 @@ function DataLookup(props: any) {
                     console.log("team Number:", teamNum);
                     console.log("Firebase URL:", process.env.REACT_APP_FIREBASE_URL);
                     console.log("event:", eventname);
+                   
                     await handleChange(teamNum);
                     form.resetFields(); 
+
                 }}
                 >
                 <Tabs defaultActiveKey="1" items={items} className='tabs' />
