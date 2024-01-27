@@ -57,7 +57,7 @@ function TeamData(props: any) {
               <h1 style={{ display: 'inline-block', textAlign: 'center' }} className = "showTeamName">Team {team_number}</h1>
           </table>
         </header>
-        <h1 style={{whiteSpace: 'pre-line'}}>{fetchedData}</h1>
+        <h2 style={{whiteSpace: 'pre-line'}}>{loading ? "Loading..." : fetchedData}</h2>
       </div>
     </body>
   );

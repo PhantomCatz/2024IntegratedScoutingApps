@@ -233,9 +233,9 @@ function MatchScout(props: any) {
       { label: "B3", value: 'blue_3' },
     ];
     const startingloc = [
-      { label: "Left", value: "left" },
-      { label: "Middle", value: "middle" },
-      { label: "Right", value: 'right' },
+      { label: "Upper Speaker", value: "upper_s" },
+      { label: "Middle Speaker", value: "midde_s" },
+      { label: "Lower Speaker", value: 'lower_s' },
     ];
     return (
       <div>

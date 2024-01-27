@@ -41,7 +41,7 @@ function DataLookup(props: any) {
                         className="input"
                     />
                     </Form.Item>
-                    <Input type="submit" value="Submit" className='input'/>
+                    <Input type="submit" value="Submit" className='submit'/>
                 </div>
             </Form>
         </body>
