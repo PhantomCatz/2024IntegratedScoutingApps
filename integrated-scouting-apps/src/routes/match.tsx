@@ -606,7 +606,7 @@ function MatchScout(props: any) {
         onFinish={async event => {
           try {
             await setNewMatchScout(event);
-            window.location.reload();
+            form.resetFields();
           }
           catch (err) {
             console.log(err);
