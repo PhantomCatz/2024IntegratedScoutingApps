@@ -3,6 +3,7 @@ import logo from '../public/images/logo.png';
 import { Checkbox, Flex, Form, Input, InputNumber, Select, Tabs, TabsProps, Upload, message } from 'antd';
 import { useEffect, useState } from 'react';
 import {Button} from 'antd';
+import back from '../public/images/back.png'
 
 function PitScout(props: any) {
   const [form] = Form.useForm();
@@ -25,18 +26,24 @@ function PitScout(props: any) {
   ];
   return(
     <body>
-      <div className='banner'>
-        <header>
-          <img src={logo} style={{ height: 64 + 'px' }} alt=''></img>
-          <h1>Pit Scout</h1>
+       <div>
+        <header className='banner'>
+          <img src={back} style={{height: 64 + 'px', paddingTop: '5%'}} alt=''></img>
+          <table>
+            <td>
+              <img src={logo} style={{height: 256 + 'px'}} alt=''></img>
+            </td>
+            <td>
+              <h1 style={{display: 'inline-block', textAlign: 'center'}}>Pit Scout</h1>
+            </td>
+          </table>
         </header>
       </div>
       
       {/* robot pictures */}
-      <div style={{marginBottom:"20%"}}>
-        <h1 className='pitBody' style={{fontSize:'220%'}}>Robot Pictures</h1>
+      <div style={{marginBottom:"25%"}}>
+        <h1 className='pitBody' style={{fontSize:'260%', marginTop: '10%'}}>Robot Pictures</h1>
         <Button style={{float:'left'}} className='pitButton'>Upload</Button>
-        <Button style={{float:'right'}}className='pitButton'>Upload</Button>
         
       </div>
 
@@ -44,7 +51,7 @@ function PitScout(props: any) {
       <div>
         <h1 className='pitBody'>How many events have to competed in?</h1>
         <Form.Item name="eventNum" rules={[{required: true, message: 'Please input the robot position!' }]}>
-          <InputNumber className="pitinput"/>
+          <InputNumber controls min={0} className="pitinput"/>
         </Form.Item>
       </div>
 
@@ -52,7 +59,7 @@ function PitScout(props: any) {
       <div>
         <h1 className='pitBody'>Team #</h1>
         <Form.Item>
-          <InputNumber className="pitinput"/>
+          <InputNumber controls min={0} className="pitinput"/>
         </Form.Item>
       </div>
 
@@ -128,7 +135,7 @@ function PitScout(props: any) {
       <div>
         <h1 className='pitBody'>Pit organization</h1>
         <Form.Item>
-         <InputNumber className="pitinput"/>
+         <InputNumber controls min={0} max={5} className="pitinput"/>
         </Form.Item>
       </div>
 
@@ -136,7 +143,7 @@ function PitScout(props: any) {
       <div>
         <h1 className='pitBody'>Team safety</h1>
         <Form.Item>
-          <InputNumber className="pitinput"/>
+          <InputNumber controls min={0} max={5} className="pitinput"/>
         </Form.Item>
       </div>
 
@@ -144,7 +151,7 @@ function PitScout(props: any) {
       <div>
         <h1 className='pitBody'>Team workmenship</h1>
         <Form.Item>
-          <InputNumber className="pitinput"/>
+          <InputNumber controls min={0} max={5} className="pitinput"/>
         </Form.Item>
       </div>
 
@@ -152,7 +159,7 @@ function PitScout(props: any) {
       <div>
         <h1 className='pitBody'>Gracious professionalism</h1>
         <Form.Item>
-          <InputNumber className="pitinput"/>
+          <InputNumber controls min={0} max={5} className="pitinput"/>
         </Form.Item>
       </div>
 
