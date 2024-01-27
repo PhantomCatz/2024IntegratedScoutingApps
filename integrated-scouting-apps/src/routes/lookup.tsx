@@ -6,6 +6,7 @@ import { Tabs, Input, Form, Select, Checkbox, InputNumber, Flex, Button } from '
 import type { TabsProps } from 'antd';
 
 
+
 function DataLookup(props: any) {
     const [form] = Form.useForm();
     useEffect(() => document.title = props.title, [props.title]);
@@ -35,8 +36,9 @@ function DataLookup(props: any) {
                 onChange={(value) => setTeamNum(value ?? 0)}
                 />
             </Form.Item>
-            
+        
             <Input type="submit" value="Submit" className='submitLookupButton' name='submitButton'/>
+            
           </div>
         );
       }
@@ -70,11 +72,13 @@ function DataLookup(props: any) {
                 onFinish={async (values: { teamNum: any }) => {
                     const { teamNum } = values;
                     console.log("team Number:", teamNum);
+                    
                     console.log("Firebase URL:", process.env.REACT_APP_FIREBASE_URL);
-                    console.log("event:", eventname);
-                   
+                    console.log('Navigating to:', `/scoutingapp/lookup/teamData/${teamNum}`);
                     await handleChange(teamNum);
-                    form.resetFields(); 
+                    window.location.href = `/scoutingapp/lookup/teamData/${teamNum}`;
+                   
+                
 
                 }}
                 >
