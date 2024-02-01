@@ -9,12 +9,10 @@
     font-family: Audiowide;
     src: url('../fonts/Audiowide-Regular.woff') format('woff');
 }
-
 @font-face {
     font-family: Figtree;
     src: url('../fonts/Figtree-VariableFont_wght.ttf') format('woff');
 }
-
 h2 {
     color: white;
     font-family: Figtree;
@@ -22,7 +20,6 @@ h2 {
     font-size: xxx-large !important;
     margin-bottom: 0 !important;
 }
-
 body {
     margin: 0;
     font-family: Audiowide !important;
@@ -31,13 +28,11 @@ body {
     padding-right: 5%;
     color: white;
 }
-
 input[type="checkbox"],
 .ant-checkbox-inner {
     height: 0px !important;
     width: 0px !important;
 }
-
 .ant-input {
     height: 20%;
     min-height: 20%;
@@ -45,7 +40,6 @@ input[type="checkbox"],
     padding-bottom: 13px;
     background-color: transparent;
 }
-
 .ant-tabs-tab {
     font-size: xxx-large !important;
     font-family: Figtree !important;
@@ -54,7 +48,6 @@ input[type="checkbox"],
     height: 15% !important;
     padding-top: 5% !important;
 }
-
 .ant-checkbox-checked {
     background-color: #61f761;
     border-color: #000000;
@@ -62,9 +55,6 @@ input[type="checkbox"],
     border-radius: 20px;
     height: 118px;
 }
-
-;
-
 .ant-select-selection-item {
     font-size: xxx-large !important;
     font-family: Figtree !important;
@@ -73,14 +63,12 @@ input[type="checkbox"],
     height: 15% !important;
     text-align: center !important;
 }
-
 .ant-input-number-input {
     font-family: Figtree !important;
     font-weight: bold !important;
     color: white !important;
     text-align: center !important;
 }
-
 .ant-form-item-explain-error {
     font-size: xxx-large !important;
     font-family: Figtree !important;
@@ -88,20 +76,16 @@ input[type="checkbox"],
     color: red !important;
     text-align: center !important;
 }
-
 .ant-select-item-option-content {
     font-size: xxx-large !important;
     font-family: Figtree !important;
     font-weight: bold !important;
     text-align: center !important;
 }
-
 .ant-select-selection-overflow-item {
     height: 118px !important;
 }
-
-.ant-select-selection-placeholder,
-.ant-select-selection-item {
+.ant-select-selection-placeholder, .ant-select-selection-item {
     height: 118px !important;
     line-height: 50px !important;
     background-color: #32a7dc !important;
@@ -114,7 +98,6 @@ input[type="checkbox"],
     justify-content: center !important;
     padding-right: 0px !important;
 }
-
 .ant-select-selector {
     width: 100% !important;
     height: 118px !important;
@@ -123,16 +106,13 @@ input[type="checkbox"],
     text-align: center !important;
     font-size: small;
 }
-
 .anticon {
     width: 0px !important;
     height: 0px !important;
 }
-
 .rc-virtual-list-holder {
     max-height: 50% !important;
 }
-
 .homebutton {
     width: 100%;
     min-width: 100%;
@@ -151,7 +131,6 @@ input[type="checkbox"],
     text-decoration: none;
     transition: none !important;
 }
-
 .mainbutton {
     width: 100%;
     min-width: 100%;
@@ -166,12 +145,10 @@ input[type="checkbox"],
     color: white !important;
 
 }
-
 .banner {
     font-size: 50px;
     vertical-align: top;
 }
-
 .input {
     width: 100%;
     min-width: 100%;
@@ -262,11 +239,6 @@ input[type="checkbox"],
     color: white !important;
     text-align: center !important;
 }
-::placeholder{
-    opacity: 0.18;
-    color: #000000;
-    font-family: Figtree;
-}
 .input_checkbox {
     width: 100%;
     min-width: 100%;
@@ -295,14 +267,32 @@ input[type="checkbox"],
     color: white !important;
     text-align: center !important;
     background: transparent !important;
-
 }
-
 .ant-tabs-tab,.ant-tabs-tab-active {
     margin-top: 50px !important;
     
 }
-.submitLookupButton{
+.timer {
+    padding-top: 10% !important;
+    align-items: center !important;
+    padding-left: 20%;
+
+}
+.showTeamName {
+    display: 'inline-block'!important;
+    text-align: 'center'!important;
+    padding-bottom: 15% !important;
+    padding-left: 25% !important;
+}
+
+.data {
+    color: white;
+    font-family: Figtree;
+    font-weight: bold;
+    font-size: xxx-large !important;
+    margin-bottom: 0 !important;
+}
+.submit{
     width: 100%;
     max-width: 50%;
     height: 20% !important;
@@ -318,42 +308,4 @@ input[type="checkbox"],
     align-items: center !important;
     margin-left: 25%;
     margin-top: 15%;
-    
-    
-}
-.lookupInput{
-    width: 100%;
-    min-width: 100%;
-    height: 20% !important;
-    min-height: 20% !important;
-    border: 4px solid white !important;
-    border-radius: 25px;
-    background-color: #32a7dc;
-    font-size: 500% !important;
-    font-family: Figtree !important;
-    font-weight: bold;
-    color: white !important;
-    text-align: center !important;
-    background: transparent !important;
- 
-}
-.timer{
-    padding-top: 10% !important;
-    align-items: center !important;
-    padding-left: 20%;
-
-}
-.showTeamName{
-    display: 'inline-block'!important;
-    text-align: 'center'!important;
-    padding-bottom: 15% !important;
-    padding-left: 25% !important;
-}
-
-.data{
-    color: white;
-    font-family: Figtree;
-    font-weight: bold;
-    font-size: xxx-large !important;
-    margin-bottom: 0 !important;
 }
