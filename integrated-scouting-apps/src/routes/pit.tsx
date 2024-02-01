@@ -1,3 +1,4 @@
+
 import '../public/stylesheets/style.css';
 import logo from '../public/images/logo.png';
 import { Checkbox, Flex, Form, Input, InputNumber, Select, Tabs, TabsProps, Upload, message } from 'antd';
@@ -8,7 +9,24 @@ import back from '../public/images/back.png'
 function PitScout(props: any) {
   const [form] = Form.useForm();
   useEffect(() => document.title = props.title, [props.title]);
-  
+
+  type FieldType = {
+    events: number;
+    teamNum: number;
+    dtType: string;
+    rType: string;
+    numMotorsAndType: string;
+    intakeCap: string;
+    shootingCap: string;
+    underStage: boolean;
+    climbingCap: string;
+    howTrap: string,
+    pitOrg: number,
+    teamSafe: number,
+    teamWorkmenship: number,
+    gracProf: number,
+  };
+
   const intakeCap = [
     { label: "Source", value: "source" },
     { label: "Ground", value: "ground" },
@@ -24,6 +42,9 @@ function PitScout(props: any) {
     { label: "Harmonize", value: "harmonize" },
     { label: "Triple Climb", value: 'triple_climb' },
   ];
+  
+  
+ 
   return(
     <body>
        <div>
@@ -50,7 +71,7 @@ function PitScout(props: any) {
       {/* how many events */}
       <div>
         <h1 className='pitBody'>How many events have to competed in?</h1>
-        <Form.Item name="eventNum" rules={[{required: true, message: 'Please input the robot position!' }]}>
+        <Form.Item<FieldType> name="events" rules={[{required: true, message: 'Please input the robot position!' }]}>
           <InputNumber controls min={0} className="pitinput"/>
         </Form.Item>
       </div>
@@ -58,7 +79,7 @@ function PitScout(props: any) {
       {/* team # */}
       <div>
         <h1 className='pitBody'>Team #</h1>
-        <Form.Item>
+        <Form.Item<FieldType> name="teamNum">
           <InputNumber controls min={0} className="pitinput"/>
         </Form.Item>
       </div>
@@ -66,7 +87,7 @@ function PitScout(props: any) {
       {/* drive train type */}
       <div>
         <h1 className='pitBody'>Drive Train Type</h1>
-        <Form.Item>
+        <Form.Item<FieldType> name="dtType">
           <Input className="pitinput"/>
         </Form.Item>
       </div>
@@ -74,7 +95,7 @@ function PitScout(props: any) {
       {/* robot tuype */}
       <div>
         <h1 className='pitBody'>Robot Type</h1>
-        <Form.Item>
+        <Form.Item<FieldType> name="rType">
           <Input className="pitinput"/>
         </Form.Item>
       </div>
@@ -82,7 +103,7 @@ function PitScout(props: any) {
       {/* # of Motors and what type/*/}
       <div>
         <h1 className='pitBody'># of motors and what type?</h1>
-        <Form.Item>
+        <Form.Item<FieldType> name="numMotorsAndType">
           <label>
             <textarea className="pitComment" name="eventNum" rows={3}/>
           </label>
@@ -92,7 +113,7 @@ function PitScout(props: any) {
       {/* intake capability/*/}
       <div>
         <h1 className='pitBody'>Intake capability</h1>
-        <Form.Item name="intakeCap" rules={[{ required: true, message: 'Please input the intake capability!' }]}>
+        <Form.Item<FieldType> name="intakeCap" rules={[{ required: true, message: 'Please input the intake capability!' }]}>
           <Select placeholder='Source' options={intakeCap} className="input"/>
         </Form.Item>
       </div>
@@ -100,7 +121,7 @@ function PitScout(props: any) {
       {/* shooting capability/*/}
       <div>
         <h1 className='pitBody' style={{marginTop:"7%"}}>Shooting capability</h1>
-        <Form.Item name="shootingCap" rules={[{ required: true, message: 'Please input the shooting capability!' }]}>
+        <Form.Item<FieldType> name="shootingCap" rules={[{ required: true, message: 'Please input the shooting capability!' }]}>
           <Select placeholder='Speaker' options={shootingCap} className="input"/>
         </Form.Item>
       </div>
@@ -108,7 +129,7 @@ function PitScout(props: any) {
       {/* go under stage */}
       <div>
         <h1 className='pitBody' style={{marginTop:"7%"}}>Under Stage</h1>
-        <Form.Item name="under">
+        <Form.Item<FieldType> name="underStage">
           <Checkbox className='input_checkbox'/>
         </Form.Item>
       </div>
@@ -116,7 +137,7 @@ function PitScout(props: any) {
       {/* climbing capabilities */}
       <div>
         <h1 className='pitBody' style={{marginTop:"7%"}}>Climbing capability</h1>
-        <Form.Item name="climbingCap" rules={[{ required: true, message: 'Please input the climbing capability!' }]}>
+        <Form.Item<FieldType> name="climbingCap" rules={[{ required: true, message: 'Please input the climbing capability!' }]}>
           <Select placeholder='Solo Climb' options={climbingCap} className="input"/>
         </Form.Item>
       </div>
@@ -124,7 +145,7 @@ function PitScout(props: any) {
       {/* How does robot trap? */}
       <div>
         <h1 className='pitBody' style={{marginTop:"7%"}}>How does robot trap?</h1>
-        <Form.Item>
+        <Form.Item<FieldType> name="howTrap">
           <label>
             <textarea className="pitComment" name="eventNum" rows={3}/>
           </label>
@@ -134,7 +155,7 @@ function PitScout(props: any) {
       {/* pit organization */}
       <div>
         <h1 className='pitBody'>Pit organization</h1>
-        <Form.Item>
+        <Form.Item<FieldType> name="pitOrg">
          <InputNumber controls min={0} max={5} className="pitinput"/>
         </Form.Item>
       </div>
@@ -142,7 +163,7 @@ function PitScout(props: any) {
       {/* Team safety */}
       <div>
         <h1 className='pitBody'>Team safety</h1>
-        <Form.Item>
+        <Form.Item<FieldType> name="teamSafe">
           <InputNumber controls min={0} max={5} className="pitinput"/>
         </Form.Item>
       </div>
@@ -150,7 +171,7 @@ function PitScout(props: any) {
       {/* Team workmenship# */}
       <div>
         <h1 className='pitBody'>Team workmenship</h1>
-        <Form.Item>
+        <Form.Item<FieldType> name="teamWorkmenship">
           <InputNumber controls min={0} max={5} className="pitinput"/>
         </Form.Item>
       </div>
@@ -158,7 +179,7 @@ function PitScout(props: any) {
       {/* Gracious professionalism */}
       <div>
         <h1 className='pitBody'>Gracious professionalism</h1>
-        <Form.Item>
+        <Form.Item<FieldType> name="gracProf">
           <InputNumber controls min={0} max={5} className="pitinput"/>
         </Form.Item>
       </div>
@@ -177,5 +198,4 @@ function PitScout(props: any) {
     </body>
   );
 }
-
 export default PitScout;
