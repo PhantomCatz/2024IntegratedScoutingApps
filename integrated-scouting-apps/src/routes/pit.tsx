@@ -4,6 +4,7 @@
  * @version 1.0.0
  * @description pit scout 
  */
+import '../public/stylesheets/style.css';
 import '../public/stylesheets/pit.css';
 import field_blue from '../public/images/field_blue.png';
 import field_red from '../public/images/field_red.png';
