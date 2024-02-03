@@ -15,7 +15,7 @@ import Buh from './routes/buh';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import DataLookup from './routes/lookup';
 import TeamData from './routes/teamData';
-//  import Picklist from './routes/picklist';
+import Picklist from './routes/picklists';
 
 
 export default function App() {
@@ -31,7 +31,7 @@ export default function App() {
         <Route path="/buh" element={<Buh/>} />
         <Route path="/scoutingapp/lookup" element={<DataLookup title="2637 Data Lookup" />} />        
         <Route path="/scoutingapp/lookup/teamData/:team_number" element ={<TeamData title="2637 Data"/>} />
-        {/* <Route path="/scoutingapp/picklist" element={<Picklist title="2637 Strategic Picklist"/>} /> */}
+        <Route path="/scoutingapp/picklists" element={<Picklist title="2637 Strategic Picklist"/>} />
       </Routes>
     </BrowserRouter>
   );

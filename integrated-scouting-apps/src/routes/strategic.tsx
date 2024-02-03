@@ -1,6 +1,5 @@
 import '../public/stylesheets/style.css';
 import logo from '../public/images/logo.png';
-import no_image from '../public/images/no_image.png';
 import back from '../public/images/back.png';
 import { useEffect } from 'react';
 import { Tabs, Input, Form, Select, InputNumber } from 'antd';
