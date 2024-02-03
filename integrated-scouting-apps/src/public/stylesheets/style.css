@@ -17,7 +17,7 @@ h2 {
     color: white;
     font-family: Figtree;
     font-weight: bold;
-    font-size: xxx-large !important;
+    font-size: 64px !important;
     margin-bottom: 0 !important;
 }
 body {
@@ -28,10 +28,17 @@ body {
     padding-right: 5%;
     color: white;
 }
-input[type="checkbox"],
-.ant-checkbox-inner {
+input[type="checkbox"], .ant-checkbox-inner {
     height: 0px !important;
     width: 0px !important;
+}
+input[type="number"]::-webkit-inner-spin-button, .ant-input-number-handler-wrap {
+    opacity: 1.0 !important;
+    background-color: transparent;
+    width: 10%;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-left: 4px solid white;
 }
 .ant-input {
     height: 20%;
@@ -41,7 +48,7 @@ input[type="checkbox"],
     background-color: transparent;
 }
 .ant-tabs-tab {
-    font-size: xxx-large !important;
+    font-size: 64px !important;
     font-family: Figtree !important;
     font-weight: bold !important;
     color: white !important;
@@ -56,7 +63,7 @@ input[type="checkbox"],
     height: 118px;
 }
 .ant-select-selection-item {
-    font-size: xxx-large !important;
+    font-size: 64px !important;
     font-family: Figtree !important;
     font-weight: bold !important;
     color: white !important;
@@ -68,16 +75,17 @@ input[type="checkbox"],
     font-weight: bold !important;
     color: white !important;
     text-align: center !important;
+    padding: 0px !important;
 }
 .ant-form-item-explain-error {
-    font-size: xxx-large !important;
+    font-size: 64px !important;
     font-family: Figtree !important;
     font-weight: bold !important;
     color: red !important;
     text-align: center !important;
 }
 .ant-select-item-option-content {
-    font-size: xxx-large !important;
+    font-size: 64px !important;
     font-family: Figtree !important;
     font-weight: bold !important;
     text-align: center !important;
@@ -112,6 +120,10 @@ input[type="checkbox"],
 }
 .rc-virtual-list-holder {
     max-height: 50% !important;
+}
+.ant-tabs-tab,.ant-tabs-tab-active {
+    margin-top: 50px !important;
+    
 }
 .homebutton {
     width: 100%;
@@ -163,7 +175,6 @@ input[type="checkbox"],
     color: white !important;
     text-align: center !important;
     background: transparent !important;
-
 }
 .pitinput {
     width: 100%;
@@ -179,6 +190,8 @@ input[type="checkbox"],
     font-weight: bold;
     color: white !important;
     text-align: center !important;
+    background: transparent !important;
+
 
 }
 .pitComment {
@@ -195,6 +208,8 @@ input[type="checkbox"],
     font-weight: bold;
     color: white !important;
     text-align: center !important;
+    background: transparent !important;
+
 
 }
 .pitBody {
@@ -219,10 +234,11 @@ input[type="checkbox"],
     text-align: center !important;
     display:inline-block;
     margin-bottom: 7%
+
 }
 .pathbutton {
-    width: 100%;
-    min-width: 100%;
+    width: 33%;
+    min-width: 33%;
     height: 20% !important;
     min-height: 20% !important;
     border: 4px solid white !important;
@@ -247,60 +263,4 @@ input[type="checkbox"],
     font-weight: bold;
     color: white !important;
     text-align: center !important;
-}
-.strategic-input {
-    width: 100%;
-    min-width: 100%;
-    height: 1000px !important;
-    min-height: 1000px !important;
-    border: 4px solid white !important;
-    border-radius: 25px;
-    background-color: #32a7dc;
-    font-size: 500% !important;
-    font-family: Figtree !important;
-    font-weight: bold;
-    color: white !important;
-    text-align: center !important;
-    background: transparent !important;
-}
-.ant-tabs-tab,.ant-tabs-tab-active {
-    margin-top: 50px !important;
-    
-}
-.timer {
-    padding-top: 10% !important;
-    align-items: center !important;
-    padding-left: 20%;
-
-}
-.showTeamName {
-    display: 'inline-block'!important;
-    text-align: 'center'!important;
-    padding-bottom: 15% !important;
-    padding-left: 25% !important;
-}
-
-.data {
-    color: white;
-    font-family: Figtree;
-    font-weight: bold;
-    font-size: xxx-large !important;
-    margin-bottom: 0 !important;
-}
-.submit{
-    width: 100%;
-    max-width: 50%;
-    height: 20% !important;
-    min-height: 20% !important; 
-    border: 4px solid white !important;
-    border-radius: 25px;
-    background-color: #32a7dc;
-    font-size: 300% !important;
-    font-family: Figtree !important;
-    font-weight: normal;
-    color: white !important;
-    text-align: center !important;
-    align-items: center !important;
-    margin-left: 25%;
-    margin-top: 15%;
 }

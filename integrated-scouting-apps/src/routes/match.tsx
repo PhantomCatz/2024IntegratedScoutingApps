@@ -3,6 +3,7 @@ import logo from '../public/images/logo.png';
 import back from '../public/images/back.png';
 import field_blue from '../public/images/field_blue.png';
 import field_red from '../public/images/field_red.png';
+import full_field from '../public/images/full_field.png';
 import { useRef, useEffect, useState } from 'react';
 import { Tabs, Input, Form, Select, Checkbox, InputNumber, Flex, Button } from 'antd';
 import { ReactSketchCanvas, ReactSketchCanvasRef } from 'react-sketch-canvas';
@@ -13,8 +14,11 @@ function MatchScout(props: any) {
   const [form] = Form.useForm();
   const [color, setColor] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const imageURI = useRef<string>();
-  const canvasRef = useRef<ReactSketchCanvasRef>(null);
+  const [tabNum, setTabNum] = useState("1");
+  const autonImageURI = useRef<string>();
+  const teleopImageURI = useRef<string>();
+  const autonCanvasRef = useRef<ReactSketchCanvasRef>(null);
+  const teleopCanvasRef = useRef<ReactSketchCanvasRef>(null);
   useEffect(() => document.title = props.title, [props.title]);
   const eventname = process.env.REACT_APP_EVENTNAME;
   let teamNum = 0;
@@ -40,7 +44,7 @@ function MatchScout(props: any) {
         "auto_pieces_picked": event.piecespicked,
         "auto_missed_pieces_amp": event.auton_missedpiecesamp,
         "auto_missed_pieces_speaker": event.auton_missedpiecesspeaker,
-        "auto_path": imageURI.current,
+        "auto_path": autonImageURI.current,
         "auto_total_points": 0,
         "auto_comments": event.auton_comments,
       },
@@ -58,6 +62,7 @@ function MatchScout(props: any) {
         "teleop_missed_pieces_speaker": event.tele_missedpiecesspeaker,
         "teleop_scoring_location": event.tele_scoringloc,
         "teleop_total_points": 0,
+        "teleop_path": teleopImageURI.current,
       },
       "engGame": {
         "EG_climbed": event.climbed,
@@ -241,32 +246,36 @@ function MatchScout(props: any) {
       <div>
         <h2>Scouter Initials</h2>
         <Form.Item<FieldType> name="initials" rules={[{ required: true, message: 'Please input your initials!' }]}>
-          <Input placeholder='NK' maxLength={2} className="input"/>
+          <Input maxLength={2} className="input"/>
         </Form.Item>
         <h2>Match #</h2>
         <Form.Item<FieldType> name="matchnum" rules={[{ required: true, message: 'Please input the match number!' }]}>
-          <InputNumber controls placeholder='Match #' min={1} onChange={updateTeamNumber} className="input"/>
+          <InputNumber min={1} onChange={updateTeamNumber} className="input" type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} />
         </Form.Item>
         <h2>Match Level</h2>
         <Form.Item<FieldType> name="matchlevel" rules={[{ required: true, message: 'Please input the match level!' }]}>
-          <Select placeholder='Match Level' options={rounds} onChange={()=> {calculateMatchLevel(); updateTeamNumber();}} className="input"/>
+          <Select options={rounds} onChange={()=> {calculateMatchLevel(); updateTeamNumber();}} className="input"/>
         </Form.Item>
         <h2 style={{ display: isVisible ? 'inherit' : 'none' }}>Round #</h2>
         <Form.Item<FieldType> name="roundnum" rules={[{ required: isVisible ? true : false, message: 'Please input the round number!' }]}>
-          <InputNumber controls placeholder='Round #' min={1} onChange={updateTeamNumber} style={{ display: isVisible ? 'inherit' : 'none' }} className="input"/>
+            <InputNumber min={1} onChange={updateTeamNumber} style={{ display: isVisible ? 'inherit' : 'none' }} className="input" type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()}/>
         </Form.Item>
         <h2>Robot Position</h2>
         <Form.Item<FieldType> name="robotpos" rules={[{ required: true, message: 'Please input the robot position!' }]}>
-          <Select placeholder='Robot Position' options={robotpos} onChange={updateTeamNumber} className="input"/>
+          <Select options={robotpos} onChange={updateTeamNumber} className="input"/>
         </Form.Item>
         <h2>Starting Location</h2>
         <Form.Item<FieldType> name="startingloc" rules={[{ required: true, message: 'Please input the starting location!' }]}>
-          <Select placeholder='Starting Location' options={startingloc} className="input"/>
+          <Select options={startingloc} className="input"/>
         </Form.Item>
         <h2>Preloaded</h2>
         <Form.Item<FieldType> name="preloaded" valuePropName="checked">
           <Checkbox className='input_checkbox'/>
         </Form.Item>
+        <Flex justify='in-between' style={{paddingBottom: '10%'}}>
+          <Button onClick={() => setTabNum("1")} className='pathbutton'>Back</Button>
+          <Button onClick={() => setTabNum("2")} className='pathbutton'>Next</Button>
+        </Flex>
       </div>
     );
   }
@@ -299,29 +308,29 @@ function MatchScout(props: any) {
     ];
     return (
       <div>
-        <h2>Speaker Scored</h2>
-        <Form.Item<FieldType> name="auton_speakerscored" rules={[{ required: true, message: 'Please input the number of speaker notes scored!' }]}>
-          <InputNumber controls min={0} className="input"/>
-        </Form.Item>
-        <h2>Amp Scored</h2>
-        <Form.Item<FieldType> name="auton_ampscored" rules={[{ required: true, message: 'Please input the number of amp notes scored!' }]}>
-          <InputNumber controls min={0} className="input"/>
-        </Form.Item>
-        <h2>Missed Amp Pieces</h2>
-        <Form.Item<FieldType> name="auton_missedpiecesamp" rules={[{ required: true, message: 'Please input the number of missed amp pieces!' }]}>
-          <InputNumber controls min={0} className="input"/>
-        </Form.Item>
-        <h2>Missed Speaker Pieces</h2>
-        <Form.Item<FieldType> name="auton_missedpiecesspeaker" rules={[{ required: true, message: 'Please input the number of misssed speaker pieces!' }]}>
-          <InputNumber controls min={0} className="input"/>
-        </Form.Item>
-        <h2>Leave Spawn</h2>
+        <h2>Leave</h2>
         <Form.Item<FieldType> name="leavespawn" valuePropName="checked">
           <Checkbox className='input_checkbox'/>
         </Form.Item>
+        <h2>Speaker Scored</h2>
+        <Form.Item<FieldType> name="auton_speakerscored" rules={[{ required: true, message: 'Please input the number of speaker notes scored!' }]}>
+          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} className="input"/>
+        </Form.Item>
+        <h2>Amp Scored</h2>
+        <Form.Item<FieldType> name="auton_ampscored" rules={[{ required: true, message: 'Please input the number of amp notes scored!' }]}>
+          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} className="input"/>
+        </Form.Item>
+        <h2>Missed Amp Pieces</h2>
+        <Form.Item<FieldType> name="auton_missedpiecesamp" rules={[{ required: true, message: 'Please input the number of missed amp pieces!' }]}>
+          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} className="input"/>
+        </Form.Item>
+        <h2>Missed Speaker Pieces</h2>
+        <Form.Item<FieldType> name="auton_missedpiecesspeaker" rules={[{ required: true, message: 'Please input the number of misssed speaker pieces!' }]}>
+          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} className="input"/>
+        </Form.Item>
         <h2>Scoring Location</h2>
         <Form.Item<FieldType> name="auton_scoringloc" rules={[{ required: true, message: 'Please input the scoring location!' }]}>
-          <Select placeholder='Scoring Location' options={scoringloc} className='input'/>
+          <Select options={scoringloc} className='input'/>
         </Form.Item>
         <h2>Preload Scored</h2>
         <Form.Item<FieldType> name="preloadscored" valuePropName="checked">
@@ -329,15 +338,15 @@ function MatchScout(props: any) {
         </Form.Item>
         <h2>Pieces Picked</h2>
         <Form.Item<FieldType> name="piecespicked" rules={[{ required: true, message: 'Please input the pieces picked!' }]}>
-          <Select placeholder='Pieces Picked' mode='multiple' options={piecespicked} className='input'/>
+          <Select mode='multiple' options={piecespicked} className='input' showSearch={false}/>
         </Form.Item>
         <h2>Comments</h2>
         <Form.Item<FieldType> name="auton_comments" rules={[{ required: true, message: 'Please input the comments!' }]}>
-          <TextArea placeholder='Comments' style={{verticalAlign: 'center'}} className='input'/>
+          <TextArea style={{verticalAlign: 'center'}} className='input'/>
         </Form.Item>
         <div style={{ alignContent: 'center' }}>
           <ReactSketchCanvas
-            ref={canvasRef}
+            ref={autonCanvasRef}
             width='50rem'
             height='50rem'
             strokeWidth={8}
@@ -345,12 +354,16 @@ function MatchScout(props: any) {
             backgroundImage={color ? field_red : field_blue}
             exportWithBackgroundImage={true}
             style={{paddingBottom: '5%'}}
-            onChange={(value) => {canvasRef.current?.exportImage('png').then(async data => imageURI.current = data);}}
+            onChange={(event) => {autonCanvasRef.current?.exportImage('png').then(data => autonImageURI.current = data);}}
           />
           <Flex justify='in-between' style={{paddingBottom: '10%'}}>
-            <Button onClick={() => canvasRef.current?.undo()} className='pathbutton'>Undo</Button>
-            <Button onClick={() => canvasRef.current?.redo()} className='pathbutton'>Redo</Button>
-            <Button onClick={() => canvasRef.current?.clearCanvas()} className='pathbutton'>Clear</Button>
+            <Button onClick={() => autonCanvasRef.current?.undo()} className='pathbutton'>Undo</Button>
+            <Button onClick={() => autonCanvasRef.current?.redo()} className='pathbutton'>Redo</Button>
+            <Button onClick={() => autonCanvasRef.current?.clearCanvas()} className='pathbutton'>Clear</Button>
+          </Flex>
+          <Flex justify='in-between' style={{paddingBottom: '10%'}}>
+            <Button onClick={() => setTabNum("1")} className='pathbutton'>Back</Button>
+            <Button onClick={() => setTabNum("3")} className='pathbutton'>Next</Button>
           </Flex>
         </div>
       </div>
@@ -381,15 +394,27 @@ function MatchScout(props: any) {
       <div>
         <h2>Speaker Scored</h2>
         <Form.Item<FieldType> name="tele_speakerscored" rules={[{ required: true, message: 'Please input the number of speaker notes scored!' }]}>
-          <InputNumber controls min={0} value={0} className="input"/>
+          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input"/>
         </Form.Item>
         <h2>Amp Scored</h2>
         <Form.Item<FieldType> name="tele_ampscored" rules={[{ required: true, message: 'Please input the number of amp notes scored!' }]}>
-          <InputNumber controls min={0} value={0} className="input"/>
+          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input"/>
+        </Form.Item>
+        <h2>Missed Amp Pieces</h2>
+        <Form.Item<FieldType> name="tele_missedpiecesamp" rules={[{ required: true, message: 'Please input the number of missed amp pieces!' }]}>
+          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} className="input"/>
+        </Form.Item>
+        <h2>Missed Speaker Pieces</h2>
+        <Form.Item<FieldType> name="tele_missedpiecesspeaker" rules={[{ required: true, message: 'Please input the number of missed speaker pieces!' }]}>
+          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} className="input"/>
         </Form.Item>
         <h2>Times Amplified</h2>
         <Form.Item<FieldType> name="timesamplified" rules={[{ required: true, message: 'Please input the number of times the speaker was amplified!' }]}>
-          <InputNumber controls min={0} value={0} className="input"/>
+          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input"/>
+        </Form.Item>
+        <h2>Amplified Score</h2>
+        <Form.Item<FieldType> name="amplifyscored" rules={[{ required: true, message: 'Please input the number of notes scored during the amplifier period!' }]}>
+          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input"/>
         </Form.Item>
         <h2>Ground Intake</h2>
         <Form.Item<FieldType> name="groundintake" valuePropName="checked">
@@ -401,11 +426,7 @@ function MatchScout(props: any) {
         </Form.Item>
         <h2>Scoring Location</h2>
         <Form.Item<FieldType> name="tele_scoringloc" rules={[{ required: true, message: 'Please input the scoring location!' }]}>
-          <Select placeholder='Scoring Location' options={scoringloc} className="input"/>
-        </Form.Item>
-        <h2>Amplified Score</h2>
-        <Form.Item<FieldType> name="amplifyscored" rules={[{ required: true, message: 'Please input the number of notes scored during the amplifier period!' }]}>
-          <InputNumber controls min={0} value={0} className="input"/>
+          <Select options={scoringloc} className="input"/>
         </Form.Item>
         <h2>Coopertition Pressed</h2>
         <Form.Item<FieldType> name="cooppressed" valuePropName="checked">
@@ -419,14 +440,28 @@ function MatchScout(props: any) {
         <Form.Item<FieldType> name="traversedstage" valuePropName="checked">
           <Checkbox className='input_checkbox'/>
         </Form.Item>
-        <h2>Missed Amp Pieces</h2>
-        <Form.Item<FieldType> name="tele_missedpiecesamp" rules={[{ required: true, message: 'Please input the number of missed amp pieces!' }]}>
-          <InputNumber controls min={0} className="input"/>
-        </Form.Item>
-        <h2>Missed Speaker Pieces</h2>
-        <Form.Item<FieldType> name="tele_missedpiecesspeaker" rules={[{ required: true, message: 'Please input the number of missed speaker pieces!' }]}>
-          <InputNumber controls min={0} className="input"/>
-        </Form.Item>
+        <div style={{ alignContent: 'center' }}>
+          <ReactSketchCanvas
+            ref={teleopCanvasRef}
+            width='50rem'
+            height='25rem'
+            strokeWidth={8}
+            strokeColor='#32a7dc'
+            backgroundImage={full_field}
+            exportWithBackgroundImage={true}
+            style={{paddingBottom: '5%'}}
+            onChange={(event) => {teleopCanvasRef.current?.exportImage('png').then(data => teleopImageURI.current = data);}}
+          />
+          <Flex justify='in-between' style={{paddingBottom: '10%'}}>
+            <Button onClick={() => teleopCanvasRef.current?.undo()} className='pathbutton'>Undo</Button>
+            <Button onClick={() => teleopCanvasRef.current?.redo()} className='pathbutton'>Redo</Button>
+            <Button onClick={() => teleopCanvasRef.current?.clearCanvas()} className='pathbutton'>Clear</Button>
+          </Flex>
+          <Flex justify='in-between' style={{paddingBottom: '10%'}}>
+            <Button onClick={() => setTabNum("2")} className='pathbutton'>Back</Button>
+            <Button onClick={() => setTabNum("4")} className='pathbutton'>Next</Button>
+          </Flex>
+        </div>
       </div>
     );
   }
@@ -448,7 +483,7 @@ function MatchScout(props: any) {
         </Form.Item>
         <h2>Time Left</h2>
         <Form.Item<FieldType> name="timeleft" rules={[{ required: true, message: 'Please input the time left!' }]}>
-          <InputNumber controls min={0} value={0} className="input"/>
+          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input"/>
         </Form.Item>
         <h2>Harmony</h2>
         <Form.Item<FieldType> name="harmony" valuePropName="checked">
@@ -470,6 +505,10 @@ function MatchScout(props: any) {
         <Form.Item<FieldType> name="trapscored" valuePropName="checked">
           <Checkbox className='input_checkbox'/>
         </Form.Item>
+        <Flex justify='in-between' style={{paddingBottom: '10%'}}>
+          <Button onClick={() => setTabNum("3")} className='pathbutton'>Back</Button>
+          <Button onClick={() => setTabNum("5")} className='pathbutton'>Next</Button>
+        </Flex>
       </div>
     );
   }
@@ -494,15 +533,15 @@ function MatchScout(props: any) {
         </Form.Item>
         <h2>Pushing (0-4)</h2>
         <Form.Item<FieldType> name="pushing" rules={[{ required: true, message: 'Please input the pushing rating!' }]}>
-          <InputNumber controls min={0} max={4} value={0} className="input"/>
+          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} max={4} value={0} className="input"/>
         </Form.Item>
         <h2>Counterdefense (0-4)</h2>
         <Form.Item<FieldType> name="counterdefense" rules={[{ required: true, message: 'Please input the counterdefense rating!' }]}>
-          <InputNumber controls min={0} max={4} value={0} className="input"/>
+          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} max={4} value={0} className="input"/>
         </Form.Item>
         <h2>Driver Skill (0-4)</h2>
         <Form.Item<FieldType> name="driverskill" rules={[{ required: true, message: 'Please input the driver skill rating!' }]}>
-          <InputNumber controls min={0} max={4} value={0} className="input"/>
+          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} max={4} value={0} className="input"/>
         </Form.Item>
         <h2>Defended</h2>
         <Form.Item<FieldType> name="defended" valuePropName="checked">
@@ -516,19 +555,23 @@ function MatchScout(props: any) {
         <Form.Item<FieldType> name="wasdefended" valuePropName="checked">
           <Checkbox className='input_checkbox'/>
         </Form.Item>
-        <h2>Num Penalties</h2>
+        <h2>Number ofs Penalties</h2>
         <Form.Item<FieldType> name="numpenalties" rules={[{ required: true, message: 'Please input the number of penalties incurred!' }]}>
-          <InputNumber controls min={0} value={0} className="input"/>
+          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input"/>
         </Form.Item>
         <h2>Penalties Incurred</h2>
         <Form.Item<FieldType> name="penaltiesincurred" rules={[{ required: true, message: 'Please describe the penalties incurred!' }]}>
-          <TextArea placeholder='Penalties Incurred' style={{verticalAlign: 'center'}} className='input'/>
+          <TextArea style={{verticalAlign: 'center'}} className='input'/>
         </Form.Item>
         <h2>Comments</h2>
         <Form.Item<FieldType> name="comments" rules={[{ required: true, message: 'Please input the comments!' }]}>
-          <TextArea placeholder='Comments' style={{verticalAlign: 'center'}} className='input'/>
+          <TextArea style={{verticalAlign: 'center'}} className='input'/>
         </Form.Item>
         <Input type="submit" value="Submit" className='input'/>
+        <Flex justify='in-between' style={{paddingBottom: '10%'}}>
+          <Button onClick={() => setTabNum("4")} className='pathbutton'>Back</Button>
+          <Button onClick={() => setTabNum("5")} className='pathbutton'>Next</Button>
+        </Flex>
       </div>
     )
   }
@@ -562,6 +605,7 @@ function MatchScout(props: any) {
   return (
     <body>
       <div className='banner'>
+        <meta name="viewport" content="user-scalable=no" />
         <header>
           <a href='/scoutingapp'>
             <img src={back} style={{height: 64 + 'px', paddingTop: '5%'}} alt=''/>
@@ -606,14 +650,18 @@ function MatchScout(props: any) {
         onFinish={async event => {
           try {
             await setNewMatchScout(event);
+            const initials = form.getFieldValue('initials');
+            const matchnum = form.getFieldValue('matchnum');
             form.resetFields();
+            form.setFieldValue('initials', initials);
+            form.setFieldValue('matchnum', matchnum);
           }
           catch (err) {
             console.log(err);
           }
         }}
       >
-        <Tabs defaultActiveKey="1" items={items} className='tabs'/>
+        <Tabs activeKey={tabNum} items={items} className='tabs'/>
       </Form>
     </body>
   );

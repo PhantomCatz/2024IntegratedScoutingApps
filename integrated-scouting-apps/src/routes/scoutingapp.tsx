@@ -23,16 +23,12 @@ function ScoutingPage(props: any) {
       </div>
       <div className='body'>
         <Button className='mainbutton' href='/scoutingapp/match'>Match</Button>
-        <br></br>
         <Button className='mainbutton' href='/scoutingapp/strategic'>Strategic</Button>
-        <br></br>
         <Button className='mainbutton' href='/scoutingapp/pit'>Pit</Button>
-        <br></br>
         <Button className='mainbutton' href='/scoutingapp/lookup'>Data Lookup</Button>
-        <br></br>
         <Button className='mainbutton' href='/scoutingapp/picklists'>Picklists</Button>
       </div>
-      <iframe width="475" height="250" className='timer' src="https://vclock.com/embed/timer/#date=2024-02-28&title=Scouting+App+Done!&theme=1&ampm=1&sound=xylophone" title='lisa gay'></iframe>
+      <iframe height="500px" width="500px" src="https://vclock.com/embed/timer/#date=2024-02-28&title=finish+scouting+app+and+enjoy+life&theme=1" title='lisa gay'></iframe>
     </body>
   );
 }

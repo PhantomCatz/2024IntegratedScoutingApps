@@ -1,4 +1,4 @@
-import '../public/stylesheets/style.css';
+import '../public/stylesheets/strategic.css';
 import logo from '../public/images/logo.png';
 import back from '../public/images/back.png';
 import { useEffect } from 'react';
@@ -10,7 +10,6 @@ function Strategic(props: any) {
   const [form] = Form.useForm();
   useEffect(() => document.title = props.title, [props.title]);
   const eventname = process.env.REACT_APP_EVENTNAME;
-
 
   async function setNewStrategicScout(event: any) {
     const body = {
@@ -58,27 +57,27 @@ function Strategic(props: any) {
       matchnum?: number;
     };
     const rounds = [
-      { label: "Qualifications", value: "qual" },
-      { label: "Elimination", value: "elim" },
-      { label: "Finals", value: "final" },
+      { label: "Qualifications", value: "qm" },
+      { label: "Elimination", value: "sf" },
+      { label: "Finals", value: "f" },
     ];
     return (
       <div>
         <h2>Scouter Initials</h2>
         <Form.Item<FieldType> name="initials" rules={[{ required: true, message: 'Please input your initials!' }]}>
-          <Input placeholder='Scouter Initials' maxLength={2} className="input"/>
+          <Input maxLength={2} className="input"/>
         </Form.Item>
         <h2>Team #</h2>
         <Form.Item<FieldType> name="teamnum" rules={[{ required: true, message: 'Please input the team number!' }]}>
-          <InputNumber controls placeholder='Team #' min={1} className="input"/>
+          <InputNumber min={1} className="input"/>
         </Form.Item>
         <h2>Match Level</h2>
         <Form.Item<FieldType> name="matchlevel" rules={[{ required: true, message: 'Please input the match level!' }]}>
-          <Select placeholder='Match Level' options={rounds} className="input"/>
+          <Select options={rounds} className="input"/>
         </Form.Item>
         <h2>Match #</h2>
         <Form.Item<FieldType> name="matchnum" rules={[{ required: true, message: 'Please input the match number!' }]}>
-          <InputNumber controls placeholder='Match #' min={1} className="input"/>
+          <InputNumber min={1} className="input"/>
         </Form.Item>
       </div>
     );
@@ -91,7 +90,7 @@ function Strategic(props: any) {
       <div>
         <h2>Comments</h2>
         <Form.Item<FieldType> name="comments" rules={[{ required: true }]}>
-          <TextArea placeholder='Comments' style={{verticalAlign: 'center'}} className='strategic-input'/>
+          <TextArea style={{verticalAlign: 'center'}} className='strategic-input'/>
         </Form.Item>
         <Input type="submit" value="Submit" className='input'/>
       </div>
