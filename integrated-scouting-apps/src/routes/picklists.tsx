@@ -12,44 +12,7 @@ function Picklists(props: any) {
   const eventname = process.env.REACT_APP_EVENTNAME;
 
 
-  async function setNewPicklists(event: any) {
-    const body = {
-      "matchIdentifier": {
-        "Initials": event.initials,
-        "match_event": eventname,
-        "team_number": event.teamnum,
-        "match_level": event.matchlevel,
-        "match_number": event.matchnum,
-      },
-      "comment": {
-        "comment": event.comments,
-      }
-    };
-    const WORKING_TEST_DO_NOT_REMOVE_OR_YOU_WILL_BE_FIRED = {
-      "matchIdentifier": {
-        "Initials": "LL",
-        "match_event": "2024CALA",
-        "team_number": 2637,
-        "match_level": "Qual",
-        "match_number": 4
-      },
-      "comment": {
-        "comment": "asdfasdfasdf"
-      }
-    };
-    try {
-      await fetch(process.env.REACT_APP_STRATEGIC_URL as string, {
-        method: "POST",
-        body: JSON.stringify(body),
-        headers: {
-          "Content-Type": "application/json",
-        }
-      }).then(response => response.json()).then(data => console.log(data));
-    }
-    catch (err) {
-      console.log(err);
-    }
-  };
+  
   function preMatch() {
     type FieldType = {
       initials?: string;
@@ -130,7 +93,6 @@ function Picklists(props: any) {
       <Form
         form={form}
         onFinish={async event => {
-          await setNewPicklists(event);
           window.location.reload();
         }}
       >

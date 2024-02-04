@@ -1,4 +1,4 @@
-import '../public/stylesheets/lookup.css';
+import '../public/stylesheets/dtf.css';
 import logo from '../public/images/logo.png';
 import back from '../public/images/back.png';
 import { useEffect } from 'react';
@@ -28,23 +28,23 @@ function DTF(props: any) {
 			<Form
 				form={form}
 				onFinish={async event => {
-          const teamNums = [event.team1Num, event.team2Num, event.team3Num].filter(num => num !== undefined);
-          window.location.href = "/scoutingapp/dtf/teamData/" + teamNums.join(",");
+          			const teamNums = [event.team1Num, event.team2Num, event.team3Num].filter(num => num !== undefined);
+          			window.location.href = "/dtf/" + teamNums.join(",");
 				}}
 			>
 				<div>
 					<h2>Team 1 Number</h2>
-					<Form.Item name="team1Num" rules={[{ required: true, message: "Please input the team number!"}]}>
-						<InputNumber min={0} className="input" />
-					</Form.Item>
-          <h2>Team 2 Number</h2>
-          <Form.Item name="team2Num">
-						<InputNumber min={0} className="input" />
-					</Form.Item>
-          <h2>Team 3 Number</h2>
-          <Form.Item name="team3Num">
-						<InputNumber min={0} className="input" />
-					</Form.Item>
+						<Form.Item name="team1Num" rules={[{ required: true, message: "Please input the team number!"}]}>
+							<InputNumber min={0} className="input" />
+						</Form.Item>
+          			<h2>Team 2 Number</h2>
+          				<Form.Item name="team2Num">
+							<InputNumber min={0} className="input" />
+						</Form.Item>
+          			<h2>Team 3 Number</h2>
+          				<Form.Item name="team3Num">
+							<InputNumber min={0} className="input" />
+						</Form.Item>
 					<Input type="submit" value="Submit" className='submit'/>
 				</div>
 			</Form>
