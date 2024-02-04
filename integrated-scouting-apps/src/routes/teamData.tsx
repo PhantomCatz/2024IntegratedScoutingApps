@@ -1,4 +1,5 @@
 import '../public/stylesheets/style.css';
+import '../public/stylesheets/teamdata.css';
 import logo from '../public/images/logo.png';
 import back from '../public/images/back.png';
 import { useEffect, useState } from 'react';
@@ -20,20 +21,19 @@ function TeamData(props: any) {
         const response = await fetch(process.env.REACT_APP_LOOKUP_URL + "?team_number=" + team_number);
         const data = await response.json();
         for (const matches in data.documents) {
+          const kv: { [key: string]: any } = {};
           for (const match in data.documents[matches]) {
             for (const matchInfo in data.documents[matches][match]) {
               if (Number.isNaN(Number(matchInfo))) {
-                console.log(matchInfo + ":" + data.documents[matches][match][matchInfo]);
-                table.push (
-                  {
-                    [matchInfo]: data.documents[matches][match][matchInfo],
-                  }
-                );
+                //console.log(matchInfo + ":" + data.documents[matches][match][matchInfo]);
+                kv[matchInfo] = data.documents[matches][match][matchInfo];
               }
             }
           }
+          table.push(kv);
         }
         setFetchedData(table);
+        console.log(table);
       }
       catch (err) {
         console.log(err);
@@ -60,7 +60,7 @@ function TeamData(props: any) {
               <h1 style={{ display: 'inline-block', textAlign: 'center' }}>Team {team_number}</h1>
           </table>
         </header>
-        <h2 style={{whiteSpace: 'pre-line'}}>{loading ? "Loading..." : 'fetchedData'}</h2>
+        <h2 style={{whiteSpace: 'pre-line'}}>{loading ? "Loading..." : 'Data for ' + team_number}</h2>
         <Table dataSource={fetchedData}>
           <ColumnGroup title="Match Identifier">
             <Column title="Match #" dataIndex="match_number" key="match_number" />
@@ -108,14 +108,14 @@ function TeamData(props: any) {
           <ColumnGroup title="Overall">
             <Column title="Hoarded" dataIndex="OA_hoarded" key="OA_hoarded" />
             <Column title="Robot Died" dataIndex="OA_robot_died" key="OA_robot_died" />
-            <Column title="Was Defended" dataIndex="OA_robot_died" key="OA_robot_died" />
-            <Column title="Defended" dataIndex="OA_robot_died" key="OA_robot_died" />
-            <Column title="Pushing" dataIndex="OA_robot_died" key="OA_robot_died" />
-            <Column title="Counterdefense" dataIndex="OA_robot_died" key="OA_robot_died" />
-            <Column title="Number of Penalties" dataIndex="OA_robot_died" key="OA_robot_died" />
-            <Column title="Penalties Incurred" dataIndex="OA_robot_died" key="OA_robot_died" />
-            <Column title="Comments" dataIndex="OA_robot_died" key="OA_robot_died" />
-            <Column title="Driver Skill" dataIndex="OA_robot_died" key="OA_robot_died" />
+            <Column title="Was Defended" dataIndex="OA_was_defend" key="OA_was_defend" />
+            <Column title="Defended" dataIndex="OA_defend" key="OA_defend" />
+            <Column title="Pushing" dataIndex="OA_pushing_rating" key="OA_pushing_rating" />
+            <Column title="Counterdefense" dataIndex="OA_counter_defense" key="OA_counter_defense" />
+            <Column title="Number of Penalties" dataIndex="OA_numbers_penalties" key="OA_numbers_penalties" />
+            <Column title="Penalties Incurred" dataIndex="OA_penalties_comments" key="OA_penalties_comments" />
+            <Column title="Comments" dataIndex="OA_comments" key="OA_comments" />
+            <Column title="Driver Skill" dataIndex="OA_driver_skill" key="OA_driver_skill" />
           </ColumnGroup>
         </Table>
       </div>
