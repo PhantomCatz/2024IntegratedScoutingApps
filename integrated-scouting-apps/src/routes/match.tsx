@@ -1,4 +1,5 @@
 import '../public/stylesheets/style.css';
+import '../public/stylesheets/match.css';
 import logo from '../public/images/logo.png';
 import back from '../public/images/back.png';
 import field_blue from '../public/images/field_blue.png';
@@ -156,7 +157,8 @@ function MatchScout(props: any) {
         headers: {
           "Content-Type": "application/json",
         }
-      }).then(response => response.json()).then(data => console.log(data));
+      })
+      .then(response => response.json()).then(data => console.log(data));
     }
     catch (err) {
       console.log(err);
@@ -273,8 +275,8 @@ function MatchScout(props: any) {
           <Checkbox className='input_checkbox'/>
         </Form.Item>
         <Flex justify='in-between' style={{paddingBottom: '10%'}}>
-          <Button onClick={() => setTabNum("1")} className='pathbutton'>Back</Button>
-          <Button onClick={() => setTabNum("2")} className='pathbutton'>Next</Button>
+          <Button onClick={() => setTabNum("1")} className='tabbutton'>Back</Button>
+          <Button onClick={() => setTabNum("2")} className='tabbutton'>Next</Button>
         </Flex>
       </div>
     );
@@ -347,6 +349,7 @@ function MatchScout(props: any) {
         <div style={{ alignContent: 'center' }}>
           <ReactSketchCanvas
             ref={autonCanvasRef}
+            id="teleop"
             width='50rem'
             height='50rem'
             strokeWidth={8}
@@ -354,16 +357,16 @@ function MatchScout(props: any) {
             backgroundImage={color ? field_red : field_blue}
             exportWithBackgroundImage={true}
             style={{paddingBottom: '5%'}}
-            onChange={(event) => {autonCanvasRef.current?.exportImage('png').then(data => autonImageURI.current = data);}}
+            onChange={async (event) => {await autonCanvasRef.current?.exportImage('png').then(data => autonImageURI.current = data);}}
           />
-          <Flex justify='in-between' style={{paddingBottom: '10%'}}>
+          <Flex justify='in-between'>
             <Button onClick={() => autonCanvasRef.current?.undo()} className='pathbutton'>Undo</Button>
             <Button onClick={() => autonCanvasRef.current?.redo()} className='pathbutton'>Redo</Button>
             <Button onClick={() => autonCanvasRef.current?.clearCanvas()} className='pathbutton'>Clear</Button>
           </Flex>
           <Flex justify='in-between' style={{paddingBottom: '10%'}}>
-            <Button onClick={() => setTabNum("1")} className='pathbutton'>Back</Button>
-            <Button onClick={() => setTabNum("3")} className='pathbutton'>Next</Button>
+            <Button onClick={() => setTabNum("1")} className='tabbutton'>Back</Button>
+            <Button onClick={() => setTabNum("3")} className='tabbutton'>Next</Button>
           </Flex>
         </div>
       </div>
@@ -450,16 +453,16 @@ function MatchScout(props: any) {
             backgroundImage={full_field}
             exportWithBackgroundImage={true}
             style={{paddingBottom: '5%'}}
-            onChange={(event) => {teleopCanvasRef.current?.exportImage('png').then(data => teleopImageURI.current = data);}}
+            onChange={async (event) => {await teleopCanvasRef.current?.exportImage('png').then(data => teleopImageURI.current = data);}}
           />
-          <Flex justify='in-between' style={{paddingBottom: '10%'}}>
+          <Flex justify='in-between'>
             <Button onClick={() => teleopCanvasRef.current?.undo()} className='pathbutton'>Undo</Button>
             <Button onClick={() => teleopCanvasRef.current?.redo()} className='pathbutton'>Redo</Button>
             <Button onClick={() => teleopCanvasRef.current?.clearCanvas()} className='pathbutton'>Clear</Button>
           </Flex>
           <Flex justify='in-between' style={{paddingBottom: '10%'}}>
-            <Button onClick={() => setTabNum("2")} className='pathbutton'>Back</Button>
-            <Button onClick={() => setTabNum("4")} className='pathbutton'>Next</Button>
+            <Button onClick={() => setTabNum("2")} className='tabbutton'>Back</Button>
+            <Button onClick={() => setTabNum("4")} className='tabbutton'>Next</Button>
           </Flex>
         </div>
       </div>
@@ -506,8 +509,8 @@ function MatchScout(props: any) {
           <Checkbox className='input_checkbox'/>
         </Form.Item>
         <Flex justify='in-between' style={{paddingBottom: '10%'}}>
-          <Button onClick={() => setTabNum("3")} className='pathbutton'>Back</Button>
-          <Button onClick={() => setTabNum("5")} className='pathbutton'>Next</Button>
+          <Button onClick={() => setTabNum("3")} className='tabbutton'>Back</Button>
+          <Button onClick={() => setTabNum("5")} className='tabbutton'>Next</Button>
         </Flex>
       </div>
     );
@@ -555,7 +558,7 @@ function MatchScout(props: any) {
         <Form.Item<FieldType> name="wasdefended" valuePropName="checked">
           <Checkbox className='input_checkbox'/>
         </Form.Item>
-        <h2>Number ofs Penalties</h2>
+        <h2>Number of Penalties</h2>
         <Form.Item<FieldType> name="numpenalties" rules={[{ required: true, message: 'Please input the number of penalties incurred!' }]}>
           <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input"/>
         </Form.Item>
@@ -567,10 +570,9 @@ function MatchScout(props: any) {
         <Form.Item<FieldType> name="comments" rules={[{ required: true, message: 'Please input the comments!' }]}>
           <TextArea style={{verticalAlign: 'center'}} className='input'/>
         </Form.Item>
-        <Input type="submit" value="Submit" className='input'/>
         <Flex justify='in-between' style={{paddingBottom: '10%'}}>
-          <Button onClick={() => setTabNum("4")} className='pathbutton'>Back</Button>
-          <Button onClick={() => setTabNum("5")} className='pathbutton'>Next</Button>
+          <Button onClick={() => setTabNum("4")} className='tabbutton'>Back</Button>
+          <Input type="submit" value="Submit" className='tabbutton'/>
         </Flex>
       </div>
     )
@@ -654,14 +656,14 @@ function MatchScout(props: any) {
             const matchnum = form.getFieldValue('matchnum');
             form.resetFields();
             form.setFieldValue('initials', initials);
-            form.setFieldValue('matchnum', matchnum);
+            form.setFieldValue('matchnum', matchnum + 1);
           }
           catch (err) {
             console.log(err);
           }
         }}
       >
-        <Tabs activeKey={tabNum} items={items} className='tabs'/>
+        <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} className='tabs' centered onChange={(key) => setTabNum(key)}/>
       </Form>
     </body>
   );

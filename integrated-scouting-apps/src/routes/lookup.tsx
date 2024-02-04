@@ -1,3 +1,4 @@
+import '../public/stylesheets/style.css';
 import '../public/stylesheets/lookup.css';
 import logo from '../public/images/logo.png';
 import back from '../public/images/back.png';

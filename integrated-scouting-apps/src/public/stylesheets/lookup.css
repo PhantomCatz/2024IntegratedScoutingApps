@@ -1,42 +1,6 @@
-@font-face {
-    font-family: Audiowide;
-    src: url('../fonts/Audiowide-Regular.woff') format('woff');
-}
-@font-face {
-    font-family: Figtree;
-    src: url('../fonts/Figtree-VariableFont_wght.ttf') format('woff');
-}
-h2 {
-    color: white;
-    font-family: Figtree;
-    font-weight: bold;
-    font-size: 64px !important;
-    margin-bottom: 0 !important;
-}
-body {
-    margin: 0;
-    font-family: Audiowide !important;
-    background-color: #32a7dc !important;
-    padding-left: 5%;
-    padding-right: 5%;
-    color: white;
-}
 .banner {
     font-size: 50px;
     vertical-align: top;
-}
-.showTeamName {
-    display: 'inline-block'!important;
-    text-align: 'center' !important;
-    padding-bottom: 15% !important;
-    padding-left: 25% !important;
-}
-.data {
-    color: white;
-    font-family: Figtree;
-    font-weight: bold;
-    font-size: 64px !important;
-    margin-bottom: 0 !important;
 }
 .submit{
     width: 100%;
