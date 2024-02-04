@@ -2,13 +2,6 @@
     font-size: 50px;
     vertical-align: top;
 }
-.data {
-    color: white;
-    font-family: Figtree;
-    font-weight: bold;
-    font-size: 64px !important;
-    margin-bottom: 0 !important;
-}
 .submit{
     width: 100%;
     max-width: 50%;
