@@ -570,10 +570,9 @@ function MatchScout(props: any) {
         <Form.Item<FieldType> name="comments" rules={[{ required: true, message: 'Please input the comments!' }]}>
           <TextArea style={{verticalAlign: 'center'}} className='input'/>
         </Form.Item>
-        <Input type="submit" value="Submit" className='input'/>
         <Flex justify='in-between' style={{paddingBottom: '10%'}}>
           <Button onClick={() => setTabNum("4")} className='tabbutton'>Back</Button>
-          <Button onClick={() => setTabNum("5")} className='tabbutton'>Next</Button>
+          <Input type="submit" value="Submit" className='tabbutton'/>
         </Flex>
       </div>
     )
