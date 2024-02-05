@@ -6,6 +6,12 @@
     font-family: Figtree;
     src: url('../fonts/Figtree-VariableFont_wght.ttf') format('woff');
 }
+h1 {
+    color: white;
+    font-family: Figtree;
+    font-weight: bold;
+    margin-bottom: 0 !important;
+}
 h2 {
     color: white;
     font-family: Figtree;
@@ -20,9 +26,10 @@ body {
     padding-left: 5%;
     padding-right: 5%;
     color: white;
+    width: 100%;
 }
 .ant-tabs-tab {
-    font-size: 48px !important;
+    font-size: 56px !important;
     font-family: Figtree !important;
     font-weight: bold !important;
     color: white !important;
