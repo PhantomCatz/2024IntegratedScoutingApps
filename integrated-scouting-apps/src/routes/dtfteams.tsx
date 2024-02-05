@@ -6,59 +6,80 @@ import { Tabs, TabsProps } from 'antd';
 import { useParams } from 'react-router-dom';
 
 function DTFTeams(props: any) {
-  const { team_number } = useParams();
-  const [fetchedData, setFetchedData] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [tabNum, setTabNum] = useState("1");
   useEffect(() => document.title = props.title, [props.title]);
+  const { team_number } = useParams();
+  const [loading, setLoading] = useState(true);
+  const [fetchedData, setFetchedData] = useState<{ [x: string]: any; }[]>([]);
 
+  let team1_number = '2637';//null protection
+  let team2_number = '2637';//null protection
+  let team3_number = '2637';//null protection
+
+  if(team_number){
+    const teams = team_number.split(',');
+    console.log(teams);
+
+    team1_number = teams[0];
+    
+    if(teams[1]) {
+      team2_number = teams[1];
+    } else {
+      team2_number = 'OwO';
+    }
+
+    if(teams[2]) {
+      team3_number = teams[2];
+    } else {
+      team3_number = 'OwO';
+    }
+  }
+  
+  console.log(team1_number, team2_number, team3_number);
+  
   function Summary() {
-    type FieldType = {
-      initials?: string;
-      teamnum?: number;
-      matchlevel?: string;
-      matchnum?: number;
-    };
-    const rounds = [
-      { label: "Qualifications", value: "qm" },
-      { label: "Elimination", value: "sf" },
-      { label: "Finals", value: "f" },
-    ];
     return (
       <div>
-        <h2>OwO</h2>
+        <h2>working</h2>
       </div>
     );
   }
+
   function Team1() {
-    type FieldType = {
-      comments?: string;
-    };
     return (
       <div>
-        <h2>tOwOt</h2>
+        <h2>working</h2>
       </div>
     );
   }
+
   function Team2() {
-    type FieldType = {
-      comments?: string;
-    };
+    if(team2_number == 'OwO') {
+      return (
+        <div>
+          <h2>working</h2>
+        </div>
+      );
+    }
     return (
       <div>
-        <h2>jOwOj</h2>
+        <h2>working</h2>
       </div>
-    );
+    )
   }
+
   function Team3() {
-    type FieldType = {
-      comments?: string;
-    };
+    if(team3_number == 'OwO') {
+      return (
+        <div>
+          <h2>tOwOt</h2>
+        </div>
+      );
+    }
     return (
       <div>
-        <h2>bOwOd</h2>
+        <h2>working</h2>
       </div>
-    );
+    )
   }
 
   const items: TabsProps['items'] = [
@@ -69,17 +90,17 @@ function DTFTeams(props: any) {
     },
     {
       key: '2',
-      label: 'Team 1',
+      label: team1_number,
       children: Team1(),
     },
     {
       key: '3',
-      label: 'Team 2',
+      label: team2_number,
       children: Team2(),
     },
     {
       key: '4',
-      label: 'Team 3',
+      label: team3_number,
       children: Team3(),
     },
   ];
