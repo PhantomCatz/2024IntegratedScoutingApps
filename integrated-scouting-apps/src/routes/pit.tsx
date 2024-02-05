@@ -31,7 +31,7 @@ function PitScout(props: any) {
     async function fetchData(team_number: number) {
       let parsedData = "";
       try {
-        const url = process.env.REACT_APP_LOOKUP_URL + "?team_number=" + team_number;
+        const url = process.env.REACT_APP_PIT_URL + "?team_number=" + team_number;
         const response = await fetch(url);
         const data = await response.json();
         for (let i = 0; i < data.documents.length; i++) {
