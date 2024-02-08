@@ -2,9 +2,8 @@ import '../public/stylesheets/style.css';
 import logo from '../public/images/logo.png';
 import back from '../public/images/back.png';
 import { useEffect } from 'react';
-import { Tabs, Input, Form, Select, InputNumber } from 'antd';
-import type { TabsProps } from 'antd';
-import TextArea from 'antd/es/input/TextArea';
+import { Form, Table } from 'antd';
+import Column from 'antd/es/table/Column';
 
 function Picklists(props: any) {
   const [form] = Form.useForm();
@@ -27,77 +26,32 @@ function Picklists(props: any) {
     ];
     return (
       <div>
-        <h2>Scouter Initials</h2>
-        <Form.Item<FieldType> name="initials" rules={[{ required: true, message: 'Please input your initials!' }]}>
-          <Input placeholder='Scouter Initials' maxLength={2} className="input"/>
-        </Form.Item>
-        <h2>Team #</h2>
-        <Form.Item<FieldType> name="teamnum" rules={[{ required: true, message: 'Please input the team number!' }]}>
-          <InputNumber controls placeholder='Team #' min={1} className="input"/>
-        </Form.Item>
-        <h2>Match Level</h2>
-        <Form.Item<FieldType> name="matchlevel" rules={[{ required: true, message: 'Please input the match level!' }]}>
-          <Select placeholder='Match Level' options={rounds} className="input"/>
-        </Form.Item>
-        <h2>Match #</h2>
-        <Form.Item<FieldType> name="matchnum" rules={[{ required: true, message: 'Please input the match number!' }]}>
-          <InputNumber controls placeholder='Match #' min={1} className="input"/>
-        </Form.Item>
-      </div>
-    );
-  }
-  function comment() {
-    type FieldType = {
-      comments?: string;
-    };
-    return (
-      <div>
-        <h2>Comments</h2>
-        <Form.Item<FieldType> name="comments" rules={[{ required: true }]}>
-          <TextArea placeholder='Comments' style={{verticalAlign: 'center'}} className='strategic-input'/>
-        </Form.Item>
-        <Input type="submit" value="Submit" className='input'/>
       </div>
     );
   }
 
-  const items: TabsProps['items'] = [
-    {
-      key: '1',
-      label: 'Pre',
-      children: preMatch(),
-    },
-    {
-      key: '2',
-      label: 'Comment',
-      children: comment(),
-    },
-  ];
   return (
     <body>
       <div className='banner'>
         <header>
-          <a href='/scoutingapp'>
-            <img src={back} style={{height: 64 + 'px', paddingTop: '5%'}} alt=''/>
+          <a href="/scoutingapp/lookup">
+            <img src={back} style={{ height: 64 + 'px', paddingTop: '5%' }} alt=''></img>
           </a>
           <table>
             <td>
-              <img src={logo} style={{ height: 256 + 'px' }} alt=''/>
+              <img src={logo} style={{ height: 256 + 'px' }} alt='' ></img>
             </td>
-            <td>
-              <h1 style={{display: 'inline-block', textAlign: 'center'}}>Strategic Scout</h1>
-            </td>
+              <h1 style={{ display: 'inline-block', textAlign: 'center' }}>Picklist</h1>
           </table>
         </header>
+        {/* <h2 style={{whiteSpace: 'pre-line'}}>{loading ? "Loading..." : 'Data for ' + team_number}</h2> */}
+        {/* <Table dataSource={fetchedData}> */}
+        <Table>
+          <Column title="Team #" dataIndex="team_number" key="team_number" />
+          <Column title="Match Level" dataIndex="match_level" key="match_level" />
+          <Column title="Score" dataIndex="score" key="score" />
+        </Table>
       </div>
-      <Form
-        form={form}
-        onFinish={async event => {
-          window.location.reload();
-        }}
-      >
-        <Tabs defaultActiveKey="1" items={items} className='tabs' />
-      </Form>
     </body>
   );
 }
