@@ -64,3 +64,19 @@ body {
     text-decoration: none;
     transition: none !important;
 }
+.submit{
+    width: 100%;
+    max-width: 50%;
+    height: 20% !important;
+    min-height: 20% !important; 
+    border: 4px solid white !important;
+    border-radius: 25px;
+    background-color: #32a7dc;
+    font-size: 300% !important;
+    font-family: Figtree !important;
+    font-weight: normal;
+    color: white !important;
+    text-align: center !important;
+    align-items: center !important;
+    margin-left: 25%;
+}

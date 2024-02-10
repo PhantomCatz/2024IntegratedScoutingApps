@@ -26,7 +26,12 @@ function TeamData(props: any) {
             for (const matchInfo in data.documents[matches][match]) {
               if (Number.isNaN(Number(matchInfo))) {
                 //console.log(matchInfo + ":" + data.documents[matches][match][matchInfo]);
-                kv[matchInfo] = data.documents[matches][match][matchInfo];
+                if (matchInfo === "auto_path") {
+                  kv[matchInfo] = <img src={data.documents[matches][match][matchInfo].toString()}></img>
+                }
+                else {
+                  kv[matchInfo] = data.documents[matches][match][matchInfo].toString();
+                }
               }
             }
           }

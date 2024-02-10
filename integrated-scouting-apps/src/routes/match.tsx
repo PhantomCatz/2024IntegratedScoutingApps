@@ -350,14 +350,14 @@ function MatchScout(props: any) {
           <ReactSketchCanvas
             ref={autonCanvasRef}
             id="teleop"
-            width='50rem'
-            height='50rem'
+            width='800px'
+            height='800px'
             strokeWidth={8}
             strokeColor='#32a7dc'
             backgroundImage={color ? field_red : field_blue}
             exportWithBackgroundImage={true}
             style={{paddingBottom: '5%'}}
-            onChange={async (event) => {await autonCanvasRef.current?.exportImage('png').then(data => autonImageURI.current = data);}}
+            onChange={async () => await autonCanvasRef.current?.exportImage('png').then(data => autonImageURI.current = data)}
           />
           <Flex justify='in-between'>
             <Button onClick={() => autonCanvasRef.current?.undo()} className='pathbutton'>Undo</Button>
@@ -446,14 +446,14 @@ function MatchScout(props: any) {
         <div style={{ alignContent: 'center' }}>
           <ReactSketchCanvas
             ref={teleopCanvasRef}
-            width='50rem'
-            height='25rem'
+            width='800px'
+            height='400px'
             strokeWidth={8}
             strokeColor='#32a7dc'
             backgroundImage={full_field}
             exportWithBackgroundImage={true}
             style={{paddingBottom: '5%'}}
-            onChange={async (event) => {await teleopCanvasRef.current?.exportImage('png').then(data => teleopImageURI.current = data);}}
+            onChange={async () => await teleopCanvasRef.current?.exportImage('png').then(data => teleopImageURI.current = data)}
           />
           <Flex justify='in-between'>
             <Button onClick={() => teleopCanvasRef.current?.undo()} className='pathbutton'>Undo</Button>
@@ -663,7 +663,10 @@ function MatchScout(props: any) {
           }
         }}
       >
-        <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} className='tabs' centered onChange={(key) => setTabNum(key)}/>
+        <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} className='tabs' centered onChange={async (key) => {
+          setTabNum(key);
+          await autonCanvasRef.current?.exportImage('png').then(data => autonImageURI.current = data);
+        }}/>
       </Form>
     </body>
   );
