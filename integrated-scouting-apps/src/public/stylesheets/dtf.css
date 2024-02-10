@@ -6,20 +6,20 @@
     font-family: Figtree;
     src: url('../fonts/Figtree-VariableFont_wght.ttf') format('woff');
 }
-h1 {
+.h1 {
     color: white;
     font-family: Figtree;
     font-weight: bold;
     margin-bottom: 0 !important;
 }
-h2 {
+.h2 {
     color: white;
     font-family: Figtree;
     font-weight: bold;
     font-size: 64px !important;
     margin-bottom: 0 !important;
 }
-body {
+.body {
     margin: 0;
     font-family: Audiowide !important;
     background-color: #32a7dc !important;
