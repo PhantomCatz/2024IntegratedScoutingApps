@@ -6,6 +6,7 @@
  */
 import '../public/stylesheets/style.css';
 import '../public/stylesheets/pit.css';
+import '../public/stylesheets/style.css';
 import field_blue from '../public/images/field_blue.png';
 import field_red from '../public/images/field_red.png';
 import logo from '../public/images/logo.png';
@@ -129,7 +130,7 @@ function PitScout(props: any) {
 
       {/* how many events */}
       <div>
-        <h1 className='pitBody'>How many events have to competed in?</h1>
+        <h1 className='pitBody'>How many events have you competed in?</h1>
         <Form.Item<FieldType> name="robot_events" rules={[{required: true, message: 'Please input the robot position!' }]}>
           <InputNumber controls min={0} className="pitinput"/>
         </Form.Item>
@@ -278,18 +279,13 @@ function PitScout(props: any) {
         </Form.Item>
       </div>
 
+      <h1 className='pitBody' style={{marginTop:"7%", fontSize:"200%"}}>Strategy asked for a way to update pit scouting without two entries (like comment box) at the top if you made a update to entry.</h1>
+
       {/* submit */}
       <div>
           <Button style={{marginLeft: '25%', marginTop: '10%'}} className='pitButton'>Submit</Button>
       </div>
-
-      
-
-      
-
-      
-
-    </body>
+   </body>
   );
 }
 export default PitScout;
