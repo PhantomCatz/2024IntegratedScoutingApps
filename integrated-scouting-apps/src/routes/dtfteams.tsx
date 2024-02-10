@@ -27,6 +27,8 @@ function DTFTeams(props: any) {
       team2_number = 'OwO';
     }
 
+    //test
+
     if(teams[2]) {
       team3_number = teams[2];
     } else {
