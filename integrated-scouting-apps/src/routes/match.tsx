@@ -665,7 +665,6 @@ function MatchScout(props: any) {
       >
         <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} className='tabs' centered onChange={async (key) => {
           setTabNum(key);
-          await autonCanvasRef.current?.exportImage('png').then(data => autonImageURI.current = data);
         }}/>
       </Form>
     </body>
