@@ -20,10 +20,16 @@ function MatchScout(props: any) {
   const teleopImageURI = useRef<string>();
   const autonCanvasRef = useRef<ReactSketchCanvasRef>(null);
   const teleopCanvasRef = useRef<ReactSketchCanvasRef>(null);
-  useEffect(() => document.title = props.title, [props.title]);
   const eventname = process.env.REACT_APP_EVENTNAME;
+  const addOnAfter = (<Button onClick={(event) => (event.currentTarget?.parentNode?.parentNode?.children[1].children[0].children[0] as HTMLInputElement).value = Number((event.currentTarget?.parentNode?.parentNode?.children[1].children[0].children[0] as HTMLInputElement).value) + 1 + ""} className='incrementbutton'>+</Button>);
+  const addOnBefore = (<Button onClick={(event) => {
+    if (Number((event.currentTarget?.parentNode?.parentNode?.children[1].children[0].children[0] as HTMLInputElement).value) > 0) {
+      (event.currentTarget?.parentNode?.parentNode?.children[1].children[0].children[0] as HTMLInputElement).value = Number((event.currentTarget?.parentNode?.parentNode?.children[1].children[0].children[0] as HTMLInputElement).value) - 1 + "";
+    }
+  }} className='decrementbutton'>-</Button>);
+  useEffect(() => {document.title = props.title; return () => {}}, [props.title]);
   let teamNum = 0;
-
+  
   async function setNewMatchScout(event: any) {
     const body = {
       "matchIdentifier": {
@@ -64,6 +70,7 @@ function MatchScout(props: any) {
         "teleop_scoring_location": event.tele_scoringloc,
         "teleop_total_points": 0,
         "teleop_path": teleopImageURI.current,
+        "teleop_shooting_location": event.shootingloc,
       },
       "engGame": {
         "EG_climbed": event.climbed,
@@ -87,69 +94,6 @@ function MatchScout(props: any) {
         "OA_driver_skill": event.driverskill,
       }
     };
-    const WORKING_TEST_DO_NOT_REMOVE_OR_YOU_WILL_BE_FIRED = {
-      "matchIdentifier": {
-        "Initials": "nk",
-        "robot_position": "red_3",
-        "match_event": "2024test",
-        "match_level": "qm",
-        "match_number": 1,
-        "team_number": 0,
-        "starting_position": "middle"
-      },
-      "auto": {
-        "auto_preLoad": true,
-        "auto_preload_scored": true,
-        "auto_leave": true,
-        "auto_amps_scored": 2,
-        "auto_speaker_scored": 1,
-        "auto_scoring_location": "both",
-        "auto_pieces_picked": [
-          0,0
-        ],
-        "auto_missed_pieces_amp": 3,
-        "auto_missed_pieces_speaker": 4,
-        "auto_path": "test",
-        "auto_total_points": 0,
-        "auto_comments": "test"
-      },
-      "teleop": {
-        "teleop_coop_pressed": true,
-        "teleop_coop_first": true,
-        "teleop_amps_scored": 1,
-        "teleop_speaker_scored": 1,
-        "teleop_times_amplify": 1,
-        "teleop_pieces_note_amplifying_scored": 12,
-        "teleop_ground": true,
-        "teleop_source": true,
-        "teleop_traverse_stage": true,
-        "teleop_missed_pieces_amp": 1,
-        "teleop_missed_pieces_speaker": 2,
-        "teleop_scoring_location": "both",
-        "teleop_total_points": 0
-      },
-      "engGame": {
-        "EG_climbed": true,
-        "EG_timeLeft_when_climb": 1,
-        "EG_parked": true,
-        "EG_trapScored": true,
-        "EG_harmony": false,
-        "EG_mic_score": true,
-        "EG_climbing_affect": true
-      },
-      "overAll": {
-        "OA_hoarded": true,
-        "OA_robot_died": false,
-        "OA_was_defend": true,
-        "OA_defend": true,
-        "OA_pushing_rating": 1,
-        "OA_counter_defense": 1,
-        "OA_numbers_penalties": 1,
-        "OA_penalties_comments": "test",
-        "OA_comments": "test",
-        "OA_driver_skill": 1
-      }
-    }
     try {
       await fetch(process.env.REACT_APP_MATCH_URL as string, {
         method: "POST",
@@ -252,7 +196,7 @@ function MatchScout(props: any) {
         </Form.Item>
         <h2>Match #</h2>
         <Form.Item<FieldType> name="matchnum" rules={[{ required: true, message: 'Please input the match number!' }]}>
-          <InputNumber min={1} onChange={updateTeamNumber} className="input" type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} />
+          <InputNumber min={1} onChange={updateTeamNumber} className="input" type='number' pattern="\d*" disabled addonBefore={addOnBefore} addonAfter={addOnAfter} onWheel={(event) => (event.target as HTMLElement).blur()} />
         </Form.Item>
         <h2>Match Level</h2>
         <Form.Item<FieldType> name="matchlevel" rules={[{ required: true, message: 'Please input the match level!' }]}>
@@ -260,7 +204,7 @@ function MatchScout(props: any) {
         </Form.Item>
         <h2 style={{ display: isVisible ? 'inherit' : 'none' }}>Round #</h2>
         <Form.Item<FieldType> name="roundnum" rules={[{ required: isVisible ? true : false, message: 'Please input the round number!' }]}>
-            <InputNumber min={1} onChange={updateTeamNumber} style={{ display: isVisible ? 'inherit' : 'none' }} className="input" type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()}/>
+            <InputNumber min={1} onChange={updateTeamNumber} style={{ display: isVisible ? 'inherit' : 'none' }} className="input" type='number' pattern="\d*" disabled addonBefore={addOnBefore} addonAfter={addOnAfter} onWheel={(event) => (event.target as HTMLElement).blur()}/>
         </Form.Item>
         <h2>Robot Position</h2>
         <Form.Item<FieldType> name="robotpos" rules={[{ required: true, message: 'Please input the robot position!' }]}>
@@ -301,12 +245,14 @@ function MatchScout(props: any) {
       { label: "None", value: 'none' },
     ];
     const piecespicked = [
-      { label: "W1", value: "wing1" },
-      { label: "W2", value: "wing2" },
-      { label: "W3", value: 'wing3' },
-      { label: "C1", value: "center1" },
-      { label: "C2", value: "center2" },
-      { label: "C3", value: 'center3' },
+      { label: "W1", value: "w1" },
+      { label: "W2", value: "w2" },
+      { label: "W3", value: 'w3' },
+      { label: "C1", value: "c1" },
+      { label: "C2", value: "c2" },
+      { label: "C3", value: 'c3' },
+      { label: "C4", value: 'c4' },
+      { label: "C5", value: 'c5' },
     ];
     return (
       <div>
@@ -316,19 +262,19 @@ function MatchScout(props: any) {
         </Form.Item>
         <h2>Speaker Scored</h2>
         <Form.Item<FieldType> name="auton_speakerscored" rules={[{ required: true, message: 'Please input the number of speaker notes scored!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} className="input"/>
+          <InputNumber type='number' pattern="\d*" disabled addonBefore={addOnBefore} addonAfter={addOnAfter} onWheel={(event) => (event.target as HTMLElement).blur()} min={0} className="input"/>
         </Form.Item>
         <h2>Amp Scored</h2>
         <Form.Item<FieldType> name="auton_ampscored" rules={[{ required: true, message: 'Please input the number of amp notes scored!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} className="input"/>
+          <InputNumber type='number' pattern="\d*" disabled addonBefore={addOnBefore} addonAfter={addOnAfter} onWheel={(event) => (event.target as HTMLElement).blur()} min={0} className="input"/>
         </Form.Item>
         <h2>Missed Amp Pieces</h2>
         <Form.Item<FieldType> name="auton_missedpiecesamp" rules={[{ required: true, message: 'Please input the number of missed amp pieces!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} className="input"/>
+          <InputNumber type='number' pattern="\d*" disabled addonBefore={addOnBefore} addonAfter={addOnAfter} onWheel={(event) => (event.target as HTMLElement).blur()} min={0} className="input"/>
         </Form.Item>
         <h2>Missed Speaker Pieces</h2>
         <Form.Item<FieldType> name="auton_missedpiecesspeaker" rules={[{ required: true, message: 'Please input the number of misssed speaker pieces!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} className="input"/>
+          <InputNumber type='number' pattern="\d*" disabled addonBefore={addOnBefore} addonAfter={addOnAfter} onWheel={(event) => (event.target as HTMLElement).blur()} min={0} className="input"/>
         </Form.Item>
         <h2>Scoring Location</h2>
         <Form.Item<FieldType> name="auton_scoringloc" rules={[{ required: true, message: 'Please input the scoring location!' }]}>
@@ -380,6 +326,7 @@ function MatchScout(props: any) {
       groundintake: boolean,
       sourceintake: boolean,
       tele_scoringloc: string,
+      shootingloc: string,
       amplifyscored: boolean,
       cooppressed: boolean,
       cooppressed1st: boolean,
@@ -393,31 +340,42 @@ function MatchScout(props: any) {
       { label: "Both", value: 'both' },
       { label: "None", value: 'none' },
     ];
+    const shootingloc = [
+      { label: "US", value: "us" },
+      { label: "CS", value: "cs" },
+      { label: "LS", value: 'ls' },
+      { label: "A", value: 'amp' },
+      { label: "AW", value: 'aw' },
+      { label: "UT", value: 'ut' },
+      { label: "LT", value: 'lt' },
+      { label: "LOT", value: 'lot' },
+
+    ];
     return (
       <div>
         <h2>Speaker Scored</h2>
         <Form.Item<FieldType> name="tele_speakerscored" rules={[{ required: true, message: 'Please input the number of speaker notes scored!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input"/>
+          <InputNumber type='number' pattern="\d*" disabled addonBefore={addOnBefore} addonAfter={addOnAfter} onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input"/>
         </Form.Item>
         <h2>Amp Scored</h2>
         <Form.Item<FieldType> name="tele_ampscored" rules={[{ required: true, message: 'Please input the number of amp notes scored!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input"/>
+          <InputNumber type='number' pattern="\d*" disabled addonBefore={addOnBefore} addonAfter={addOnAfter} onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input"/>
         </Form.Item>
         <h2>Missed Amp Pieces</h2>
         <Form.Item<FieldType> name="tele_missedpiecesamp" rules={[{ required: true, message: 'Please input the number of missed amp pieces!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} className="input"/>
+          <InputNumber type='number' pattern="\d*" disabled addonBefore={addOnBefore} addonAfter={addOnAfter} onWheel={(event) => (event.target as HTMLElement).blur()} min={0} className="input"/>
         </Form.Item>
         <h2>Missed Speaker Pieces</h2>
         <Form.Item<FieldType> name="tele_missedpiecesspeaker" rules={[{ required: true, message: 'Please input the number of missed speaker pieces!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} className="input"/>
+          <InputNumber type='number' pattern="\d*" disabled addonBefore={addOnBefore} addonAfter={addOnAfter} onWheel={(event) => (event.target as HTMLElement).blur()} min={0} className="input"/>
         </Form.Item>
         <h2>Times Amplified</h2>
         <Form.Item<FieldType> name="timesamplified" rules={[{ required: true, message: 'Please input the number of times the speaker was amplified!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input"/>
+          <InputNumber type='number' pattern="\d*" disabled addonBefore={addOnBefore} addonAfter={addOnAfter} onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input"/>
         </Form.Item>
         <h2>Amplified Score</h2>
         <Form.Item<FieldType> name="amplifyscored" rules={[{ required: true, message: 'Please input the number of notes scored during the amplifier period!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input"/>
+          <InputNumber type='number' pattern="\d*" disabled addonBefore={addOnBefore} addonAfter={addOnAfter} onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input"/>
         </Form.Item>
         <h2>Ground Intake</h2>
         <Form.Item<FieldType> name="groundintake" valuePropName="checked">
@@ -430,6 +388,10 @@ function MatchScout(props: any) {
         <h2>Scoring Location</h2>
         <Form.Item<FieldType> name="tele_scoringloc" rules={[{ required: true, message: 'Please input the scoring location!' }]}>
           <Select options={scoringloc} className="input"/>
+        </Form.Item>
+        <h2>Shooting Location</h2>
+        <Form.Item<FieldType> name="shootingloc" rules={[{ required: true, message: 'Please input the shooting location!' }]}>
+          <Select mode='multiple' options={shootingloc} className='input' showSearch={false}/>
         </Form.Item>
         <h2>Coopertition Pressed</h2>
         <Form.Item<FieldType> name="cooppressed" valuePropName="checked">
@@ -486,7 +448,7 @@ function MatchScout(props: any) {
         </Form.Item>
         <h2>Time Left</h2>
         <Form.Item<FieldType> name="timeleft" rules={[{ required: true, message: 'Please input the time left!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input"/>
+          <InputNumber type='number' pattern="\d*" disabled addonBefore={addOnBefore} addonAfter={addOnAfter} onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input"/>
         </Form.Item>
         <h2>Harmony</h2>
         <Form.Item<FieldType> name="harmony" valuePropName="checked">
@@ -536,15 +498,15 @@ function MatchScout(props: any) {
         </Form.Item>
         <h2>Pushing (0-4)</h2>
         <Form.Item<FieldType> name="pushing" rules={[{ required: true, message: 'Please input the pushing rating!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} max={4} value={0} className="input"/>
+          <InputNumber type='number' pattern="\d*" disabled addonBefore={addOnBefore} addonAfter={addOnAfter} onWheel={(event) => (event.target as HTMLElement).blur()} min={0} max={4} value={0} className="input"/>
         </Form.Item>
         <h2>Counterdefense (0-4)</h2>
         <Form.Item<FieldType> name="counterdefense" rules={[{ required: true, message: 'Please input the counterdefense rating!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} max={4} value={0} className="input"/>
+          <InputNumber type='number' pattern="\d*" disabled addonBefore={addOnBefore} addonAfter={addOnAfter} onWheel={(event) => (event.target as HTMLElement).blur()} min={0} max={4} value={0} className="input"/>
         </Form.Item>
         <h2>Driver Skill (0-4)</h2>
         <Form.Item<FieldType> name="driverskill" rules={[{ required: true, message: 'Please input the driver skill rating!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} max={4} value={0} className="input"/>
+          <InputNumber type='number' pattern="\d*" disabled addonBefore={addOnBefore} addonAfter={addOnAfter} onWheel={(event) => (event.target as HTMLElement).blur()} min={0} max={4} value={0} className="input"/>
         </Form.Item>
         <h2>Defended</h2>
         <Form.Item<FieldType> name="defended" valuePropName="checked">
@@ -560,7 +522,7 @@ function MatchScout(props: any) {
         </Form.Item>
         <h2>Number of Penalties</h2>
         <Form.Item<FieldType> name="numpenalties" rules={[{ required: true, message: 'Please input the number of penalties incurred!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input"/>
+          <InputNumber type='number' pattern="\d*" disabled addonBefore={addOnBefore} addonAfter={addOnAfter} onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input"/>
         </Form.Item>
         <h2>Penalties Incurred</h2>
         <Form.Item<FieldType> name="penaltiesincurred" rules={[{ required: true, message: 'Please describe the penalties incurred!' }]}>
