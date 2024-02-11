@@ -21,7 +21,7 @@ function ScoutingPage(props: any) {
           </table>
         </header>
       </div>
-      <div className='body'>
+      <div>
         <Button className='mainbutton' href='/scoutingapp/match'>Match</Button>
         <Button className='mainbutton' href='/scoutingapp/strategic'>Strategic</Button>
         <Button className='mainbutton' href='/scoutingapp/pit'>Pit</Button>
