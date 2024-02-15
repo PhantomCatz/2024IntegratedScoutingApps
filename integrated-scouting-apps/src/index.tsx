@@ -6,6 +6,7 @@
  */
 import ReactDOM from 'react-dom/client';
 import HomePage from './routes/home';
+import LoginPage from './routes/login';
 import ScoutingApp from './routes/scoutingapp';
 import MatchScout from './routes/match';
 import DTF from './routes/dtf';
@@ -23,7 +24,8 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<HomePage title="2637 Strategy App" />} />
+        <Route path="/" element={<LoginPage title="2637 Strategy App" />} />
+        <Route path="/:msg" element={<LoginPage title="2637 Strategy App" />} />
         <Route path="/scoutingapp" element={<ScoutingApp title="2637 Scouting App" />} />
         <Route path="/dtf" element={<DTF title="2637 Drive Team Feeder" />} />
         <Route path="/dtf/:team_number" element={<DTFTeams title="2637 Drive Team Feeder Data" />} />
