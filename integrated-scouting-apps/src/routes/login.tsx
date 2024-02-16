@@ -41,7 +41,7 @@ function LoginPage(props: any) {
 					let response = data;
 					console.log(response);
 					if (response.toString() === "true") {
-						window.location.href = "/scoutingapp";
+						window.location.href = "/home";
 					}
 					else if (response.gay === "lisaGay") {
 						window.location.href = "/Incorrect%20Login";
@@ -55,7 +55,7 @@ function LoginPage(props: any) {
 				console.log(err);
 			}
 		}}>
-			<h2>{msg}</h2>
+			<h2 style={{color: "red"}}>{msg}</h2>
 			<h2>Username</h2>
 			<Form.Item<FieldType> name="username" rules={[{ required: true, message: 'Please input your username!' }]}>
 				<Input minLength={5} className='input' />

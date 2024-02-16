@@ -26,6 +26,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<LoginPage title="2637 Strategy App" />} />
         <Route path="/:msg" element={<LoginPage title="2637 Strategy App" />} />
+        <Route path="/home" element={<HomePage title="2637 Strategy App" />} />
         <Route path="/scoutingapp" element={<ScoutingApp title="2637 Scouting App" />} />
         <Route path="/dtf" element={<DTF title="2637 Drive Team Feeder" />} />
         <Route path="/dtf/:team_number" element={<DTFTeams title="2637 Drive Team Feeder Data" />} />
