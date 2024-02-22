@@ -95,7 +95,7 @@ function Picklists(props: any) {
         const response = await fetch('https://www.thebluealliance.com/api/v3/event/'+ eventname + '/rankings', {
         method: "GET",
         headers: {
-          'X-TBA-Auth-Key': '0iSKwn3ykkgDT9ToHqwBizSiiaa44pyLIK85oEdgOkzxNJS1X0vBtDFrJ24PiAWW'
+          'X-TBA-Auth-Key': process.env.REACT_APP_TBA_AUTH_KEY as string,
         }
       });
       const data = await response.json();
@@ -105,15 +105,14 @@ function Picklists(props: any) {
       for(var i = 0; i < ls.length; i++)
       {
         await fetchData(parseInt(ls[i]['team_key'].substring(3)));
-        //await fetchData(2637);
-        console.log(parseInt(ls[i]['team_key'].substring(3)))
-        // console.log(avg_score, "999")
-        // console.log(match, "000")
+        //await fetchData(254);
+        //console.log(parseInt(ls[i]['team_key'].substring(3)))
+
         let newData = {
           key: ls[i]['rank'],
           rank: ls[i]['rank'],
           team_number: ls[i]['team_key'].substring(3),
-          average_score: avg_score,
+          average_score: avg_score.toFixed(2),
         }
         console.log(expandData);
         console.log(newData);
