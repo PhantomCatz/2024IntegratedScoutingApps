@@ -4,15 +4,13 @@ import back from '../public/images/back.png';
 import { useEffect, useState } from 'react';
 import { Tabs, TabsProps, Checkbox, InputNumber, Input } from 'antd';
 import { useParams } from 'react-router-dom';
-import TextArea from 'antd/es/input/TextArea';
-
-let teamsArr = new Array();
 
 function DTFTeams(props: any) {
   useEffect(() => document.title = props.title, [props.title]);
   const { team_number } = useParams();
   const [loading, setLoading] = useState(true);
   const [fetchedData, setFetchedData] = useState<{ [x: string]: any; }[]>([]);
+
 
   async function fetchData(team_number: number) {
     try {
@@ -28,9 +26,11 @@ function DTFTeams(props: any) {
     }
   };
 
+
   let team1_number = '2637';//null protection
   let team2_number = '2637';//null protection
   let team3_number = '2637';//null protection
+
 
   if(team_number){
     const teams = team_number.split(',');
@@ -49,6 +49,7 @@ function DTFTeams(props: any) {
       team3_number = ' ';
     }
 
+
     console.log(teams);
 
     teams.forEach(async (element) =>  {
@@ -64,6 +65,7 @@ function DTFTeams(props: any) {
 
 
   }
+
 
   function Summary() {
     return (
@@ -139,8 +141,7 @@ function DTFTeams(props: any) {
         
 
         <h2 className='h2' style={{textAlign: 'center'}}>Graph</h2> 
-        <img src={logo} style={{ height: 100 + '%', marginLeft: 'auto', marginRight: 'auto', width: 100 + '%'}} alt=''/>
-        
+
       </div>
     );
   }

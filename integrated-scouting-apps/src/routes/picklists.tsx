@@ -1,35 +1,175 @@
 import '../public/stylesheets/style.css';
 import logo from '../public/images/logo.png';
 import back from '../public/images/back.png';
-import { useEffect } from 'react';
-import { Form, Table } from 'antd';
-import Column from 'antd/es/table/Column';
+import { useEffect, useState } from 'react';
+import { GetProp, Table, TableColumnsType, TableProps } from 'antd';
+
+type TablePaginationConfig = Exclude<GetProp<TableProps, 'pagination'>, boolean>;
+
+interface TableParams {
+  pagination?: TablePaginationConfig;
+  sortField?: string;
+  sortOrder?: string;
+  filters?: Parameters<GetProp<TableProps, 'onChange'>>[1];
+}
+
+// interface DataType {
+//   key: React.Key;
+//   rank: number;
+//   team_number: number;
+//   average_score: number;
+// }
+
+// interface DataExpand {
+//   key: React.Key;
+//   match_number: number;
+//   score: number;
+// }
 
 function Picklists(props: any) {
-  const [form] = Form.useForm();
-  useEffect(() => document.title = props.title, [props.title]);
   const eventname = process.env.REACT_APP_EVENTNAME;
+  const team_number/*{ team_number }*/ = 2637;//useParams();
+  const [loading, setLoading] = useState(true);
+  const [fetchedData, setFetchedData] = useState<{ [x: string]: any; }[]>([]);
+  const [dataDetail, setDataDetail] = useState<{ [x: string]: any; }[]>([]);
+  const [tableParams, setTableParams] = useState<TableParams>({
+    pagination: {
+      current: 1,
+      pageSize: 100,
+    },
+  });
 
+  let match = [0];
+  let score = [0];
+  let avg_score = 0;
 
+  let displayData = [
+    {
+      
+    }
+  ];
+  let expandData = [
+    {
+
+    }
+  ]
+
+  const columns = [
+    {
+      title: 'Ranking',
+      dataIndex: 'rank',
+      key: 'rank',
+      width: '15%',
+    },
+    {
+      title: 'Team #',
+      dataIndex: 'team_number',
+      key: 'team_number',
+    },
+    {
+      title: 'Average Score',
+      dataIndex: 'average_score',
+      key: 'average_score',
+    },
+  ];
   
-  function preMatch() {
-    type FieldType = {
-      initials?: string;
-      teamnum?: number;
-      matchlevel?: string;
-      matchnum?: number;
-    };
-    const rounds = [
-      { label: "Qualifications", value: "qual" },
-      { label: "Elimination", value: "elim" },
-      { label: "Finals", value: "final" },
-    ];
-    return (
-      <div>
-      </div>
-    );
-  }
 
+  const expandColumns = [
+    {
+      title:'Match #',
+      dataIndex: 'match_number',
+      key: 'match_number',
+    },
+    {
+      title: 'Score',
+      dataIndex: 'score',
+      key: 'score' 
+    }
+  ];
+
+
+  useEffect(() => {document.title = props.title}, [props.title]);
+  useEffect(() => {
+    async function fetchTeams() {
+      try {
+        const response = await fetch('https://www.thebluealliance.com/api/v3/event/'+ eventname + '/rankings', {
+        method: "GET",
+        headers: {
+          'X-TBA-Auth-Key': process.env.REACT_APP_TBA_AUTH_KEY as string,
+        }
+      });
+      const data = await response.json();
+      const ls = data['rankings'];
+      console.log(ls);
+      displayData = [];
+      for(var i = 0; i < ls.length; i++)
+      {
+        await fetchData(parseInt(ls[i]['team_key'].substring(3)));
+        //await fetchData(254);
+        //console.log(parseInt(ls[i]['team_key'].substring(3)))
+
+        let newData = {
+          key: ls[i]['rank'],
+          rank: ls[i]['rank'],
+          team_number: ls[i]['team_key'].substring(3),
+          average_score: avg_score.toFixed(2),
+        }
+        console.log(expandData);
+        console.log(newData);
+        displayData.push(newData);
+      }
+      console.log(displayData);
+      setFetchedData(displayData);
+      }
+      catch(err) {
+        console.log(err);
+      }
+      finally {
+        setLoading(false);
+      }
+    };
+      
+    fetchTeams();
+
+    async function fetchData(team_number: number) {
+      try {
+        const match_num = [];
+        const match_score = [];
+
+        const response = await fetch(process.env.REACT_APP_PICKLIST_URL + "?team_number=" + team_number);
+        const data = await response.json();
+
+        for(var i = 0; i < data.length; i++)
+        {
+          match_num.push(parseInt(data[i]['match_number']));
+          match_score.push(parseInt(data[i]['score']))
+        }
+        match = match_num;
+        score = match_score;
+
+        avg_score = 0;
+        match_score.forEach(score => {
+          avg_score += score;
+        });
+        avg_score /= match_score.length;
+
+        expandData = [];
+        for(var i = 0; i < match_num.length; i++) {
+          let newChildren = {
+            key: team_number * 1000 + match_num[i],
+            match_number: match_num[i],
+            score: match_score[i],
+          }
+          expandData.push(newChildren);
+        }
+        setDataDetail(expandData);
+      }
+      catch (err) {
+        console.log(err);
+      }
+    };
+  }, [team_number]);
+  
   return (
     <body>
       <div className='banner'>
@@ -44,16 +184,36 @@ function Picklists(props: any) {
               <h1 style={{ display: 'inline-block', textAlign: 'center' }}>Picklist</h1>
           </table>
         </header>
-        {/* <h2 style={{whiteSpace: 'pre-line'}}>{loading ? "Loading..." : 'Data for ' + team_number}</h2> */}
-        {/* <Table dataSource={fetchedData}> */}
-        <Table>
-          <Column title="Team #" dataIndex="team_number" key="team_number" />
-          <Column title="Match Level" dataIndex="match_level" key="match_level" />
-          <Column title="Score" dataIndex="score" key="score" />
-        </Table>
+        <h2 style={{whiteSpace: 'pre-line'}}>{loading ? 'Loading...' : ''}</h2>
+        <Table 
+          columns={columns} 
+          dataSource={fetchedData} 
+          pagination={tableParams.pagination}
+          expandable={{
+            expandedRowRender: OwO => (
+              <Table
+                columns={expandColumns}
+                dataSource={dataDetail}
+              />
+            ),
+          }}
+          ></Table>
       </div>
     </body>
   );
 }
 
 export default Picklists;
+
+// fetch('https://www.thebluealliance.com/api/v3/event/2023cass/rankings', {
+// 			method: "GET",
+// 			headers: {
+// 				'X-TBA-Auth-Key': '0iSKwn3ykkgDT9ToHqwBizSiiaa44pyLIK85oEdgOkzxNJS1X0vBtDFrJ24PiAWW'
+// 			}
+// 		})
+// 		.then(response => response.json())
+// 		.then(data => {console.log(data)
+// 		})
+// 		.catch(error => {
+// 			console.error(error);
+// 		});

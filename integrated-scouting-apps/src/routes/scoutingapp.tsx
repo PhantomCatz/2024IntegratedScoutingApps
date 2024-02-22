@@ -10,7 +10,7 @@ function ScoutingPage(props: any) {
     <body>
       <div className='banner'>
         <header>
-          <a href='/'><img src={back} style={{ height: 64 + 'px', paddingTop: '5%' }} alt=''></img></a>
+          <a href='/home'><img src={back} style={{ height: 64 + 'px', paddingTop: '5%' }} alt=''></img></a>
           <table>
             <td>
               <img src={logo} style={{ height: 256 + 'px' }} alt=''></img>
@@ -21,7 +21,7 @@ function ScoutingPage(props: any) {
           </table>
         </header>
       </div>
-      <div className='body'>
+      <div>
         <Button className='mainbutton' href='/scoutingapp/match'>Match</Button>
         <Button className='mainbutton' href='/scoutingapp/strategic'>Strategic</Button>
         <Button className='mainbutton' href='/scoutingapp/pit'>Pit</Button>

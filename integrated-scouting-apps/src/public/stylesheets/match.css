@@ -3,12 +3,7 @@ input[type="checkbox"], .ant-checkbox-inner {
     width: 0px !important;
 }
 input[type="number"]::-webkit-inner-spin-button, .ant-input-number-handler-wrap {
-    opacity: 1.0 !important;
-    background-color: transparent;
-    width: 10%;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    border-left: 4px solid white;
+    opacity: 0.0 !important;
 }
 .ant-input {
     height: 20%;
@@ -17,8 +12,18 @@ input[type="number"]::-webkit-inner-spin-button, .ant-input-number-handler-wrap 
     padding-bottom: 13px;
     background-color: transparent;
 }
+.ant-input-number {
+    height: 20% !important;
+    min-height: 20% !important;
+    background-color: transparent !important;
+    font-size: 500% !important;
+    font-family: Figtree !important;
+    font-weight: bold;
+    color: white !important;
+    text-align: center !important;
+}
 .ant-tabs-tab {
-    font-size: 64px !important;
+    font-size: 48px !important;
     font-family: Figtree !important;
     font-weight: bold !important;
     color: white !important;
@@ -29,11 +34,12 @@ input[type="number"]::-webkit-inner-spin-button, .ant-input-number-handler-wrap 
     background-color: #61f761;
     border-color: #000000;
     width: 100%;
-    border-radius: 20px;
-    height: 118px;
+    border-radius: 20px !important;
+    height: 118px !important;
+    min-height: 118px !important;
 }
 .ant-select-selection-item {
-    font-size: 64px !important;
+    font-size: 48px !important;
     font-family: Figtree !important;
     font-weight: bold !important;
     color: white !important;
@@ -48,14 +54,14 @@ input[type="number"]::-webkit-inner-spin-button, .ant-input-number-handler-wrap 
     padding: 0px !important;
 }
 .ant-form-item-explain-error {
-    font-size: 64px !important;
+    font-size: 48px !important;
     font-family: Figtree !important;
     font-weight: bold !important;
     color: red !important;
     text-align: center !important;
 }
 .ant-select-item-option-content {
-    font-size: 64px !important;
+    font-size: 48px !important;
     font-family: Figtree !important;
     font-weight: bold !important;
     text-align: center !important;
@@ -93,7 +99,9 @@ input[type="number"]::-webkit-inner-spin-button, .ant-input-number-handler-wrap 
 }
 .ant-tabs-tab,.ant-tabs-tab-active {
     margin-top: 50px !important;
-    
+}
+.ant-input-number-group-addon {
+    padding: 0px !important;
 }
 .input {
     width: 100%;
@@ -102,13 +110,12 @@ input[type="number"]::-webkit-inner-spin-button, .ant-input-number-handler-wrap 
     min-height: 20% !important;
     border: 4px solid white !important;
     border-radius: 25px;
-    background-color: transparent;
+    background-color: transparent !important;
     font-size: 500% !important;
     font-family: Figtree !important;
     font-weight: bold;
     color: white !important;
     text-align: center !important;
-    background: transparent !important;
 }
 .input_checkbox {
     width: 100%;
@@ -152,4 +159,24 @@ input[type="number"]::-webkit-inner-spin-button, .ant-input-number-handler-wrap 
     color: white !important;
     text-align: center !important;
     margin-top: 5%;
+}
+.incrementbutton {
+    height: 118px !important;
+    border-top-right-radius: 20px !important;
+    border-bottom-right-radius: 20px !important;
+    background-color: transparent !important;
+    color: white !important;
+    font-size: 48px !important;
+    border-left: 4px solid white !important;
+    width: 250px !important;
+}
+.decrementbutton {
+    height: 118px !important;
+    border-top-left-radius: 20px !important;
+    border-bottom-left-radius: 20px !important;
+    background-color: transparent !important;
+    color: white !important;
+    font-size: 48px !important;
+    border-right: 4px solid white !important;
+    width: 250px !important;
 }
