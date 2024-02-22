@@ -6,7 +6,7 @@
  */
 import '../public/stylesheets/style.css';
 import '../public/stylesheets/pit.css';
-import '../public/stylesheets/style.css';
+import '../public/stylesheets/match.css';
 import field_blue from '../public/images/field_blue.png';
 import field_red from '../public/images/field_red.png';
 import logo from '../public/images/logo.png';
@@ -123,7 +123,7 @@ function PitScout(props: any) {
       {/* robot pictures */}
       <div style={{marginBottom:"5%"}}>
         <h1 className='pitBody' style={{fontSize:'260%', marginTop: '10%'}}>Robot Pictures</h1>
-        <input style={{background:"transparent", border:"none", fontSize:"0"}} className="uploadButton" type="file" accept="image/*" onChange={handleImageUpload} />
+        <input className='uploadButton' style={{opacity:"1"}} type="file" accept="image/*" onChange={handleImageUpload} />
         {image ? <img src={image} className="image" alt="preview" width={"100%"} height={"100%"}/> : null}
         
       </div>
@@ -278,8 +278,6 @@ function PitScout(props: any) {
           </label>
         </Form.Item>
       </div>
-
-      <h1 className='pitBody' style={{marginTop:"7%", fontSize:"200%"}}>Strategy asked for a way to update pit scouting without two entries (like comment box) at the top if you made a update to entry.</h1>
 
       {/* submit */}
       <div>

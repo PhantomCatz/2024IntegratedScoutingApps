@@ -128,8 +128,8 @@ body {
 
 .ant-checkbox-checked {
     background-color: #61f761;
-    border-color: #ffffff;
-    width: 105%;
-    border-radius: 40px;
-    height: 65px;
+    border-color: #000000;
+    width: 100%;
+    border-radius: 20px;
+    height: 110px;
 }
