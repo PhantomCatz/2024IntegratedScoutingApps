@@ -2,7 +2,7 @@ import '../public/stylesheets/dtf.css';
 import logo from '../public/images/logo.png';
 import back from '../public/images/back.png';
 import { useEffect, useState } from 'react';
-import { Tabs, TabsProps, Checkbox, InputNumber } from 'antd';
+import { Tabs, TabsProps, Checkbox, InputNumber, Input } from 'antd';
 import { useParams } from 'react-router-dom';
 import TextArea from 'antd/es/input/TextArea';
 
@@ -14,18 +14,10 @@ function DTFTeams(props: any) {
   const [loading, setLoading] = useState(true);
   const [fetchedData, setFetchedData] = useState<{ [x: string]: any; }[]>([]);
 
-  //let teamsArr = new Array();
-
   async function fetchData(team_number: number) {
-    //const table = [];
-    //let table = [];
-    //const qt = [];
     try {
-      const response = await fetch('https://us-central1-team2637fixed.cloudfunctions.net/testingDTF' + '?team_number=' + team_number); //process.env.REACT_APP_DTF_URL
+      const response = await fetch(process.env.REACT_APP_DTF_URL + '?team_number=' + team_number); //process.env.REACT_APP_DTF_URL
       const data = await response.json();
-      //teamsArr.push(data);
-      //table.push(data);
-      //console.log(table);
       return data;
     }
     catch (err) {
@@ -34,16 +26,6 @@ function DTFTeams(props: any) {
     finally {
       setLoading(false);
     }
-  
-    // console.log(table[0]);
-    //qt.push(table[0]);
-    // console.log(qt[0]['auto'])
-    // console.log(qt[0]['auto']['auto_speaker_avg'])
-    // console.log(qt[0].auto.auto_speaker_avg)
-    //teamsArr.push(qt[0]);
-    //console.log(teamsArr[0].auto);
-  
-    //return teamsArr;
   };
 
   let team1_number = '2637';//null protection
@@ -70,33 +52,18 @@ function DTFTeams(props: any) {
     console.log(teams);
 
     teams.forEach(async (element) =>  {
-      //await fetchData(parseInt(teams));
       teamsArr.push(await fetchData(parseInt(element)));
-      console.log(element);
-      console.log(teamsArr.length);
     });
 
-    console.log(teamsArr);
-    console.log(teamsArr.length);
-
     if (typeof teamsArr[0] != "undefined") {
-      console.log(teamsArr[0].auto);
-      console.log(teamsArr[0].auto.auto_amps_avg);
-    }
-    
-
-    if (typeof teamsArr[1] != "undefined") {
-      console.log(teamsArr[1].auto);
-      console.log(teamsArr[1].auto.auto_amps_avg);
+      console.log(teamsArr)
+      console.log(teamsArr[0])
+      console.log(teamsArr[1])
+      console.log(teamsArr[2])
     }
 
-    if (typeof teamsArr[2] != "undefined") {
-      console.log(teamsArr[2].auto);
-      console.log(teamsArr[2].auto.auto_amps_avg);
-    }
+
   }
-
-  console.log(teamsArr[0].auto.auto_amps_avg);
 
   function Summary() {
     return (
@@ -179,186 +146,198 @@ function DTFTeams(props: any) {
   }
 
   function Team1() {
-    return (
-      <div>
-        
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> {/* don't touch width value...it's calculated */}
-          <h2 className='h2' style={{textAlign: 'center'}}>Autonomous</h2>
-        </div>
 
-        <div style={{display: 'flex'}}>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-          <h2 className='h2' style={{textAlign: 'center'}}>Speaker</h2>
-          </div>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-          <h2 className='h2' style={{textAlign: 'center'}}>Amp</h2>
-          </div>
+    if(team1_number == ' ') {
+      return (
+        <div>
+          <h2>tOwOt</h2>
         </div>
+      );
+    }
 
-        <div style={{display: 'flex'}}>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Auton Average Score</h1> 
-            <InputNumber disabled defaultValue={5} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
+    if (typeof teamsArr[0] != "undefined") {
+      return (
+        <div>
+          
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> {/* don't touch width value...it's calculated */}
+            <h2 className='h2' style={{textAlign: 'center'}}>Autonomous</h2>
           </div>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Auton Average Score</h1>
-            <InputNumber disabled defaultValue={5} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-        </div>
 
-        <div style={{display: 'flex'}}>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Auton Peak Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Auton Peak Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-        </div>
-
-        <div style={{display: 'flex'}}>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Auton Lowest Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Auton Lowest Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-        </div>
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h1 className='h1' style={{textAlign: 'center'}}>Auton Scoring Ratio (Speaker : Amp)</h1>
-          <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '70%', marginLeft: '15%', marginBottom: '3%'}}/>
-        </div>
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h1 className='h1' style={{textAlign: 'center'}}>Robot Starting Position</h1>
-            <div style={{textAlign: 'center'}}>
-              <h2 className='h2' style={{display: 'inline', marginLeft: '2%'}}>LEFT</h2>   {/* don't touch these values */}
-              <h2 className='h2' style={{display: 'inline', marginLeft: '10%'}}>MIDDLE</h2> 
-              <h2 className='h2' style={{display: 'inline', marginLeft: '9%'}}>RIGHT</h2>
+          <div style={{display: 'flex'}}>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+            <h2 className='h2' style={{textAlign: 'center'}}>Speaker</h2>
             </div>
-            <div>
-              <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '7%'}}/>
-              <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '12%'}}/>
-              <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '13%'}}/>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+            <h2 className='h2' style={{textAlign: 'center'}}>Amp</h2>
             </div>
-        </div>
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%', marginBottom: '3%'}}> 
-          <h2 className='h2' style={{textAlign: 'center'}}>Auton Path</h2>
-          <img src={logo} style={{ height: 100 + '%', marginLeft: 'auto', marginRight: 'auto', width: 100 + '%'}} alt=''/>
-        </div>
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h2 className='h2' style={{textAlign: 'center'}}>Teleop</h2>
-        </div>
-
-        <div style={{display: 'flex'}}>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-          <h2 className='h2' style={{textAlign: 'center'}}>Speaker</h2>
           </div>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-          <h2 className='h2' style={{textAlign: 'center'}}>Amp</h2>
-          </div>
-        </div>
 
-        <div style={{display: 'flex'}}>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Teleop Average Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Teleop Average Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-        </div>
-
-        <div style={{display: 'flex'}}>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Teleop Peak Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Teleop Peak Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-        </div>
-
-        <div style={{display: 'flex'}}>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Teleop Lowest Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Teleop Lowest Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-        </div>
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%', marginBottom: '3%'}}> 
-          <h1 className='h1' style={{textAlign: 'center'}}>Teleop Scoring Ratio (Speaker : Amp)</h1>
-          <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '70%', marginLeft: '15%', marginBottom: '3%'}}/>
-        </div>
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h2 className='h2' style={{textAlign: 'center'}}>Endgame</h2>
-        </div>
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h1 className='h1' style={{textAlign: 'center'}}>Climbing Ratio (Speaker : Amp)</h1>
-          <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '70%', marginLeft: '15%', marginBottom: '3%'}}/>
-        </div>
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h1 className='h1' style={{textAlign: 'center'}}>Harmony</h1>
-          <Checkbox disabled className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
-        </div>
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h1 className='h1' style={{textAlign: 'center'}}>Traverse Under Stage</h1>
-          <Checkbox disabled className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
-        </div>
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%', marginBottom: '3%'}}> 
-          <h1 className='h1' style={{textAlign: 'center'}}>Trap Score</h1>
-          <Checkbox disabled className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
-        </div>
-
-        {/* Overall Start */}
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h2 className='h2' style={{textAlign: 'center'}}>Overall</h2>
-        </div>
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h1 className='h1' style={{textAlign: 'center'}}>Intake Source</h1>
-            <div style={{textAlign: 'center'}}>
-              <h2 className='h2' style={{display: 'inline'}}>Ground</h2>
-              <h2 className='h2' style={{display: 'inline', marginLeft: '10%'}}>Source</h2>
+          <div style={{display: 'flex'}}>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Auton Average Score</h1> 
+              <InputNumber disabled defaultValue={teamsArr[0].auto.auto_speaker_avg} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
             </div>
-            <div>
-              <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '24%'}}/>
-              <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '13%'}}/>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Auton Average Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[0].auto.auto_amps_avg} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
             </div>
-        </div>
+          </div>
 
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h1 className='h1' style={{textAlign: 'center'}}>Robot died (Last Match)</h1>
-          <Checkbox disabled className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
-        </div>
+          <div style={{display: 'flex'}}>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Auton Peak Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[0].auto.auto_speaker_peak} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
+            </div>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Auton Peak Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[0].auto.auto_amps_peak} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
+            </div>
+          </div>
 
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h1 className='h1' style={{textAlign: 'center'}}>Comments</h1>
-          <TextArea disabled className="comment" style={{verticalAlign: 'center', marginLeft: '5%', marginBottom: '3%'}}/>
-        </div>
+          <div style={{display: 'flex'}}>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Auton Lowest Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[0].auto.auto_speaker_min} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
+            </div>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Auton Lowest Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[0].auto.auto_amps_min} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
+            </div>
+          </div>
 
-      </div>
-    );
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
+            <h1 className='h1' style={{textAlign: 'center'}}>Auton Scoring Ratio (Speaker : Amp)</h1>
+            <Input disabled defaultValue={teamsArr[0].auto.auto_speaker_avg + ' : ' + teamsArr[0].auto.auto_amps_avg  } placeholder='team 1' className="inputDisplayNumber" style={{width: '70%', marginLeft: '15%', marginBottom: '3%'}}/>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
+            <h1 className='h1' style={{textAlign: 'center'}}>Robot Starting Position</h1>
+              <div style={{textAlign: 'center'}}>
+                <h2 className='h2' style={{display: 'inline', marginLeft: '2%'}}>LEFT</h2>   {/* don't touch these values */}
+                <h2 className='h2' style={{display: 'inline', marginLeft: '10%'}}>MIDDLE</h2> 
+                <h2 className='h2' style={{display: 'inline', marginLeft: '9%'}}>RIGHT</h2>
+              </div>
+              <div>
+                <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '7%'}}/>
+                <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '12%'}}/>
+                <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '13%'}}/>
+              </div>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', marginBottom: '3%', borderColor: 'white'}}> 
+            <h2 className='h2' style={{textAlign: 'center'}}>Auton Path</h2>
+            <img src={logo} style={{ height: 100 + '%', marginLeft: 'auto', marginRight: 'auto', width: 100 + '%'}} alt=''/>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
+            <h2 className='h2' style={{textAlign: 'center'}}>Teleop</h2>
+          </div>
+
+          <div style={{display: 'flex'}}>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+            <h2 className='h2' style={{textAlign: 'center'}}>Speaker</h2>
+            </div>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+            <h2 className='h2' style={{textAlign: 'center'}}>Amp</h2>
+            </div>
+          </div>
+
+          <div style={{display: 'flex'}}>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Teleop Average Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[0].teleop.teleop_speaker_avg} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
+            </div>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Teleop Average Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[0].teleop.teleop_amps_avg} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
+            </div>
+          </div>
+
+          <div style={{display: 'flex'}}>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Teleop Peak Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[0].teleop.teleop_speaker_peak} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
+            </div>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Teleop Peak Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[0].teleop.teleop_amps_peak} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
+            </div>
+          </div>
+
+          <div style={{display: 'flex'}}>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Teleop Lowest Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[0].teleop.teleop_speaker_min} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
+            </div>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Teleop Lowest Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[0].teleop.teleop_amps_min} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
+            </div>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', marginBottom: '3%', borderColor: 'white'}}> 
+            <h1 className='h1' style={{textAlign: 'center'}}>Teleop Scoring Ratio (Speaker : Amp)</h1>
+            <Input disabled defaultValue={teamsArr[0].teleop.teleop_speaker_avg + ' : ' + teamsArr[0].teleop.teleop_amps_avg  } placeholder='team 1' className="inputDisplayNumber" style={{width: '70%', marginLeft: '15%', marginBottom: '3%'}}/>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
+            <h2 className='h2' style={{textAlign: 'center'}}>Endgame</h2>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
+            <h1 className='h1' style={{textAlign: 'center'}}>Climbing Ratio (Speaker : Amp)</h1>
+            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '70%', marginLeft: '15%', marginBottom: '3%'}}/>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
+            <h1 className='h1' style={{textAlign: 'center'}}>Harmony</h1>
+            <Checkbox disabled className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
+            <h1 className='h1' style={{textAlign: 'center'}}>Traverse Under Stage</h1>
+            <Checkbox disabled className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', marginBottom: '3%', borderColor: 'white'}}> 
+            <h1 className='h1' style={{textAlign: 'center'}}>Trap Score</h1>
+            <Checkbox disabled className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
+          </div>
+
+          {/* Overall Start */}
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
+            <h2 className='h2' style={{textAlign: 'center'}}>Overall</h2>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
+            <h1 className='h1' style={{textAlign: 'center'}}>Intake Source</h1>
+              <div style={{textAlign: 'center'}}>
+                <h2 className='h2' style={{display: 'inline'}}>Ground</h2>
+                <h2 className='h2' style={{display: 'inline', marginLeft: '10%'}}>Source</h2>
+              </div>
+              <div>
+                <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '24%'}}/>
+                <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '13%'}}/>
+              </div>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
+            <h1 className='h1' style={{textAlign: 'center'}}>Robot died (Last Match)</h1>
+            <Checkbox disabled className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white', marginBottom: '10%'}}> 
+            <h1 className='h1' style={{textAlign: 'center'}}>Comments</h1>
+            <TextArea disabled className="comment" style={{verticalAlign: 'center', marginLeft: '5%', marginBottom: '3%'}}/>
+          </div>
+
+        </div>
+      );
+    }
   }
 
   function Team2() {
+
     if(team2_number == ' ') {
       return (
         <div>
@@ -366,190 +345,190 @@ function DTFTeams(props: any) {
         </div>
       );
     }
-    return (
-      <div>
-        {/* Auton Start */}
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> {/* don't touch width value...it's calculated */}
-          <h2 className='h2' style={{textAlign: 'center'}}>Autonomous</h2>
-        </div>
 
-        <div style={{display: 'flex'}}>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-          <h2 className='h2' style={{textAlign: 'center'}}>Speaker</h2>
+    if (typeof teamsArr[1] != "undefined") {
+      return (
+        <div>
+          
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> {/* don't touch width value...it's calculated */}
+            <h2 className='h2' style={{textAlign: 'center'}}>Autonomous</h2>
           </div>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-          <h2 className='h2' style={{textAlign: 'center'}}>Amp</h2>
-          </div>
-        </div>
 
-        <div style={{display: 'flex'}}>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Auton Average Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Auton Average Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-        </div>
-
-        <div style={{display: 'flex'}}>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Auton Peak Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Auton Peak Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-        </div>
-
-        <div style={{display: 'flex'}}>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Auton Lowest Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Auton Lowest Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-        </div>
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h1 className='h1' style={{textAlign: 'center'}}>Auton Scoring Ratio (Speaker : Amp)</h1>
-          <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '70%', marginLeft: '15%', marginBottom: '3%'}}/>
-        </div>
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h1 className='h1' style={{textAlign: 'center'}}>Robot Starting Position</h1>
-            <div style={{textAlign: 'center'}}>
-              <h2 className='h2' style={{display: 'inline', marginLeft: '2%'}}>LEFT</h2>   {/* don't touch these values */}
-              <h2 className='h2' style={{display: 'inline', marginLeft: '10%'}}>MIDDLE</h2> 
-              <h2 className='h2' style={{display: 'inline', marginLeft: '9%'}}>RIGHT</h2>
+          <div style={{display: 'flex'}}>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+            <h2 className='h2' style={{textAlign: 'center'}}>Speaker</h2>
             </div>
-            <div>
-              <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '7%'}}/>
-              <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '12%'}}/>
-              <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '13%'}}/>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+            <h2 className='h2' style={{textAlign: 'center'}}>Amp</h2>
             </div>
-        </div>
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%', marginBottom: '3%'}}> 
-          <h2 className='h2' style={{textAlign: 'center'}}>Auton Path</h2>
-          <img src={logo} style={{ height: 100 + '%', marginLeft: 'auto', marginRight: 'auto', width: 100 + '%'}} alt=''/>
-        </div>
-
-        {/* Teleop start */}
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h2 className='h2' style={{textAlign: 'center'}}>Teleop</h2>
-        </div>
-
-        <div style={{display: 'flex'}}>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-          <h2 className='h2' style={{textAlign: 'center'}}>Speaker</h2>
           </div>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-          <h2 className='h2' style={{textAlign: 'center'}}>Amp</h2>
-          </div>
-        </div>
 
-        <div style={{display: 'flex'}}>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Teleop Average Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Teleop Average Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-        </div>
-
-        <div style={{display: 'flex'}}>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Teleop Peak Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Teleop Peak Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-        </div>
-
-        <div style={{display: 'flex'}}>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Teleop Lowest Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Teleop Lowest Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-        </div>
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%', marginBottom: '3%'}}> 
-          <h1 className='h1' style={{textAlign: 'center'}}>Teleop Scoring Ratio (Speaker : Amp)</h1>
-          <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '70%', marginLeft: '15%', marginBottom: '3%'}}/>
-        </div>
-
-        {/* EndGame Start */}
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h2 className='h2' style={{textAlign: 'center'}}>Endgame</h2>
-        </div>
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h1 className='h1' style={{textAlign: 'center'}}>Climbing Ratio (Speaker : Amp)</h1>
-          <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '70%', marginLeft: '15%', marginBottom: '3%'}}/>
-        </div>
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h1 className='h1' style={{textAlign: 'center'}}>Harmony</h1>
-          <Checkbox disabled className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
-        </div>
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h1 className='h1' style={{textAlign: 'center'}}>Traverse Under Stage</h1>
-          <Checkbox disabled className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
-        </div>
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%', marginBottom: '3%'}}> 
-          <h1 className='h1' style={{textAlign: 'center'}}>Trap Score</h1>
-          <Checkbox disabled className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
-        </div>
-
-        {/* Overall Start */}
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h2 className='h2' style={{textAlign: 'center'}}>Overall</h2>
-        </div>
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h1 className='h1' style={{textAlign: 'center'}}>Intake Source</h1>
-            <div style={{textAlign: 'center'}}>
-              <h2 className='h2' style={{display: 'inline'}}>Ground</h2>
-              <h2 className='h2' style={{display: 'inline', marginLeft: '10%'}}>Source</h2>
+          <div style={{display: 'flex'}}>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Auton Average Score</h1> 
+              <InputNumber disabled defaultValue={teamsArr[1].auto.auto_speaker_avg} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
             </div>
-            <div>
-              <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '24%'}}/>
-              <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '13%'}}/>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Auton Average Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[1].auto.auto_amps_avg} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
             </div>
+          </div>
+
+          <div style={{display: 'flex'}}>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Auton Peak Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[1].auto.auto_speaker_peak} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
+            </div>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Auton Peak Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[1].auto.auto_amps_peak} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
+            </div>
+          </div>
+
+          <div style={{display: 'flex'}}>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Auton Lowest Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[1].auto.auto_speaker_min} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
+            </div>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Auton Lowest Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[1].auto.auto_amps_min} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
+            </div>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
+            <h1 className='h1' style={{textAlign: 'center'}}>Auton Scoring Ratio (Speaker : Amp)</h1>
+            <Input disabled defaultValue={teamsArr[1].auto.auto_speaker_avg + ' : ' + teamsArr[1].auto.auto_amps_avg  } placeholder='team 1' className="inputDisplayNumber" style={{width: '70%', marginLeft: '15%', marginBottom: '3%'}}/>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
+            <h1 className='h1' style={{textAlign: 'center'}}>Robot Starting Position</h1>
+              <div style={{textAlign: 'center'}}>
+                <h2 className='h2' style={{display: 'inline', marginLeft: '2%'}}>LEFT</h2>   {/* don't touch these values */}
+                <h2 className='h2' style={{display: 'inline', marginLeft: '10%'}}>MIDDLE</h2> 
+                <h2 className='h2' style={{display: 'inline', marginLeft: '9%'}}>RIGHT</h2>
+              </div>
+              <div>
+                <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '7%'}}/>
+                <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '12%'}}/>
+                <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '13%'}}/>
+              </div>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', marginBottom: '3%', borderColor: 'white'}}> 
+            <h2 className='h2' style={{textAlign: 'center'}}>Auton Path</h2>
+            <img src={logo} style={{ height: 100 + '%', marginLeft: 'auto', marginRight: 'auto', width: 100 + '%'}} alt=''/>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
+            <h2 className='h2' style={{textAlign: 'center'}}>Teleop</h2>
+          </div>
+
+          <div style={{display: 'flex'}}>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+            <h2 className='h2' style={{textAlign: 'center'}}>Speaker</h2>
+            </div>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+            <h2 className='h2' style={{textAlign: 'center'}}>Amp</h2>
+            </div>
+          </div>
+
+          <div style={{display: 'flex'}}>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Teleop Average Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[1].teleop.teleop_speaker_avg} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
+            </div>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Teleop Average Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[1].teleop.teleop_amps_avg} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
+            </div>
+          </div>
+
+          <div style={{display: 'flex'}}>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Teleop Peak Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[1].teleop.teleop_speaker_peak} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
+            </div>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Teleop Peak Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[1].teleop.teleop_amps_peak} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
+            </div>
+          </div>
+
+          <div style={{display: 'flex'}}>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Teleop Lowest Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[1].teleop.teleop_speaker_min} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
+            </div>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Teleop Lowest Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[1].teleop.teleop_amps_min} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
+            </div>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', marginBottom: '3%', borderColor: 'white'}}> 
+            <h1 className='h1' style={{textAlign: 'center'}}>Teleop Scoring Ratio (Speaker : Amp)</h1>
+            <Input disabled defaultValue={teamsArr[1].teleop.teleop_speaker_avg + ' : ' + teamsArr[1].teleop.teleop_amps_avg  } placeholder='team 1' className="inputDisplayNumber" style={{width: '70%', marginLeft: '15%', marginBottom: '3%'}}/>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
+            <h2 className='h2' style={{textAlign: 'center'}}>Endgame</h2>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
+            <h1 className='h1' style={{textAlign: 'center'}}>Climbing Ratio (Speaker : Amp)</h1>
+            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '70%', marginLeft: '15%', marginBottom: '3%'}}/>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
+            <h1 className='h1' style={{textAlign: 'center'}}>Harmony</h1>
+            <Checkbox disabled className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
+            <h1 className='h1' style={{textAlign: 'center'}}>Traverse Under Stage</h1>
+            <Checkbox disabled className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', marginBottom: '3%', borderColor: 'white'}}> 
+            <h1 className='h1' style={{textAlign: 'center'}}>Trap Score</h1>
+            <Checkbox disabled className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
+          </div>
+
+          {/* Overall Start */}
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
+            <h2 className='h2' style={{textAlign: 'center'}}>Overall</h2>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
+            <h1 className='h1' style={{textAlign: 'center'}}>Intake Source</h1>
+              <div style={{textAlign: 'center'}}>
+                <h2 className='h2' style={{display: 'inline'}}>Ground</h2>
+                <h2 className='h2' style={{display: 'inline', marginLeft: '10%'}}>Source</h2>
+              </div>
+              <div>
+                <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '24%'}}/>
+                <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '13%'}}/>
+              </div>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
+            <h1 className='h1' style={{textAlign: 'center'}}>Robot died (Last Match)</h1>
+            <Checkbox disabled className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white', marginBottom: '10%'}}> 
+            <h1 className='h1' style={{textAlign: 'center'}}>Comments</h1>
+            <TextArea disabled className="comment" style={{verticalAlign: 'center', marginLeft: '5%', marginBottom: '3%'}}/>
+          </div>
+
         </div>
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h1 className='h1' style={{textAlign: 'center'}}>Robot died (Last Match)</h1>
-          <Checkbox disabled className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
-        </div>
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h1 className='h1' style={{textAlign: 'center'}}>Comments</h1>
-          <TextArea disabled className="comment" style={{verticalAlign: 'center', marginLeft: '5%', marginBottom: '3%'}}/>
-        </div>
-
-
-      </div>
-    )
+      );
+    }
   }
 
   function Team3() {
+
     if(team3_number == ' ') {
       return (
         <div>
@@ -557,186 +536,186 @@ function DTFTeams(props: any) {
         </div>
       );
     }
-    return (
-      <div>
-        {/* Auton Start */}
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> {/* don't touch width value...it's calculated */}
-          <h2 className='h2' style={{textAlign: 'center'}}>Autonomous</h2>
-        </div>
 
-        <div style={{display: 'flex'}}>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-          <h2 className='h2' style={{textAlign: 'center'}}>Speaker</h2>
+    if (typeof teamsArr[2] != "undefined") {
+      return (
+        <div>
+          
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> {/* don't touch width value...it's calculated */}
+            <h2 className='h2' style={{textAlign: 'center'}}>Autonomous</h2>
           </div>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-          <h2 className='h2' style={{textAlign: 'center'}}>Amp</h2>
-          </div>
-        </div>
 
-        <div style={{display: 'flex'}}>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Auton Average Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Auton Average Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-        </div>
-
-        <div style={{display: 'flex'}}>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Auton Peak Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Auton Peak Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-        </div>
-
-        <div style={{display: 'flex'}}>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Auton Lowest Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Auton Lowest Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-        </div>
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h1 className='h1' style={{textAlign: 'center'}}>Auton Scoring Ratio (Speaker : Amp)</h1>
-          <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '70%', marginLeft: '15%', marginBottom: '3%'}}/>
-        </div>
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h1 className='h1' style={{textAlign: 'center'}}>Robot Starting Position</h1>
-            <div style={{textAlign: 'center'}}>
-              <h2 className='h2' style={{display: 'inline', marginLeft: '2%'}}>LEFT</h2>   {/* don't touch these values */}
-              <h2 className='h2' style={{display: 'inline', marginLeft: '10%'}}>MIDDLE</h2> 
-              <h2 className='h2' style={{display: 'inline', marginLeft: '9%'}}>RIGHT</h2>
+          <div style={{display: 'flex'}}>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+            <h2 className='h2' style={{textAlign: 'center'}}>Speaker</h2>
             </div>
-            <div>
-              <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '7%'}}/>
-              <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '12%'}}/>
-              <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '13%'}}/>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+            <h2 className='h2' style={{textAlign: 'center'}}>Amp</h2>
             </div>
-        </div>
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%', marginBottom: '3%'}}> 
-          <h2 className='h2' style={{textAlign: 'center'}}>Auton Path</h2>
-          <img src={logo} style={{ height: 100 + '%', marginLeft: 'auto', marginRight: 'auto', width: 100 + '%'}} alt=''/>
-        </div>
-
-        {/* Teleop start */}
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h2 className='h2' style={{textAlign: 'center'}}>Teleop</h2>
-        </div>
-
-        <div style={{display: 'flex'}}>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-          <h2 className='h2' style={{textAlign: 'center'}}>Speaker</h2>
           </div>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-          <h2 className='h2' style={{textAlign: 'center'}}>Amp</h2>
-          </div>
-        </div>
 
-        <div style={{display: 'flex'}}>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Teleop Average Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Teleop Average Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-        </div>
-
-        <div style={{display: 'flex'}}>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Teleop Peak Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Teleop Peak Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-        </div>
-
-        <div style={{display: 'flex'}}>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Teleop Lowest Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-          <div style={{border: 'solid', width: '50%', height: '100%'}}>
-            <h1 className='h1' style={{textAlign: 'center'}}>Teleop Lowest Score</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
-          </div>
-        </div>
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%', marginBottom: '3%'}}> 
-          <h1 className='h1' style={{textAlign: 'center'}}>Teleop Scoring Ratio (Speaker : Amp)</h1>
-          <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '70%', marginLeft: '15%', marginBottom: '3%'}}/>
-        </div>
-
-        {/* EndGame Start */}
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h2 className='h2' style={{textAlign: 'center'}}>Endgame</h2>
-        </div>
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h1 className='h1' style={{textAlign: 'center'}}>Climbing Ratio (Speaker : Amp)</h1>
-          <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '70%', marginLeft: '15%', marginBottom: '3%'}}/>
-        </div>
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h1 className='h1' style={{textAlign: 'center'}}>Harmony</h1>
-          <Checkbox disabled className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
-        </div>
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h1 className='h1' style={{textAlign: 'center'}}>Traverse Under Stage</h1>
-          <Checkbox disabled className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
-        </div>
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%', marginBottom: '3%'}}> 
-          <h1 className='h1' style={{textAlign: 'center'}}>Trap Score</h1>
-          <Checkbox disabled className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
-        </div>
-
-        {/* Overall Start */}
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h2 className='h2' style={{textAlign: 'center'}}>Overall</h2>
-        </div>
-
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h1 className='h1' style={{textAlign: 'center'}}>Intake Source</h1>
-            <div style={{textAlign: 'center'}}>
-              <h2 className='h2' style={{display: 'inline'}}>Ground</h2>
-              <h2 className='h2' style={{display: 'inline', marginLeft: '10%'}}>Source</h2>
+          <div style={{display: 'flex'}}>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Auton Average Score</h1> 
+              <InputNumber disabled defaultValue={teamsArr[2].auto.auto_speaker_avg} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
             </div>
-            <div>
-              <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '24%'}}/>
-              <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '13%'}}/>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Auton Average Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[2].auto.auto_amps_avg} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
             </div>
-        </div>
+          </div>
 
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h1 className='h1' style={{textAlign: 'center'}}>Robot died (Last Match)</h1>
-          <Checkbox disabled className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
-        </div>
+          <div style={{display: 'flex'}}>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Auton Peak Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[2].auto.auto_speaker_peak} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
+            </div>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Auton Peak Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[2].auto.auto_amps_peak} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
+            </div>
+          </div>
 
-        <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
-          <h1 className='h1' style={{textAlign: 'center'}}>Comments</h1>
-          <TextArea disabled className="comment" style={{verticalAlign: 'center', marginLeft: '5%', marginBottom: '3%'}}/>
+          <div style={{display: 'flex'}}>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Auton Lowest Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[2].auto.auto_speaker_min} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
+            </div>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Auton Lowest Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[2].auto.auto_amps_min} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
+            </div>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
+            <h1 className='h1' style={{textAlign: 'center'}}>Auton Scoring Ratio (Speaker : Amp)</h1>
+            <Input disabled defaultValue={teamsArr[2].auto.auto_speaker_avg + ' : ' + teamsArr[2].auto.auto_amps_avg  } placeholder='team 1' className="inputDisplayNumber" style={{width: '70%', marginLeft: '15%', marginBottom: '3%'}}/>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
+            <h1 className='h1' style={{textAlign: 'center'}}>Robot Starting Position</h1>
+              <div style={{textAlign: 'center'}}>
+                <h2 className='h2' style={{display: 'inline', marginLeft: '2%'}}>LEFT</h2>   {/* don't touch these values */}
+                <h2 className='h2' style={{display: 'inline', marginLeft: '10%'}}>MIDDLE</h2> 
+                <h2 className='h2' style={{display: 'inline', marginLeft: '9%'}}>RIGHT</h2>
+              </div>
+              <div>
+                <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '7%'}}/>
+                <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '12%'}}/>
+                <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '13%'}}/>
+              </div>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', marginBottom: '3%', borderColor: 'white'}}> 
+            <h2 className='h2' style={{textAlign: 'center'}}>Auton Path</h2>
+            <img src={logo} style={{ height: 100 + '%', marginLeft: 'auto', marginRight: 'auto', width: 100 + '%'}} alt=''/>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
+            <h2 className='h2' style={{textAlign: 'center'}}>Teleop</h2>
+          </div>
+
+          <div style={{display: 'flex'}}>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+            <h2 className='h2' style={{textAlign: 'center'}}>Speaker</h2>
+            </div>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+            <h2 className='h2' style={{textAlign: 'center'}}>Amp</h2>
+            </div>
+          </div>
+
+          <div style={{display: 'flex'}}>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Teleop Average Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[2].teleop.teleop_speaker_avg} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
+            </div>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Teleop Average Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[2].teleop.teleop_amps_avg} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
+            </div>
+          </div>
+
+          <div style={{display: 'flex'}}>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Teleop Peak Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[2].teleop.teleop_speaker_peak} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
+            </div>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Teleop Peak Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[2].teleop.teleop_amps_peak} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
+            </div>
+          </div>
+
+          <div style={{display: 'flex'}}>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Teleop Lowest Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[2].teleop.teleop_speaker_min} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
+            </div>
+            <div style={{border: 'solid', width: '50%', height: '100%', borderColor: 'white'}}>
+              <h1 className='h1' style={{textAlign: 'center'}}>Teleop Lowest Score</h1>
+              <InputNumber disabled defaultValue={teamsArr[2].teleop.teleop_amps_min} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
+            </div>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', marginBottom: '3%', borderColor: 'white'}}> 
+            <h1 className='h1' style={{textAlign: 'center'}}>Teleop Scoring Ratio (Speaker : Amp)</h1>
+            <Input disabled defaultValue={teamsArr[2].teleop.teleop_speaker_avg + ' : ' + teamsArr[2].teleop.teleop_amps_avg  } placeholder='team 1' className="inputDisplayNumber" style={{width: '70%', marginLeft: '15%', marginBottom: '3%'}}/>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
+            <h2 className='h2' style={{textAlign: 'center'}}>Endgame</h2>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
+            <h1 className='h1' style={{textAlign: 'center'}}>Climbing Ratio (Speaker : Amp)</h1>
+            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '70%', marginLeft: '15%', marginBottom: '3%'}}/>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
+            <h1 className='h1' style={{textAlign: 'center'}}>Harmony</h1>
+            <Checkbox disabled className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
+            <h1 className='h1' style={{textAlign: 'center'}}>Traverse Under Stage</h1>
+            <Checkbox disabled className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', marginBottom: '3%', borderColor: 'white'}}> 
+            <h1 className='h1' style={{textAlign: 'center'}}>Trap Score</h1>
+            <Checkbox disabled className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
+          </div>
+
+          {/* Overall Start */}
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
+            <h2 className='h2' style={{textAlign: 'center'}}>Overall</h2>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
+            <h1 className='h1' style={{textAlign: 'center'}}>Intake Source</h1>
+              <div style={{textAlign: 'center'}}>
+                <h2 className='h2' style={{display: 'inline'}}>Ground</h2>
+                <h2 className='h2' style={{display: 'inline', marginLeft: '10%'}}>Source</h2>
+              </div>
+              <div>
+                <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '24%'}}/>
+                <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '13%'}}/>
+              </div>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
+            <h1 className='h1' style={{textAlign: 'center'}}>Robot died (Last Match)</h1>
+            <Checkbox disabled className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
+          </div>
+
+          <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white', marginBottom: '10%'}}> 
+            <h1 className='h1' style={{textAlign: 'center'}}>Comments</h1>
+            <TextArea disabled className="comment" style={{verticalAlign: 'center', marginLeft: '5%', marginBottom: '3%'}}/>
+          </div>
+
         </div>
-        
-      </div>
-    )
+      );
+    }
   }
 
   const items: TabsProps['items'] = [
