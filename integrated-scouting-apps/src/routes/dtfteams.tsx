@@ -4,9 +4,6 @@ import back from '../public/images/back.png';
 import { useEffect, useState } from 'react';
 import { Tabs, TabsProps, Checkbox, InputNumber } from 'antd';
 import { useParams } from 'react-router-dom';
-import TextArea from 'antd/es/input/TextArea';
-
-let teamsArr = new Array();
 
 function DTFTeams(props: any) {
   useEffect(() => document.title = props.title, [props.title]);
@@ -14,41 +11,11 @@ function DTFTeams(props: any) {
   const [loading, setLoading] = useState(true);
   const [fetchedData, setFetchedData] = useState<{ [x: string]: any; }[]>([]);
 
-  //let teamsArr = new Array();
-
-  async function fetchData(team_number: number) {
-    //const table = [];
-    //let table = [];
-    //const qt = [];
-    try {
-      const response = await fetch('https://us-central1-team2637fixed.cloudfunctions.net/testingDTF' + '?team_number=' + team_number); //process.env.REACT_APP_DTF_URL
-      const data = await response.json();
-      //teamsArr.push(data);
-      //table.push(data);
-      //console.log(table);
-      return data;
-    }
-    catch (err) {
-      console.log(err);
-    }
-    finally {
-      setLoading(false);
-    }
-  
-    // console.log(table[0]);
-    //qt.push(table[0]);
-    // console.log(qt[0]['auto'])
-    // console.log(qt[0]['auto']['auto_speaker_avg'])
-    // console.log(qt[0].auto.auto_speaker_avg)
-    //teamsArr.push(qt[0]);
-    //console.log(teamsArr[0].auto);
-  
-    //return teamsArr;
-  };
 
   let team1_number = '2637';//null protection
   let team2_number = '2637';//null protection
   let team3_number = '2637';//null protection
+
 
   if(team_number){
     const teams = team_number.split(',');
@@ -67,36 +34,6 @@ function DTFTeams(props: any) {
       team3_number = ' ';
     }
 
-    console.log(teams);
-
-    teams.forEach(async (element) =>  {
-      //await fetchData(parseInt(teams));
-      teamsArr.push(await fetchData(parseInt(element)));
-      console.log(element);
-      console.log(teamsArr.length);
-    });
-
-    console.log(teamsArr);
-    console.log(teamsArr.length);
-
-    if (typeof teamsArr[0] != "undefined") {
-      console.log(teamsArr[0].auto);
-      console.log(teamsArr[0].auto.auto_amps_avg);
-    }
-    
-
-    if (typeof teamsArr[1] != "undefined") {
-      console.log(teamsArr[1].auto);
-      console.log(teamsArr[1].auto.auto_amps_avg);
-    }
-
-    if (typeof teamsArr[2] != "undefined") {
-      console.log(teamsArr[2].auto);
-      console.log(teamsArr[2].auto.auto_amps_avg);
-    }
-  }
-
-  console.log(teamsArr[0].auto.auto_amps_avg);
 
   function Summary() {
     return (
@@ -172,8 +109,7 @@ function DTFTeams(props: any) {
         
 
         <h2 className='h2' style={{textAlign: 'center'}}>Graph</h2> 
-        <img src={logo} style={{ height: 100 + '%', marginLeft: 'auto', marginRight: 'auto', width: 100 + '%'}} alt=''/>
-        
+
       </div>
     );
   }
@@ -181,7 +117,7 @@ function DTFTeams(props: any) {
   function Team1() {
     return (
       <div>
-        
+
         <div style={{border: 'solid', width: '99.6%', height: '100%'}}> {/* don't touch width value...it's calculated */}
           <h2 className='h2' style={{textAlign: 'center'}}>Autonomous</h2>
         </div>
@@ -197,10 +133,12 @@ function DTFTeams(props: any) {
 
         <div style={{display: 'flex'}}>
           <div style={{border: 'solid', width: '50%', height: '100%'}}>
+
             <h1 className='h1' style={{textAlign: 'center'}}>Auton Average Score</h1> 
             <InputNumber disabled defaultValue={5} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
           </div>
           <div style={{border: 'solid', width: '50%', height: '100%'}}>
+
             <h1 className='h1' style={{textAlign: 'center'}}>Auton Average Score</h1>
             <InputNumber disabled defaultValue={5} controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '80%', marginLeft: '10%', marginBottom: '3%'}}/>
           </div>
@@ -252,6 +190,7 @@ function DTFTeams(props: any) {
           <img src={logo} style={{ height: 100 + '%', marginLeft: 'auto', marginRight: 'auto', width: 100 + '%'}} alt=''/>
         </div>
 
+
         <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
           <h2 className='h2' style={{textAlign: 'center'}}>Teleop</h2>
         </div>
@@ -302,6 +241,7 @@ function DTFTeams(props: any) {
           <h1 className='h1' style={{textAlign: 'center'}}>Teleop Scoring Ratio (Speaker : Amp)</h1>
           <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '70%', marginLeft: '15%', marginBottom: '3%'}}/>
         </div>
+
 
         <div style={{border: 'solid', width: '99.6%', height: '100%'}}> 
           <h2 className='h2' style={{textAlign: 'center'}}>Endgame</h2>
