@@ -6,6 +6,7 @@
  */
 import '../public/stylesheets/style.css';
 import '../public/stylesheets/pit.css';
+import '../public/stylesheets/match.css';
 import field_blue from '../public/images/field_blue.png';
 import field_red from '../public/images/field_red.png';
 import logo from '../public/images/logo.png';
@@ -122,14 +123,14 @@ function PitScout(props: any) {
       {/* robot pictures */}
       <div style={{marginBottom:"5%"}}>
         <h1 className='pitBody' style={{fontSize:'260%', marginTop: '10%'}}>Robot Pictures</h1>
-        <input style={{background:"transparent", border:"none", fontSize:"0"}} className="uploadButton" type="file" accept="image/*" onChange={handleImageUpload} />
+        <input className='uploadButton' style={{opacity:"1"}} type="file" accept="image/*" onChange={handleImageUpload} />
         {image ? <img src={image} className="image" alt="preview" width={"100%"} height={"100%"}/> : null}
         
       </div>
 
       {/* how many events */}
       <div>
-        <h1 className='pitBody'>How many events have to competed in?</h1>
+        <h1 className='pitBody'>How many events have you competed in?</h1>
         <Form.Item<FieldType> name="robot_events" rules={[{required: true, message: 'Please input the robot position!' }]}>
           <InputNumber controls min={0} className="pitinput"/>
         </Form.Item>
@@ -282,14 +283,7 @@ function PitScout(props: any) {
       <div>
           <Button style={{marginLeft: '25%', marginTop: '10%'}} className='pitButton'>Submit</Button>
       </div>
-
-      
-
-      
-
-      
-
-    </body>
+   </body>
   );
 }
 export default PitScout;
