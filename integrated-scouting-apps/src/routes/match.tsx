@@ -211,7 +211,7 @@ function MatchScout(props: any) {
     ];
     return (
       <div>
-        <h2 style={{color: 'white'}}>Team: {teamNum}</h2>
+        <h2 style={{color: 'black'}}>Team: {teamNum}</h2>
         <h2>Scouter Initials</h2>
         <Form.Item<FieldType> name="initials" rules={[{ required: true, message: 'Please input your initials!' }]}>
           <Input maxLength={2} className="input"/>

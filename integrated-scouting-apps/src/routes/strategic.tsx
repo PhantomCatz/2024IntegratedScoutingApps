@@ -151,8 +151,8 @@ function Strategic(props: any) {
     };
     return (
       <div>
-        <h2>Driver Rating</h2>
-        <Form.Item<FieldType> name="customquestions" rules={[{ required: true, message: "Please input something about the driver rating!" }]}>
+        <h2>Custom Questions</h2>
+        <Form.Item<FieldType> name="customquestions">
           <TextArea style={{verticalAlign: 'center'}} className='strategic-input' value={customQuestionText}/>
         </Form.Item>
         <Flex justify='in-between' style={{paddingBottom: '10%'}}>

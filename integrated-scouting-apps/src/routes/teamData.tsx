@@ -52,7 +52,7 @@ function TeamData(props: any) {
     }
   }, [team_number]);
   return (
-    <body>
+    <div>
       <div className='banner'>
         <header>
           <a href="/scoutingapp/lookup">
@@ -124,7 +124,7 @@ function TeamData(props: any) {
           </ColumnGroup>
         </Table>
       </div>
-    </body>
+    </div>
   );
 }
 

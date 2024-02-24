@@ -148,7 +148,7 @@ function PitScout(props: any) {
 
  
   return(
-    <body>
+    <div>
        <div>
         <header className='banner'>
           <a href='/scoutingapp'><img src={back} style={{ height: 64 + 'px', paddingTop: '5%' }} alt=''></img></a>          <table>
@@ -298,7 +298,7 @@ function PitScout(props: any) {
             width='50rem'
             height='50rem'
             strokeWidth={8}
-            strokeColor='#32a7dc'
+            strokeColor='lightgray'
             backgroundImage={color ? field_red : field_blue}
             exportWithBackgroundImage={true}
             style={{paddingBottom: '5%'}}
@@ -351,7 +351,7 @@ function PitScout(props: any) {
       <div>
           <Button style={{marginLeft: '25%', marginTop: '10%'}} className='pitButton'>Submit</Button>
       </div>
-   </body>
+   </div>
   );
 }
 export default PitScout;

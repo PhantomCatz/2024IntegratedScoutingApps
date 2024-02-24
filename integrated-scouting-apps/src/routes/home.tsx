@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 function HomePage(props: any) {
   useEffect(() => document.title = props.title, [props.title]);
   return (
-    <body>
+    <div>
       <div>
         <header className='banner'>
           <img src={no_image} style={{height: 64 + 'px', paddingTop: '5%'}} alt=''></img>
@@ -25,7 +25,7 @@ function HomePage(props: any) {
         <Button className='homebutton' href='/scoutingapp'>Scouting App</Button>
         <Button className='homebutton' href='/dtf'>DTF</Button>
       </div> 
-    </body>
+    </div>
   );
 }
 

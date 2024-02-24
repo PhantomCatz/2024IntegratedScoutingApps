@@ -171,7 +171,7 @@ function Picklists(props: any) {
   }, [team_number]);
   
   return (
-    <body>
+    <div>
       <div className='banner'>
         <header>
           <a href="/scoutingapp/">
@@ -199,7 +199,7 @@ function Picklists(props: any) {
           }}
           ></Table>
       </div>
-    </body>
+    </div>
   );
 }
 

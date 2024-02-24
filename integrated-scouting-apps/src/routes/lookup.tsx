@@ -10,7 +10,7 @@ function DataLookup(props: any) {
 	useEffect(() => document.title = props.title, [props.title]);
 
 	return (
-		<body>
+		<div>
 			<div className='banner'>
 				<header>
 					<a href='/scoutingapp'>
@@ -40,7 +40,7 @@ function DataLookup(props: any) {
 					<Input type="submit" value="Submit" className='submit'/>
 				</div>
 			</Form>
-		</body>
+		</div>
 	);
 }
 

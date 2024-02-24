@@ -11,13 +11,13 @@
     min-width: 100%;
     height: 45% !important;
     min-height: 45% !important;
-    border: 4px solid white !important;
+    border: 4px solid black !important;
     border-radius: 25px;
     background-color: transparent;
     font-size: 500% !important;
     font-family: Audiowide !important;
     font-weight: bold;
-    color: white !important;
+    color: black !important;
     text-align: center !important;
     background: transparent !important;
 
@@ -29,13 +29,13 @@
     min-width: 90%;
     height: 20% !important;
     min-height: 20% !important;
-    border: 4px solid white !important;
+    border: 4px solid black !important;
     border-radius: 25px;
     background-color: transparent;
     font-size: 500% !important;
     font-family: Audiowide !important;
     font-weight: bold;
-    color: white !important;
+    color: black !important;
     text-align: center !important;
     background: transparent !important;
 
@@ -47,20 +47,20 @@
     margin-bottom:1%;
     font-family: Audiowide !important;
     background-color: transparent !important;
-    color: white;
+    color: black;
 }
 .pitButton {
     width: 49%;
     min-width: 49%;
     height: 45% !important;
     min-height: 45% !important;
-    border: 4px solid white !important;
+    border: 4px solid black !important;
     border-radius: 25px;
     background-color: transparent;
     font-size: 450% !important;
     font-family: Audiowide !important;
     font-weight: bold;
-    color: white !important;
+    color: black !important;
     text-align: center !important;
     display:inline-block;
     margin-bottom: 7%
@@ -71,13 +71,13 @@
     min-width: 100%;
     height: 60% !important;
     min-height: 60% !important;
-    border: 4px solid white !important;
+    border: 4px solid black !important;
     border-radius: 25px;
     background-color: transparent;
     font-size: 300% !important;
     font-family: Figtree !important;
     font-weight: bold;
-    color: white !important;
+    color: black !important;
     text-align: center !important;
 }
 .uploadButton{
@@ -85,13 +85,13 @@
     min-width: 80%;
     height: auto !important;
     min-height: 45% !important;
-    border: 4px solid white !important;
+    border: 4px solid black !important;
     border-radius: 25px;
     background-color: transparent;
     font-size:275% !important;
     font-family: Audiowide !important;
     font-weight: bold;
-    color: white !important;
+    color: black !important;
     text-align: center !important;
     display:inline-block;
     padding-top: 7%;
