@@ -2,7 +2,7 @@ import '../public/stylesheets/style.css';
 import logo from '../public/images/logo.png';
 import back from '../public/images/back.png';
 import { useEffect, useState } from 'react';
-import { GetProp, Table, TableColumnsType, TableProps } from 'antd';
+import { GetProp, Table, TableProps } from 'antd';
 
 type TablePaginationConfig = Exclude<GetProp<TableProps, 'pagination'>, boolean>;
 
@@ -35,13 +35,12 @@ function Picklists(props: any) {
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
       current: 1,
-      pageSize: 100,
+      pageSize: 1000,
     },
   });
 
-  let match = [0];
-  let score = [0];
   let avg_score = 0;
+  let robot_died = 'false';
 
   let displayData = [
     {
@@ -70,6 +69,11 @@ function Picklists(props: any) {
       title: 'Average Score',
       dataIndex: 'average_score',
       key: 'average_score',
+    },
+    {
+      title: 'Died',
+      dataIndex: 'died',
+      key:'died',
     },
   ];
   
@@ -113,6 +117,7 @@ function Picklists(props: any) {
           rank: ls[i]['rank'],
           team_number: ls[i]['team_key'].substring(3),
           average_score: avg_score.toFixed(2),
+          died: robot_died.toString(),
         }
         console.log(expandData);
         console.log(newData);
@@ -135,6 +140,7 @@ function Picklists(props: any) {
       try {
         const match_num = [];
         const match_score = [];
+        const match_died = [];
 
         const response = await fetch(process.env.REACT_APP_PICKLIST_URL + "?team_number=" + team_number);
         const data = await response.json();
@@ -142,10 +148,9 @@ function Picklists(props: any) {
         for(var i = 0; i < data.length; i++)
         {
           match_num.push(parseInt(data[i]['match_number']));
-          match_score.push(parseInt(data[i]['score']))
+          match_score.push(parseInt(data[i]['score']));
+          match_died.push()//TBD call died
         }
-        match = match_num;
-        score = match_score;
 
         avg_score = 0;
         match_score.forEach(score => {
@@ -163,6 +168,13 @@ function Picklists(props: any) {
           expandData.push(newChildren);
         }
         setDataDetail(expandData);
+
+        // robot_died = 'false' //TBD died
+        // match_died.forEach(died => {
+        //   if(died == 'true') {
+        //     robot_died = 'true'
+        //   }
+        // });
       }
       catch (err) {
         console.log(err);
@@ -188,6 +200,7 @@ function Picklists(props: any) {
         <Table 
           columns={columns} 
           dataSource={fetchedData} 
+          rowClassName={(record) => (record.died == 'true' ? 'died' : 'OwO')} //TBD: died
           pagination={tableParams.pagination}
           expandable={{
             expandedRowRender: OwO => (

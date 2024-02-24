@@ -80,3 +80,7 @@ body {
     align-items: center !important;
     margin-left: 25%;
 }
+
+.died {
+    color: rgb(255, 0, 0);
+}
