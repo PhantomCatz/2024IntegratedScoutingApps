@@ -28,6 +28,9 @@ function PitScout(props: any) {
   const { team_number } = useParams();
   const [fetchedData, setFetchedData] = useState("");
   const [loading, setLoading] = useState(true);
+  const [question, setQuestion] = useState('');
+
+  
   useEffect(() => {
     async function fetchData(team_number: number) {
       let parsedData = "";
@@ -56,6 +59,20 @@ function PitScout(props: any) {
         setLoading(false);
       }
     }
+
+    async function fetchPitQuestions() {
+      try {
+        const url = process.env.REACT_APP_PIT_URL + "?team_number=" + team_number;
+        const response = await fetch(url);
+        const data = await response.json();
+        const robotQuestion = data.robot_questions; 
+
+        setQuestion(robotQuestion);
+      } catch (error) {
+        console.error('Error fetching question:', error);
+      }
+    }
+
     if (team_number) {
       fetchData(parseInt(team_number));
     }
@@ -64,6 +81,7 @@ function PitScout(props: any) {
   type FieldType = {
     robot_pic: string;
     robot_events: number;
+    robot_questions?: string;
     team_number: number;
     robot_drive_train: string;
     robot_weight: number;
@@ -260,7 +278,7 @@ function PitScout(props: any) {
 
       {/* Team workmenship# */}
       <div>
-        <h1 className='pitBody'>Team workmenship</h1>
+        <h1 className='pitBody'>Team workmanship</h1>
         <Form.Item<FieldType> name="robot_team_workmanship">
           <InputNumber controls min={1} max={4} className="pitinput"/>
         </Form.Item>
@@ -310,6 +328,24 @@ function PitScout(props: any) {
         {image ? <img src={image} className="image" alt="preview" width={"100%"} height={"100%"}/> : null}
         
       </div>
+
+      <div>
+        <h1 className='pitBody' style={{marginTop:"7%"}}>Input Custom Questions</h1>
+        <Form.Item<FieldType> name="robot_questions">
+          <label>
+            <textarea className="pitComment" name="eventNum" rows={3}/>
+          </label>
+        </Form.Item>
+      </div>
+      
+      <div>
+      <h1 className='pitBody' style={{ marginTop: '7%' }}>Questions Asked</h1>
+      <Form.Item<FieldType> name="robot_questions">
+        <label>
+          <textarea className="pitComment" name="eventNum" rows={3} value={question} readOnly />
+        </label>
+      </Form.Item>
+    </div>
 
       {/* submit */}
       <div>

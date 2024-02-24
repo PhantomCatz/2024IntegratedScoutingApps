@@ -108,8 +108,8 @@ function Picklists(props: any) {
       displayData = [];
       for(var i = 0; i < ls.length; i++)
       {
-        await fetchData(parseInt(ls[i]['team_key'].substring(3)));
-        //await fetchData(254);
+        //await fetchData(parseInt(ls[i]['team_key'].substring(3)));
+        await fetchData(254);
         //console.log(parseInt(ls[i]['team_key'].substring(3)))
 
         let newData = {
