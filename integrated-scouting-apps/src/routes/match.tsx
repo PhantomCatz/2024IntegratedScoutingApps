@@ -13,29 +13,22 @@ import TextArea from 'antd/es/input/TextArea';
 
 function MatchScout(props: any) {
   const [form] = Form.useForm();
-  const [color, setColor] = useState(false); //red if true blue if false
-  const [roundIsVisible, setRoundIsVisible] = useState(false);
-  const [coopPressed, setCoopPressed] = useState(false);
-  const [isLoading, setLoading] = useState(false);
+  const [color, setColor] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const [tabNum, setTabNum] = useState("1");
-  const [teamNum, setTeamNum] = useState(0);
-  const [defendedIsVisible, setDefendedIsVisible] = useState(false);
-  const [opposingTeamNum, setOpposingTeamNum] = useState([""]);
   const autonImageURI = useRef<string>();
   const teleopImageURI = useRef<string>();
   const autonCanvasRef = useRef<ReactSketchCanvasRef>(null);
   const teleopCanvasRef = useRef<ReactSketchCanvasRef>(null);
   const eventname = process.env.REACT_APP_EVENTNAME;
-  const addOnAfter = (<Button onClick={(event) => {
-  const inputElement = event.currentTarget?.parentNode?.parentNode?.children[1].children[0].children[0] as HTMLInputElement;
-  inputElement.value = (Number(inputElement.value) + 1).toString(); console.log(inputElement.value)
-  }} className='incrementbutton'>+</Button>);
+  const addOnAfter = (<Button onClick={(event) => (event.currentTarget?.parentNode?.parentNode?.children[1].children[0].children[0] as HTMLInputElement).value = Number((event.currentTarget?.parentNode?.parentNode?.children[1].children[0].children[0] as HTMLInputElement).value) + 1 + ""} className='incrementbutton'>+</Button>);
   const addOnBefore = (<Button onClick={(event) => {
     if (Number((event.currentTarget?.parentNode?.parentNode?.children[1].children[0].children[0] as HTMLInputElement).value) > 0) {
       (event.currentTarget?.parentNode?.parentNode?.children[1].children[0].children[0] as HTMLInputElement).value = Number((event.currentTarget?.parentNode?.parentNode?.children[1].children[0].children[0] as HTMLInputElement).value) - 1 + "";
     }
   }} className='decrementbutton'>-</Button>);
   useEffect(() => {document.title = props.title; return () => {}}, [props.title]);
+  let teamNum = 0;
   
   async function setNewMatchScout(event: any) {
     const body = {
@@ -67,6 +60,8 @@ function MatchScout(props: any) {
         "teleop_coop_first": event.cooppressed1st,
         "teleop_amps_scored": event.tele_ampscored,
         "teleop_speaker_scored": event.tele_speakerscored,
+        "teleop_times_amplify": event.timesamplified,
+        "teleop_pieces_note_amplifying_scored": event.amplifyscored,
         "teleop_ground": event.groundintake,
         "teleop_source": event.sourceintake,
         "teleop_traverse_stage": event.traversedstage,
@@ -115,7 +110,7 @@ function MatchScout(props: any) {
   };
   async function updateTeamNumber() {
     try {
-      if (roundIsVisible) {
+      if (isVisible) {
         const matchID = eventname + "_" + form.getFieldValue('matchlevel') + form.getFieldValue('matchnum') + "m" + form.getFieldValue('roundnum');
         const response = await fetch('https://www.thebluealliance.com/api/v3/match/' + matchID,
           {
@@ -130,7 +125,8 @@ function MatchScout(props: any) {
         setColor((team_color === "red" ? true : false));
         const team_num = form.getFieldValue('robotpos').substring(form.getFieldValue('robotpos').indexOf('_') + 1) - 1;
         const fullTeam = (data.alliances[team_color].team_keys[team_num] !== null ? data.alliances[team_color].team_keys[team_num] : 0);
-        setTeamNum(Number(fullTeam.substring(3)));
+        teamNum = Number(fullTeam.substring(3));
+        console.log(teamNum);
       }
       else {
         const matchID = eventname + "_" + form.getFieldValue('matchlevel') + form.getFieldValue('matchnum');
@@ -147,7 +143,8 @@ function MatchScout(props: any) {
         setColor((team_color === "red" ? true : false));
         const team_num = form.getFieldValue('robotpos').substring(form.getFieldValue('robotpos').indexOf('_') + 1) - 1;
         const fullTeam = (data.alliances[team_color].team_keys[team_num] !== null ? data.alliances[team_color].team_keys[team_num] : 0);
-        setTeamNum(Number(fullTeam.substring(3)));
+        teamNum = Number(fullTeam.substring(3));
+        console.log(teamNum);
       }
     }
     catch (err) {
@@ -157,30 +154,13 @@ function MatchScout(props: any) {
   async function calculateMatchLevel() {
     const matchlevel = form.getFieldValue('matchlevel');
     if (matchlevel !== "qm") {
-      setRoundIsVisible(true);
+      setIsVisible(true);
     }
     else {
-      setRoundIsVisible(false);
+      setIsVisible(false);
     }
   }
-  async function updateDefendedList() {
-    setDefendedIsVisible(!defendedIsVisible);
-    const matchID = eventname + "_" + form.getFieldValue('matchlevel') + form.getFieldValue('matchnum');
-      const response = await fetch('https://www.thebluealliance.com/api/v3/match/' + matchID,
-        {
-          method: "GET",
-          headers: {
-            'X-TBA-Auth-Key': process.env.REACT_APP_TBA_AUTH_KEY as string,
-          }
-        });
-      const data = await response.json();
-      let result : any[] = [];
-      for (const team in data.alliances[color ? 'red' : 'blue'].team_keys) {
-       result.push(data.alliances[color ? 'red' : 'blue'].team_keys[team].substring(3));
-      }
-      setOpposingTeamNum(result);
-  }
-  function preMatch() { //final do not change
+  function preMatch() {
     type FieldType = {
       initials: string,
       matchlevel: string,
@@ -210,22 +190,21 @@ function MatchScout(props: any) {
     ];
     return (
       <div>
-        <h2 style={{color: 'white'}}>Team: {teamNum}</h2>
         <h2>Scouter Initials</h2>
         <Form.Item<FieldType> name="initials" rules={[{ required: true, message: 'Please input your initials!' }]}>
           <Input maxLength={2} className="input"/>
         </Form.Item>
         <h2>Match #</h2>
         <Form.Item<FieldType> name="matchnum" rules={[{ required: true, message: 'Please input the match number!' }]}>
-          <InputNumber min={1} onChange={updateTeamNumber} className="input" type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} />
+          <InputNumber min={1} onChange={updateTeamNumber} className="input" type='number' pattern="\d*" disabled addonBefore={addOnBefore} addonAfter={addOnAfter} onWheel={(event) => (event.target as HTMLElement).blur()} />
         </Form.Item>
         <h2>Match Level</h2>
         <Form.Item<FieldType> name="matchlevel" rules={[{ required: true, message: 'Please input the match level!' }]}>
           <Select options={rounds} onChange={()=> {calculateMatchLevel(); updateTeamNumber();}} className="input"/>
         </Form.Item>
-        <h2 style={{ display: roundIsVisible ? 'inherit' : 'none' }}>Round #</h2>
-        <Form.Item<FieldType> name="roundnum" rules={[{ required: roundIsVisible ? true : false, message: 'Please input the round number!' }]} style={{display: roundIsVisible ? 'inherit' : 'none'}}>
-            <InputNumber min={1} onChange={updateTeamNumber} style={{ display: roundIsVisible ? 'inherit' : 'none' }} className="input" type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()}/>
+        <h2 style={{ display: isVisible ? 'inherit' : 'none' }}>Round #</h2>
+        <Form.Item<FieldType> name="roundnum" rules={[{ required: isVisible ? true : false, message: 'Please input the round number!' }]}>
+            <InputNumber min={1} onChange={updateTeamNumber} style={{ display: isVisible ? 'inherit' : 'none' }} className="input" type='number' pattern="\d*" disabled addonBefore={addOnBefore} addonAfter={addOnAfter} onWheel={(event) => (event.target as HTMLElement).blur()}/>
         </Form.Item>
         <h2>Robot Position</h2>
         <Form.Item<FieldType> name="robotpos" rules={[{ required: true, message: 'Please input the robot position!' }]}>
@@ -235,7 +214,12 @@ function MatchScout(props: any) {
         <Form.Item<FieldType> name="startingloc" rules={[{ required: true, message: 'Please input the starting location!' }]}>
           <Select options={startingloc} className="input"/>
         </Form.Item>
+        <h2>Preloaded</h2>
+        <Form.Item<FieldType> name="preloaded" valuePropName="checked">
+          <Checkbox className='input_checkbox'/>
+        </Form.Item>
         <Flex justify='in-between' style={{paddingBottom: '10%'}}>
+          <Button onClick={() => setTabNum("1")} className='tabbutton'>Back</Button>
           <Button onClick={() => setTabNum("2")} className='tabbutton'>Next</Button>
         </Flex>
       </div>
@@ -276,10 +260,6 @@ function MatchScout(props: any) {
         <Form.Item<FieldType> name="leavespawn" valuePropName="checked">
           <Checkbox className='input_checkbox'/>
         </Form.Item>
-        <h2>Preload Scored</h2>
-        <Form.Item<FieldType> name="preloadscored" valuePropName="checked">
-          <Checkbox className='input_checkbox'/>
-        </Form.Item>
         <h2>Speaker Scored</h2>
         <Form.Item<FieldType> name="auton_speakerscored" rules={[{ required: true, message: 'Please input the number of speaker notes scored!' }]}>
           <InputNumber type='number' pattern="\d*" disabled addonBefore={addOnBefore} addonAfter={addOnAfter} onWheel={(event) => (event.target as HTMLElement).blur()} min={0} className="input"/>
@@ -300,20 +280,24 @@ function MatchScout(props: any) {
         <Form.Item<FieldType> name="auton_scoringloc" rules={[{ required: true, message: 'Please input the scoring location!' }]}>
           <Select options={scoringloc} className='input'/>
         </Form.Item>
+        <h2>Preload Scored</h2>
+        <Form.Item<FieldType> name="preloadscored" valuePropName="checked">
+          <Checkbox className='input_checkbox'/>
+        </Form.Item>
         <h2>Pieces Picked</h2>
         <Form.Item<FieldType> name="piecespicked" rules={[{ required: true, message: 'Please input the pieces picked!' }]}>
           <Select mode='multiple' options={piecespicked} className='input' showSearch={false}/>
         </Form.Item>
-        {/* <h2>Comments</h2>
+        <h2>Comments</h2>
         <Form.Item<FieldType> name="auton_comments" rules={[{ required: true, message: 'Please input the comments!' }]}>
           <TextArea style={{verticalAlign: 'center'}} className='input'/>
-        </Form.Item> */}
+        </Form.Item>
         <div style={{ alignContent: 'center' }}>
           <ReactSketchCanvas
             ref={autonCanvasRef}
             id="teleop"
-            width='880px'
-            height='880px'
+            width='800px'
+            height='800px'
             strokeWidth={8}
             strokeColor='#32a7dc'
             backgroundImage={color ? field_red : field_blue}
@@ -338,9 +322,12 @@ function MatchScout(props: any) {
     type FieldType = {
       tele_speakerscored: number,
       tele_ampscored: number,
-      intake: string,
+      timesamplified: number,
+      groundintake: boolean,
+      sourceintake: boolean,
       tele_scoringloc: string,
       shootingloc: string,
+      amplifyscored: boolean,
       cooppressed: boolean,
       cooppressed1st: boolean,
       traversedstage: boolean,
@@ -362,23 +349,17 @@ function MatchScout(props: any) {
       { label: "UT", value: 'ut' },
       { label: "LT", value: 'lt' },
       { label: "LOT", value: 'lot' },
-      { label: "P", value: 'pod'},
-    ];
-    const intake = [
-      { label: "Ground", value: "us" },
-      { label: "Source", value: "cs" },
-      { label: "Both", value: 'ls' },
-      { label: "None", value: 'amp' },
+
     ];
     return (
       <div>
         <h2>Speaker Scored</h2>
         <Form.Item<FieldType> name="tele_speakerscored" rules={[{ required: true, message: 'Please input the number of speaker notes scored!' }]}>
-          <InputNumber type='number' pattern="\d*" disabled addonBefore={addOnBefore} addonAfter={addOnAfter} onWheel={(event) => (event.target as HTMLElement).blur()} min={0} className="input"/>
+          <InputNumber type='number' pattern="\d*" disabled addonBefore={addOnBefore} addonAfter={addOnAfter} onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input"/>
         </Form.Item>
         <h2>Amp Scored</h2>
         <Form.Item<FieldType> name="tele_ampscored" rules={[{ required: true, message: 'Please input the number of amp notes scored!' }]}>
-          <InputNumber type='number' pattern="\d*" disabled addonBefore={addOnBefore} addonAfter={addOnAfter} onWheel={(event) => (event.target as HTMLElement).blur()} min={0} className="input"/>
+          <InputNumber type='number' pattern="\d*" disabled addonBefore={addOnBefore} addonAfter={addOnAfter} onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input"/>
         </Form.Item>
         <h2>Missed Amp Pieces</h2>
         <Form.Item<FieldType> name="tele_missedpiecesamp" rules={[{ required: true, message: 'Please input the number of missed amp pieces!' }]}>
@@ -388,9 +369,21 @@ function MatchScout(props: any) {
         <Form.Item<FieldType> name="tele_missedpiecesspeaker" rules={[{ required: true, message: 'Please input the number of missed speaker pieces!' }]}>
           <InputNumber type='number' pattern="\d*" disabled addonBefore={addOnBefore} addonAfter={addOnAfter} onWheel={(event) => (event.target as HTMLElement).blur()} min={0} className="input"/>
         </Form.Item>
-        <h2>Ground/Source Intake</h2>
-        <Form.Item<FieldType> name="intake" rules={[{ required: true, message: 'Please input the match level!' }]}>
-          <Select options={intake} className="input"/>
+        <h2>Times Amplified</h2>
+        <Form.Item<FieldType> name="timesamplified" rules={[{ required: true, message: 'Please input the number of times the speaker was amplified!' }]}>
+          <InputNumber type='number' pattern="\d*" disabled addonBefore={addOnBefore} addonAfter={addOnAfter} onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input"/>
+        </Form.Item>
+        <h2>Amplified Score</h2>
+        <Form.Item<FieldType> name="amplifyscored" rules={[{ required: true, message: 'Please input the number of notes scored during the amplifier period!' }]}>
+          <InputNumber type='number' pattern="\d*" disabled addonBefore={addOnBefore} addonAfter={addOnAfter} onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input"/>
+        </Form.Item>
+        <h2>Ground Intake</h2>
+        <Form.Item<FieldType> name="groundintake" valuePropName="checked">
+          <Checkbox className='input_checkbox'/>
+        </Form.Item>
+        <h2>Source Intake</h2>
+        <Form.Item<FieldType> name="sourceintake" valuePropName="checked">
+          <Checkbox className='input_checkbox'/>
         </Form.Item>
         <h2>Scoring Location</h2>
         <Form.Item<FieldType> name="tele_scoringloc" rules={[{ required: true, message: 'Please input the scoring location!' }]}>
@@ -402,11 +395,11 @@ function MatchScout(props: any) {
         </Form.Item>
         <h2>Coopertition Pressed</h2>
         <Form.Item<FieldType> name="cooppressed" valuePropName="checked">
-          <Checkbox className='input_checkbox' onClick={() => setCoopPressed(!coopPressed)}/> 
+          <Checkbox className='input_checkbox'/> 
         </Form.Item>
-        <h2 style={{display: coopPressed ? 'inherit' : 'none'}}>Cooperated First</h2>
-        <Form.Item<FieldType> name="cooppressed1st" valuePropName="checked" style={{display: coopPressed ? 'inherit' : 'none'}}>
-          <Checkbox className='input_checkbox' style={{display: coopPressed ? 'inherit' : 'none'}}/>
+        <h2>Cooperated First</h2>
+        <Form.Item<FieldType> name="cooppressed1st" valuePropName="checked">
+          <Checkbox className='input_checkbox'/>
         </Form.Item>
         <h2>Traversed Stage</h2>
         <Form.Item<FieldType> name="traversedstage" valuePropName="checked">
@@ -415,8 +408,8 @@ function MatchScout(props: any) {
         <div style={{ alignContent: 'center' }}>
           <ReactSketchCanvas
             ref={teleopCanvasRef}
-            width='880px'
-            height='440px'
+            width='800px'
+            height='400px'
             strokeWidth={8}
             strokeColor='#32a7dc'
             backgroundImage={full_field}
@@ -437,7 +430,7 @@ function MatchScout(props: any) {
       </div>
     );
   }
-  function endMatch() { //final do not touch
+  function endMatch() {
     type FieldType = {
       climbed: boolean,
       timeleft: number,
@@ -517,11 +510,7 @@ function MatchScout(props: any) {
         </Form.Item>
         <h2>Defended</h2>
         <Form.Item<FieldType> name="defended" valuePropName="checked">
-          <Checkbox className='input_checkbox' onChange={updateDefendedList}/>
-        </Form.Item>
-        <h2 style={{display: defendedIsVisible ? 'inherit' : 'none'}}>Defended by whom?</h2>
-        <Form.Item<FieldType> name="defended" valuePropName="checked" style={{display: defendedIsVisible ? 'inherit' : 'none'}}>
-          <Select mode='multiple' options={opposingTeamNum.map((team) => ({ label: team, value: team }))} className="input" showSearch={false}/>
+          <Checkbox className='input_checkbox'/>
         </Form.Item>
         <h2>Hoarded</h2>
         <Form.Item<FieldType> name="hoarded" valuePropName="checked">
@@ -545,9 +534,8 @@ function MatchScout(props: any) {
         </Form.Item>
         <Flex justify='in-between' style={{paddingBottom: '10%'}}>
           <Button onClick={() => setTabNum("4")} className='tabbutton'>Back</Button>
-          <Input type="submit" value="Submit" className='submitbutton'/>
+          <Input type="submit" value="Submit" className='tabbutton'/>
         </Flex>
-        <h2 style={{display: isLoading ? 'inherit' : 'none'}}>Submitting data...</h2>
       </div>
     )
   }
@@ -579,7 +567,7 @@ function MatchScout(props: any) {
     },
   ];
   return (
-    <div>
+    <body>
       <div className='banner'>
         <meta name="viewport" content="user-scalable=no" />
         <header>
@@ -625,14 +613,12 @@ function MatchScout(props: any) {
         }}
         onFinish={async event => {
           try {
-            setLoading(true);
             await setNewMatchScout(event);
             const initials = form.getFieldValue('initials');
             const matchnum = form.getFieldValue('matchnum');
             form.resetFields();
             form.setFieldValue('initials', initials);
             form.setFieldValue('matchnum', matchnum + 1);
-            setLoading(false);
           }
           catch (err) {
             console.log(err);
@@ -643,7 +629,7 @@ function MatchScout(props: any) {
           setTabNum(key);
         }}/>
       </Form>
-    </div>
+    </body>
   );
 }
 

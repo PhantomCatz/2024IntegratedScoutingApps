@@ -28,10 +28,6 @@ body {
     padding-right: 5%;
     color: white;
 }
-a {
-    text-decoration: none;
-    color: white;
-}
 .banner {
     font-size: 50px;
     vertical-align: top;
@@ -48,6 +44,7 @@ a {
     font-size: 500%;
     font-family: Audiowide;
     color: white !important;
+
 }
 .homebutton {
     width: 100%;

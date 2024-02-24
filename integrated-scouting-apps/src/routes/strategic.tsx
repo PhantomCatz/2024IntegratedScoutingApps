@@ -19,7 +19,6 @@ function Strategic(props: any) {
         "team_number": event.teamnum,
         "match_level": event.matchlevel,
         "match_number": event.matchnum,
-        "timesamplified": event.timesamplified,
       },
       "comment": {
         "comment": event.comments,
@@ -56,7 +55,6 @@ function Strategic(props: any) {
       teamnum?: number;
       matchlevel?: string;
       matchnum?: number;
-      timesamplified?: number;
     };
     const rounds = [
       { label: "Qualifications", value: "qm" },
@@ -81,10 +79,6 @@ function Strategic(props: any) {
         <Form.Item<FieldType> name="matchnum" rules={[{ required: true, message: 'Please input the match number!' }]}>
           <InputNumber min={1} className="input"/>
         </Form.Item>
-        <h2>Times Amplified</h2>
-        <Form.Item<FieldType> name="timesamplified" rules={[{ required: true, message: 'Please input the number of times the speaker was amplified!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input"/>
-        </Form.Item>
       </div>
     );
   }
@@ -102,6 +96,7 @@ function Strategic(props: any) {
       </div>
     );
   }
+
   const items: TabsProps['items'] = [
     {
       key: '1',

@@ -1,13 +1,12 @@
 import '../public/stylesheets/login.css';
 import logo from '../public/images/logo.png';
 import back from '../public/images/back.png';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Form, Input } from 'antd';
 import { useParams } from 'react-router-dom';
 
 function LoginPage(props: any) {
 	const { msg } = useParams();
-	const [isLoading, setIsLoading] = useState(false);
 	useEffect(() => document.title = props.title, [props.title]);
 	type FieldType = {
 		username: string,
@@ -18,7 +17,7 @@ function LoginPage(props: any) {
 		<div className='banner'>
       <meta name="viewport" content="user-scalable=no" />
 			<header>
-				<a href='/'>
+				<a href='/scoutingapp'>
 					<img src={back} style={{height: 64 + 'px', paddingTop: '5%'}} alt=''/>
 				</a>
 				<table>
@@ -33,7 +32,6 @@ function LoginPage(props: any) {
     </div>
 		<Form onFinish={async (event) => {
 			try {
-				setIsLoading(true);
 				await fetch((process.env.REACT_APP_LOGIN_URL as string) + "?user_name=" + event.username + "&password=" + event.password, {
 					method: "GET",
 					headers: {
@@ -51,7 +49,6 @@ function LoginPage(props: any) {
 					else {
 						window.location.href = "/Fatal%20Error";
 					}
-					setIsLoading(false);
 				});				
 			}
 			catch (err) {
@@ -68,7 +65,6 @@ function LoginPage(props: any) {
 				<Input.Password minLength={5} className='input' />
 			</Form.Item>
 			<Input type="submit" value="Submit" className='submit'/>
-			<h2 style={{display: isLoading ? 'inherit' : 'none'}}>Submitting data...</h2>
 		</Form>
 	</div>
 );
