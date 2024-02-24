@@ -16,7 +16,7 @@ function HomePage(props: any) {
               <img src={logo} style={{height: 256 + 'px'}} alt=''></img>
             </td>
             <td>
-              <h1 style={{display: 'inline-block', textAlign: 'center'}}>Strategy App</h1>
+              <h1 style={{display: 'inline-block', textAlign: 'center'}}>Strateg<span><a href='/buh'>y</a></span> App</h1>
             </td>
           </table>
         </header>
