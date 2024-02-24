@@ -20,6 +20,7 @@ function MatchScout(props: any) {
   const [tabNum, setTabNum] = useState("1");
   const [teamNum, setTeamNum] = useState(0);
   const [defendedIsVisible, setDefendedIsVisible] = useState(false);
+  const [wasDefendedIsVisible, setWasDefendedIsVisible] = useState(false);
   const [opposingTeamNum, setOpposingTeamNum] = useState([""]);
   const autonImageURI = useRef<string>();
   const teleopImageURI = useRef<string>();
@@ -164,7 +165,6 @@ function MatchScout(props: any) {
     }
   }
   async function updateDefendedList() {
-    setDefendedIsVisible(!defendedIsVisible);
     const matchID = eventname + "_" + form.getFieldValue('matchlevel') + form.getFieldValue('matchnum');
       const response = await fetch('https://www.thebluealliance.com/api/v3/match/' + matchID,
         {
@@ -179,6 +179,7 @@ function MatchScout(props: any) {
        result.push(data.alliances[color ? 'red' : 'blue'].team_keys[team].substring(3));
       }
       setOpposingTeamNum(result);
+      console.log(opposingTeamNum);
   }
   function preMatch() { //final do not change
     type FieldType = {
@@ -489,8 +490,10 @@ function MatchScout(props: any) {
       robotdied: boolean;
       pushing: number;
       defended: boolean;
+      defendedteam: string;
       hoarded: boolean;
       wasdefended: boolean;
+      wasdefendedteam: string;
       numpenalties: number;
       penaltiesincurred: string;
       comments: string;
@@ -517,11 +520,11 @@ function MatchScout(props: any) {
         </Form.Item>
         <h2>Defended</h2>
         <Form.Item<FieldType> name="defended" valuePropName="checked">
-          <Checkbox className='input_checkbox' onChange={updateDefendedList}/>
+          <Checkbox className='input_checkbox' onChange={() => {updateDefendedList(); setDefendedIsVisible(!defendedIsVisible);}}/>
         </Form.Item>
-        <h2 style={{display: defendedIsVisible ? 'inherit' : 'none'}}>Defended by whom?</h2>
-        <Form.Item<FieldType> name="defended" valuePropName="checked" style={{display: defendedIsVisible ? 'inherit' : 'none'}}>
-          <Select mode='multiple' options={opposingTeamNum.map((team) => ({ label: team, value: team }))} className="input" showSearch={false}/>
+        <h2 style={{display: defendedIsVisible ? 'inherit' : 'none'}}>Defended whom?</h2>
+        <Form.Item<FieldType> name="defendedteam" valuePropName="checked" style={{display: defendedIsVisible ? 'inherit' : 'none'}}>
+          <Select mode='multiple' options={opposingTeamNum.map((team) => ({ label: team, value: team }))} className="input" showSearch={false} style={{display : defendedIsVisible ? 'inherit' : 'none'}}/>
         </Form.Item>
         <h2>Hoarded</h2>
         <Form.Item<FieldType> name="hoarded" valuePropName="checked">
@@ -529,7 +532,11 @@ function MatchScout(props: any) {
         </Form.Item>
         <h2>Was Defended</h2>
         <Form.Item<FieldType> name="wasdefended" valuePropName="checked">
-          <Checkbox className='input_checkbox'/>
+          <Checkbox className='input_checkbox' onChange={() => {updateDefendedList(); setWasDefendedIsVisible(!wasDefendedIsVisible);}} />
+        </Form.Item>
+        <h2 style={{display: wasDefendedIsVisible ? 'inherit' : 'none'}}>Was defended by whom?</h2>
+        <Form.Item<FieldType> name="wasdefendedteam" valuePropName="checked" style={{display: wasDefendedIsVisible ? 'inherit' : 'none'}}>
+          <Select mode='multiple' options={opposingTeamNum.map((team) => ({ label: team, value: team }))} className="input" showSearch={false} style={{display: wasDefendedIsVisible ? 'inherit' : 'none'}}/>
         </Form.Item>
         <h2>Number of Penalties</h2>
         <Form.Item<FieldType> name="numpenalties" rules={[{ required: true, message: 'Please input the number of penalties incurred!' }]}>
