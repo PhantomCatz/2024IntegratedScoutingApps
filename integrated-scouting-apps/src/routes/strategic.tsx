@@ -1,13 +1,14 @@
 import '../public/stylesheets/strategic.css';
 import logo from '../public/images/logo.png';
 import back from '../public/images/back.png';
-import { useEffect } from 'react';
-import { Tabs, Input, Form, Select, InputNumber } from 'antd';
+import { useEffect, useState } from 'react';
+import { Tabs, Input, Form, Select, InputNumber, Button, Flex } from 'antd';
 import type { TabsProps } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 
 function Strategic(props: any) {
   const [form] = Form.useForm();
+  const [tabNum, setTabNum] = useState("1");
   useEffect(() => document.title = props.title, [props.title]);
   const eventname = process.env.REACT_APP_EVENTNAME;
 
@@ -23,6 +24,9 @@ function Strategic(props: any) {
       },
       "comment": {
         "comment": event.comments,
+      },
+      "driver": {
+        "driverrating": event.driverrating,
       }
     };
     const WORKING_TEST_DO_NOT_REMOVE_OR_YOU_WILL_BE_FIRED = {
@@ -85,6 +89,9 @@ function Strategic(props: any) {
         <Form.Item<FieldType> name="timesamplified" rules={[{ required: true, message: 'Please input the number of times the speaker was amplified!' }]}>
           <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input"/>
         </Form.Item>
+        <Flex justify='in-between' style={{paddingBottom: '10%'}}>
+          <Button onClick={() => setTabNum("2")} className='tabbutton'>Next</Button>
+        </Flex>
       </div>
     );
   }
@@ -95,10 +102,30 @@ function Strategic(props: any) {
     return (
       <div>
         <h2>Comments</h2>
-        <Form.Item<FieldType> name="comments" rules={[{ required: true }]}>
+        <Form.Item<FieldType> name="comments" rules={[{ required: true, message: "Please input some comments!" }]}>
           <TextArea style={{verticalAlign: 'center'}} className='strategic-input'/>
         </Form.Item>
-        <Input type="submit" value="Submit" className='input'/>
+        <Flex justify='in-between' style={{paddingBottom: '10%'}}>
+          <Button onClick={() => setTabNum("1")} className='tabbutton'>Back</Button>
+          <Button onClick={() => setTabNum("3")} className='tabbutton'>Next</Button>
+        </Flex>
+      </div>
+    );
+  }
+  function driverRating() {
+    type FieldType = {
+      driverrating?: string;
+    };
+    return (
+      <div>
+        <h2>Driver Rating</h2>
+        <Form.Item<FieldType> name="driverrating" rules={[{ required: true, message: "Please input something about the driver rating!" }]}>
+          <TextArea style={{verticalAlign: 'center'}} className='strategic-input'/>
+        </Form.Item>
+        <Flex justify='in-between' style={{paddingBottom: '10%'}}>
+          <Button onClick={() => setTabNum("2")} className='tabbutton'>Back</Button>
+          <Input type="submit" value="Submit" className='submitbutton'/>
+        </Flex>
       </div>
     );
   }
@@ -113,9 +140,14 @@ function Strategic(props: any) {
       label: 'Comment',
       children: comment(),
     },
+    {
+      key: '3',
+      label: 'Driver Skill',
+      children: driverRating(),
+    },
   ];
   return (
-    <body>
+    <div>
       <div className='banner'>
         <header>
           <a href='/scoutingapp'>
@@ -138,9 +170,9 @@ function Strategic(props: any) {
           window.location.reload();
         }}
       >
-        <Tabs defaultActiveKey="1" items={items} className='tabs' />
+        <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} className='tabs' onChange={async (key) => {setTabNum(key)}}/>
       </Form>
-    </body>
+    </div>
   );
 }
 

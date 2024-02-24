@@ -646,9 +646,7 @@ function MatchScout(props: any) {
           }
         }}
       >
-        <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} className='tabs' centered onChange={async (key) => {
-          setTabNum(key);
-        }}/>
+        <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} className='tabs' centered onChange={async (key) => {setTabNum(key)}}/>
       </Form>
     </div>
   );
