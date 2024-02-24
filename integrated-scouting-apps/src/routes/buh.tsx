@@ -13,6 +13,7 @@ import greg from '../public/images/greg.jpg';
 function Buh() {
     return (
         <div>
+            <h1>I FUCKING HATE STRATEGY YOU CAN GO KYS</h1>
             <h1>shortest programming lead</h1>
             <img width="25%" height="25%" src={lisa} alt=""></img>
             <h1>ethan le gasping for air</h1>
