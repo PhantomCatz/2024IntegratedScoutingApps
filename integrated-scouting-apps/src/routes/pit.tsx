@@ -260,7 +260,7 @@ function PitScout(props: any) {
 
       {/* Team workmenship# */}
       <div>
-        <h1 className='pitBody'>Team workmenship</h1>
+        <h1 className='pitBody'>Team workmanship</h1>
         <Form.Item<FieldType> name="robot_team_workmanship">
           <InputNumber controls min={1} max={4} className="pitinput"/>
         </Form.Item>
