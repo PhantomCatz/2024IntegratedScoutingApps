@@ -28,7 +28,7 @@ function ScoutingPage(props: any) {
         <Button className='mainbutton' href='/scoutingapp/lookup'>Data Lookup</Button>
         <Button className='mainbutton' href='/scoutingapp/picklists'>Picklists</Button>
       </div>
-      <iframe height="500px" width="500px" src="https://vclock.com/embed/timer/#date=2024-02-28&title=finish+scouting+app+and+enjoy+life&theme=1" title='lisa gay'></iframe>
+      {/* <iframe height="500px" width="500px" src="https://vclock.com/embed/timer/#date=2024-02-28&title=finish+scouting+app+and+enjoy+life&theme=1"></iframe> */}
     </body>
   );
 }
