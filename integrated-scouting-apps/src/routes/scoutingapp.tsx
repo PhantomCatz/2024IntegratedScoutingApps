@@ -22,7 +22,7 @@ function ScoutingPage(props: any) {
         </header>
       </div>
       <div>
-        <Button style={{  paddingBottom: '15px'   }} className='mainbutton' href='/scoutingapp/match'>Match</Button>
+        <Button className='mainbutton' href='/scoutingapp/match'>Match</Button>
         <Button className='mainbutton' href='/scoutingapp/strategic'>Strategic</Button>
         <Button className='mainbutton' href='/scoutingapp/pit'>Pit</Button>
         <Button className='mainbutton' href='/scoutingapp/lookup'>Data Lookup</Button>
