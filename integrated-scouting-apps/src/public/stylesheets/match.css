@@ -100,8 +100,8 @@ h2 {
     width: 0px !important;
     height: 0px !important;
 }
-.rc-virtual-list-holder {
-    max-height: 50% !important;
+.rc-virtual-list-holder, .rc-virtual-list-holder-inner {
+    min-height: 100px !important;
 }
 .ant-tabs-tab,.ant-tabs-tab-active {
     margin-top: 50px !important;
