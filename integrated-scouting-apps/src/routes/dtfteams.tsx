@@ -6,7 +6,8 @@ import { Tabs, TabsProps, Checkbox, InputNumber, Input } from 'antd';
 import { useParams } from 'react-router-dom';
 import TextArea from 'antd/es/input/TextArea';
 
-let teamsArr = new Array();
+let teamsArr  = new Array();
+let graphsArr = new Array();
 
 function DTFTeams(props: any) {
   useEffect(() => document.title = props.title, [props.title]);
@@ -30,7 +31,7 @@ function DTFTeams(props: any) {
 
   async function fetchGraph(team_number: number) {
     try {
-        const response = await fetch('https://us-central1-team2637fixed.cloudfunctions.net/overallLineGraph?' + 'team_number=' + '254');
+        const response = await fetch('https://us-central1-team2637fixed.cloudfunctions.net/overallLineGraph?' + 'team_number=' + team_number);
         const svgContent = await response.text();
 
         // Create a temporary div to parse the SVG content
@@ -39,17 +40,17 @@ function DTFTeams(props: any) {
 
         // Get the SVG element from the temporary div
         const svgElement = tempDiv.querySelector('svg');
-        console.log(svgContent);
-        // svgContent.setAttribute('viewBox', '0 0 ,650, 450');
-
-        // document.getElementById('chartContainer').appendChild(svgElement);
+        const nonNullSvgElement = svgElement!;
+        const svgString = nonNullSvgElement.outerHTML;
+        const svgDataUri = `data:image/svg+xml,${encodeURIComponent(svgString)}`;
+        
+       
+        return svgDataUri;
 
     } catch (error) {
         console.error();
     }
   }; 
-
-  fetchGraph(254);
 
   let team1_number = '2637';//null protection
   let team2_number = '2637';//null protection
@@ -72,29 +73,20 @@ function DTFTeams(props: any) {
       team3_number = ' ';
     }
 
-    console.log(teams);
-
     teams.forEach(async (element) =>  {
       teamsArr.push(await fetchData(parseInt(element)));
-    });
+      graphsArr.push(await fetchGraph(parseInt(element)));
+      console.log(graphsArr);
+      console.log(graphsArr[0]);
+    }); 
 
-    if (typeof teamsArr[0] != "undefined") {
-      console.log(teamsArr)
-      console.log(teamsArr[0])
-      console.log(teamsArr[1])
-      console.log(teamsArr[2])
-    }
-
+    console.log(graphsArr[0])
 
   }
 
-  // function convertToImg(
-  //   const inputFilePath = '/path/to/my-image.svg';
-  //   const outputFilePath = await convertFile(inputFilePath);
-  
-  //   console.log(outputFilePath);
-  //   //=> "/path/to/my-image.png"
-  // );
+  if (typeof graphsArr[0] != "undefined") {
+    console.log(graphsArr[0])
+  }
 
   function Summary() {
     return (
@@ -169,13 +161,15 @@ function DTFTeams(props: any) {
         </div>
 
         <h2 className='h2' style={{textAlign: 'center'}}>Graph</h2>
-        <div>
-          
+        <div style={{marginBottom: '10%'}}>
+          <img src={'data:image/svg+xml,%3Csvg%20width%3D%22400%22%20height%3D%22300%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20version%3D%221.1%22%20baseProfile%3D%22full%22%20viewBox%3D%220%200%20400%20300%22%3E%0A%3Crect%20width%3D%22400%22%20height%3D%22300%22%20x%3D%220%22%20y%3D%220%22%20id%3D%220%22%20fill%3D%22none%22%3E%3C%2Frect%3E%0A%3Cpath%20d%3D%22M40%20230.5L360%20230.5%22%20fill%3D%22none%22%20stroke%3D%22%23E0E6F1%22%3E%3C%2Fpath%3E%0A%3Cpath%20d%3D%22M40%20187.5L360%20187.5%22%20fill%3D%22none%22%20stroke%3D%22%23E0E6F1%22%3E%3C%2Fpath%3E%0A%3Cpath%20d%3D%22M40%20145.5L360%20145.5%22%20fill%3D%22none%22%20stroke%3D%22%23E0E6F1%22%3E%3C%2Fpath%3E%0A%3Cpath%20d%3D%22M40%20102.5L360%20102.5%22%20fill%3D%22none%22%20stroke%3D%22%23E0E6F1%22%3E%3C%2Fpath%3E%0A%3Cpath%20d%3D%22M40%2060.5L360%2060.5%22%20fill%3D%22none%22%20stroke%3D%22%23E0E6F1%22%3E%3C%2Fpath%3E%0A%3Cpath%20d%3D%22M40%20230.5L360%20230.5%22%20fill%3D%22none%22%20stroke%3D%22%236E7079%22%20stroke-linecap%3D%22round%22%3E%3C%2Fpath%3E%0A%3Cpath%20d%3D%22M40.5%20230L40.5%20235%22%20fill%3D%22none%22%20stroke%3D%22%236E7079%22%3E%3C%2Fpath%3E%0A%3Cpath%20d%3D%22M104.5%20230L104.5%20235%22%20fill%3D%22none%22%20stroke%3D%22%236E7079%22%3E%3C%2Fpath%3E%0A%3Cpath%20d%3D%22M168.5%20230L168.5%20235%22%20fill%3D%22none%22%20stroke%3D%22%236E7079%22%3E%3C%2Fpath%3E%0A%3Cpath%20d%3D%22M232.5%20230L232.5%20235%22%20fill%3D%22none%22%20stroke%3D%22%236E7079%22%3E%3C%2Fpath%3E%0A%3Cpath%20d%3D%22M296.5%20230L296.5%20235%22%20fill%3D%22none%22%20stroke%3D%22%236E7079%22%3E%3C%2Fpath%3E%0A%3Cpath%20d%3D%22M360.5%20230L360.5%20235%22%20fill%3D%22none%22%20stroke%3D%22%236E7079%22%3E%3C%2Fpath%3E%0A%3Ctext%20dominant-baseline%3D%22central%22%20text-anchor%3D%22end%22%20style%3D%22font-size%3A12px%3Bfont-family%3Asans-serif%3B%22%20transform%3D%22translate(32%20230)%22%20fill%3D%22%236E7079%22%3E0%3C%2Ftext%3E%0A%3Ctext%20dominant-baseline%3D%22central%22%20text-anchor%3D%22end%22%20style%3D%22font-size%3A12px%3Bfont-family%3Asans-serif%3B%22%20transform%3D%22translate(32%20187.5)%22%20fill%3D%22%236E7079%22%3E20%3C%2Ftext%3E%0A%3Ctext%20dominant-baseline%3D%22central%22%20text-anchor%3D%22end%22%20style%3D%22font-size%3A12px%3Bfont-family%3Asans-serif%3B%22%20transform%3D%22translate(32%20145)%22%20fill%3D%22%236E7079%22%3E40%3C%2Ftext%3E%0A%3Ctext%20dominant-baseline%3D%22central%22%20text-anchor%3D%22end%22%20style%3D%22font-size%3A12px%3Bfont-family%3Asans-serif%3B%22%20transform%3D%22translate(32%20102.5)%22%20fill%3D%22%236E7079%22%3E60%3C%2Ftext%3E%0A%3Ctext%20dominant-baseline%3D%22central%22%20text-anchor%3D%22end%22%20style%3D%22font-size%3A12px%3Bfont-family%3Asans-serif%3B%22%20transform%3D%22translate(32%2060)%22%20fill%3D%22%236E7079%22%3E80%3C%2Ftext%3E%0A%3Ctext%20dominant-baseline%3D%22central%22%20text-anchor%3D%22middle%22%20style%3D%22font-size%3A12px%3Bfont-family%3Asans-serif%3B%22%20y%3D%226%22%20transform%3D%22translate(72%20238)%22%20fill%3D%22%236E7079%22%3E8%3C%2Ftext%3E%0A%3Ctext%20dominant-baseline%3D%22central%22%20text-anchor%3D%22middle%22%20style%3D%22font-size%3A12px%3Bfont-family%3Asans-serif%3B%22%20y%3D%226%22%20transform%3D%22translate(136%20238)%22%20fill%3D%22%236E7079%22%3E8%3C%2Ftext%3E%0A%3Ctext%20dominant-baseline%3D%22central%22%20text-anchor%3D%22middle%22%20style%3D%22font-size%3A12px%3Bfont-family%3Asans-serif%3B%22%20y%3D%226%22%20transform%3D%22translate(200%20238)%22%20fill%3D%22%236E7079%22%3E8%3C%2Ftext%3E%0A%3Ctext%20dominant-baseline%3D%22central%22%20text-anchor%3D%22middle%22%20style%3D%22font-size%3A12px%3Bfont-family%3Asans-serif%3B%22%20y%3D%226%22%20transform%3D%22translate(264%20238)%22%20fill%3D%22%236E7079%22%3E8%3C%2Ftext%3E%0A%3Ctext%20dominant-baseline%3D%22central%22%20text-anchor%3D%22middle%22%20style%3D%22font-size%3A12px%3Bfont-family%3Asans-serif%3B%22%20y%3D%226%22%20transform%3D%22translate(328%20238)%22%20fill%3D%22%236E7079%22%3E8%3C%2Ftext%3E%0A%3Cg%20clip-path%3D%22url(%23zr27-c0)%22%3E%0A%3Cpath%20d%3D%22M72%2060C72%2060%20104%2060%20136%2060C168%2060%20168%2060%20200%2060C232%2060%20232%2060%20264%2060C296%2060%20328%2060%20328%2060%22%20fill%3D%22none%22%20stroke%3D%22%235470c6%22%20stroke-width%3D%222%22%20stroke-linejoin%3D%22bevel%22%3E%3C%2Fpath%3E%0A%3C%2Fg%3E%0A%3Cpath%20d%3D%22M1%200A1%201%200%201%201%201%20-0.1A1%201%200%200%201%201%200%22%20transform%3D%22matrix(2%2C0%2C0%2C2%2C72%2C60)%22%20fill%3D%22%23fff%22%20stroke%3D%22%235470c6%22%3E%3C%2Fpath%3E%0A%3Cpath%20d%3D%22M1%200A1%201%200%201%201%201%20-0.1A1%201%200%200%201%201%200%22%20transform%3D%22matrix(2%2C0%2C0%2C2%2C136%2C60)%22%20fill%3D%22%23fff%22%20stroke%3D%22%235470c6%22%3E%3C%2Fpath%3E%0A%3Cpath%20d%3D%22M1%200A1%201%200%201%201%201%20-0.1A1%201%200%200%201%201%200%22%20transform%3D%22matrix(2%2C0%2C0%2C2%2C200%2C60)%22%20fill%3D%22%23fff%22%20stroke%3D%22%235470c6%22%3E%3C%2Fpath%3E%0A%3Cpath%20d%3D%22M1%200A1%201%200%201%201%201%20-0.1A1%201%200%200%201%201%200%22%20transform%3D%22matrix(2%2C0%2C0%2C2%2C264%2C60)%22%20fill%3D%22%23fff%22%20stroke%3D%22%235470c6%22%3E%3C%2Fpath%3E%0A%3Cpath%20d%3D%22M1%200A1%201%200%201%201%201%20-0.1A1%201%200%200%201%201%200%22%20transform%3D%22matrix(2%2C0%2C0%2C2%2C328%2C60)%22%20fill%3D%22%23fff%22%20stroke%3D%22%235470c6%22%3E%3C%2Fpath%3E%0A%3Cdefs%3E%0A%3CclipPath%20id%3D%22zr27-c0%22%3E%0A%3Cpath%20d%3D%22M39%2059l322%200l0%20172l-322%200Z%22%20fill%3D%22%23000%22%20class%3D%22zr27-cls-0%22%3E%3C%2Fpath%3E%0A%3C%2FclipPath%3E%0A%3C%2Fdefs%3E%0A%3Cstyle%3E%0A.zr27-cls-0%20%7B%0Aanimation%3Azr27-ani-0%201s%20linear%20both%3B%0A%7D%0A%40keyframes%20zr27-ani-0%20%7B%0A0%25%20%7B%0Ad%3Apath(%22M39%2059l0%200l0%20172l0%200Z%22)%3B%0A%7D%0A100%25%20%7B%0Ad%3Apath(%22M39%2059l322%200l0%20172l-322%200Z%22)%3B%0A%7D%0A%7D%0A%0A%0A%3C%2Fstyle%3E%0A%3C%2Fsvg%3E'} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
         </div>
         
       </div>
     );
   }
+
+  
 
   function Team1() {
 
