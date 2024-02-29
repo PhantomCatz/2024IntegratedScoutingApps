@@ -23,9 +23,13 @@ h2 {
 body {
     margin: 0;
     font-family: Audiowide !important;
-    background-color: #32a7dc !important;
+    background-color: #433C3C !important;
     padding-left: 5%;
     padding-right: 5%;
+    color: white;
+}
+a {
+    text-decoration: none;
     color: white;
 }
 .banner {
@@ -44,7 +48,6 @@ body {
     font-size: 500%;
     font-family: Audiowide;
     color: white !important;
-
 }
 .homebutton {
     width: 100%;
@@ -54,7 +57,7 @@ body {
     margin-top: 10%;
     border: 4px solid white !important;
     border-radius: 100px;
-    background-color: #32a7dc;
+    background-color: #433C3C;
     font-family: Audiowide;
     color: white !important;
     font-size: 500%;
@@ -71,7 +74,7 @@ body {
     min-height: 20% !important; 
     border: 4px solid white !important;
     border-radius: 25px;
-    background-color: #32a7dc;
+    background-color: #433C3C;
     font-size: 300% !important;
     font-family: Figtree !important;
     font-weight: normal;
@@ -79,4 +82,8 @@ body {
     text-align: center !important;
     align-items: center !important;
     margin-left: 25%;
+}
+
+.died {
+    color: rgb(255, 0, 0);
 }

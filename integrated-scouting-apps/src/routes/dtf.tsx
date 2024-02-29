@@ -12,7 +12,7 @@ function DTF(props: any) {
 		<body>
 			<div className='banner'>
 				<header>
-					<a href='/'>
+					<a href='/home'>
 						<img src={back} style={{ height: 64 + 'px', paddingTop: '5%' }} alt=''></img>
 					</a>
 					<table>

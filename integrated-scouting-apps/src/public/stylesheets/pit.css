@@ -24,9 +24,9 @@
 
 }
 .pitComment {
-    width: 100%;
+    width: 90%;
     margin-bottom: 8%;
-    min-width: 100%;
+    min-width: 90%;
     height: 20% !important;
     min-height: 20% !important;
     border: 4px solid white !important;
@@ -97,4 +97,7 @@
     padding-top: 7%;
     margin-bottom: 7%
 
+}
+input[type=file]::-webkit-file-upload-button {
+    visibility: hidden;
 }

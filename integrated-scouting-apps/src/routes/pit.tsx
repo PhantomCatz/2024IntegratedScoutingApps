@@ -6,6 +6,7 @@
  */
 import '../public/stylesheets/style.css';
 import '../public/stylesheets/pit.css';
+import '../public/stylesheets/match.css';
 import field_blue from '../public/images/field_blue.png';
 import field_red from '../public/images/field_red.png';
 import logo from '../public/images/logo.png';
@@ -27,6 +28,9 @@ function PitScout(props: any) {
   const { team_number } = useParams();
   const [fetchedData, setFetchedData] = useState("");
   const [loading, setLoading] = useState(true);
+  const [question, setQuestion] = useState('');
+
+  
   useEffect(() => {
     async function fetchData(team_number: number) {
       let parsedData = "";
@@ -55,6 +59,20 @@ function PitScout(props: any) {
         setLoading(false);
       }
     }
+
+    async function fetchPitQuestions() {
+      try {
+        const url = process.env.REACT_APP_PIT_URL + "?team_number=" + team_number;
+        const response = await fetch(url);
+        const data = await response.json();
+        const robotQuestion = data.robot_questions; 
+
+        setQuestion(robotQuestion);
+      } catch (error) {
+        console.error('Error fetching question:', error);
+      }
+    }
+
     if (team_number) {
       fetchData(parseInt(team_number));
     }
@@ -63,11 +81,13 @@ function PitScout(props: any) {
   type FieldType = {
     robot_pic: string;
     robot_events: number;
+    robot_questions?: string;
     team_number: number;
     robot_drive_train: string;
     robot_weight: number;
     robot_motor_type: string;
     robot_motor_counter: number,
+    robot_wheel_type: string,
     robot_intake_capability: string;
     robot_shooting_capability: string;
     robot_ability_tranversed_stage: boolean;
@@ -81,6 +101,29 @@ function PitScout(props: any) {
     robot_auton_path_detail: string;
   };
 
+  const drive_train = [
+    { label: "Tank", value: "tank" },
+    { label: "Swerve", value: "swerve" },
+    { label: "H-Drive", value: 'hdrive' },
+    { label: "Other", value: 'other' },
+  ];
+  const motor_type = [
+    { label: "Falcon 500", value: "falcon500" },
+    { label: "NEO", value: "neo" },
+    { label: "CIM", value: 'cim' },
+    { label: "Other", value: 'other' },
+  ];
+  const wheel_type = [
+    { label: "Nitrile / Neoprene / Plaction", value: "nnp" },
+    { label: "HiGrip", value: "hgrip" },
+    { label: "Colson", value: 'colson' },
+    { label: "Stealth / Smooth grip", value: 'ss' },
+    { label: "Pneumatasic", value: 'pneumatasic' },
+    { label: "Omni", value: 'omni' },
+    { label: "Mechanum", value: 'mechanum' },
+    { label: "Other", value: 'other' },
+   
+  ];
   const intakeCap = [
     { label: "Source", value: "source" },
     { label: "Ground", value: "ground" },
@@ -119,17 +162,9 @@ function PitScout(props: any) {
         </header>
       </div>
       
-      {/* robot pictures */}
-      <div style={{marginBottom:"5%"}}>
-        <h1 className='pitBody' style={{fontSize:'260%', marginTop: '10%'}}>Robot Pictures</h1>
-        <input style={{background:"transparent", border:"none", fontSize:"0"}} className="uploadButton" type="file" accept="image/*" onChange={handleImageUpload} />
-        {image ? <img src={image} className="image" alt="preview" width={"100%"} height={"100%"}/> : null}
-        
-      </div>
-
       {/* how many events */}
       <div>
-        <h1 className='pitBody'>How many events have to competed in?</h1>
+        <h1 style={{marginTop:"10%"}} className='pitBody'>How many events have you competed in?</h1>
         <Form.Item<FieldType> name="robot_events" rules={[{required: true, message: 'Please input the robot position!' }]}>
           <InputNumber controls min={0} className="pitinput"/>
         </Form.Item>
@@ -146,8 +181,8 @@ function PitScout(props: any) {
       {/* drive train type */}
       <div>
         <h1 className='pitBody'>Drive Train Type</h1>
-        <Form.Item<FieldType> name="robot_drive_train">
-          <Input className="pitinput"/>
+        <Form.Item<FieldType> name="robot_drive_train" rules={[{ required: true, message: 'Please input the drive train type!' }]}>
+          <Select placeholder='' options={drive_train} className="pitinput"/>
         </Form.Item>
       </div>
 
@@ -162,8 +197,8 @@ function PitScout(props: any) {
       {/* motor type */}
       <div>
         <h1 className='pitBody'>Motor Type</h1>
-        <Form.Item<FieldType> name="robot_motor_type">
-          <Input className="pitinput"/>
+        <Form.Item<FieldType> name="robot_motor_type" rules={[{ required: true, message: 'Please input the motor type!' }]}>
+          <Select placeholder='' options={motor_type} className="pitinput"/>
         </Form.Item>
       </div>
 
@@ -174,12 +209,20 @@ function PitScout(props: any) {
           <InputNumber controls min={0} className="pitinput"/>
         </Form.Item>
       </div>
+      
+      {/* motor type */}
+      <div>
+        <h1 className='pitBody'>Wheel Type</h1>
+        <Form.Item<FieldType> name="robot_wheel_type" rules={[{ required: true, message: 'Please input the wheel type!' }]}>
+          <Select placeholder="" options={wheel_type} className="pitinput"/>
+        </Form.Item>
+      </div>
 
       {/* intake capability/*/}
       <div>
         <h1 className='pitBody'>Intake capability</h1>
         <Form.Item<FieldType> name="robot_intake_capability" rules={[{ required: true, message: 'Please input the intake capability!' }]}>
-          <Select placeholder='Source' options={intakeCap} className="input"/>
+          <Select placeholder='' options={intakeCap} className="input"/>
         </Form.Item>
       </div>
 
@@ -187,7 +230,7 @@ function PitScout(props: any) {
       <div>
         <h1 className='pitBody' style={{marginTop:"7%"}}>Shooting capability</h1>
         <Form.Item<FieldType> name="robot_shooting_capability" rules={[{ required: true, message: 'Please input the shooting capability!' }]}>
-          <Select placeholder='Speaker' options={shootingCap} className="input"/>
+          <Select placeholder='' options={shootingCap} className="input"/>
         </Form.Item>
       </div>
 
@@ -203,7 +246,7 @@ function PitScout(props: any) {
       <div>
         <h1 className='pitBody' style={{marginTop:"7%"}}>Climbing capability</h1>
         <Form.Item<FieldType> name="robot_climbing_capabilities" rules={[{ required: true, message: 'Please input the climbing capability!' }]}>
-          <Select placeholder='Solo Climb' options={climbingCap} className="input"/>
+          <Select placeholder='' options={climbingCap} className="input"/>
         </Form.Item>
       </div>
 
@@ -235,7 +278,7 @@ function PitScout(props: any) {
 
       {/* Team workmenship# */}
       <div>
-        <h1 className='pitBody'>Team workmenship</h1>
+        <h1 className='pitBody'>Team workmanship</h1>
         <Form.Item<FieldType> name="robot_team_workmanship">
           <InputNumber controls min={1} max={4} className="pitinput"/>
         </Form.Item>
@@ -278,18 +321,37 @@ function PitScout(props: any) {
         </Form.Item>
       </div>
 
+      {/* robot pictures */}
+      <div style={{marginBottom:"5%"}}>
+        <h1 className='pitBody' style={{fontSize:'260%', marginTop: '0%'}}>Robot Pictures</h1>
+        <input className='uploadButton' style={{opacity:"1"}} type="file" accept="image/*" onChange={handleImageUpload} />
+        {image ? <img src={image} className="image" alt="preview" width={"100%"} height={"100%"}/> : null}
+        
+      </div>
+
+      <div>
+        <h1 className='pitBody' style={{marginTop:"7%"}}>Input Custom Questions</h1>
+        <Form.Item<FieldType> name="robot_questions">
+          <label>
+            <textarea className="pitComment" name="eventNum" rows={3}/>
+          </label>
+        </Form.Item>
+      </div>
+      
+      <div>
+      <h1 className='pitBody' style={{ marginTop: '7%' }}>Questions Asked</h1>
+      <Form.Item<FieldType> name="robot_questions">
+        <label>
+          <textarea className="pitComment" name="eventNum" rows={3} value={question} readOnly />
+        </label>
+      </Form.Item>
+    </div>
+
       {/* submit */}
       <div>
           <Button style={{marginLeft: '25%', marginTop: '10%'}} className='pitButton'>Submit</Button>
       </div>
-
-      
-
-      
-
-      
-
-    </body>
+   </body>
   );
 }
 export default PitScout;
