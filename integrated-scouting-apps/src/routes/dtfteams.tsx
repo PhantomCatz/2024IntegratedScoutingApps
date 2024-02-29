@@ -12,6 +12,29 @@ function DTFTeams(props: any) {
   const [fetchedData, setFetchedData] = useState<{ [x: string]: any; }[]>([]);
 
 
+  async function fetchGraph(team_number: number) {
+    try {
+        const response = await fetch('https://us-central1-team2637fixed.cloudfunctions.net/overallLineGraph?' + 'team_number=' + '254');
+        const svgContent = await response.text();
+
+        // Create a temporary div to parse the SVG content
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = svgContent;
+
+        // Get the SVG element from the temporary div
+        const svgElement = tempDiv.querySelector('svg');
+        console.log(svgContent);
+        // svgContent.setAttribute('viewBox', '0 0 ,650, 450');
+
+        // document.getElementById('chartContainer').appendChild(svgElement);
+
+    } catch (error) {
+        console.error();
+    }
+  }; 
+
+  fetchGraph(254);
+
   let team1_number = '2637';//null protection
   let team2_number = '2637';//null protection
   let team3_number = '2637';//null protection
@@ -34,6 +57,14 @@ function DTFTeams(props: any) {
       team3_number = ' ';
     }
 
+
+  // function convertToImg(
+  //   const inputFilePath = '/path/to/my-image.svg';
+  //   const outputFilePath = await convertFile(inputFilePath);
+  
+  //   console.log(outputFilePath);
+  //   //=> "/path/to/my-image.png"
+  // );
 
   function Summary() {
     return (
@@ -106,7 +137,6 @@ function DTFTeams(props: any) {
         <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{marginLeft: "4%"}}/>
         <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{marginLeft: "5%"}}/>
         </div>
-        
 
         <h2 className='h2' style={{textAlign: 'center'}}>Graph</h2> 
 
