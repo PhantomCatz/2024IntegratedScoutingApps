@@ -151,14 +151,29 @@ function Strategic(props: any) {
   }
   function customQuestions() {
     type FieldType = {
-      customquestions?: string;
+      answer: string,
     };
+    const questions = [
+      { label: "team", value: "team" },
+      { label: "team", value: "team" },
+      { label: "team", value: 'team' },
+    ];
     return (
       <div>
-        <h2>Driver Rating</h2>
-        <Form.Item<FieldType> name="customquestions" rules={[{ required: true, message: "Please input something about the driver rating!" }]}>
-          <TextArea style={{verticalAlign: 'center'}} className='strategic-input' value={customQuestionText}/>
-        </Form.Item>
+        <h2>Custom Question</h2>
+        <div>
+          <Form.Item<FieldType> rules={[{ required: true, message: 'Please input.' }]}>
+            <Select placeholder='Question' options={questions} className="input"/>
+          </Form.Item>
+        </div>
+        <div>
+        <h2 style={{marginTop:"10%"}}>Answer</h2>
+            <Form.Item<FieldType> name="answer">
+              <label>
+                <textarea className="pitComment" name="answer" rows={3} />
+              </label>
+            </Form.Item>
+        </div>
         <Flex justify='in-between' style={{paddingBottom: '10%'}}>
           <Button onClick={() => setTabNum("3")} className='tabbutton'>Back</Button>
           <Input type="submit" value="Submit" className='submitbutton'/>

@@ -21,6 +21,7 @@ import FormItemInput from 'antd/es/form/FormItemInput';
 import VerifyLogin from '../verifyToken';
 import { useCookies } from 'react-cookie';
 function PitScout(props: any) {
+  const [tabNum, setTabNum] = useState("1");
   const imageURI = useRef<string>();
   const canvasRef = useRef<ReactSketchCanvasRef>(null);
   const [form] = Form.useForm();
@@ -33,8 +34,6 @@ function PitScout(props: any) {
   const [fetchedData, setFetchedData] = useState("");
   const [loading, setLoading] = useState(true);
   const [question, setQuestion] = useState('');
-
-  
   useEffect(() => {
     async function fetchData(team_number: number) {
       let parsedData = "";
@@ -82,280 +81,325 @@ function PitScout(props: any) {
     }
   }, [team_number]);
 
-  type FieldType = {
-    robot_pic: string;
-    robot_events: number;
-    robot_questions?: string;
-    team_number: number;
-    robot_drive_train: string;
-    robot_weight: number;
-    robot_motor_type: string;
-    robot_motor_counter: number,
-    robot_wheel_type: string,
-    robot_intake_capability: string;
-    robot_shooting_capability: string;
-    robot_ability_tranversed_stage: boolean;
-    robot_climbing_capabilities: string;
-    robot_trap_detail: string,
-    robot_pit_organization: number,
-    robot_team_safety: number,
-    robot_team_workmanship: number,
-    robot_GP: number,
-    robot_auton_path: string,
-    robot_auton_path_detail: string;
-  };
-
-  const drive_train = [
-    { label: "Tank", value: "tank" },
-    { label: "Swerve", value: "swerve" },
-    { label: "H-Drive", value: 'hdrive' },
-    { label: "Other", value: 'other' },
-  ];
-  const motor_type = [
-    { label: "Falcon 500", value: "falcon500" },
-    { label: "NEO", value: "neo" },
-    { label: "CIM", value: 'cim' },
-    { label: "Other", value: 'other' },
-  ];
-  const wheel_type = [
-    { label: "Nitrile / Neoprene / Plaction", value: "nnp" },
-    { label: "HiGrip", value: "hgrip" },
-    { label: "Colson", value: 'colson' },
-    { label: "Stealth / Smooth grip", value: 'ss' },
-    { label: "Pneumatasic", value: 'pneumatasic' },
-    { label: "Omni", value: 'omni' },
-    { label: "Mechanum", value: 'mechanum' },
-    { label: "Other", value: 'other' },
-   
-  ];
-  const intakeCap = [
-    { label: "Source", value: "source" },
-    { label: "Ground", value: "ground" },
-    { label: "Both", value: 'both' },
-  ];
-  const shootingCap = [
-    { label: "Speaker", value: "speaker" },
-    { label: "Amp", value: "amp" },
-    { label: "Both", value: 'both' },
-  ];
-  const climbingCap = [
-    { label: "Solo Climb", value: "solo_climb" },
-    { label: "Harmonize", value: "harmonize" },
-    { label: "Triple Climb", value: 'triple_climb' },
-  ];
-  
   const [image, setImage] = useState(String);
-
+  
   const handleImageUpload = (e:any) => {
     setImage(URL.createObjectURL(e.target.files[0]));
   };
 
+  function pitInput(){
+    type FieldType = {
+      robot_pic: string;
+      robot_events: number;
+      team_number: number;
+      robot_drive_train: string;
+      robot_weight: number;
+      robot_motor_type: string;
+      robot_motor_counter: number,
+      robot_wheel_type: string,
+      robot_intake_capability: string;
+      robot_shooting_capability: string;
+      robot_ability_tranversed_stage: boolean;
+      robot_climbing_capabilities: string;
+      robot_trap_detail: string,
+      robot_pit_organization: number,
+      robot_team_safety: number,
+      robot_team_workmanship: number,
+      robot_GP: number,
+      robot_auton_path: string,
+      robot_auton_path_detail: string;
+      pit_question: string,
+      pit_answer: string,
+    };
+  
+    const drive_train = [
+      { label: "Tank", value: "tank" },
+      { label: "Swerve", value: "swerve" },
+      { label: "H-Drive", value: 'hdrive' },
+      { label: "Other", value: 'other' },
+    ];
+    const motor_type = [
+      { label: "Falcon 500", value: "falcon500" },
+      { label: "NEO", value: "neo" },
+      { label: "CIM", value: 'cim' },
+      { label: "Other", value: 'other' },
+    ];
+    const wheel_type = [
+      { label: "Nitrile / Neoprene / Plaction", value: "nnp" },
+      { label: "HiGrip", value: "hgrip" },
+      { label: "Colson", value: 'colson' },
+      { label: "Stealth / Smooth grip", value: 'ss' },
+      { label: "Pneumatasic", value: 'pneumatasic' },
+      { label: "Omni", value: 'omni' },
+      { label: "Mechanum", value: 'mechanum' },
+      { label: "Other", value: 'other' },
+     
+    ];
+    const intakeCap = [
+      { label: "Source", value: "source" },
+      { label: "Ground", value: "ground" },
+      { label: "Both", value: 'both' },
+    ];
+    const shootingCap = [
+      { label: "Speaker", value: "speaker" },
+      { label: "Amp", value: "amp" },
+      { label: "Both", value: 'both' },
+    ];
+    const climbingCap = [
+      { label: "Solo Climb", value: "solo_climb" },
+      { label: "Harmonize", value: "harmonize" },
+      { label: "Triple Climb", value: 'triple_climb' },
+    ];
+    
+    
+    
+    
+    return(
+      <body> 
+        {/* how many events */}
+        <div>
+          <h1 style={{marginTop:"10%"}} className='pitBody'>How many events have you competed in?</h1>
+          <Form.Item<FieldType> name="robot_events" rules={[{required: true, message: 'Please input the robot position!' }]}>
+            <InputNumber controls min={0} className="pitinput"/>
+          </Form.Item>
+        </div>
+
+        {/* team # */}
+        <div>
+          <h1 className='pitBody'>Team #</h1>
+          <Form.Item<FieldType> name="team_number">
+            <InputNumber controls min={0} className="pitinput"/>
+          </Form.Item>
+        </div>
+
+        {/* drive train type */}
+        <div>
+          <h1 className='pitBody'>Drive Train Type</h1>
+          <Form.Item<FieldType> name="robot_drive_train" rules={[{ required: true, message: 'Please input the drive train type!' }]}>
+            <Select placeholder='' options={drive_train} className="pitinput"/>
+          </Form.Item>
+        </div>
+
+        {/* robot weight */}
+        <div>
+          <h1 className='pitBody'>Robot Weight</h1>
+          <Form.Item<FieldType> name="robot_weight">
+            <InputNumber controls min={0} className="pitinput"/>
+          </Form.Item>
+        </div>
+
+        {/* motor type */}
+        <div>
+          <h1 className='pitBody'>Motor Type</h1>
+          <Form.Item<FieldType> name="robot_motor_type" rules={[{ required: true, message: 'Please input the motor type!' }]}>
+            <Select placeholder='' options={motor_type} className="pitinput"/>
+          </Form.Item>
+        </div>
+
+        {/* motor counter */}
+        <div>
+          <h1 className='pitBody'># of Motors</h1>
+          <Form.Item<FieldType> name="robot_motor_counter">
+            <InputNumber controls min={0} className="pitinput"/>
+          </Form.Item>
+        </div>
+        
+        {/* motor type */}
+        <div>
+          <h1 className='pitBody'>Wheel Type</h1>
+          <Form.Item<FieldType> name="robot_wheel_type" rules={[{ required: true, message: 'Please input the wheel type!' }]}>
+            <Select placeholder="" options={wheel_type} className="pitinput"/>
+          </Form.Item>
+        </div>
+
+        {/* intake capability/*/}
+        <div>
+          <h1 className='pitBody'>Intake capability</h1>
+          <Form.Item<FieldType> name="robot_intake_capability" rules={[{ required: true, message: 'Please input the intake capability!' }]}>
+            <Select placeholder='' options={intakeCap} className="input"/>
+          </Form.Item>
+        </div>
+
+        {/* shooting capability/*/}
+        <div>
+          <h1 className='pitBody' style={{marginTop:"7%"}}>Shooting capability</h1>
+          <Form.Item<FieldType> name="robot_shooting_capability" rules={[{ required: true, message: 'Please input the shooting capability!' }]}>
+            <Select placeholder='' options={shootingCap} className="input"/>
+          </Form.Item>
+        </div>
+
+        {/* go under stage */}
+        <div>
+          <h1 className='pitBody' style={{marginTop:"7%"}}>Under Stage</h1>
+          <Form.Item<FieldType> name="robot_ability_tranversed_stage">
+            <Checkbox className='input_checkbox'/>
+          </Form.Item>
+        </div>
+
+        {/* climbing capabilities */}
+        <div>
+          <h1 className='pitBody' style={{marginTop:"7%"}}>Climbing capability</h1>
+          <Form.Item<FieldType> name="robot_climbing_capabilities" rules={[{ required: true, message: 'Please input the climbing capability!' }]}>
+            <Select placeholder='' options={climbingCap} className="input"/>
+          </Form.Item>
+        </div>
+
+        {/* How does robot trap? */}
+        <div>
+          <h1 className='pitBody' style={{marginTop:"7%"}}>How does robot trap?</h1>
+          <Form.Item<FieldType> name="robot_trap_detail">
+            <label>
+              <textarea className="pitComment" name="eventNum" rows={3}/>
+            </label>
+          </Form.Item>
+        </div>
+
+        {/* pit organization */}
+        <div>
+          <h1 className='pitBody'>Pit organization</h1>
+          <Form.Item<FieldType> name="robot_pit_organization">
+          <InputNumber controls min={1} max={4} className="pitinput"/>
+          </Form.Item>
+        </div>
+
+        {/* Team safety */}
+        <div>
+          <h1 className='pitBody'>Team safety</h1>
+          <Form.Item<FieldType> name="robot_team_safety">
+            <InputNumber controls min={1} max={4} className="pitinput"/>
+          </Form.Item>
+        </div>
+
+        {/* Team workmenship# */}
+        <div>
+          <h1 className='pitBody'>Team workmanship</h1>
+          <Form.Item<FieldType> name="robot_team_workmanship">
+            <InputNumber controls min={1} max={4} className="pitinput"/>
+          </Form.Item>
+        </div>
+
+        {/* Gracious professionalism */}
+        <div>
+          <h1 className='pitBody'>Gracious professionalism</h1>
+          <Form.Item<FieldType> name="robot_GP">
+            <InputNumber controls min={1} max={4} className="pitinput"/>
+          </Form.Item>
+        </div>
+
+        <div style={{ alignContent: 'center' }}>
+            <ReactSketchCanvas
+              ref={canvasRef}
+              width='50rem'
+              height='50rem'
+              strokeWidth={8}
+              strokeColor='#32a7dc'
+              backgroundImage={color ? field_red : field_blue}
+              exportWithBackgroundImage={true}
+              style={{paddingBottom: '5%'}}
+              onChange={(event) => {canvasRef.current?.exportImage('png').then((data: any) => imageURI.current = data);}}
+            />
+            <Flex justify='in-between' style={{paddingBottom: '10%'}}>
+              <Button onClick={() => canvasRef.current?.undo()} className='pathbutton'>Undo</Button>
+              <Button onClick={() => canvasRef.current?.redo()} className='pathbutton'>Redo</Button>
+              <Button onClick={() => canvasRef.current?.clearCanvas()} className='pathbutton'>Clear</Button>
+            </Flex>
+          </div>
+
+          {/* auton path details */}
+          <div>
+          <h1 className='pitBody' style={{marginTop:"7%"}}>Auton path details</h1>
+          <Form.Item<FieldType> name="robot_auton_path_detail">
+            <label>
+              <textarea className="pitComment" name="eventNum" rows={3}/>
+            </label>
+          </Form.Item>
+        </div>
+
+        {/* robot pictures */}
+        <div style={{marginBottom:"5%"}}>
+          <h1 className='pitBody' style={{fontSize:'260%', marginTop: '0%'}}>Robot Pictures</h1>
+          <input className='uploadButton' style={{opacity:"1"}} type="file" accept="image/*" onChange={handleImageUpload} />
+          {image ? <img src={image} className="image" alt="preview" width={"100%"} height={"100%"}/> : null}
+          
+        </div>
+
+        {/* submit */}
+        <div>
+            <Button style={{marginLeft: '25%', marginTop: '10%'}} className='pitButton'>Submit</Button>
+        </div>
+    </body>
+    );
+  }
+
+  function answers(){
+    type FieldType = {
+      answer: string,
+      
+      
+    };
+    const questions = [
+      { label: "team", value: "team" },
+      { label: "team", value: "team" },
+      { label: "team", value: 'team' },
+    ];
+
+    return(
+      <body>
+        <div>
+          <h1 style={{marginTop:"10%"}}></h1>
+          <Form.Item<FieldType> rules={[{ required: true, message: 'Please input.' }]}>
+            <Select placeholder='Question' options={questions} className="input"/>
+          </Form.Item>
+        </div>
+
+        <div>
+          <h1 style={{marginTop:"10%"}} className='pitBody'>Answer</h1>
+            <Form.Item<FieldType> name="answer">
+              <label>
+                <textarea className="pitComment" name="answer" rows={3} />
+              </label>
+            </Form.Item>
+        </div>
+
+        {/* submit */}
+        <div>
+            <Button style={{marginLeft: '25%', marginTop: '10%'}} className='pitButton'>Submit</Button>
+        </div>
+      </body>
+    );
+  }
+
+  const items: TabsProps['items'] = [
+    {
+      key: '1',
+      label: 'Inputs',
+      children: pitInput(),
+    },
+    {
+      key: '2',
+      label: 'Answer',
+      children: answers(),
+    },
+];
+
  
   return(
     <body>
-       <div>
-        <header className='banner'>
-          <a href='/scoutingapp'><img src={back} style={{ height: 64 + 'px', paddingTop: '5%' }} alt=''></img></a>          <table>
-            <td>
-              <img src={logo} style={{height: 256 + 'px'}} alt=''></img>
-            </td>
-            <td>
-              <h1 style={{display: 'inline-block', textAlign: 'center'}}>Pit Scout</h1>
-            </td>
-          </table>
-        </header>
-      </div>
-      
-      {/* how many events */}
       <div>
-        <h1 style={{marginTop:"10%"}} className='pitBody'>How many events have you competed in?</h1>
-        <Form.Item<FieldType> name="robot_events" rules={[{required: true, message: 'Please input the robot position!' }]}>
-          <InputNumber controls min={0} className="pitinput"/>
-        </Form.Item>
-      </div>
-
-      {/* team # */}
-      <div>
-        <h1 className='pitBody'>Team #</h1>
-        <Form.Item<FieldType> name="team_number">
-          <InputNumber controls min={0} className="pitinput"/>
-        </Form.Item>
-      </div>
-
-      {/* drive train type */}
-      <div>
-        <h1 className='pitBody'>Drive Train Type</h1>
-        <Form.Item<FieldType> name="robot_drive_train" rules={[{ required: true, message: 'Please input the drive train type!' }]}>
-          <Select placeholder='' options={drive_train} className="pitinput"/>
-        </Form.Item>
-      </div>
-
-      {/* robot weight */}
-      <div>
-        <h1 className='pitBody'>Robot Weight</h1>
-        <Form.Item<FieldType> name="robot_weight">
-          <InputNumber controls min={0} className="pitinput"/>
-        </Form.Item>
-      </div>
-
-      {/* motor type */}
-      <div>
-        <h1 className='pitBody'>Motor Type</h1>
-        <Form.Item<FieldType> name="robot_motor_type" rules={[{ required: true, message: 'Please input the motor type!' }]}>
-          <Select placeholder='' options={motor_type} className="pitinput"/>
-        </Form.Item>
-      </div>
-
-      {/* motor counter */}
-      <div>
-        <h1 className='pitBody'># of Motors</h1>
-        <Form.Item<FieldType> name="robot_motor_counter">
-          <InputNumber controls min={0} className="pitinput"/>
-        </Form.Item>
-      </div>
-      
-      {/* motor type */}
-      <div>
-        <h1 className='pitBody'>Wheel Type</h1>
-        <Form.Item<FieldType> name="robot_wheel_type" rules={[{ required: true, message: 'Please input the wheel type!' }]}>
-          <Select placeholder="" options={wheel_type} className="pitinput"/>
-        </Form.Item>
-      </div>
-
-      {/* intake capability/*/}
-      <div>
-        <h1 className='pitBody'>Intake capability</h1>
-        <Form.Item<FieldType> name="robot_intake_capability" rules={[{ required: true, message: 'Please input the intake capability!' }]}>
-          <Select placeholder='' options={intakeCap} className="input"/>
-        </Form.Item>
-      </div>
-
-      {/* shooting capability/*/}
-      <div>
-        <h1 className='pitBody' style={{marginTop:"7%"}}>Shooting capability</h1>
-        <Form.Item<FieldType> name="robot_shooting_capability" rules={[{ required: true, message: 'Please input the shooting capability!' }]}>
-          <Select placeholder='' options={shootingCap} className="input"/>
-        </Form.Item>
-      </div>
-
-      {/* go under stage */}
-      <div>
-        <h1 className='pitBody' style={{marginTop:"7%"}}>Under Stage</h1>
-        <Form.Item<FieldType> name="robot_ability_tranversed_stage">
-          <Checkbox className='input_checkbox'/>
-        </Form.Item>
-      </div>
-
-      {/* climbing capabilities */}
-      <div>
-        <h1 className='pitBody' style={{marginTop:"7%"}}>Climbing capability</h1>
-        <Form.Item<FieldType> name="robot_climbing_capabilities" rules={[{ required: true, message: 'Please input the climbing capability!' }]}>
-          <Select placeholder='' options={climbingCap} className="input"/>
-        </Form.Item>
-      </div>
-
-      {/* How does robot trap? */}
-      <div>
-        <h1 className='pitBody' style={{marginTop:"7%"}}>How does robot trap?</h1>
-        <Form.Item<FieldType> name="robot_trap_detail">
-          <label>
-            <textarea className="pitComment" name="eventNum" rows={3}/>
-          </label>
-        </Form.Item>
-      </div>
-
-      {/* pit organization */}
-      <div>
-        <h1 className='pitBody'>Pit organization</h1>
-        <Form.Item<FieldType> name="robot_pit_organization">
-         <InputNumber controls min={1} max={4} className="pitinput"/>
-        </Form.Item>
-      </div>
-
-      {/* Team safety */}
-      <div>
-        <h1 className='pitBody'>Team safety</h1>
-        <Form.Item<FieldType> name="robot_team_safety">
-          <InputNumber controls min={1} max={4} className="pitinput"/>
-        </Form.Item>
-      </div>
-
-      {/* Team workmenship# */}
-      <div>
-        <h1 className='pitBody'>Team workmanship</h1>
-        <Form.Item<FieldType> name="robot_team_workmanship">
-          <InputNumber controls min={1} max={4} className="pitinput"/>
-        </Form.Item>
-      </div>
-
-      {/* Gracious professionalism */}
-      <div>
-        <h1 className='pitBody'>Gracious professionalism</h1>
-        <Form.Item<FieldType> name="robot_GP">
-          <InputNumber controls min={1} max={4} className="pitinput"/>
-        </Form.Item>
-      </div>
-
-      <div style={{ alignContent: 'center' }}>
-          <ReactSketchCanvas
-            ref={canvasRef}
-            width='50rem'
-            height='50rem'
-            strokeWidth={8}
-            strokeColor='#32a7dc'
-            backgroundImage={color ? field_red : field_blue}
-            exportWithBackgroundImage={true}
-            style={{paddingBottom: '5%'}}
-            onChange={(event) => {canvasRef.current?.exportImage('png').then((data: any) => imageURI.current = data);}}
-          />
-          <Flex justify='in-between' style={{paddingBottom: '10%'}}>
-            <Button onClick={() => canvasRef.current?.undo()} className='pathbutton'>Undo</Button>
-            <Button onClick={() => canvasRef.current?.redo()} className='pathbutton'>Redo</Button>
-            <Button onClick={() => canvasRef.current?.clearCanvas()} className='pathbutton'>Clear</Button>
-          </Flex>
+          <header className='banner'>
+            <a href='/scoutingapp'><img src={back} style={{ height: 64 + 'px', paddingTop: '5%' }} alt=''></img></a>          <table>
+              <td>
+                <img src={logo} style={{height: 256 + 'px'}} alt=''></img>
+              </td>
+              <td>
+                <h1 style={{display: 'inline-block', textAlign: 'center'}}>Pit Scout</h1>
+              </td>
+            </table>
+          </header>
         </div>
 
-        {/* auton path details */}
-        <div>
-        <h1 className='pitBody' style={{marginTop:"7%"}}>Auton path details</h1>
-        <Form.Item<FieldType> name="robot_auton_path_detail">
-          <label>
-            <textarea className="pitComment" name="eventNum" rows={3}/>
-          </label>
-        </Form.Item>
-      </div>
-
-      {/* robot pictures */}
-      <div style={{marginBottom:"5%"}}>
-        <h1 className='pitBody' style={{fontSize:'260%', marginTop: '0%'}}>Robot Pictures</h1>
-        <input className='uploadButton' style={{opacity:"1"}} type="file" accept="image/*" onChange={handleImageUpload} />
-        {image ? <img src={image} className="image" alt="preview" width={"100%"} height={"100%"}/> : null}
-        
-      </div>
-
-      <div>
-        <h1 className='pitBody' style={{marginTop:"7%"}}>Input Custom Questions</h1>
-        <Form.Item<FieldType> name="robot_questions">
-          <label>
-            <textarea className="pitComment" name="eventNum" rows={3}/>
-          </label>
-        </Form.Item>
-      </div>
-      
-      <div>
-      <h1 className='pitBody' style={{ marginTop: '7%' }}>Questions Asked</h1>
-      <Form.Item<FieldType> name="robot_questions">
-        <label>
-          <textarea className="pitComment" name="eventNum" rows={3} value={question} readOnly />
-        </label>
-      </Form.Item>
-    </div>
-
-      {/* submit */}
-      <div>
-          <Button style={{marginLeft: '25%', marginTop: '10%'}} className='pitButton'>Submit</Button>
-      </div>
-   </body>
+        <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} className='tabs' centered onChange={async (key) => {setTabNum(key)}}/>
+    </body>
   );
 }
 export default PitScout;
