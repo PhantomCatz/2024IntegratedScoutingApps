@@ -10,7 +10,8 @@ import { Tabs, Input, Form, Select, Checkbox, InputNumber, Flex, Button } from '
 import { ReactSketchCanvas, ReactSketchCanvasRef } from 'react-sketch-canvas';
 import type { TabsProps } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-
+import VerifyLogin from '../verifyToken';
+import { useCookies } from 'react-cookie';
 function MatchScout(props: any) {
   const [form] = Form.useForm();
   const [color, setColor] = useState(false); //red if true blue if false
@@ -37,6 +38,8 @@ function MatchScout(props: any) {
     }
   }} className='decrementbutton'>-</Button>);
   useEffect(() => {document.title = props.title; return () => {}}, [props.title]);
+  const [cookies] = useCookies(['login']);
+  useEffect(() => { VerifyLogin(cookies.login); }, []);
   
   async function setNewMatchScout(event: any) {
     const body = {

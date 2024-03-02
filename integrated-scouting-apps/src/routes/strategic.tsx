@@ -5,13 +5,17 @@ import { useEffect, useState } from 'react';
 import { Tabs, Input, Form, Select, InputNumber, Button, Flex } from 'antd';
 import type { TabsProps } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-
+import VerifyLogin from '../verifyToken';
+import { useCookies } from 'react-cookie';
 function Strategic(props: any) {
   const [form] = Form.useForm();
   const [tabNum, setTabNum] = useState("1");
   const [isLoading, setLoading] = useState(false);
   const [customQuestionText, setCustomQuestionText] = useState("");
   useEffect(() => document.title = props.title, [props.title]);
+	const [cookies] = useCookies(['login']);
+  useEffect(() => { VerifyLogin(cookies.login); }, []);
+
   const eventname = process.env.REACT_APP_EVENTNAME;
 
   async function setNewStrategicScout(event: any) {
