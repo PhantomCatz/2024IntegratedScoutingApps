@@ -18,8 +18,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import DataLookup from './routes/lookup';
 import TeamData from './routes/teamData';
 import Picklist from './routes/picklists';
-
-
+import VerifyLogin from './verifyToken';
 export default function App() {
   return (
     <BrowserRouter>
@@ -29,7 +28,7 @@ export default function App() {
         <Route path="/home" element={<HomePage title="2637 Strategy App" />} />
         <Route path="/scoutingapp" element={<ScoutingApp title="2637 Scouting App" />} />
         <Route path="/dtf" element={<DTF title="2637 Drive Team Feeder" />} />
-        <Route path="/dtf/:team_number" element={<DTFTeams title="2637 Drive Team Feeder Data" />} />
+        {/* <Route path="/dtf/:team_number" element={<DTFTeams title="2637 Drive Team Feeder Data" />} /> */}
         <Route path="/scoutingapp/match" element={<MatchScout title="2637 Match Scout" />} />
         <Route path="/scoutingapp/strategic" element={<StrategicScout title="2637 Strategic Scout" />} />
         <Route path="/scoutingapp/pit" element={<PitScout title="2637 Pit Scout" />} />

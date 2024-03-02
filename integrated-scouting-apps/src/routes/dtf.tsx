@@ -3,10 +3,14 @@ import logo from '../public/images/logo.png';
 import back from '../public/images/back.png';
 import { useEffect } from 'react';
 import { Input, Form, InputNumber } from 'antd';
-
+import VerifyLogin from '../verifyToken';
+import { useCookies } from 'react-cookie';
 function DTF(props: any) {
 	const [form] = Form.useForm();
 	useEffect(() => document.title = props.title, [props.title]);
+	const [cookies] = useCookies(['login']);
+  useEffect(() => { VerifyLogin(cookies.login); }, []);
+
 
 	return (
 		<body>

@@ -1,14 +1,19 @@
 import '../public/stylesheets/login.css';
+import VerifyLogin from '../verifyToken';
 import logo from '../public/images/logo.png';
 import back from '../public/images/back.png';
 import { useEffect, useState } from 'react';
 import { Form, Input } from 'antd';
 import { useParams } from 'react-router-dom';
+import { base64url, SignJWT } from 'jose';
+import { useCookies } from 'react-cookie';
 
 function LoginPage(props: any) {
 	const { msg } = useParams();
 	const [isLoading, setIsLoading] = useState(false);
+	const [cookies, setCookies, removeCookies] = useCookies(['login']);
 	useEffect(() => document.title = props.title, [props.title]);
+
 	type FieldType = {
 		username: string,
 		password: string,
@@ -39,10 +44,14 @@ function LoginPage(props: any) {
 					headers: {
 						"Content-Type": "application/json",
 					}
-				}).then(response => response.json()).then(data => {
+				}).then(response => response.json()).then(async data => {
 					let response = data;
 					console.log(response);
 					if (response.toString() === "true") {
+						const hash = base64url.decode(process.env.REACT_APP_HASH as string);
+						const signed = await new SignJWT({username: event.username, password: event.password}).setExpirationTime(new Date(new Date().getTime() + 5 * 60 * 60 * 100)).setProtectedHeader({alg: 'HS256'}).sign(hash);
+						removeCookies("login");
+						setCookies("login", signed);
 						window.location.href = "/home";
 					}
 					else if (response.gay === "lisaGay") {
