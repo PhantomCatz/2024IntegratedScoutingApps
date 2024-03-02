@@ -18,13 +18,17 @@ import back from '../public/images/back.png'
 import { useParams } from 'react-router-dom';
 import { ReactSketchCanvas, ReactSketchCanvasRef } from 'react-sketch-canvas';
 import FormItemInput from 'antd/es/form/FormItemInput';
-
+import VerifyLogin from '../verifyToken';
+import { useCookies } from 'react-cookie';
 function PitScout(props: any) {
   const imageURI = useRef<string>();
   const canvasRef = useRef<ReactSketchCanvasRef>(null);
   const [form] = Form.useForm();
   const [color, setColor] = useState(false);
   useEffect(() => document.title = props.title, [props.title]);
+	const [cookies] = useCookies(['login']);
+  useEffect(() => { VerifyLogin(cookies.login); }, []);
+
   const { team_number } = useParams();
   const [fetchedData, setFetchedData] = useState("");
   const [loading, setLoading] = useState(true);

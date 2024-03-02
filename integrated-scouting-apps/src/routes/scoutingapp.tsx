@@ -3,9 +3,13 @@ import logo from '../public/images/logo.png';
 import back from '../public/images/back.png';
 import { Button } from 'antd';
 import { useEffect } from 'react';
-
+import VerifyLogin from '../verifyToken';
+import { useCookies } from 'react-cookie';
 function ScoutingPage(props: any) {
   useEffect(() => document.title = props.title, [props.title]);
+	const [cookies] = useCookies(['login']);
+  useEffect(() => { VerifyLogin(cookies.login); }, []);
+
   return (
     <body>
       <div className='banner'>

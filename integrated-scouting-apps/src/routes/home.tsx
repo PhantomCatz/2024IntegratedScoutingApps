@@ -3,9 +3,13 @@ import logo from '../public/images/logo.png';
 import no_image from '../public/images/no_image.png';
 import { Button } from 'antd';
 import { useEffect } from 'react';
-
+import VerifyLogin from '../verifyToken';
+import { useCookies } from 'react-cookie';
 function HomePage(props: any) {
   useEffect(() => document.title = props.title, [props.title]);
+	const [cookies] = useCookies(['login']);
+  useEffect(() => { VerifyLogin(cookies.login); }, []);
+
   return (
     <body>
       <div>
