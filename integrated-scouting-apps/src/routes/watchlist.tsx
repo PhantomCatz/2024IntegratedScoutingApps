@@ -18,15 +18,55 @@ import back from '../public/images/back.png'
 import { useParams } from 'react-router-dom';
 import { ReactSketchCanvas, ReactSketchCanvasRef } from 'react-sketch-canvas';
 import FormItemInput from 'antd/es/form/FormItemInput';
+import { useCookies } from 'react-cookie';
+import VerifyLogin from '../verifyToken';
 
 function Watchlist(props: any) {
   const [tabNum, setTabNum] = useState("1");
+  useEffect(() => {document.title = props.title}, [props.title]);
 
+  const [cookies] = useCookies(['login']);
+  useEffect(() => { VerifyLogin(cookies.login); }, []);
+  const handleSubmit = async function nathanIsGay(event: any) {
+    const requestBody = {
+      "team_number": event.teamNumber,
+      "custom0": {
+        "question": event.question,
+        "answer": event.answer,
+        "question_type": event.questionType,
+      },
+    };
+  try {
+    const response = await fetch("https://us-central1-team2637fixed.cloudfunctions.net/WatchListSend", 
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestBody),
+    });
+
+    if (response.ok) {
+      // Request was successful
+      const responseData = await response.json();
+      console.log("Data sent successfully:", responseData);
+    } else {
+      // Handle error cases
+      const errorData = await response.json();
+      console.error("Error sending data:", errorData);
+    }
+  } catch (error) {
+    console.error("An unexpected error occurred:", error);
+  }
+ 
+} 
   function input(){
     type FieldType = {
       team_number: number,//name not specified
-      apps: string, //name not specified
-      input_custom_question: string,//name not specified
+      question: string,
+      answer?: string,
+      question_type: string,
+
     };
     const appOptions = [
       { label: "Pit", value: "pit" },
@@ -41,14 +81,14 @@ function Watchlist(props: any) {
           </Form.Item>
         </div>
         <div>
-        <Form.Item<FieldType> name="apps" rules={[{ required: true, message: 'Please input.' }]}>
+        <Form.Item<FieldType> name="question_type" rules={[{ required: true, message: 'Please input.' }]}>
           <Select placeholder='Match' options={appOptions} className="input"/>
         </Form.Item>
         </div>
 
         <div>
           <h1 style={{marginTop:"10%"}} className='pitBody'>Custom Question</h1>
-            <Form.Item<FieldType> name="input_custom_question">
+            <Form.Item<FieldType> name="question">
               <label>
                 <textarea className="pitComment" name="eventNum" rows={3} />
               </label>
@@ -56,9 +96,11 @@ function Watchlist(props: any) {
         </div>
 
         {/* submit */}
-        <div>
-          <Button style={{marginLeft: '25%', marginTop: '10%'}} className='pitButton'>Submit</Button>
-        </div>
+        <Form<FieldType> onFinish={handleSubmit}>
+      <div>
+      <Input type="submit" value="Submit" className="submitbutton" />
+      </div>
+    </Form>
       </body>
     );
     
@@ -73,7 +115,7 @@ function Watchlist(props: any) {
     },
     {
       key: '2',
-      label: 'hi',
+      label: 'WatchList',
       children: <h1>Still making</h1>,
     },
 ];
