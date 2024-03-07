@@ -12,9 +12,9 @@ function Strategic(props: any) {
   const [tabNum, setTabNum] = useState("1");
   const [isLoading, setLoading] = useState(false);
   const [customQuestionText, setCustomQuestionText] = useState("");
-  useEffect(() => document.title = props.title, [props.title]);
-	const [cookies] = useCookies(['login']);
-  useEffect(() => { VerifyLogin(cookies.login); }, []);
+	useEffect(() => {document.title = props.title; return () => {}}, [props.title]);
+  const [cookies] = useCookies(['login']);
+  useEffect(() => { VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
 
   const eventname = process.env.REACT_APP_EVENTNAME;
 
@@ -91,25 +91,25 @@ function Strategic(props: any) {
       <div>
         <h2>Scouter Initials</h2>
         <Form.Item<FieldType> name="initials" rules={[{ required: true, message: 'Please input your initials!' }]}>
-          <Input maxLength={2} className="input"/>
+          <Input maxLength={2} className="input" />
         </Form.Item>
         <h2>Team #</h2>
         <Form.Item<FieldType> name="teamnum" rules={[{ required: true, message: 'Please input the team number!' }]}>
-          <InputNumber min={1} className="input" onChange={(event) => {getCustomQuestions(event as number)}}/>
+          <InputNumber min={1} className="input" onChange={(event) => { getCustomQuestions(event as number) }} />
         </Form.Item>
         <h2>Match Level</h2>
         <Form.Item<FieldType> name="matchlevel" rules={[{ required: true, message: 'Please input the match level!' }]}>
-          <Select options={rounds} className="input"/>
+          <Select options={rounds} className="input" />
         </Form.Item>
         <h2>Match #</h2>
         <Form.Item<FieldType> name="matchnum" rules={[{ required: true, message: 'Please input the match number!' }]}>
-          <InputNumber min={1} className="input"/>
+          <InputNumber min={1} className="input" />
         </Form.Item>
         <h2>Times Amplified</h2>
         <Form.Item<FieldType> name="timesamplified" rules={[{ required: true, message: 'Please input the number of times the speaker was amplified!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input"/>
+          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input" />
         </Form.Item>
-        <Flex justify='in-between' style={{paddingBottom: '10%'}}>
+        <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
           <Button onClick={() => setTabNum("2")} className='tabbutton'>Next</Button>
         </Flex>
       </div>
@@ -123,9 +123,9 @@ function Strategic(props: any) {
       <div>
         <h2>Comments</h2>
         <Form.Item<FieldType> name="comments" rules={[{ required: true, message: "Please input some comments!" }]}>
-          <TextArea style={{verticalAlign: 'center'}} className='strategic-input'/>
+          <TextArea style={{ verticalAlign: 'center' }} className='strategic-input' />
         </Form.Item>
-        <Flex justify='in-between' style={{paddingBottom: '10%'}}>
+        <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
           <Button onClick={() => setTabNum("1")} className='tabbutton'>Back</Button>
           <Button onClick={() => setTabNum("3")} className='tabbutton'>Next</Button>
         </Flex>
@@ -140,9 +140,9 @@ function Strategic(props: any) {
       <div>
         <h2>Driver Rating</h2>
         <Form.Item<FieldType> name="driverrating" rules={[{ required: true, message: "Please input something about the driver rating!" }]}>
-          <TextArea style={{verticalAlign: 'center'}} className='strategic-input'/>
+          <TextArea style={{ verticalAlign: 'center' }} className='strategic-input' />
         </Form.Item>
-        <Flex justify='in-between' style={{paddingBottom: '10%'}}>
+        <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
           <Button onClick={() => setTabNum("2")} className='tabbutton'>Back</Button>
           <Button onClick={() => setTabNum("4")} className='tabbutton'>Next</Button>
         </Flex>
@@ -163,22 +163,22 @@ function Strategic(props: any) {
         <h2>Custom Question</h2>
         <div>
           <Form.Item<FieldType> rules={[{ required: true, message: 'Please input.' }]}>
-            <Select placeholder='Question' options={questions} className="input"/>
+            <Select placeholder='Question' options={questions} className="input" />
           </Form.Item>
         </div>
         <div>
-        <h2 style={{marginTop:"10%"}}>Answer</h2>
-            <Form.Item<FieldType> name="answer">
-              <label>
-                <textarea className="pitComment" name="answer" rows={3} />
-              </label>
-            </Form.Item>
+          <h2 style={{ marginTop: "10%" }}>Answer</h2>
+          <Form.Item<FieldType> name="answer">
+            <label>
+              <textarea className="pitComment" name="answer" rows={3} />
+            </label>
+          </Form.Item>
         </div>
-        <Flex justify='in-between' style={{paddingBottom: '10%'}}>
+        <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
           <Button onClick={() => setTabNum("3")} className='tabbutton'>Back</Button>
-          <Input type="submit" value="Submit" className='submitbutton'/>
+          <Input type="submit" value="Submit" className='submitbutton' />
         </Flex>
-        <h2 style={{display: isLoading ? 'inherit' : 'none'}}>Submitting data...</h2>
+        <h2 style={{ display: isLoading ? 'inherit' : 'none' }}>Submitting data...</h2>
       </div>
     );
   }
@@ -206,18 +206,24 @@ function Strategic(props: any) {
   ];
   return (
     <div>
+      <meta name="viewport" content="maximum-scale=1.0" />
       <div className='banner'>
         <header>
           <a href='/scoutingapp'>
-            <img src={back} style={{height: 64 + 'px', paddingTop: '5%'}} alt=''/>
+            <img src={back} style={{ height: 64 + 'px', paddingTop: '5%' }} alt='' />
           </a>
           <table>
-            <td>
-              <img src={logo} style={{ height: 256 + 'px' }} alt=''/>
-            </td>
-            <td>
-              <h1 style={{display: 'inline-block', textAlign: 'center'}}>Strategic Scout</h1>
-            </td>
+            <tbody>
+              <tr>
+                <td>
+                  <img src={logo} style={{ height: 256 + 'px' }} alt='' />
+                </td>
+                <td>
+                  <h1 style={{ display: 'inline-block', textAlign: 'center' }}>Strategic Scout</h1>
+                </td>
+              </tr>
+            </tbody>
+
           </table>
         </header>
       </div>
@@ -234,7 +240,7 @@ function Strategic(props: any) {
           setLoading(false);
         }}
       >
-        <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} className='tabs' onChange={async (key) => {setTabNum(key)}}/>
+        <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} className='tabs' onChange={async (key) => { setTabNum(key) }} />
       </Form>
     </div>
   );

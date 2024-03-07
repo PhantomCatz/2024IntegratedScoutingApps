@@ -101,7 +101,7 @@ h2 {
     height: 0px !important;
 }
 .rc-virtual-list-holder {
-    max-height: 50% !important;
+    max-height: 500% !important;
 }
 .ant-tabs-tab,.ant-tabs-tab-active {
     margin-top: 50px !important;
