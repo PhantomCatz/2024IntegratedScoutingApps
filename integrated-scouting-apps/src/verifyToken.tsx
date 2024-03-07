@@ -4,7 +4,6 @@ async function VerifyLogin(cookie: any) {
   try {
     const hash = base64url.decode(process.env.REACT_APP_HASH as string);
     const payload = await jwtVerify(cookie, hash);
-    console.log(payload);
     if (!payload) {
       window.location.href = "/";
     }

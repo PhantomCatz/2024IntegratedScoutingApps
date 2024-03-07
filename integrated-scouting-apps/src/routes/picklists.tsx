@@ -44,7 +44,7 @@ function Picklists(props: any) {
 
   let displayData = [
     {
-      
+
     }
   ];
   let expandData = [
@@ -73,67 +73,66 @@ function Picklists(props: any) {
     {
       title: 'Died',
       dataIndex: 'died',
-      key:'died',
+      key: 'died',
     },
   ];
-  
+
 
   const expandColumns = [
     {
-      title:'Match #',
+      title: 'Match #',
       dataIndex: 'match_number',
       key: 'match_number',
     },
     {
       title: 'Score',
       dataIndex: 'score',
-      key: 'score' 
+      key: 'score'
     }
   ];
 
 
-  useEffect(() => {document.title = props.title}, [props.title]);
+  useEffect(() => { document.title = props.title }, [props.title]);
   useEffect(() => {
     async function fetchTeams() {
       try {
-        const response = await fetch('https://www.thebluealliance.com/api/v3/event/'+ eventname + '/rankings', {
-        method: "GET",
-        headers: {
-          'X-TBA-Auth-Key': process.env.REACT_APP_TBA_AUTH_KEY as string,
-        }
-      });
-      const data = await response.json();
-      const ls = data['rankings'];
-      console.log(ls);
-      displayData = [];
-      for(var i = 0; i < ls.length; i++)
-      {
-        //await fetchData(parseInt(ls[i]['team_key'].substring(3)));
-        await fetchData(254);
-        //console.log(parseInt(ls[i]['team_key'].substring(3)))
+        const response = await fetch('https://www.thebluealliance.com/api/v3/event/' + eventname + '/rankings', {
+          method: "GET",
+          headers: {
+            'X-TBA-Auth-Key': process.env.REACT_APP_TBA_AUTH_KEY as string,
+          }
+        });
+        const data = await response.json();
+        const ls = data['rankings'];
+        console.log(ls);
+        displayData = [];
+        for (var i = 0; i < ls.length; i++) {
+          //await fetchData(parseInt(ls[i]['team_key'].substring(3)));
+          await fetchData(254);
+          //console.log(parseInt(ls[i]['team_key'].substring(3)))
 
-        let newData = {
-          key: ls[i]['rank'],
-          rank: ls[i]['rank'],
-          team_number: ls[i]['team_key'].substring(3),
-          average_score: avg_score.toFixed(2),
-          died: robot_died.toString(),
+          let newData = {
+            key: ls[i]['rank'],
+            rank: ls[i]['rank'],
+            team_number: ls[i]['team_key'].substring(3),
+            average_score: avg_score.toFixed(2),
+            died: robot_died.toString(),
+          }
+          console.log(expandData);
+          console.log(newData);
+          displayData.push(newData);
         }
-        console.log(expandData);
-        console.log(newData);
-        displayData.push(newData);
+        console.log(displayData);
+        setFetchedData(displayData);
       }
-      console.log(displayData);
-      setFetchedData(displayData);
-      }
-      catch(err) {
+      catch (err) {
         console.log(err);
       }
       finally {
         setLoading(false);
       }
     };
-      
+
     fetchTeams();
 
     async function fetchData(team_number: number) {
@@ -145,8 +144,7 @@ function Picklists(props: any) {
         const response = await fetch(process.env.REACT_APP_PICKLIST_URL + "?team_number=" + team_number);
         const data = await response.json();
 
-        for(var i = 0; i < data.length; i++)
-        {
+        for (var i = 0; i < data.length; i++) {
           match_num.push(parseInt(data[i]['match_number']));
           match_score.push(parseInt(data[i]['score']));
           match_died.push()//TBD call died
@@ -159,7 +157,7 @@ function Picklists(props: any) {
         avg_score /= match_score.length;
 
         expandData = [];
-        for(var i = 0; i < match_num.length; i++) {
+        for (var i = 0; i < match_num.length; i++) {
           let newChildren = {
             key: team_number * 1000 + match_num[i],
             match_number: match_num[i],
@@ -181,25 +179,32 @@ function Picklists(props: any) {
       }
     };
   }, [team_number]);
-  
+
   return (
-    <body>
+    <div>
+      <meta name="viewport" content="maximum-scale=1.0" />
       <div className='banner'>
         <header>
           <a href="/scoutingapp/">
             <img src={back} style={{ height: 64 + 'px', paddingTop: '5%' }} alt=''></img>
           </a>
           <table>
-            <td>
-              <img src={logo} style={{ height: 256 + 'px' }} alt='' ></img>
-            </td>
-              <h1 style={{ display: 'inline-block', textAlign: 'center' }}>Picklist</h1>
+            <tbody>
+              <tr>
+                <td>
+                  <img src={logo} style={{ height: 256 + 'px' }} alt='' ></img>
+                </td>
+                <td>
+                  <h1 style={{ display: 'inline-block', textAlign: 'center' }}>Picklist</h1>
+                </td>
+              </tr>
+            </tbody>
           </table>
         </header>
-        <h2 style={{whiteSpace: 'pre-line'}}>{loading ? 'Loading...' : ''}</h2>
-        <Table 
-          columns={columns} 
-          dataSource={fetchedData} 
+        <h2 style={{ whiteSpace: 'pre-line' }}>{loading ? 'Loading... (May take several minutes)' : ''}</h2>
+        <Table
+          columns={columns}
+          dataSource={fetchedData}
           rowClassName={(record) => (record.died == 'true' ? 'died' : 'OwO')} //TBD: died
           pagination={tableParams.pagination}
           expandable={{
@@ -210,9 +215,9 @@ function Picklists(props: any) {
               />
             ),
           }}
-          ></Table>
+        ></Table>
       </div>
-    </body>
+    </div>
   );
 }
 

@@ -6,22 +6,28 @@ import { useEffect } from 'react';
 import VerifyLogin from '../verifyToken';
 import { useCookies } from 'react-cookie';
 function ScoutingPage(props: any) {
-  useEffect(() => document.title = props.title, [props.title]);
-	const [cookies] = useCookies(['login']);
-  useEffect(() => { VerifyLogin(cookies.login); }, []);
+	useEffect(() => {document.title = props.title; return () => {}}, [props.title]);
+  const [cookies] = useCookies(['login']);
+  useEffect(() => { VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
 
   return (
-    <body>
+    <div>
+      <meta name="viewport" content="maximum-scale=1.0" />
       <div className='banner'>
         <header>
           <a href='/home'><img src={back} style={{ height: 64 + 'px', paddingTop: '5%' }} alt=''></img></a>
           <table>
-            <td>
-              <img src={logo} style={{ height: 256 + 'px' }} alt=''></img>
-            </td>
-            <td>
-              <h1 style={{ display: 'inline-block' }}>Scouting App</h1>
-            </td>
+            <tbody>
+              <tr>
+                <td>
+                  <img src={logo} style={{ height: 256 + 'px' }} alt=''></img>
+                </td>
+                <td>
+                  <h1 style={{ display: 'inline-block', textAlign: 'center' }}>Scouting App</h1>
+                </td>
+              </tr>
+            </tbody>
+
           </table>
         </header>
       </div>
@@ -33,7 +39,7 @@ function ScoutingPage(props: any) {
         <Button className='mainbutton' href='/scoutingapp/picklists'>Picklists</Button>
       </div>
       {/* <iframe height="500px" width="500px" src="https://vclock.com/embed/timer/#date=2024-02-28&title=finish+scouting+app+and+enjoy+life&theme=1"></iframe> */}
-    </body>
+    </div>
   );
 }
 
