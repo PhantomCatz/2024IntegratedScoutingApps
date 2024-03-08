@@ -34,9 +34,9 @@ function MatchScout(props: any) {
     teleopAmpScored: 0,
     teleopMissedAmpPieces: 0,
     teleopMissedSpeakerPieces: 0,
+    numPenalties: 0,
+    timeLeft: 0,
   });
-
-  const [penaltyNum, setPenaltyNum] = useState(0);
   const autonImageURI = useRef<string>();
   //const teleopImageURI = useRef<string>();
   const autonCanvasRef = useRef<ReactSketchCanvasRef>(null);
@@ -45,46 +45,49 @@ function MatchScout(props: any) {
   useEffect(() => { document.title = props.title; return () => { }; }, [props.title]);
   const [cookies] = useCookies(['login']);
   useEffect(() => { VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
-  useEffect(() => { if ((document.getElementById("auton_speakerscored") as HTMLInputElement) !== null) {
-    (document.getElementById("auton_speakerscored") as HTMLInputElement).value = formValue.autonSpeakerScored.toString();
-    form.setFieldValue('auton_speakerscored', formValue.autonSpeakerScored);
+  useEffect(() => {
+    if ((document.getElementById("auton_speakerscored") as HTMLInputElement) !== null) {
+      (document.getElementById("auton_speakerscored") as HTMLInputElement).value = formValue.autonSpeakerScored.toString();
+      form.setFieldValue('auton_speakerscored', formValue.autonSpeakerScored);
+    }
+    if ((document.getElementById("auton_ampscored") as HTMLInputElement) !== null) {
+      (document.getElementById("auton_ampscored") as HTMLInputElement).value = formValue.autonAmpScored.toString();
+      form.setFieldValue('auton_ampscored', formValue.autonAmpScored);
+    }
+    if ((document.getElementById("auton_missedpiecesamp") as HTMLInputElement) !== null) {
+      (document.getElementById("auton_missedpiecesamp") as HTMLInputElement).value = formValue.autonMissedAmpPieces.toString();
+      form.setFieldValue('auton_missedpiecesamp', formValue.autonMissedAmpPieces);
+    }
+    if ((document.getElementById("auton_missedpiecesspeaker") as HTMLInputElement) !== null) {
+      (document.getElementById("auton_missedpiecesspeaker") as HTMLInputElement).value = formValue.autonMissedSpeakerPieces.toString();
+      form.setFieldValue('auton_missedpiecesspeaker', formValue.autonMissedSpeakerPieces);
+    }
+    if ((document.getElementById("tele_speakerscored") as HTMLInputElement) !== null) {
+      (document.getElementById("tele_speakerscored") as HTMLInputElement).value = formValue.teleopSpeakerScored.toString();
+      form.setFieldValue('tele_speakerscored', formValue.teleopSpeakerScored);
+    }
+    if ((document.getElementById("tele_ampscored") as HTMLInputElement) !== null) {
+      (document.getElementById("tele_ampscored") as HTMLInputElement).value = formValue.teleopAmpScored.toString();
+      form.setFieldValue('tele_ampscored', formValue.teleopAmpScored);
+    }
+    if ((document.getElementById("tele_missedpiecesamp") as HTMLInputElement) !== null) {
+      (document.getElementById("tele_missedpiecesamp") as HTMLInputElement).value = formValue.teleopMissedAmpPieces.toString();
+      form.setFieldValue('tele_missedpiecesamp', formValue.teleopMissedAmpPieces);
+    }
+    if ((document.getElementById("tele_missedpiecesspeaker") as HTMLInputElement) !== null) {
+      (document.getElementById("tele_missedpiecesspeaker") as HTMLInputElement).value = formValue.teleopMissedSpeakerPieces.toString();
+      form.setFieldValue('tele_missedpiecesspeaker', formValue.teleopMissedSpeakerPieces);
+    }
+    if ((document.getElementById("timeleft") as HTMLElement) !== null) {
+      (document.getElementById("timeleft") as HTMLInputElement).value = formValue.timeLeft.toString();
+      form.setFieldValue('timeleft', formValue.timeLeft);
+    }
+    if ((document.getElementById("numpenalties") as HTMLElement) !== null) {
+      (document.getElementById("numpenalties") as HTMLInputElement).value = formValue.numPenalties.toString();
+      form.setFieldValue('numpenalties', formValue.numPenalties);
+    }
     return () => {};
-  }}, [formValue]);
-  useEffect(() => { if ((document.getElementById("auton_ampscored") as HTMLInputElement) !== null) {
-    (document.getElementById("auton_ampscored") as HTMLInputElement).value = formValue.autonAmpScored.toString();
-    form.setFieldValue('auton_ampscored', formValue.autonAmpScored);
-    return () => {};
-  }}, [formValue]);
-  useEffect(() => { if ((document.getElementById("auton_missedpiecesamp") as HTMLInputElement) !== null) {
-    (document.getElementById("auton_missedpiecesamp") as HTMLInputElement).value = formValue.autonMissedAmpPieces.toString();
-    form.setFieldValue('auton_missedpiecesamp', formValue.autonMissedAmpPieces);
-    return () => {};
-  }}, [formValue]);
-  useEffect(() => { if ((document.getElementById("auton_missedpiecesspeaker") as HTMLInputElement) !== null) {
-    (document.getElementById("auton_missedpiecesspeaker") as HTMLInputElement).value = formValue.autonMissedSpeakerPieces.toString();
-    form.setFieldValue('auton_missedpiecesspeaker', formValue.autonMissedSpeakerPieces);
-    return () => {};
-  }}, [formValue]);
-  useEffect(() => { if ((document.getElementById("tele_speakerscored") as HTMLInputElement) !== null) {
-    (document.getElementById("tele_speakerscored") as HTMLInputElement).value = formValue.teleopSpeakerScored.toString();
-    form.setFieldValue('tele_speakerscored', formValue.teleopSpeakerScored);
-    return () => {};
-  }}, [formValue]);
-  useEffect(() => { if ((document.getElementById("tele_ampscored") as HTMLInputElement) !== null) {
-    (document.getElementById("tele_ampscored") as HTMLInputElement).value = formValue.teleopAmpScored.toString();
-    form.setFieldValue('tele_ampscored', formValue.teleopAmpScored);
-    return () => {};
-  }}, [formValue]);
-  useEffect(() => { if ((document.getElementById("tele_missedpiecesamp") as HTMLInputElement) !== null) {
-    (document.getElementById("tele_missedpiecesamp") as HTMLInputElement).value = formValue.teleopMissedAmpPieces.toString();
-    form.setFieldValue('tele_missedpiecesamp', formValue.teleopMissedAmpPieces);
-    return () => {};
-  }}, [formValue]);
-  useEffect(() => { if ((document.getElementById("tele_missedpiecesspeaker") as HTMLInputElement) !== null) {
-    (document.getElementById("tele_missedpiecesspeaker") as HTMLInputElement).value = formValue.teleopMissedSpeakerPieces.toString();
-    form.setFieldValue('tele_missedpiecesspeaker', formValue.teleopMissedSpeakerPieces);
-    return () => {};
-  }}, [formValue]);
+  }, [formValue]);
 
   async function setNewMatchScout(event: any) {
     const body = {
@@ -145,7 +148,7 @@ function MatchScout(props: any) {
         "OA_defend": event.defended,
         "OA_pushing_rating": event.pushing,
         "OA_counter_defense": event.counterdefense,
-        "OA_numbers_penalties": penaltyNum,
+        "OA_numbers_penalties": event.penaltyNum,
         "OA_penalties_comments": event.penaltiesincurred,
         "OA_comments": event.comments,
         "OA_driver_skill": event.driverskill,
@@ -723,9 +726,19 @@ function MatchScout(props: any) {
           <InputNumber
             type='number'
             pattern="\d*"
+            disabled
             onWheel={(event) => (event.target as HTMLElement).blur()}
             min={0}
-            className="input" />
+            className="input"
+            addonAfter={<Button onClick={() => {
+              setFormValue({...formValue, timeLeft: formValue.timeLeft + 1});
+            }} className='incrementbutton'>+</Button>}
+            addonBefore={<Button onClick={() => {
+              if (Number(formValue.timeLeft) > 0) {
+                setFormValue({...formValue, timeLeft: formValue.timeLeft - 1});
+              }
+            }} className='decrementbutton'>-</Button>}
+            />
         </Form.Item>
         <h2>Harmony</h2>
         <Form.Item<FieldType> name="harmony" valuePropName="checked">
@@ -814,7 +827,16 @@ function MatchScout(props: any) {
             pattern="\d*"
             onWheel={(event) => (event.target as HTMLElement).blur()}
             min={0}
-            className="input" />
+            className="input"
+            addonAfter={<Button onClick={() => {
+              setFormValue({...formValue, numPenalties: formValue.numPenalties + 1});
+            }} className='incrementbutton'>+</Button>}
+            addonBefore={<Button onClick={() => {
+              if (Number(formValue.numPenalties) > 0) {
+                setFormValue({...formValue, numPenalties: formValue.numPenalties - 1});
+              }
+            }} className='decrementbutton'>-</Button>}
+          />
         </Form.Item>
         <h2>Penalties Incurred</h2>
         <Form.Item<FieldType> name="penaltiesincurred" rules={[{ required: true, message: 'Please describe the penalties incurred!' }]}>
