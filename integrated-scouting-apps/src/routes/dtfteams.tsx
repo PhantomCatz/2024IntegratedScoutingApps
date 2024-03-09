@@ -91,18 +91,8 @@ function DTFTeams(props: any) {
   }
 
   function Summary() {
-    console.log(teamsArr.length);
-    console.log(Length_Teams);
-    console.log(fetchedData);
-    console.log(fetchedGraph);
 
     if (Length_Teams == 3 && typeof fetchedData[2] != 'undefined' && typeof fetchedGraph[2] != 'undefined') {
-      console.log(fetchedData[0]);
-      console.log(fetchedData[1]);
-      console.log(fetchedData[2]);
-      console.log(fetchedGraph[0]);
-      console.log(fetchedGraph[1]);
-      console.log(fetchedGraph[2]);
       return (
         <div>
           <h2 className='h2' style={{textAlign:'center'}}>Allience Average Score</h2>
@@ -129,6 +119,14 @@ function DTFTeams(props: any) {
             <h2 style={{display: 'inline'}} className='h2'>Team1: </h2> 
             <h1 style={{display: 'inline', marginLeft:'5%'}} className='h1'>{fetchedData[0].teleop.teleop_intake}</h1>
           </div>
+          <div>
+            <h2 style={{display: 'inline'}} className='h2'>Team2: </h2> 
+            <h1 style={{display: 'inline', marginLeft:'5%'}} className='h1'>{fetchedData[1].teleop.teleop_intake}</h1>
+          </div>
+          <div>
+            <h2 style={{display: 'inline'}} className='h2'>Team3: </h2> 
+            <h1 style={{display: 'inline', marginLeft:'5%'}} className='h1'>{fetchedData[2].teleop.teleop_intake}</h1>
+          </div>
           
           <h2 className='h2' style={{textAlign: 'center'}}>Traversed Stage</h2>
           <div style={{textAlign: 'center'}}>
@@ -137,13 +135,13 @@ function DTFTeams(props: any) {
             <h2 className='h2' style={{display: 'inline', marginLeft: '12%'}}>Team3</h2>
           </div>
           <div style={{display: 'inline'}}>
-          <Checkbox disabled className='checkboxRedFixed' style={{width: '30%'}}/>
+          <Checkbox disabled defaultChecked={fetchedData[0].OA.traverse_under_stage} className='checkboxRedFixed' style={{width: '30%'}}/>
           </div>
           <div style={{display: 'inline', marginLeft: '4%'}}>
-          <Checkbox disabled className='checkboxRedFixed' style={{width: '30%'}}/>
+          <Checkbox disabled defaultChecked={fetchedData[1].OA.traverse_under_stage} className='checkboxRedFixed' style={{width: '30%'}}/>
           </div>
           <div style={{display: 'inline', marginLeft: '4%'}}>
-          <Checkbox disabled className='checkboxRedFixed' style={{width: '30%'}}/>
+          <Checkbox disabled defaultChecked={fetchedData[2].OA.traverse_under_stage} className='checkboxRedFixed' style={{width: '30%'}}/>
           </div>
           <h2 className='h2' style={{textAlign: 'center'}}>Driver Skill</h2>
           <div style={{textAlign: 'center'}}>
@@ -216,13 +214,10 @@ function DTFTeams(props: any) {
               <h2 className='h2' style={{display: 'inline', marginLeft: '12%'}}>Team2</h2> 
             </div>
             <div style={{display: 'inline'}}>
-            <Checkbox disabled className='checkboxRedFixed' style={{width: '30%'}}/>
+            <Checkbox disabled defaultChecked={fetchedData[0].OA.traverse_under_stage} className='checkboxRedFixed' style={{width: '30%'}}/>
             </div>
             <div style={{display: 'inline', marginLeft: '4%'}}>
-            <Checkbox disabled className='checkboxRedFixed' style={{width: '30%'}}/>
-            </div>
-            <div style={{display: 'inline', marginLeft: '4%'}}>
-            <Checkbox disabled className='checkboxRedFixed' style={{width: '30%'}}/>
+            <Checkbox disabled defaultChecked={fetchedData[1].OA.traverse_under_stage} className='checkboxRedFixed' style={{width: '30%'}}/>
             </div>
             <h2 className='h2' style={{textAlign: 'center'}}>Driver Skill</h2>
             <div style={{textAlign: 'center'}}>
@@ -275,13 +270,7 @@ function DTFTeams(props: any) {
               <h2 className='h2' style={{display: 'inline'}}>Team1</h2> 
             </div>
             <div style={{display: 'inline'}}>
-            <Checkbox disabled className='checkboxRedFixed' style={{width: '30%'}}/>
-            </div>
-            <div style={{display: 'inline', marginLeft: '4%'}}>
-            <Checkbox disabled className='checkboxRedFixed' style={{width: '30%'}}/>
-            </div>
-            <div style={{display: 'inline', marginLeft: '4%'}}>
-            <Checkbox disabled className='checkboxRedFixed' style={{width: '30%'}}/>
+            <Checkbox disabled defaultChecked={fetchedData[0].OA.traverse_under_stage} className='checkboxRedFixed' style={{width: '30%'}}/>
             </div>
             <h2 className='h2' style={{textAlign: 'center'}}>Driver Skill</h2>
             <div style={{textAlign: 'center'}}>
@@ -545,21 +534,12 @@ function DTFTeams(props: any) {
 
           <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
             <h1 className='h1' style={{textAlign: 'center'}}>Robot Starting Position</h1>
-              <div style={{textAlign: 'center'}}>
-                <h2 className='h2' style={{display: 'inline', marginLeft: '2%'}}>LEFT</h2>   {/* don't touch these values */}
-                <h2 className='h2' style={{display: 'inline', marginLeft: '10%'}}>MIDDLE</h2> 
-                <h2 className='h2' style={{display: 'inline', marginLeft: '9%'}}>RIGHT</h2>
-              </div>
-              <div>
-                <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '7%'}}/>
-                <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '12%'}}/>
-                <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '13%'}}/>
-              </div>
+              <h2 className='h2' style={{textAlign: 'center'}}>{teamsArr[1].auto.robot_start_position}</h2>
           </div>
 
           <div style={{border: 'solid', width: '99.6%', height: '100%', marginBottom: '3%', borderColor: 'white'}}> 
             <h2 className='h2' style={{textAlign: 'center'}}>Auton Path</h2>
-            <img src={logo} style={{ height: 100 + '%', marginLeft: 'auto', marginRight: 'auto', width: 100 + '%'}} alt=''/>
+            <img src={teamsArr[1].auto.auto_path} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
           </div>
 
           <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
@@ -618,23 +598,23 @@ function DTFTeams(props: any) {
           </div>
 
           <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
-            <h1 className='h1' style={{textAlign: 'center'}}>Climbing Ratio (Speaker : Amp)</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '70%', marginLeft: '15%', marginBottom: '3%'}}/>
+            <h1 className='h1' style={{textAlign: 'center'}}>Climbing Ratio</h1>
+            <InputNumber disabled controls defaultValue={teamsArr[1].endGame.robot_climbing_ratio} placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '70%', marginLeft: '15%', marginBottom: '3%'}}/>
           </div>
 
           <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
             <h1 className='h1' style={{textAlign: 'center'}}>Harmony</h1>
-            <Checkbox disabled className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
+            <Checkbox disabled defaultChecked={teamsArr[1].endGame.harmony} className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
           </div>
 
           <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
             <h1 className='h1' style={{textAlign: 'center'}}>Traverse Under Stage</h1>
-            <Checkbox disabled className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
+            <Checkbox disabled defaultChecked={teamsArr[1].OA.traverse_under_stage} className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
           </div>
 
           <div style={{border: 'solid', width: '99.6%', height: '100%', marginBottom: '3%', borderColor: 'white'}}> 
-            <h1 className='h1' style={{textAlign: 'center'}}>Trap Score</h1>
-            <Checkbox disabled className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
+            <h1 className='h1' style={{textAlign: 'center'}}>Trap Scored</h1>
+            <Checkbox disabled defaultChecked={teamsArr[1].OA.trap_scored} className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
           </div>
 
           {/* Overall Start */}
@@ -644,24 +624,17 @@ function DTFTeams(props: any) {
 
           <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
             <h1 className='h1' style={{textAlign: 'center'}}>Intake Source</h1>
-              <div style={{textAlign: 'center'}}>
-                <h2 className='h2' style={{display: 'inline'}}>Ground</h2>
-                <h2 className='h2' style={{display: 'inline', marginLeft: '10%'}}>Source</h2>
-              </div>
-              <div>
-                <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '24%'}}/>
-                <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '13%'}}/>
-              </div>
+              <h1 className='h1' style={{textAlign: 'center'}}>{teamsArr[1].teleop.teleop_intake}</h1>
           </div>
 
           <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
             <h1 className='h1' style={{textAlign: 'center'}}>Robot died (Last Match)</h1>
-            <Checkbox disabled className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
+            <Checkbox disabled defaultChecked={teamsArr[1].OA.OA_robot_died} className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
           </div>
 
           <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white', marginBottom: '10%'}}> 
             <h1 className='h1' style={{textAlign: 'center'}}>Comments</h1>
-            <TextArea disabled className="comment" style={{verticalAlign: 'center', marginLeft: '5%', marginBottom: '3%'}}/>
+            <TextArea disabled defaultValue={teamsArr[1].OA.robot_comments} className="comment" style={{verticalAlign: 'center', marginLeft: '5%', marginBottom: '3%'}}/>
           </div>
 
         </div>
@@ -736,21 +709,12 @@ function DTFTeams(props: any) {
 
           <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
             <h1 className='h1' style={{textAlign: 'center'}}>Robot Starting Position</h1>
-              <div style={{textAlign: 'center'}}>
-                <h2 className='h2' style={{display: 'inline', marginLeft: '2%'}}>LEFT</h2>   {/* don't touch these values */}
-                <h2 className='h2' style={{display: 'inline', marginLeft: '10%'}}>MIDDLE</h2> 
-                <h2 className='h2' style={{display: 'inline', marginLeft: '9%'}}>RIGHT</h2>
-              </div>
-              <div>
-                <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '7%'}}/>
-                <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '12%'}}/>
-                <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '13%'}}/>
-              </div>
+              <h2 className='h2' style={{textAlign: 'center'}}>{teamsArr[2].auto.robot_start_position}</h2>
           </div>
 
           <div style={{border: 'solid', width: '99.6%', height: '100%', marginBottom: '3%', borderColor: 'white'}}> 
             <h2 className='h2' style={{textAlign: 'center'}}>Auton Path</h2>
-            <img src={logo} style={{ height: 100 + '%', marginLeft: 'auto', marginRight: 'auto', width: 100 + '%'}} alt=''/>
+            <img src={teamsArr[2].auto.auto_path} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
           </div>
 
           <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
@@ -809,23 +773,23 @@ function DTFTeams(props: any) {
           </div>
 
           <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
-            <h1 className='h1' style={{textAlign: 'center'}}>Climbing Ratio (Speaker : Amp)</h1>
-            <InputNumber disabled controls placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '70%', marginLeft: '15%', marginBottom: '3%'}}/>
+            <h1 className='h1' style={{textAlign: 'center'}}>Climbing Ratio</h1>
+            <InputNumber disabled controls defaultValue={teamsArr[2].endGame.robot_climbing_ratio} placeholder='team 1' min={1} className="inputDisplayNumber" style={{width: '70%', marginLeft: '15%', marginBottom: '3%'}}/>
           </div>
 
           <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
             <h1 className='h1' style={{textAlign: 'center'}}>Harmony</h1>
-            <Checkbox disabled className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
+            <Checkbox disabled defaultChecked={teamsArr[2].endGame.harmony} className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
           </div>
 
           <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
             <h1 className='h1' style={{textAlign: 'center'}}>Traverse Under Stage</h1>
-            <Checkbox disabled className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
+            <Checkbox disabled defaultChecked={teamsArr[2].OA.traverse_under_stage} className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
           </div>
 
           <div style={{border: 'solid', width: '99.6%', height: '100%', marginBottom: '3%', borderColor: 'white'}}> 
-            <h1 className='h1' style={{textAlign: 'center'}}>Trap Score</h1>
-            <Checkbox disabled className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
+            <h1 className='h1' style={{textAlign: 'center'}}>Trap Scored</h1>
+            <Checkbox disabled defaultChecked={teamsArr[2].OA.trap_scored} className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
           </div>
 
           {/* Overall Start */}
@@ -835,24 +799,17 @@ function DTFTeams(props: any) {
 
           <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
             <h1 className='h1' style={{textAlign: 'center'}}>Intake Source</h1>
-              <div style={{textAlign: 'center'}}>
-                <h2 className='h2' style={{display: 'inline'}}>Ground</h2>
-                <h2 className='h2' style={{display: 'inline', marginLeft: '10%'}}>Source</h2>
-              </div>
-              <div>
-                <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '24%'}}/>
-                <Checkbox disabled className='checkboxRedFixed' style={{width: '20%', marginLeft: '13%'}}/>
-              </div>
+              <h1 className='h1' style={{textAlign: 'center'}}>{teamsArr[2].teleop.teleop_intake}</h1>
           </div>
 
           <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white'}}> 
             <h1 className='h1' style={{textAlign: 'center'}}>Robot died (Last Match)</h1>
-            <Checkbox disabled className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
+            <Checkbox disabled defaultChecked={teamsArr[2].OA.OA_robot_died} className='checkboxRedFixed' style={{width: '50%', marginLeft: '25%'}}/>
           </div>
 
           <div style={{border: 'solid', width: '99.6%', height: '100%', borderColor: 'white', marginBottom: '10%'}}> 
             <h1 className='h1' style={{textAlign: 'center'}}>Comments</h1>
-            <TextArea disabled className="comment" style={{verticalAlign: 'center', marginLeft: '5%', marginBottom: '3%'}}/>
+            <TextArea disabled defaultValue={teamsArr[2].OA.robot_comments} className="comment" style={{verticalAlign: 'center', marginLeft: '5%', marginBottom: '3%'}}/>
           </div>
 
         </div>
