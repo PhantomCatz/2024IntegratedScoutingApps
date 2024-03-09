@@ -63,9 +63,9 @@ function DTFTeams(props: any) {
     }
   }; 
 
-  let team1_number = '2637';//null protection
-  let team2_number = '2637';//null protection
-  let team3_number = '2637';//null protection
+  let team1_number = '10000';//null protection
+  let team2_number = '10000';//null protection
+  let team3_number = '10000';//null protection
 
   if(team_number){
     const teams = team_number.split(',');
@@ -79,8 +79,11 @@ function DTFTeams(props: any) {
       team2_number = ' ';
     }
 
-
-
+    if(teams[2]) {
+      team3_number = teams[2];
+    } else {
+      team3_number = ' ';
+    }
 
     teams.forEach(async (element) =>  {
       teamsArr.push(await fetchData(parseInt(element)));
@@ -174,10 +177,6 @@ function DTFTeams(props: any) {
     }
     
     if (Length_Teams == 2 && typeof fetchedData[1] != 'undefined' && typeof fetchedGraph[1] != 'undefined') {
-        console.log(fetchedData[0]);
-        console.log(fetchedData[1]);
-        console.log(fetchedGraph[0]);
-        console.log(fetchedGraph[1]);
 
         return (
           <div>
@@ -243,8 +242,6 @@ function DTFTeams(props: any) {
 
     
       if (Length_Teams == 1 && typeof fetchedData[0] != 'undefined' && typeof fetchedGraph[0] != 'undefined') {
-        console.log(fetchedData[0]);
-        console.log(fetchedGraph[0]);
 
         return (
           <div>
