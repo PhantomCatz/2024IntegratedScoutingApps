@@ -1,3 +1,4 @@
+
 import '../public/stylesheets/dtf.css';
 import logo from '../public/images/logo.png';
 import back from '../public/images/back.png';
@@ -78,11 +79,8 @@ function DTFTeams(props: any) {
       team2_number = ' ';
     }
 
-    if(teams[2]) {
-      team3_number = teams[2];
-    } else {
-      team3_number = ' ';
-    }
+
+
 
     teams.forEach(async (element) =>  {
       teamsArr.push(await fetchData(parseInt(element)));
@@ -863,3 +861,5 @@ function DTFTeams(props: any) {
   
 
 export default DTFTeams;
+
+
