@@ -10,16 +10,17 @@ import '../public/stylesheets/match.css';
 import field_blue from '../public/images/field_blue.png';
 import field_red from '../public/images/field_red.png';
 import logo from '../public/images/logo.png';
-import { Checkbox, Flex, Form, Input, InputNumber, Select, Tabs, TabsProps, Upload, message } from 'antd';
+import { Checkbox, Flex, Form, InputNumber, Select, Tabs, TabsProps } from 'antd';
 import { useRef } from 'react';
 import { Button } from 'antd';
 import React, { useState, useEffect } from 'react'
 import back from '../public/images/back.png'
 import { useParams } from 'react-router-dom';
 import { ReactSketchCanvas, ReactSketchCanvasRef } from 'react-sketch-canvas';
-import FormItemInput from 'antd/es/form/FormItemInput';
 import VerifyLogin from '../verifyToken';
 import { useCookies } from 'react-cookie';
+
+
 function PitScout(props: any) {
   const [tabNum, setTabNum] = useState("1");
   const imageURI = useRef<string>();

@@ -314,7 +314,7 @@ function MatchScout(props: any) {
     };
     const rounds = [
       { label: "Qualifications", value: "qm" },
-      { label: "Semifinals", value: "sf" },
+      { label: "Playoffs", value: "sf" },
       { label: "Finals", value: "f1" },
     ];
     const robotpos = [
@@ -372,7 +372,7 @@ function MatchScout(props: any) {
       leavespawn: boolean,
       auton_scoringloc: string,
       preloadscored: boolean,
-      piecespicked: string,
+      piecespicked?: string,
       auton_comments: string,
       imagepath: string,
     };
