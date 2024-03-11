@@ -34,6 +34,7 @@ function MatchScout(props: any) {
     teleopAmpScored: 0,
     teleopMissedAmpPieces: 0,
     teleopMissedSpeakerPieces: 0,
+    teleopHoardedPieces: 0,
     numPenalties: 0,
     timeLeft: 0,
   });
@@ -78,6 +79,10 @@ function MatchScout(props: any) {
       (document.getElementById("tele_missedpiecesspeaker") as HTMLInputElement).value = formValue.teleopMissedSpeakerPieces.toString();
       form.setFieldValue('tele_missedpiecesspeaker', formValue.teleopMissedSpeakerPieces);
     }
+    if ((document.getElementById("tele_hoardedpieces") as HTMLElement) !== null) {
+      (document.getElementById("tele_hoardedpieces") as HTMLInputElement).value = formValue.teleopHoardedPieces.toString();
+      form.setFieldValue('tele_hoardedpieces', formValue.teleopHoardedPieces);
+    }
     if ((document.getElementById("timeleft") as HTMLElement) !== null) {
       (document.getElementById("timeleft") as HTMLInputElement).value = formValue.timeLeft.toString();
       form.setFieldValue('timeleft', formValue.timeLeft);
@@ -86,6 +91,7 @@ function MatchScout(props: any) {
       (document.getElementById("numpenalties") as HTMLInputElement).value = formValue.numPenalties.toString();
       form.setFieldValue('numpenalties', formValue.numPenalties);
     }
+    
     return () => {};
   }, [formValue]);
 
@@ -93,11 +99,11 @@ function MatchScout(props: any) {
     const body = {
       "matchIdentifier": {
         "Initials": event.initials,
-        "robot_position": event.robotpos,
         "match_event": eventname,
         "match_level": event.matchlevel + (event.roundnum !== undefined ? event.roundnum : ""),
         "match_number": event.matchnum,
         "team_number": teamNum,
+        "robot_position": event.robotpos,
         "starting_position": event.startingloc,
       },
       "auto": {
@@ -108,29 +114,30 @@ function MatchScout(props: any) {
         "auto_scoring_location": event.auton_scoringloc,
         "auto_pieces_picked": event.piecespicked,
         "auto_missed_pieces_amp": event.auton_missedpiecesamp,
-        "auto_missed_pieces_speaker": event.autonmissedpiecesspeaker,
+        "auto_missed_pieces_speaker": event.auton_missedpiecesspeaker,
         "auto_path": autonImageURI.current,
         "auto_total_points": 0,
-        "auto_comments": event.auton_comments,
+        // "auto_comments": event.auton_comments,
       },
       "teleop": {
         "teleop_coop_pressed": event.cooppressed,
         "teleop_coop_first": event.cooppressed1st,
         "teleop_amps_scored": event.tele_ampscored,
         "teleop_speaker_scored": event.tele_speakerscored,
+        "teleop_times_amplify": 0,
         "intake": event.intake,
+        // "teleop_pieces_note_amplifying_scored": event.speakerscored_amplified,
         // "teleop_traverse_stage": event.traversedstage,
         "teleop_traverse_stage": false,
         "teleop_missed_pieces_amp": event.tele_missedpiecesamp,
         "teleop_missed_pieces_speaker": event.tele_missedpiecesspeaker,
         "teleop_scoring_location": event.tele_scoringloc,
         "teleop_total_points": 0,
-        // "teleop_path": teleopImageURI.current,
-        "teleop_path": "",
         "teleop_shooting_location": event.shootingloc,
+        "teleop_hoarded_pieces": event.tele_hoardedpieces,
+        "teleop_path": "",
+        //"teleop_path": teleopImageURI.current,
         // "teleop_times_amplify": event.timesamplified,
-        "teleop_times_amplify": 0,
-        "teleop_pieces_note_amplifying_scored": event.speakerscored_amplified,
       },
       "engGame": {
         "EG_climbed": event.climbed,
@@ -145,29 +152,29 @@ function MatchScout(props: any) {
         "OA_hoarded": event.hoarded,
         "OA_robot_died": event.robotdied,
         "OA_was_defend": event.wasdefended,
+        "OA_was_defend_team": event.wasdefendedteam,
         "OA_defend": event.defended,
+        "OA_defend_team": event.defendedteam,
         "OA_pushing_rating": event.pushing,
         "OA_counter_defense": event.counterdefense,
-        "OA_numbers_penalties": event.penaltyNum,
+        "OA_numbers_penalties": event.numpenalties,
         "OA_penalties_comments": event.penaltiesincurred,
-        "OA_comments": event.comments,
         "OA_driver_skill": event.driverskill,
-        "OA_was_defend_team": event.wasdefendedteam,
-        "OA_defend_team": event.defendedteam,
+        "OA_comments": event.comments,
       }
     };
+    console.log("LOREN",body);
     const TESTDONOTREMOVE = {
       "matchIdentifier": {
         "Initials": "Loren Liu",
         "match_event": "2024CALA",
         "match_level": "Practice",
         "match_number": 8,
-        "team_number": 254,
+        "team_number": 2637,
         "robot_position": "R1",
         "starting_position": "middle"
       },
       "auto": {
-        "auto_preLoad": false,
         "auto_preload_scored": true,
         "auto_leave": true,
         "auto_amps_scored": 6,
@@ -177,8 +184,7 @@ function MatchScout(props: any) {
         "auto_missed_pieces_amp": 0,
         "auto_missed_pieces_speaker": 0,
         "auto_path": "pic askdfghkjaegflaier",
-        "auto_total_points": 0,
-        "auto_comments": "comments"
+        "auto_total_points": 0
       },
       "teleop": {
         "teleop_coop_pressed": true,
@@ -186,21 +192,21 @@ function MatchScout(props: any) {
         "teleop_amps_scored": 1,
         "teleop_speaker_scored": 5,
         "teleop_times_amplify": 5,
-        "teleop_pieces_note_amplifying_scored": 7,
+        // "teleop_pieces_note_amplifying_scored": 7,
         "intake": "string",
         "teleop_traverse_stage": true,
         "teleop_missed_pieces_amp": 2,
         "teleop_missed_pieces_speaker": 3,
         "teleop_scoring_location": "strategyyyy",
         "teleop_total_points": 0,
-        "teleop_shooting_location": "i hate ethan",
+        "teleop_shooting_location": ["a","b"],
+        "teleop_hoarded_pieces":7,
         "teleop_path": "dfkahjsljkhfglwqekjh"
       },
       "engGame": {
         "EG_climbed": true,
         "EG_timeLeft_when_climb": 12,
         "EG_parked": false,
-        "EG_climbing_time": 11,
         "EG_trapScored": true,
         "EG_harmony": true,
         "EG_mic_score": true,
@@ -210,9 +216,9 @@ function MatchScout(props: any) {
         "OA_hoarded": true,
         "OA_robot_died": false,
         "OA_was_defend": true,
-        "OA_was_defend_team": "2637",
+        "OA_was_defend_team":[1,2,3],
         "OA_defend": false,
-        "OA_defend_team": "2637",
+        "OA_defend_team":[1,4,6],
         "OA_pushing_rating": 3,
         "OA_counter_defense": 3,
         "OA_numbers_penalties": 1,
@@ -222,6 +228,7 @@ function MatchScout(props: any) {
       }
     }
     try {
+      // console.log("YESLOREN",JSON.stringify(body))
       await fetch(process.env.REACT_APP_MATCH_URL as string, {
         method: "POST",
         body: JSON.stringify(body),
@@ -314,7 +321,7 @@ function MatchScout(props: any) {
     };
     const rounds = [
       { label: "Qualifications", value: "qm" },
-      { label: "Playoffs", value: "sf" },
+      { label: "Semi-Finals", value: "sf" },
       { label: "Finals", value: "f1" },
     ];
     const robotpos = [
@@ -531,8 +538,9 @@ function MatchScout(props: any) {
       traversedstage: boolean,
       tele_missedpiecesamp: number,
       tele_missedpiecesspeaker: number,
+      tele_hoardedpieces: number,
       timesamplified: number,
-      speakerscored_amplified: number,
+      // speakerscored_amplified: number,
     };
     const scoringloc = [
       { label: "Amp", value: "amp" },
@@ -656,6 +664,25 @@ function MatchScout(props: any) {
             }} className='decrementbutton'>-</Button>}
             />
         </Form.Item>
+        <h2>Pieces Hoarded</h2>
+        <Form.Item<FieldType> name="tele_hoardedpieces" rules={[{ required: false }]}>
+          <InputNumber
+            type='number'
+            pattern="\d*"
+            disabled
+            onWheel={(event) => (event.target as HTMLElement).blur()}
+            min={0}
+            className="input"
+            addonAfter={<Button onClick={() => {
+              setFormValue({...formValue, teleopHoardedPieces: formValue.teleopHoardedPieces + 1});
+            }} className='incrementbutton'>+</Button>}
+            addonBefore={<Button onClick={() => {
+              if (Number(formValue.teleopHoardedPieces) > 0) {
+                setFormValue({...formValue, teleopHoardedPieces: formValue.teleopHoardedPieces - 1});
+              }
+            }} className='decrementbutton'>-</Button>}
+            />
+          </Form.Item>
         <h2>Ground/Source Intake</h2>
         <Form.Item<FieldType> name="intake" rules={[{ required: true, message: 'Please input the match level!' }]}>
           <Select options={intake} className="input" />
@@ -777,7 +804,7 @@ function MatchScout(props: any) {
       wasdefended: boolean;
       wasdefendedteam: string;
       numpenalties: number;
-      penaltiesincurred: string;
+      penaltiesincurred?: string;
       comments: string;
       driverskill: number,
       counterdefense: number,
@@ -931,7 +958,7 @@ function MatchScout(props: any) {
           try {
             setLoading(true);
             console.log(event);
-            saveAs(new Blob([JSON.stringify(event)], { type: "text/json" }), event.initials + event.matchnum + ".json");
+            // saveAs(new Blob([JSON.stringify(event)], { type: "text/json" }), event.initials + event.matchnum + ".json");
             await setNewMatchScout(event);
             const initials = form.getFieldValue('initials');
             const matchnum = form.getFieldValue('matchnum');
@@ -940,7 +967,7 @@ function MatchScout(props: any) {
             form.setFieldValue('matchnum', matchnum + 1);
             setTeamNum(0);
             //autonCanvasRef.current?.clearCanvas();
-            // teleopCanvasRef.current?.clearCanvas()
+            //teleopCanvasRef.current?.clearCanvas()
             setLoading(false);
           }
           catch (err) {
