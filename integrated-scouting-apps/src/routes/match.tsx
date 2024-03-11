@@ -260,6 +260,7 @@ function MatchScout(props: any) {
         const team_num = form.getFieldValue('robotpos').substring(form.getFieldValue('robotpos').indexOf('_') + 1) - 1;
         const fullTeam = (data.alliances[team_color].team_keys[team_num] !== null ? data.alliances[team_color].team_keys[team_num] : 0);
         setTeamNum(Number(fullTeam.substring(3)));
+        updateDefendedList();
       }
       else {
         const matchID = eventname + "_" + form.getFieldValue('matchlevel') + form.getFieldValue('matchnum');
@@ -277,6 +278,7 @@ function MatchScout(props: any) {
         const team_num = form.getFieldValue('robotpos').substring(form.getFieldValue('robotpos').indexOf('_') + 1) - 1;
         const fullTeam = (data.alliances[team_color].team_keys[team_num] !== null ? data.alliances[team_color].team_keys[team_num] : 0);
         setTeamNum(Number(fullTeam.substring(3)));
+        updateDefendedList();
       }
     }
     catch (err) {
@@ -304,7 +306,7 @@ function MatchScout(props: any) {
     const data = await response.json();
     let result: any[] = [];
     for (const team in data.alliances[color ? 'red' : 'blue'].team_keys) {
-      result.push(data.alliances[color ? 'red' : 'blue'].team_keys[team].substring(3));
+      result.push(data.alliances[color ? 'blue' : 'red'].team_keys[team].substring(3));
     }
     setOpposingTeamNum(result);
     console.log(opposingTeamNum);
@@ -449,25 +451,6 @@ function MatchScout(props: any) {
             }} className='decrementbutton'>-</Button>}
           />
         </Form.Item>
-        <h2>Missed Amp Pieces</h2>
-        <Form.Item<FieldType> name="auton_missedpiecesamp" rules={[{ required: true, message: 'Please input the number of missed amp pieces!' }]}>
-          <InputNumber
-            type='number'
-            pattern="\d*"
-            disabled
-            onWheel={(event) => (event.target as HTMLElement).blur()}
-            min={0}
-            className="input"
-            addonAfter={<Button onClick={() => {
-              setFormValue({...formValue, autonMissedAmpPieces: formValue.autonMissedAmpPieces + 1});
-            }} className='incrementbutton'>+</Button>}
-            addonBefore={<Button onClick={() => {
-              if (Number(formValue.autonMissedAmpPieces) > 0) {
-                setFormValue({...formValue, autonMissedAmpPieces: formValue.autonMissedAmpPieces - 1});
-              }
-            }} className='decrementbutton'>-</Button>}
-          />
-        </Form.Item>
         <h2>Missed Speaker Pieces</h2>
         <Form.Item<FieldType> name="auton_missedpiecesspeaker" rules={[{ required: true, message: 'Please input the number of misssed speaker pieces!' }]}>
           <InputNumber
@@ -484,6 +467,25 @@ function MatchScout(props: any) {
               if (Number(formValue.autonMissedSpeakerPieces) > 0) {
                 setFormValue({...formValue, autonMissedSpeakerPieces: formValue.autonMissedSpeakerPieces - 1});
                 (document.getElementById("auton_ampscored") as HTMLInputElement).value = formValue.autonAmpScored.toString();
+              }
+            }} className='decrementbutton'>-</Button>}
+          />
+        </Form.Item>
+        <h2>Missed Amp Pieces</h2>
+        <Form.Item<FieldType> name="auton_missedpiecesamp" rules={[{ required: true, message: 'Please input the number of missed amp pieces!' }]}>
+          <InputNumber
+            type='number'
+            pattern="\d*"
+            disabled
+            onWheel={(event) => (event.target as HTMLElement).blur()}
+            min={0}
+            className="input"
+            addonAfter={<Button onClick={() => {
+              setFormValue({...formValue, autonMissedAmpPieces: formValue.autonMissedAmpPieces + 1});
+            }} className='incrementbutton'>+</Button>}
+            addonBefore={<Button onClick={() => {
+              if (Number(formValue.autonMissedAmpPieces) > 0) {
+                setFormValue({...formValue, autonMissedAmpPieces: formValue.autonMissedAmpPieces - 1});
               }
             }} className='decrementbutton'>-</Button>}
           />
