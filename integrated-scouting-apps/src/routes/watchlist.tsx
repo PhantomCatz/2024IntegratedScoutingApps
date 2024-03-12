@@ -30,7 +30,7 @@ function Watchlist(props: any) {
 
   const [cookies] = useCookies(['login']);
   useEffect(() => { VerifyLogin(cookies.login); }, []);
-  const handleSubmit = async function nathanIsGay(values: FieldType) {
+  const handleSubmit = async function watchListUpdate(values: FieldType) {
     const requestBody = {
       team_number: values.team_number,
       custom0: {

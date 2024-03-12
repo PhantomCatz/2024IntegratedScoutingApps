@@ -59,7 +59,7 @@ function LoginPage(props: any) {
 							setCookies("login", signed);
 							window.location.href = "/home";
 						}
-						else if (response.gay === "lisaGay") {
+						else if (response.login === "nullData") {
 							window.location.href = "/Incorrect%20Login";
 						}
 						else {

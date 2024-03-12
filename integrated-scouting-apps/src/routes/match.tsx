@@ -36,6 +36,9 @@ function MatchScout(props: any) {
     teleopMissedSpeakerPieces: 0,
     teleopHoardedPieces: 0,
     numPenalties: 0,
+    pushingRating: 0, 
+    counterDefenseRating: 0,
+    driverSkillRating: 0,
     timeLeft: 0,
   });
   const autonImageURI = useRef<string>();
@@ -90,6 +93,18 @@ function MatchScout(props: any) {
     if ((document.getElementById("numpenalties") as HTMLElement) !== null) {
       (document.getElementById("numpenalties") as HTMLInputElement).value = formValue.numPenalties.toString();
       form.setFieldValue('numpenalties', formValue.numPenalties);
+    }
+    if ((document.getElementById("pushing") as HTMLElement) !== null) {
+      (document.getElementById("pushing") as HTMLInputElement).value = formValue.pushingRating.toString();
+      form.setFieldValue('pushing', formValue.pushingRating);
+    }
+    if ((document.getElementById("counterdefense") as HTMLElement) !== null) {
+      (document.getElementById("counterdefense") as HTMLInputElement).value = formValue.counterDefenseRating.toString();
+      form.setFieldValue('counterdefense', formValue.counterDefenseRating);
+    }
+    if ((document.getElementById("driverskill") as HTMLElement) !== null) {
+      (document.getElementById("driverskill") as HTMLInputElement).value = formValue.driverSkillRating.toString();
+      form.setFieldValue('driverskill', formValue.driverSkillRating);
     }
     
     return () => {};
@@ -817,17 +832,78 @@ function MatchScout(props: any) {
         <Form.Item<FieldType> name="robotdied" valuePropName="checked">
           <Checkbox className='input_checkbox' />
         </Form.Item>
-        <h2>Pushing (0-4)</h2>
+        {/* <h2>Pushing (0-4)</h2>
         <Form.Item<FieldType> name="pushing" rules={[{ required: true, message: 'Please input the pushing rating!' }]}>
           <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} max={4} className="input" />
+        </Form.Item> */}
+         <h2>Pushing (0-4)</h2>
+        <Form.Item<FieldType> name="pushing" rules={[{ required: true, message: 'Please input the pushing rating!' }]}>
+          <InputNumber
+            type='number'
+            pattern="\d*"
+            onWheel={(event) => (event.target as HTMLElement).blur()}
+            min={0} max={4}
+            className="input"
+            addonAfter={<Button onClick={() => {
+              if(Number(formValue.pushingRating) < 4)
+              {
+                setFormValue({...formValue, pushingRating: formValue.pushingRating + 1});
+              }
+            }} className='incrementbutton'>+</Button>}
+            addonBefore={<Button onClick={() => {
+              if (Number(formValue.pushingRating) > 0) {
+                setFormValue({...formValue, pushingRating: formValue.pushingRating - 1});
+              }
+            }} className='decrementbutton'>-</Button>}
+          />
         </Form.Item>
-        <h2>Counterdefense (0-4)</h2>
+        {/* <h2>Counterdefense (0-4)</h2>
         <Form.Item<FieldType> name="counterdefense" rules={[{ required: true, message: 'Please input the counterdefense rating!' }]}>
           <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} max={4} className="input" />
+        </Form.Item> */}
+         <h2>Counterdefense (0-4)</h2>
+        <Form.Item<FieldType> name="counterdefense" rules={[{ required: true, message: 'Please input the counterdefense rating!' }]}>
+          <InputNumber
+            type='number'
+            pattern="\d*"
+            onWheel={(event) => (event.target as HTMLElement).blur()}
+            min={0} max={4}
+            className="input"
+            addonAfter={<Button onClick={() => {
+              if (Number(formValue.counterDefenseRating) < 4) {
+                setFormValue({...formValue, counterDefenseRating: formValue.counterDefenseRating + 1});
+              }
+            }} className='incrementbutton'>+</Button>}
+            addonBefore={<Button onClick={() => {
+              if (Number(formValue.counterDefenseRating) > 0) {
+                setFormValue({...formValue, counterDefenseRating: formValue.counterDefenseRating - 1});
+              }
+            }} className='decrementbutton'>-</Button>}
+          />
         </Form.Item>
-        <h2>Driver Skill (0-4)</h2>
+        {/* <h2>Driver Skill (0-4)</h2>
         <Form.Item<FieldType> name="driverskill" rules={[{ required: true, message: 'Please input the driver skill rating!' }]}>
           <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} max={4} className="input" />
+        </Form.Item> */}
+          <h2>Driver Skill (0-4)</h2>
+        <Form.Item<FieldType> name="driverskill" rules={[{ required: true, message: 'Please input the driverskill rating!' }]}>
+          <InputNumber
+            type='number'
+            pattern="\d*"
+            onWheel={(event) => (event.target as HTMLElement).blur()}
+            min={0} max={4}
+            className="input"
+            addonAfter={<Button onClick={() => {
+              if (Number(formValue.driverSkillRating) < 4) {
+                setFormValue({...formValue, driverSkillRating: formValue.driverSkillRating + 1});
+              }
+            }} className='incrementbutton'>+</Button>}
+            addonBefore={<Button onClick={() => {
+              if (Number(formValue.driverSkillRating) > 0) {
+                setFormValue({...formValue, driverSkillRating: formValue.driverSkillRating - 1});
+              }
+            }} className='decrementbutton'>-</Button>}
+          />
         </Form.Item>
         <h2>Defended</h2>
         <Form.Item<FieldType> name="defended" valuePropName="checked">
@@ -967,7 +1043,13 @@ function MatchScout(props: any) {
             form.resetFields();
             form.setFieldValue('initials', initials);
             form.setFieldValue('matchnum', matchnum + 1);
+            formValue.driverSkillRating = 0;
+            formValue.counterDefenseRating = 0;
+            formValue.autonAmpScored = 0;
             setTeamNum(0);
+            setDefendedIsVisible(false);
+            setWasDefendedIsVisible(false);
+            
             //autonCanvasRef.current?.clearCanvas();
             //teleopCanvasRef.current?.clearCanvas()
             setLoading(false);
