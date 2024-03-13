@@ -1040,16 +1040,23 @@ function MatchScout(props: any) {
             await setNewMatchScout(event);
             const initials = form.getFieldValue('initials');
             const matchnum = form.getFieldValue('matchnum');
+            const matchLevel = form.getFieldValue('matchlevel');
             form.resetFields();
             form.setFieldValue('initials', initials);
             form.setFieldValue('matchnum', matchnum + 1);
+            form.setFieldValue('match_level', matchLevel);
             formValue.driverSkillRating = 0;
             formValue.counterDefenseRating = 0;
             formValue.autonAmpScored = 0;
+            formValue.autonMissedAmpPieces = 0;// Just ignore all these form Value resets,                                             
+            formValue.counterDefenseRating = 0;//there's a bug where sometimes it doesn't work, so these values just reinforce that
+            formValue.autonSpeakerScored = 0;
+            
             setTeamNum(0);
+            
             setDefendedIsVisible(false);
             setWasDefendedIsVisible(false);
-            
+            form.resetFields();
             //autonCanvasRef.current?.clearCanvas();
             //teleopCanvasRef.current?.clearCanvas()
             setLoading(false);
