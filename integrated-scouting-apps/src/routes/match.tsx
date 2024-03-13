@@ -107,7 +107,6 @@ function MatchScout(props: any) {
       (document.getElementById("driverskill") as HTMLInputElement).value = formValue.driverSkillRating.toString();
       form.setFieldValue('driverskill', formValue.driverSkillRating);
     }
-    
     return () => {};
   }, [formValue, form]);
 
@@ -460,7 +459,7 @@ function MatchScout(props: any) {
               setFormValue({...formValue, autonAmpScored: formValue.autonAmpScored + 1});
             }} className='incrementbutton'>+</Button>}
             addonBefore={<Button onClick={() => {
-              if (Number(formValue.autonSpeakerScored) > 0) {
+              if (Number(formValue.autonAmpScored) > 0) {
                 setFormValue({...formValue, autonAmpScored: formValue.autonAmpScored - 1});
               }
             }} className='decrementbutton'>-</Button>}
@@ -901,10 +900,6 @@ function MatchScout(props: any) {
         <Form.Item<FieldType> name="defendedteam" valuePropName="checked" style={{ display: defendedIsVisible ? 'inherit' : 'none' }}>
           <Select mode='multiple' options={opposingTeamNum.map((team) => ({ label: team, value: team }))} className="input" showSearch={false} style={{ display: defendedIsVisible ? 'inherit' : 'none' }} />
         </Form.Item>
-        <h2>Hoarded</h2>
-        <Form.Item<FieldType> name="hoarded" valuePropName="checked">
-          <Checkbox className='input_checkbox' />
-        </Form.Item>
         <h2>Was Defended</h2>
         <Form.Item<FieldType> name="wasdefended" valuePropName="checked">
           <Checkbox className='input_checkbox' onChange={() => { updateDefendedList(); setWasDefendedIsVisible(!wasDefendedIsVisible); }} />
@@ -1023,7 +1018,6 @@ function MatchScout(props: any) {
         onFinish={async event => {
           try {
             setLoading(true);
-            console.log(event);
             if (!window.navigator.onLine) {
               saveAs(new Blob([JSON.stringify(event)], { type: "text/json" }), event.initials + event.matchnum + ".json");
             }
@@ -1036,11 +1030,19 @@ function MatchScout(props: any) {
             form.setFieldValue('matchnum', matchnum + 1);
             form.setFieldValue('match_level', matchLevel);
             formValue.driverSkillRating = 0;
-            formValue.counterDefenseRating = 0;
             formValue.autonAmpScored = 0;
-            formValue.autonMissedAmpPieces = 0;// Just ignore all these form Value resets,                                             
-            formValue.counterDefenseRating = 0;//there's a bug where sometimes it doesn't work, so these values just reinforce that
+            formValue.autonMissedAmpPieces = 0;                                           
             formValue.autonSpeakerScored = 0;
+            formValue.autonMissedSpeakerPieces = 0;
+            formValue.teleopSpeakerScored = 0;
+            formValue.teleopAmpScored = 0;
+            formValue.teleopMissedAmpPieces = 0;
+            formValue.teleopMissedSpeakerPieces = 0;
+            formValue.teleopHoardedPieces = 0;
+            formValue.numPenalties = 0;
+            formValue.pushingRating = 0;
+            formValue.counterDefenseRating = 0;
+            formValue.timeLeft = 0;
             setTeamNum(0);
             setDefendedIsVisible(false);
             setWasDefendedIsVisible(false);
