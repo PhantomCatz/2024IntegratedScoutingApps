@@ -16,7 +16,7 @@ import { saveAs } from 'file-saver';
 
 function MatchScout(props: any) {
   const [form] = Form.useForm();
-  const [color, setColor] = useState(false); //red if true blue if false
+  const [color, setColor] = useState(true);
   const [roundIsVisible, setRoundIsVisible] = useState(false);
   const [coopPressed, setCoopPressed] = useState(false);
   const [isLoading, setLoading] = useState(false);
@@ -47,8 +47,9 @@ function MatchScout(props: any) {
   //const teleopCanvasRef = useRef<ReactSketchCanvasRef>(null);
   const eventname = process.env.REACT_APP_EVENTNAME;
   useEffect(() => { document.title = props.title; return () => { }; }, [props.title]);
-  const [cookies] = useCookies(['login']);
-  useEffect(() => { VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
+  const [cookies] = useCookies(['login', 'theme']);
+  useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
+  useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => {}}, [cookies.theme]);
   useEffect(() => {
     if ((document.getElementById("auton_speakerscored") as HTMLInputElement) !== null) {
       (document.getElementById("auton_speakerscored") as HTMLInputElement).value = formValue.autonSpeakerScored.toString();
@@ -108,7 +109,7 @@ function MatchScout(props: any) {
     }
     
     return () => {};
-  }, [formValue]);
+  }, [formValue, form]);
 
   async function setNewMatchScout(event: any) {
     const body = {
@@ -178,7 +179,7 @@ function MatchScout(props: any) {
         "OA_comments": event.comments,
       }
     };
-    console.log("LOREN",body);
+    //@typescript-eslint/no-unused-vars
     const TESTDONOTREMOVE = {
       "matchIdentifier": {
         "Initials": "Loren Liu",
@@ -243,7 +244,6 @@ function MatchScout(props: any) {
       }
     }
     try {
-      // console.log("YESLOREN",JSON.stringify(body))
       await fetch(process.env.REACT_APP_MATCH_URL as string, {
         method: "POST",
         body: JSON.stringify(body),
@@ -832,11 +832,7 @@ function MatchScout(props: any) {
         <Form.Item<FieldType> name="robotdied" valuePropName="checked">
           <Checkbox className='input_checkbox' />
         </Form.Item>
-        {/* <h2>Pushing (0-4)</h2>
-        <Form.Item<FieldType> name="pushing" rules={[{ required: true, message: 'Please input the pushing rating!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} max={4} className="input" />
-        </Form.Item> */}
-         <h2>Pushing (0-4)</h2>
+        <h2>Pushing (0-4)</h2>
         <Form.Item<FieldType> name="pushing" rules={[{ required: true, message: 'Please input the pushing rating!' }]}>
           <InputNumber
             type='number'
@@ -857,11 +853,7 @@ function MatchScout(props: any) {
             }} className='decrementbutton'>-</Button>}
           />
         </Form.Item>
-        {/* <h2>Counterdefense (0-4)</h2>
-        <Form.Item<FieldType> name="counterdefense" rules={[{ required: true, message: 'Please input the counterdefense rating!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} max={4} className="input" />
-        </Form.Item> */}
-         <h2>Counterdefense (0-4)</h2>
+        <h2>Counterdefense (0-4)</h2>
         <Form.Item<FieldType> name="counterdefense" rules={[{ required: true, message: 'Please input the counterdefense rating!' }]}>
           <InputNumber
             type='number'
@@ -881,11 +873,7 @@ function MatchScout(props: any) {
             }} className='decrementbutton'>-</Button>}
           />
         </Form.Item>
-        {/* <h2>Driver Skill (0-4)</h2>
-        <Form.Item<FieldType> name="driverskill" rules={[{ required: true, message: 'Please input the driver skill rating!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} max={4} className="input" />
-        </Form.Item> */}
-          <h2>Driver Skill (0-4)</h2>
+        <h2>Driver Skill (0-4)</h2>
         <Form.Item<FieldType> name="driverskill" rules={[{ required: true, message: 'Please input the driverskill rating!' }]}>
           <InputNumber
             type='number'
@@ -944,11 +932,11 @@ function MatchScout(props: any) {
           />
         </Form.Item>
         <h2>Penalties Incurred</h2>
-        <Form.Item<FieldType> name="penaltiesincurred" rules={[{ required: true, message: 'Please describe the penalties incurred!' }]}>
+        <Form.Item<FieldType> name="penaltiesincurred">
           <TextArea style={{ verticalAlign: 'center' }} className='input' />
         </Form.Item>
         <h2>Comments</h2>
-        <Form.Item<FieldType> name="comments" rules={[{ required: true, message: 'Please input the comments!' }]}>
+        <Form.Item<FieldType> name="comments">
           <TextArea style={{ verticalAlign: 'center' }} className='input' />
         </Form.Item>
         <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
@@ -1036,7 +1024,9 @@ function MatchScout(props: any) {
           try {
             setLoading(true);
             console.log(event);
-            // saveAs(new Blob([JSON.stringify(event)], { type: "text/json" }), event.initials + event.matchnum + ".json");
+            if (window.navigator.onLine) {
+              saveAs(new Blob([JSON.stringify(event)], { type: "text/json" }), event.initials + event.matchnum + ".json");
+            }
             await setNewMatchScout(event);
             const initials = form.getFieldValue('initials');
             const matchnum = form.getFieldValue('matchnum');
@@ -1051,12 +1041,9 @@ function MatchScout(props: any) {
             formValue.autonMissedAmpPieces = 0;// Just ignore all these form Value resets,                                             
             formValue.counterDefenseRating = 0;//there's a bug where sometimes it doesn't work, so these values just reinforce that
             formValue.autonSpeakerScored = 0;
-            
             setTeamNum(0);
-            
             setDefendedIsVisible(false);
             setWasDefendedIsVisible(false);
-            form.resetFields();
             //autonCanvasRef.current?.clearCanvas();
             //teleopCanvasRef.current?.clearCanvas()
             setLoading(false);
