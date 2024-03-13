@@ -1024,7 +1024,7 @@ function MatchScout(props: any) {
           try {
             setLoading(true);
             console.log(event);
-            if (window.navigator.onLine) {
+            if (!window.navigator.onLine) {
               saveAs(new Blob([JSON.stringify(event)], { type: "text/json" }), event.initials + event.matchnum + ".json");
             }
             await setNewMatchScout(event);
