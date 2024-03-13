@@ -80,7 +80,17 @@ function Watchlist(props: any) {
       <body>
         <div>
           <h1 className='pitBody'>Team #</h1>
-          <Form<FieldType> onFinish={handleSubmit}>
+          <Form<FieldType> onFinish={async values => {
+            try{
+              await handleSubmit(values);
+              window.location.reload();
+
+            }
+            catch (err){
+              console.log(err);
+            }
+          }}>
+          {/* <Form<FieldType> onFinish={handleSubmit}> */}
             <Form.Item<FieldType> name="team_number">
               <InputNumber controls min={0} className="pitinput" />
             </Form.Item>
