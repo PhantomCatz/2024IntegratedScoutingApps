@@ -643,25 +643,6 @@ function MatchScout(props: any) {
             min={0}
             className="input"/>
         </Form.Item> */}
-        <h2>Missed Amp Pieces</h2>
-        <Form.Item<FieldType> name="tele_missedpiecesamp" rules={[{ required: true, message: 'Please input the number of missed amp pieces!' }]}>
-          <InputNumber
-            type='number'
-            pattern="\d*"
-            disabled
-            onWheel={(event) => (event.target as HTMLElement).blur()}
-            min={0}
-            className="input"
-            addonAfter={<Button onClick={() => {
-              setFormValue({...formValue, teleopMissedAmpPieces: formValue.teleopMissedAmpPieces + 1});
-            }} className='incrementbutton'>+</Button>}
-            addonBefore={<Button onClick={() => {
-              if (Number(formValue.teleopMissedAmpPieces) > 0) {
-                setFormValue({...formValue, teleopMissedAmpPieces: formValue.teleopMissedAmpPieces - 1});
-              }
-            }} className='decrementbutton'>-</Button>}
-          />
-        </Form.Item>
         <h2>Missed Speaker Pieces</h2>
         <Form.Item<FieldType> name="tele_missedpiecesspeaker" rules={[{ required: true, message: 'Please input the number of missed speaker pieces!' }]}>
           <InputNumber
@@ -680,6 +661,25 @@ function MatchScout(props: any) {
               }
             }} className='decrementbutton'>-</Button>}
             />
+        </Form.Item>
+        <h2>Missed Amp Pieces</h2>
+        <Form.Item<FieldType> name="tele_missedpiecesamp" rules={[{ required: true, message: 'Please input the number of missed amp pieces!' }]}>
+          <InputNumber
+            type='number'
+            pattern="\d*"
+            disabled
+            onWheel={(event) => (event.target as HTMLElement).blur()}
+            min={0}
+            className="input"
+            addonAfter={<Button onClick={() => {
+              setFormValue({...formValue, teleopMissedAmpPieces: formValue.teleopMissedAmpPieces + 1});
+            }} className='incrementbutton'>+</Button>}
+            addonBefore={<Button onClick={() => {
+              if (Number(formValue.teleopMissedAmpPieces) > 0) {
+                setFormValue({...formValue, teleopMissedAmpPieces: formValue.teleopMissedAmpPieces - 1});
+              }
+            }} className='decrementbutton'>-</Button>}
+          />
         </Form.Item>
         <h2>Pieces Hoarded</h2>
         <Form.Item<FieldType> name="tele_hoardedpieces" rules={[{ required: false }]}>
@@ -988,7 +988,7 @@ function MatchScout(props: any) {
   ];
   return (
     <div>
-      <meta name="viewport" content="maximum-scale=1.0" />
+      <meta name="viewport" content="maximum-scale=1.0, user-scalable=no"/>
       <div className='banner'>
         <header>
           <a href='/scoutingapp'><img src={back} style={{ height: 64 + 'px', paddingTop: '5%' }} alt=''></img></a>
