@@ -2,7 +2,7 @@
 import '../public/stylesheets/dtf.css';
 import logo from '../public/images/logo.png';
 import back from '../public/images/back.png';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Tabs, TabsProps, Checkbox, InputNumber, Input } from 'antd';
 import { useParams } from 'react-router-dom';
 import TextArea from 'antd/es/input/TextArea';
