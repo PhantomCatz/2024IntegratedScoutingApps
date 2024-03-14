@@ -30,6 +30,7 @@ function Watchlist(props: any) {
 
   const [cookies] = useCookies(['login', 'theme']);
   useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); }, []);
+  useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => {}}, [cookies.theme]);
   const handleSubmit = async function watchListUpdate(values: FieldType) {
     const requestBody = {
       team_number: values.team_number,
@@ -77,7 +78,7 @@ function Watchlist(props: any) {
       { label: "Strategic", value: "Strategic" },
     ];
     return (
-      <body>
+      <div>
         <div>
           <h1 className='pitBody'>Team #</h1>
           <Form<FieldType> onFinish={async values => {
@@ -112,7 +113,7 @@ function Watchlist(props: any) {
             </div>
           </Form>
         </div>
-      </body>
+      </div>
     );
   }
 
@@ -131,7 +132,7 @@ function Watchlist(props: any) {
   
   
   return(
-    <body>
+    <div>
       <div>
         <header className='banner'>
           <a href='/home'><img src={back} style={{ height: 64 + 'px', paddingTop: '5%' }} alt=''></img></a>          <table>
@@ -148,7 +149,7 @@ function Watchlist(props: any) {
     
       <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} className='tabs' centered onChange={async (key) => {setTabNum(key)}}/>
 
-    </body>
+    </div>
   );
 }
 export default Watchlist;
