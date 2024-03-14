@@ -110,40 +110,40 @@ function DTFTeams(props: any) {
             <InputNumber disabled defaultValue={teamsArr[0].OA.alliance_avg_score} controls placeholder='team 1' min={1} className="input"/>
           <h2 className='h2' style={{textAlign: 'center'}}>Auton Path</h2>
           <div style={{textAlign: 'center'}}>
-            <h2 className='h2'>Team1</h2> 
+            <h2 className='h2'>{team1_number}</h2> 
             <img src={teamsArr[0].auto.auto_path} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
           </div>
 
           <div style={{textAlign: 'center'}}>
-            <h2 className='h2'>Team2</h2> 
+            <h2 className='h2'>{team2_number}</h2> 
             <img src={teamsArr[1].auto.auto_path} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
           </div>
 
           <div style={{textAlign: 'center'}}>
-            <h2 className='h2'>Team3</h2>
+            <h2 className='h2'>{team3_number}</h2>
             <img src={teamsArr[2].auto.auto_path} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
           </div>
   
           <h2 className='h2' style={{textAlign: 'center'}}>Intake Source</h2>
   
           <div>
-            <h2 style={{display: 'inline'}} className='h2'>Team1: </h2> 
+            <h2 style={{display: 'inline'}} className='h2'>{team1_number + ':'}</h2> 
             <h1 style={{display: 'inline', marginLeft:'5%'}} className='h1'>{teamsArr[0].teleop.teleop_intake}</h1>
           </div>
           <div>
-            <h2 style={{display: 'inline'}} className='h2'>Team2: </h2> 
+            <h2 style={{display: 'inline'}} className='h2'>{team2_number + ':'}</h2> 
             <h1 style={{display: 'inline', marginLeft:'5%'}} className='h1'>{teamsArr[1].teleop.teleop_intake}</h1>
           </div>
           <div>
-            <h2 style={{display: 'inline'}} className='h2'>Team3: </h2> 
+            <h2 style={{display: 'inline'}} className='h2'>{team3_number + ':'}</h2> 
             <h1 style={{display: 'inline', marginLeft:'5%'}} className='h1'>{teamsArr[2].teleop.teleop_intake}</h1>
           </div>
           
           <h2 className='h2' style={{textAlign: 'center'}}>Traversed Stage</h2>
           <div style={{textAlign: 'center'}}>
-            <h2 className='h2' style={{display: 'inline'}}>Team1</h2> 
-            <h2 className='h2' style={{display: 'inline', marginLeft: '12%'}}>Team2</h2> 
-            <h2 className='h2' style={{display: 'inline', marginLeft: '12%'}}>Team3</h2>
+            <h2 className='h2' style={{display: 'inline'}}>{team1_number}</h2> 
+            <h2 className='h2' style={{display: 'inline', marginLeft: '12%'}}>{team2_number}</h2> 
+            <h2 className='h2' style={{display: 'inline', marginLeft: '12%'}}>{team3_number}</h2>
           </div>
           <div style={{display: 'inline'}}>
           <Checkbox disabled defaultChecked={teamsArr[0].OA.traverse_under_stage} className='checkboxRedFixed' style={{width: '30%'}}/>
@@ -156,9 +156,9 @@ function DTFTeams(props: any) {
           </div>
           <h2 className='h2' style={{textAlign: 'center'}}>Driver Skill</h2>
           <div style={{textAlign: 'center'}}>
-            <h2 className='h2' style={{display: 'inline'}}>Team1</h2> 
-            <h2 className='h2' style={{display: 'inline', marginLeft: '12%'}}>Team2</h2> 
-            <h2 className='h2' style={{display: 'inline', marginLeft: '12%'}}>Team3</h2>
+            <h2 className='h2' style={{display: 'inline'}}>{team1_number}</h2> 
+            <h2 className='h2' style={{display: 'inline', marginLeft: '12%'}}>{team2_number}</h2> 
+            <h2 className='h2' style={{display: 'inline', marginLeft: '12%'}}>{team3_number}</h2>
           </div>
   
           <div style={{display: 'inline'}}>
@@ -168,15 +168,15 @@ function DTFTeams(props: any) {
           </div>
   
           <h2 className='h2' style={{textAlign: 'center'}}>Graph</h2>
-          <h2 className='h2'>Team1</h2>
+          <h2 className='h2'>{team1_number}</h2>
           <div style={{marginBottom: '10%'}}>
             <img src={String(graphsArr[0])} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
           </div>
-          <h2 className='h2'>Team2</h2>
+          <h2 className='h2'>{team2_number}</h2>
           <div style={{marginBottom: '10%'}}>
             <img src={String(graphsArr[1])} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
           </div>
-          <h2 className='h2'>Team3</h2>
+          <h2 className='h2'>{team3_number}</h2>
           <div style={{marginBottom: '10%'}}>
             <img src={String(graphsArr[2])} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
           </div>
@@ -194,30 +194,30 @@ function DTFTeams(props: any) {
               <InputNumber disabled defaultValue={teamsArr[0]['OA']['alliance_avg_score']} controls placeholder='team 1' min={1} className="input"/>
             <h2 className='h2' style={{textAlign: 'center'}}>Auton Path</h2>
             <div style={{textAlign: 'center'}}>
-              <h2 className='h2'>Team1</h2> 
+              <h2 className='h2'>{team1_number}</h2> 
               <img src={teamsArr[0]['auto']['auto_path']} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
             </div>
   
             <div style={{textAlign: 'center'}}>
-              <h2 className='h2'>Team2</h2> 
+              <h2 className='h2'>{team2_number}</h2> 
               <img src={teamsArr[1]['auto']['auto_path']} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
             </div>
     
             <h2 className='h2' style={{textAlign: 'center'}}>Intake Source</h2>
     
             <div>
-              <h2 style={{display: 'inline'}} className='h2'>Team1: </h2> 
+              <h2 style={{display: 'inline'}} className='h2'>{team1_number + ':'}</h2> 
               <h1 style={{display: 'inline', marginLeft:'5%'}} className='h1'>{teamsArr[0]['teleop']['teleop_intake']}</h1>
             </div>
   
             <div>
-              <h2 style={{display: 'inline'}} className='h2'>Team2: </h2> 
+              <h2 style={{display: 'inline'}} className='h2'>{team2_number + ':'}</h2> 
               <h1 style={{display: 'inline', marginLeft:'5%'}} className='h1'>{teamsArr[1]['teleop']['teleop_intake']}</h1>
             </div>
             
             <h2 className='h2' style={{textAlign: 'center'}}>Traversed Stage</h2>
             <div style={{textAlign: 'center'}}>
-              <h2 className='h2' style={{display: 'inline'}}>Team1</h2> 
+              <h2 className='h2' style={{display: 'inline'}}>{team1_number + ':'}</h2> 
               <h2 className='h2' style={{display: 'inline', marginLeft: '12%'}}>Team2</h2> 
             </div>
             <div style={{display: 'inline'}}>
@@ -228,8 +228,8 @@ function DTFTeams(props: any) {
             </div>
             <h2 className='h2' style={{textAlign: 'center'}}>Driver Skill</h2>
             <div style={{textAlign: 'center'}}>
-              <h2 className='h2' style={{display: 'inline'}}>Team1</h2> 
-              <h2 className='h2' style={{display: 'inline', marginLeft: '12%'}}>Team2</h2> 
+              <h2 className='h2' style={{display: 'inline'}}>{team1_number + ':'}</h2> 
+              <h2 className='h2' style={{display: 'inline', marginLeft: '12%'}}>{team2_number + ':'}</h2> 
             </div>
     
             <div style={{display: 'inline'}}>
@@ -238,11 +238,11 @@ function DTFTeams(props: any) {
             </div>
     
             <h2 className='h2' style={{textAlign: 'center'}}>Graph</h2>
-            <h2 className='h2'>Team1</h2>
+            <h2 className='h2'>{team1_number + ':'}</h2>
             <div style={{marginBottom: '10%'}}>
               <img src={String(graphsArr[0])} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
             </div>
-            <h2 className='h2'>Team2</h2>
+            <h2 className='h2'>{team2_number + ':'}</h2>
             <div style={{marginBottom: '10%'}}>
               <img src={String(graphsArr[1])} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
             </div>
@@ -259,27 +259,27 @@ function DTFTeams(props: any) {
               <InputNumber disabled defaultValue={teamsArr[0]['OA']['alliance_avg_score']} controls placeholder='team 1' min={1} className="input"/>
             <h2 className='h2' style={{textAlign: 'center'}}>Auton Path</h2>
             <div style={{textAlign: 'center'}}>
-              <h2 className='h2'>Team1</h2> 
+              <h2 className='h2'>{team1_number}</h2> 
               <img src={teamsArr[0]['auto']['auto_path']} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
             </div>
 
             <h2 className='h2' style={{textAlign: 'center'}}>Intake Source</h2>
     
             <div>
-              <h2 style={{display: 'inline'}} className='h2'>Team1: </h2> 
+              <h2 style={{display: 'inline'}} className='h2'>{team1_number + ':'}</h2> 
               <h1 style={{display: 'inline', marginLeft:'5%'}} className='h1'>{teamsArr[0]['teleop']['teleop_intake']}</h1>
             </div>
             
             <h2 className='h2' style={{textAlign: 'center'}}>Traversed Stage</h2>
             <div style={{textAlign: 'center'}}>
-              <h2 className='h2' style={{display: 'inline'}}>Team1</h2> 
+              <h2 className='h2' style={{display: 'inline'}}>{team1_number}</h2> 
             </div>
             <div style={{display: 'inline'}}>
             <Checkbox disabled defaultChecked={teamsArr[0].OA.traverse_under_stage} className='checkboxRedFixed' style={{width: '30%'}}/>
             </div>
             <h2 className='h2' style={{textAlign: 'center'}}>Driver Skill</h2>
             <div style={{textAlign: 'center'}}>
-              <h2 className='h2' style={{display: 'inline'}}>Team1</h2> 
+              <h2 className='h2' style={{display: 'inline'}}>{team1_number}</h2> 
             </div>
     
             <div style={{display: 'inline'}}>
@@ -287,7 +287,7 @@ function DTFTeams(props: any) {
             </div>
     
             <h2 className='h2' style={{textAlign: 'center'}}>Graph</h2>
-            <h2 className='h2'>Team1</h2>
+            <h2 className='h2'>{team1_number}</h2>
             <div style={{marginBottom: '10%'}}>
               <img src={String(graphsArr[0])} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
             </div>
