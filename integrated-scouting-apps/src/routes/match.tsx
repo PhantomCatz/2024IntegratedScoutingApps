@@ -164,7 +164,7 @@ function MatchScout(props: any) {
         "EG_climbing_affect": event.climbingaffected,
       },
       "overAll": {
-        "OA_hoarded": event.hoarded,
+        //"OA_hoarded": event.hoarded,
         "OA_robot_died": event.robotdied,
         "OA_was_defend": event.wasdefended,
         "OA_was_defend_team": event.wasdefendedteam,
@@ -991,7 +991,6 @@ function MatchScout(props: any) {
   ];
   return (
     <div>
-      <meta name="viewport" content="maximum-scale=1.0, user-scalable=no"/>
       <div className='banner'>
         <header>
           <a href='/scoutingapp'><img src={back} style={{ height: 64 + 'px', paddingTop: '5%' }} alt=''></img></a>
@@ -1030,10 +1029,15 @@ function MatchScout(props: any) {
 
           robotdied: false,
           defended: false,
-          hoarded: false,
+          //hoarded: false,
           wasdefended: false,
           wasdefendedteam: [],
           defendedteam: [],
+          piecespicked: [],
+          shootingloc: [],
+
+          penaltiesincurred: " ",
+          comments: " ",
         }}
         onFinish={async event => {
           try {
@@ -1073,6 +1077,8 @@ function MatchScout(props: any) {
           }
           catch (err) {
             console.log(err);
+            window.alert("something went wrong so heres a json; give to loren after comp");
+            saveAs(new Blob([JSON.stringify(event)], { type: "text/json" }), event.initials + event.matchnum + ".json");
           }
         }}
       >
