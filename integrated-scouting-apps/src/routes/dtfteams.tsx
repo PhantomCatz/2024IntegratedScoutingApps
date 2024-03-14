@@ -88,8 +88,13 @@ function DTFTeams(props: any) {
     teams.forEach(async (element) =>  {
       teamsArr.push(await fetchData(parseInt(element)));
       graphsArr.push(await fetchGraph(parseInt(element)));
+      setFetchedData(graphsArr)
     }); 
   }
+
+  const stringFetchedData0 : string = String(fetchedData[0])
+  const stringFetchedData1 : string = String(fetchedData[1])
+  const stringFetchedData2 : string = String(fetchedData[2])
 
   function Summary() {
 
