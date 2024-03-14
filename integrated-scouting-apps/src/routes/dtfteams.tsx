@@ -2,7 +2,7 @@
 import '../public/stylesheets/dtf.css';
 import logo from '../public/images/logo.png';
 import back from '../public/images/back.png';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Tabs, TabsProps, Checkbox, InputNumber, Input } from 'antd';
 import { useParams } from 'react-router-dom';
 import TextArea from 'antd/es/input/TextArea';
@@ -92,9 +92,14 @@ function DTFTeams(props: any) {
       console.log(element);
       teamsArr.push(await fetchData(parseInt(element)));
       graphsArr.push(await fetchGraph(parseInt(element)));
+      setFetchedData(graphsArr)
     }); 
   }
 }, []);
+
+  const stringFetchedData0 : string = String(fetchedData[0])
+  const stringFetchedData1 : string = String(fetchedData[1])
+  const stringFetchedData2 : string = String(fetchedData[2])
 
   function Summary() {
 

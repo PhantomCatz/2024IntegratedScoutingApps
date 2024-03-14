@@ -13,8 +13,9 @@ function Strategic(props: any) {
   const [isLoading, setLoading] = useState(false);
   const [customQuestionText, setCustomQuestionText] = useState("");
 	useEffect(() => {document.title = props.title; return () => {}}, [props.title]);
-  const [cookies] = useCookies(['login']);
-  useEffect(() => { VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
+  const [cookies] = useCookies(['login', 'theme']);
+  useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
+  useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => {}}, [cookies.theme]);
 
   const eventname = process.env.REACT_APP_EVENTNAME;
 

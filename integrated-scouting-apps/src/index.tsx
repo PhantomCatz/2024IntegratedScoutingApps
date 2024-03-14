@@ -19,7 +19,8 @@ import DataLookup from './routes/lookup';
 import TeamData from './routes/teamData';
 import Picklist from './routes/picklists';
 import Watchlist from './routes/watchlist';
-import VerifyLogin from './verifyToken';
+
+
 export default function App() {
   return (
     <BrowserRouter>

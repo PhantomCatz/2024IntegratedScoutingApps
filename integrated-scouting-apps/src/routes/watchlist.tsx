@@ -1,9 +1,3 @@
-/**
- * @author Robin Kang, add more...
- * @since 2024-02-28
- * @version 1.0.0
- * @description watchlist 
- */
 import '../public/stylesheets/style.css';
 import '../public/stylesheets/watchlist.css';
 import '../public/stylesheets/match.css';
@@ -21,45 +15,55 @@ import FormItemInput from 'antd/es/form/FormItemInput';
 import { useCookies } from 'react-cookie';
 import VerifyLogin from '../verifyToken';
 
+
 function Watchlist(props: any) {
+
+  type FieldType = {
+    team_number: number;
+    question: string;
+    answer?: string;
+    question_type: string;
+  };
+  
   const [tabNum, setTabNum] = useState("1");
   useEffect(() => {document.title = props.title}, [props.title]);
 
-  const [cookies] = useCookies(['login']);
-  useEffect(() => { VerifyLogin(cookies.login); }, []);
-  const handleSubmit = async function nathanIsGay(event: any) {
+  const [cookies] = useCookies(['login', 'theme']);
+  useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); }, []);
+  const handleSubmit = async function watchListUpdate(values: FieldType) {
     const requestBody = {
-      "team_number": event.teamNumber,
-      "custom0": {
-        "question": event.question,
-        "answer": event.answer,
-        "question_type": event.questionType,
+      team_number: values.team_number,
+      custom0: {
+        question: values.question,
+        answer: values.answer,
+        question_type: values.question_type,
       },
-    };
-  try {
-    const response = await fetch("https://us-central1-team2637fixed.cloudfunctions.net/WatchListSend", 
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestBody),
-    });
-
-    if (response.ok) {
-      // Request was successful
-      const responseData = await response.json();
-      console.log("Data sent successfully:", responseData);
-    } else {
-      // Handle error cases
-      const errorData = await response.json();
-      console.error("Error sending data:", errorData);
+    }; 
+    
+    console.log("Team Number:", requestBody.team_number);
+    console.log("Custom Question:", requestBody.custom0.question);
+    console.log("Custom Answer:", requestBody.custom0.answer);
+    console.log("Question Type:", requestBody.custom0.question_type);
+    
+    try {
+      const response = await fetch(process.env.REACT_APP_WATCHLIST_URL as string, {
+        method: "POST",
+        body: JSON.stringify(requestBody),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log("Data sent successfully:", responseData);
+      } else {
+        const errorData = await response.json();
+        console.error("Error sending data:", errorData.message); // Extract relevant error message
+      }
+    } catch (error) {
+      console.error("An unexpected error occurred:", error);
     }
-  } catch (error) {
-    console.error("An unexpected error occurred:", error);
   }
- 
-} 
   function input(){
     type FieldType = {
       team_number: number,//name not specified
@@ -72,39 +76,44 @@ function Watchlist(props: any) {
       { label: "Pit", value: "pit" },
       { label: "Strategic", value: "Strategic" },
     ];
-    return(
+    return (
       <body>
         <div>
           <h1 className='pitBody'>Team #</h1>
-          <Form.Item<FieldType> name="team_number">
-            <InputNumber controls min={0} className="pitinput"/>
-          </Form.Item>
-        </div>
-        <div>
-        <Form.Item<FieldType> name="question_type" rules={[{ required: true, message: 'Please input.' }]}>
-          <Select placeholder='Match' options={appOptions} className="input"/>
-        </Form.Item>
-        </div>
+          <Form<FieldType> onFinish={async values => {
+            try{
+              await handleSubmit(values);
+              window.location.reload();
 
-        <div>
-          <h1 style={{marginTop:"10%"}} className='pitBody'>Custom Question</h1>
-            <Form.Item<FieldType> name="question">
-              <label>
-                <textarea className="pitComment" name="eventNum" rows={3} />
-              </label>
+            }
+            catch (err){
+              console.log(err);
+            }
+          }}>
+          {/* <Form<FieldType> onFinish={handleSubmit}> */}
+            <Form.Item<FieldType> name="team_number">
+              <InputNumber controls min={0} className="pitinput" />
             </Form.Item>
+            <Form.Item<FieldType> name="question_type" rules={[{ required: true, message: 'Please input.' }]}>
+              <Select placeholder='Match' options={appOptions} className="input" />
+            </Form.Item>
+            <div>
+              <h1 style={{ marginTop: "10%" }} className='pitBody'>Custom Question</h1>
+              <Form.Item<FieldType> name="question">
+                <label>
+                  <textarea className="pitComment" name="eventNum" rows={3} />
+                </label>
+              </Form.Item>
+            </div>
+            <div>
+              <Button type="primary" htmlType="submit" className="submitbutton">
+                Submit
+              </Button>
+            </div>
+          </Form>
         </div>
-
-        {/* submit */}
-        <Form<FieldType> onFinish={handleSubmit}>
-      <div>
-      <Input type="submit" value="Submit" className="submitbutton" />
-      </div>
-    </Form>
       </body>
     );
-    
-
   }
 
   const items: TabsProps['items'] = [

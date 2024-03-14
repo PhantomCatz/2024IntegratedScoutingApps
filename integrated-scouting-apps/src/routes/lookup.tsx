@@ -10,8 +10,8 @@ import { useCookies } from 'react-cookie';
 function DataLookup(props: any) {
 	const [form] = Form.useForm();
 	useEffect(() => {document.title = props.title; return () => {}}, [props.title]);
-	const [cookies] = useCookies(['login']);
-	useEffect(() => { VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
+	const [cookies] = useCookies(['login', 'theme']);
+	useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
 
 
 	return (
