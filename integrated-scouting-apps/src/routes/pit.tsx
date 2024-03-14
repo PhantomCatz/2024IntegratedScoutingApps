@@ -28,8 +28,9 @@ function PitScout(props: any) {
   const [form] = Form.useForm();
   const [color, setColor] = useState(false);
 	useEffect(() => {document.title = props.title; return () => {}}, [props.title]);
-  const [cookies] = useCookies(['login']);
-  useEffect(() => { VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
+  const [cookies] = useCookies(['login', 'theme']);
+  useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
+  useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => {}}, [cookies.theme]);
 
   const { team_number } = useParams();
   const [fetchedData, setFetchedData] = useState("");

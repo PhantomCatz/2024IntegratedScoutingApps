@@ -2,7 +2,7 @@
 import '../public/stylesheets/dtf.css';
 import logo from '../public/images/logo.png';
 import back from '../public/images/back.png';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Tabs, TabsProps, Checkbox, InputNumber, Input } from 'antd';
 import { useParams } from 'react-router-dom';
 import TextArea from 'antd/es/input/TextArea';
@@ -11,6 +11,10 @@ let teamsArr  = new Array();
 let graphsArr = new Array();
 let Length_Teams : any;
 
+let team1_number = '10000';//null protection
+let team2_number = '10000';//null protection
+let team3_number = '10000';//null protection
+
 function DTFTeams(props: any) {
   //useEffect(() => document.title = props.title, [props.title]);
   const { team_number } = useParams();
@@ -18,6 +22,7 @@ function DTFTeams(props: any) {
   const [fetchedData, setFetchedData] = useState<any>([]);
   const [fetchedGraph, setFetchedGraph] = useState<any>([]);
 
+  useEffect(() => {
   async function fetchData(team_number: number) {
     try {
       const response = await fetch('https://us-central1-team2637fixed.cloudfunctions.net/testingDTF' + '?team_number=' + team_number); //process.env.REACT_APP_DTF_URL
@@ -63,13 +68,11 @@ function DTFTeams(props: any) {
     }
   }; 
 
-  let team1_number = '10000';//null protection
-  let team2_number = '10000';//null protection
-  let team3_number = '10000';//null protection
-
   if(team_number){
     const teams = team_number.split(',');
     Length_Teams = teams.length;
+
+    console.log(teams);
 
     team1_number = teams[0];
     
@@ -86,89 +89,101 @@ function DTFTeams(props: any) {
     }
 
     teams.forEach(async (element) =>  {
+      console.log(element);
       teamsArr.push(await fetchData(parseInt(element)));
       graphsArr.push(await fetchGraph(parseInt(element)));
+      setFetchedData(graphsArr)
     }); 
   }
+}, []);
+
+  const stringFetchedData0 : string = String(fetchedData[0])
+  const stringFetchedData1 : string = String(fetchedData[1])
+  const stringFetchedData2 : string = String(fetchedData[2])
 
   function Summary() {
 
-    if (Length_Teams == 3 && typeof fetchedData[2] != 'undefined' && typeof fetchedGraph[2] != 'undefined') {
+    console.log(teamsArr);
+    console.log(graphsArr);
+    console.log(fetchedData);
+    console.log(fetchedGraph);
+
+    if (Length_Teams == 3 && typeof teamsArr[2] != 'undefined' && typeof graphsArr[2] != 'undefined') {
       return (
         <div>
           <h2 className='h2' style={{textAlign:'center'}}>Allience Average Score</h2>
-            <InputNumber disabled defaultValue={fetchedData[0].OA.alliance_avg_score} controls placeholder='team 1' min={1} className="input"/>
+            <InputNumber disabled defaultValue={teamsArr[0].OA.alliance_avg_score} controls placeholder='team 1' min={1} className="input"/>
           <h2 className='h2' style={{textAlign: 'center'}}>Auton Path</h2>
           <div style={{textAlign: 'center'}}>
-            <h2 className='h2'>Team1</h2> 
-            <img src={fetchedData[0].auto.auto_path} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
+            <h2 className='h2'>{team1_number}</h2> 
+            <img src={teamsArr[0].auto.auto_path} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
           </div>
 
           <div style={{textAlign: 'center'}}>
-            <h2 className='h2'>Team2</h2> 
-            <img src={fetchedData[0].auto.auto_path} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
+            <h2 className='h2'>{team2_number}</h2> 
+            <img src={teamsArr[1].auto.auto_path} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
           </div>
 
           <div style={{textAlign: 'center'}}>
-            <h2 className='h2'>Team3</h2>
-            <img src={fetchedData[0].auto.auto_path} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
+            <h2 className='h2'>{team3_number}</h2>
+            <img src={teamsArr[2].auto.auto_path} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
           </div>
   
           <h2 className='h2' style={{textAlign: 'center'}}>Intake Source</h2>
   
           <div>
-            <h2 style={{display: 'inline'}} className='h2'>Team1: </h2> 
-            <h1 style={{display: 'inline', marginLeft:'5%'}} className='h1'>{fetchedData[0].teleop.teleop_intake}</h1>
+            <h2 style={{display: 'inline'}} className='h2'>{team1_number + ':'}</h2> 
+            <h1 style={{display: 'inline', marginLeft:'5%'}} className='h1'>{teamsArr[0].teleop.teleop_intake}</h1>
           </div>
           <div>
-            <h2 style={{display: 'inline'}} className='h2'>Team2: </h2> 
-            <h1 style={{display: 'inline', marginLeft:'5%'}} className='h1'>{fetchedData[1].teleop.teleop_intake}</h1>
+            <h2 style={{display: 'inline'}} className='h2'>{team2_number + ':'}</h2> 
+            <h1 style={{display: 'inline', marginLeft:'5%'}} className='h1'>{teamsArr[1].teleop.teleop_intake}</h1>
           </div>
           <div>
-            <h2 style={{display: 'inline'}} className='h2'>Team3: </h2> 
-            <h1 style={{display: 'inline', marginLeft:'5%'}} className='h1'>{fetchedData[2].teleop.teleop_intake}</h1>
+            <h2 style={{display: 'inline'}} className='h2'>{team3_number + ':'}</h2> 
+            <h1 style={{display: 'inline', marginLeft:'5%'}} className='h1'>{teamsArr[2].teleop.teleop_intake}</h1>
           </div>
           
           <h2 className='h2' style={{textAlign: 'center'}}>Traversed Stage</h2>
           <div style={{textAlign: 'center'}}>
-            <h2 className='h2' style={{display: 'inline'}}>Team1</h2> 
-            <h2 className='h2' style={{display: 'inline', marginLeft: '12%'}}>Team2</h2> 
-            <h2 className='h2' style={{display: 'inline', marginLeft: '12%'}}>Team3</h2>
+            <h2 className='h2' style={{display: 'inline'}}>{team1_number}</h2> 
+            <h2 className='h2' style={{display: 'inline', marginLeft: '12%'}}>{team2_number}</h2> 
+            <h2 className='h2' style={{display: 'inline', marginLeft: '12%'}}>{team3_number}</h2>
           </div>
           <div style={{display: 'inline'}}>
-          <Checkbox disabled defaultChecked={fetchedData[0].OA.traverse_under_stage} className='checkboxRedFixed' style={{width: '30%'}}/>
+          <Checkbox disabled defaultChecked={teamsArr[0].OA.traverse_under_stage} className='checkboxRedFixed' style={{width: '30%'}}/>
           </div>
           <div style={{display: 'inline', marginLeft: '4%'}}>
-          <Checkbox disabled defaultChecked={fetchedData[1].OA.traverse_under_stage} className='checkboxRedFixed' style={{width: '30%'}}/>
+          <Checkbox disabled defaultChecked={teamsArr[1].OA.traverse_under_stage} className='checkboxRedFixed' style={{width: '30%'}}/>
           </div>
           <div style={{display: 'inline', marginLeft: '4%'}}>
-          <Checkbox disabled defaultChecked={fetchedData[2].OA.traverse_under_stage} className='checkboxRedFixed' style={{width: '30%'}}/>
+          <Checkbox disabled defaultChecked={teamsArr[2].OA.traverse_under_stage} className='checkboxRedFixed' style={{width: '30%'}}/>
           </div>
           <h2 className='h2' style={{textAlign: 'center'}}>Driver Skill</h2>
           <div style={{textAlign: 'center'}}>
-            <h2 className='h2' style={{display: 'inline'}}>Team1</h2> 
-            <h2 className='h2' style={{display: 'inline', marginLeft: '12%'}}>Team2</h2> 
-            <h2 className='h2' style={{display: 'inline', marginLeft: '12%'}}>Team3</h2>
+            <h2 className='h2' style={{display: 'inline'}}>{team1_number}</h2> 
+            <h2 className='h2' style={{display: 'inline', marginLeft: '12%'}}>{team2_number}</h2> 
+            <h2 className='h2' style={{display: 'inline', marginLeft: '12%'}}>{team3_number}</h2>
           </div>
   
           <div style={{display: 'inline'}}>
-          <InputNumber disabled defaultValue={fetchedData[0].OA.avg_driver_skill} controls placeholder='team 1' min={1} className="inputDisplayNumber"/>
-          <InputNumber disabled defaultValue={fetchedData[1].OA.avg_driver_skill} controls placeholder='team 2' min={1} className="inputDisplayNumber" style={{marginLeft: "4%"}}/>
-          <InputNumber disabled defaultValue={fetchedData[2].OA.avg_driver_skill} controls placeholder='team 3' min={1} className="inputDisplayNumber" style={{marginLeft: "5%"}}/>
+          <InputNumber disabled defaultValue={teamsArr[0].OA.avg_driver_skill} controls placeholder='team 1' min={1} className="inputDisplayNumber"/>
+          <InputNumber disabled defaultValue={teamsArr[1].OA.avg_driver_skill} controls placeholder='team 2' min={1} className="inputDisplayNumber" style={{marginLeft: "4%"}}/>
+          <InputNumber disabled defaultValue={teamsArr[2].OA.avg_driver_skill} controls placeholder='team 3' min={1} className="inputDisplayNumber" style={{marginLeft: "5%"}}/>
           </div>
   
           <h2 className='h2' style={{textAlign: 'center'}}>Graph</h2>
-          <h2 className='h2'>Team1</h2>
+          <h2 className='h2'>{team1_number}</h2>
           <div style={{marginBottom: '10%'}}>
-            <img src={String(fetchedGraph[0])} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
+            <img src={String(graphsArr[0])} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
           </div>
-          <h2 className='h2'>Team2</h2>
+          <h2 className='h2'>{team2_number}</h2>
           <div style={{marginBottom: '10%'}}>
-            <img src={String(fetchedGraph[1])} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
+            <img src={String(graphsArr[1])} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
           </div>
-          <h2 className='h2'>Team3</h2>
+          <h2 className='h2'>{team3_number}</h2>
           <div style={{marginBottom: '10%'}}>
-            <img src={String(fetchedGraph[2])} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
+            <img src={String(graphsArr[2])} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
           </div>
           
         </div>
@@ -176,110 +191,110 @@ function DTFTeams(props: any) {
         );
     }
     
-    if (Length_Teams == 2 && typeof fetchedData[1] != 'undefined' && typeof fetchedGraph[1] != 'undefined') {
+    if (Length_Teams == 2 && typeof teamsArr[1] != 'undefined' && typeof graphsArr[1] != 'undefined') {
 
         return (
           <div>
             <h2 className='h2' style={{textAlign:'center'}}>Allience Average Score</h2>
-              <InputNumber disabled defaultValue={fetchedData[0]['OA']['alliance_avg_score']} controls placeholder='team 1' min={1} className="input"/>
+              <InputNumber disabled defaultValue={teamsArr[0]['OA']['alliance_avg_score']} controls placeholder='team 1' min={1} className="input"/>
             <h2 className='h2' style={{textAlign: 'center'}}>Auton Path</h2>
             <div style={{textAlign: 'center'}}>
-              <h2 className='h2'>Team1</h2> 
-              <img src={fetchedData[0]['auto']['auto_path']} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
+              <h2 className='h2'>{team1_number}</h2> 
+              <img src={teamsArr[0]['auto']['auto_path']} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
             </div>
   
             <div style={{textAlign: 'center'}}>
-              <h2 className='h2'>Team2</h2> 
-              <img src={fetchedData[1]['auto']['auto_path']} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
+              <h2 className='h2'>{team2_number}</h2> 
+              <img src={teamsArr[1]['auto']['auto_path']} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
             </div>
     
             <h2 className='h2' style={{textAlign: 'center'}}>Intake Source</h2>
     
             <div>
-              <h2 style={{display: 'inline'}} className='h2'>Team1: </h2> 
-              <h1 style={{display: 'inline', marginLeft:'5%'}} className='h1'>{fetchedData[0]['teleop']['teleop_intake']}</h1>
+              <h2 style={{display: 'inline'}} className='h2'>{team1_number + ':'}</h2> 
+              <h1 style={{display: 'inline', marginLeft:'5%'}} className='h1'>{teamsArr[0]['teleop']['teleop_intake']}</h1>
             </div>
   
             <div>
-              <h2 style={{display: 'inline'}} className='h2'>Team2: </h2> 
-              <h1 style={{display: 'inline', marginLeft:'5%'}} className='h1'>{fetchedData[1]['teleop']['teleop_intake']}</h1>
+              <h2 style={{display: 'inline'}} className='h2'>{team2_number + ':'}</h2> 
+              <h1 style={{display: 'inline', marginLeft:'5%'}} className='h1'>{teamsArr[1]['teleop']['teleop_intake']}</h1>
             </div>
             
             <h2 className='h2' style={{textAlign: 'center'}}>Traversed Stage</h2>
             <div style={{textAlign: 'center'}}>
-              <h2 className='h2' style={{display: 'inline'}}>Team1</h2> 
+              <h2 className='h2' style={{display: 'inline'}}>{team1_number + ':'}</h2> 
               <h2 className='h2' style={{display: 'inline', marginLeft: '12%'}}>Team2</h2> 
             </div>
             <div style={{display: 'inline'}}>
-            <Checkbox disabled defaultChecked={fetchedData[0].OA.traverse_under_stage} className='checkboxRedFixed' style={{width: '30%'}}/>
+            <Checkbox disabled defaultChecked={teamsArr[0].OA.traverse_under_stage} className='checkboxRedFixed' style={{width: '30%'}}/>
             </div>
             <div style={{display: 'inline', marginLeft: '4%'}}>
-            <Checkbox disabled defaultChecked={fetchedData[1].OA.traverse_under_stage} className='checkboxRedFixed' style={{width: '30%'}}/>
+            <Checkbox disabled defaultChecked={teamsArr[1].OA.traverse_under_stage} className='checkboxRedFixed' style={{width: '30%'}}/>
             </div>
             <h2 className='h2' style={{textAlign: 'center'}}>Driver Skill</h2>
             <div style={{textAlign: 'center'}}>
-              <h2 className='h2' style={{display: 'inline'}}>Team1</h2> 
-              <h2 className='h2' style={{display: 'inline', marginLeft: '12%'}}>Team2</h2> 
+              <h2 className='h2' style={{display: 'inline'}}>{team1_number + ':'}</h2> 
+              <h2 className='h2' style={{display: 'inline', marginLeft: '12%'}}>{team2_number + ':'}</h2> 
             </div>
     
             <div style={{display: 'inline'}}>
-            <InputNumber disabled defaultValue={fetchedData[0]['OA']['avg_driver_skill']} controls placeholder='team 1' min={1} className="inputDisplayNumber"/>
-            <InputNumber disabled defaultValue={fetchedData[1]['OA']['avg_driver_skill']} controls placeholder='team 2' min={1} className="inputDisplayNumber" style={{marginLeft: "4%"}}/>
+            <InputNumber disabled defaultValue={teamsArr[0]['OA']['avg_driver_skill']} controls placeholder='team 1' min={1} className="inputDisplayNumber"/>
+            <InputNumber disabled defaultValue={teamsArr[1]['OA']['avg_driver_skill']} controls placeholder='team 2' min={1} className="inputDisplayNumber" style={{marginLeft: "4%"}}/>
             </div>
     
             <h2 className='h2' style={{textAlign: 'center'}}>Graph</h2>
-            <h2 className='h2'>Team1</h2>
+            <h2 className='h2'>{team1_number + ':'}</h2>
             <div style={{marginBottom: '10%'}}>
-              <img src={String(fetchedGraph[0])} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
+              <img src={String(graphsArr[0])} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
             </div>
-            <h2 className='h2'>Team2</h2>
+            <h2 className='h2'>{team2_number + ':'}</h2>
             <div style={{marginBottom: '10%'}}>
-              <img src={String(fetchedGraph[1])} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
+              <img src={String(graphsArr[1])} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
             </div>
           </div>
           );
     }
 
     
-      if (Length_Teams == 1 && typeof fetchedData[0] != 'undefined' && typeof fetchedGraph[0] != 'undefined') {
+      if (Length_Teams == 1 && typeof teamsArr[0] != 'undefined' && typeof graphsArr[0] != 'undefined') {
 
         return (
           <div>
             <h2 className='h2' style={{textAlign:'center'}}>Allience Average Score</h2>
-              <InputNumber disabled defaultValue={fetchedData[0]['OA']['alliance_avg_score']} controls placeholder='team 1' min={1} className="input"/>
+              <InputNumber disabled defaultValue={teamsArr[0]['OA']['alliance_avg_score']} controls placeholder='team 1' min={1} className="input"/>
             <h2 className='h2' style={{textAlign: 'center'}}>Auton Path</h2>
             <div style={{textAlign: 'center'}}>
-              <h2 className='h2'>Team1</h2> 
-              <img src={fetchedData[0]['auto']['auto_path']} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
+              <h2 className='h2'>{team1_number}</h2> 
+              <img src={teamsArr[0]['auto']['auto_path']} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
             </div>
 
             <h2 className='h2' style={{textAlign: 'center'}}>Intake Source</h2>
     
             <div>
-              <h2 style={{display: 'inline'}} className='h2'>Team1: </h2> 
-              <h1 style={{display: 'inline', marginLeft:'5%'}} className='h1'>{fetchedData[0]['teleop']['teleop_intake']}</h1>
+              <h2 style={{display: 'inline'}} className='h2'>{team1_number + ':'}</h2> 
+              <h1 style={{display: 'inline', marginLeft:'5%'}} className='h1'>{teamsArr[0]['teleop']['teleop_intake']}</h1>
             </div>
             
             <h2 className='h2' style={{textAlign: 'center'}}>Traversed Stage</h2>
             <div style={{textAlign: 'center'}}>
-              <h2 className='h2' style={{display: 'inline'}}>Team1</h2> 
+              <h2 className='h2' style={{display: 'inline'}}>{team1_number}</h2> 
             </div>
             <div style={{display: 'inline'}}>
-            <Checkbox disabled defaultChecked={fetchedData[0].OA.traverse_under_stage} className='checkboxRedFixed' style={{width: '30%'}}/>
+            <Checkbox disabled defaultChecked={teamsArr[0].OA.traverse_under_stage} className='checkboxRedFixed' style={{width: '30%'}}/>
             </div>
             <h2 className='h2' style={{textAlign: 'center'}}>Driver Skill</h2>
             <div style={{textAlign: 'center'}}>
-              <h2 className='h2' style={{display: 'inline'}}>Team1</h2> 
+              <h2 className='h2' style={{display: 'inline'}}>{team1_number}</h2> 
             </div>
     
             <div style={{display: 'inline'}}>
-            <InputNumber disabled defaultValue={fetchedData[0]['OA']['avg_driver_skill']} controls placeholder='team 1' min={1} className="inputDisplayNumber"/>
+            <InputNumber disabled defaultValue={teamsArr[0]['OA']['avg_driver_skill']} controls placeholder='team 1' min={1} className="inputDisplayNumber"/>
             </div>
     
             <h2 className='h2' style={{textAlign: 'center'}}>Graph</h2>
-            <h2 className='h2'>Team1</h2>
+            <h2 className='h2'>{team1_number}</h2>
             <div style={{marginBottom: '10%'}}>
-              <img src={String(fetchedGraph[0])} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
+              <img src={String(graphsArr[0])} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
             </div>
           </div>
           );
@@ -834,6 +849,7 @@ function DTFTeams(props: any) {
         children: Team3(),
       },
     ];
+  
     return (
       <body className='body'>
         <div className='banner'>
