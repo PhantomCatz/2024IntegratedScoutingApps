@@ -6,6 +6,8 @@ import { useState, useEffect } from 'react';
 import { Tabs, TabsProps, Checkbox, InputNumber, Input } from 'antd';
 import { useParams } from 'react-router-dom';
 import TextArea from 'antd/es/input/TextArea';
+import VerifyLogin from '../verifyToken';
+import { useCookies } from 'react-cookie';
 
 let teamsArr  = new Array();
 let graphsArr = new Array();
@@ -21,6 +23,8 @@ function DTFTeams(props: any) {
   const [loading, setLoading] = useState(true);
   const [fetchedData, setFetchedData] = useState<any>([]);
   const [fetchedGraph, setFetchedGraph] = useState<any>([]);
+  const [cookies] = useCookies(['login', 'theme']);
+  useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => {}}, [cookies.theme]);
 
   useEffect(() => {
   async function fetchData(team_number: number) {

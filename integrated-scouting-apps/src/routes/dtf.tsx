@@ -10,7 +10,7 @@ function DTF(props: any) {
 	useEffect(() => {document.title = props.title; return () => {}}, [props.title]);
 	const [cookies] = useCookies(['login', 'theme']);
 	useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
-
+  useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => {}}, [cookies.theme]);
 
 	return (
 		<div>
