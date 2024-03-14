@@ -28,8 +28,8 @@ function Watchlist(props: any) {
   const [tabNum, setTabNum] = useState("1");
   useEffect(() => {document.title = props.title}, [props.title]);
 
-  const [cookies] = useCookies(['login']);
-  useEffect(() => { VerifyLogin(cookies.login); }, []);
+  const [cookies] = useCookies(['login', 'theme']);
+  useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); }, []);
   const handleSubmit = async function watchListUpdate(values: FieldType) {
     const requestBody = {
       team_number: values.team_number,
