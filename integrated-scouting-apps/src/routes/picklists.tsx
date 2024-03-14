@@ -2,7 +2,7 @@ import '../public/stylesheets/style.css';
 import logo from '../public/images/logo.png';
 import back from '../public/images/back.png';
 import { useEffect, useState } from 'react';
-import { GetProp, Table, TableProps } from 'antd';
+import { GetProp, Table, TableProps, Button, InputNumber } from 'antd';
 import VerifyLogin from '../verifyToken';
 import { useCookies } from 'react-cookie';
 
@@ -15,20 +15,10 @@ interface TableParams {
   filters?: Parameters<GetProp<TableProps, 'onChange'>>[1];
 }
 
-// interface DataType {
-//   key: React.Key;
-//   rank: number;
-//   team_number: number;
-//   average_score: number;
-// }
-
-// interface DataExpand {
-//   key: React.Key;
-//   match_number: number;
-//   score: number;
-// }
-
 function Picklists(props: any) {
+let teamList: string[] = [];
+let rankList: string[] = [];
+
   const eventname = process.env.REACT_APP_EVENTNAME;
   const team_number/*{ team_number }*/ = 2637;//useParams();
   const [loading, setLoading] = useState(true);
@@ -45,90 +35,189 @@ function Picklists(props: any) {
   });
 
   let avg_score = 0;
-  let robot_died = 'false';
+  let robotEverDied = 'false';
 
   let displayData = [
     {
-
+      
     }
   ];
-  let expandData = [
-    {
+  // let expandData = [
+  //   {
 
-    }
-  ]
+  //   }
+  // ]
 
   const columns = [
     {
       title: 'Ranking',
       dataIndex: 'rank',
       key: 'rank',
-      width: '15%',
+      width: '10%',
     },
     {
       title: 'Team #',
       dataIndex: 'team_number',
       key: 'team_number',
+      width: '10%',
+
     },
     {
-      title: 'Average Score',
-      dataIndex: 'average_score',
-      key: 'average_score',
+      title: 'Overall Score',
+      dataIndex: 'overall_score',
+      key: 'overall_score',
+      width: '15%',
+    },
+    {
+      title: 'IEGR',
+      dataIndex: 'iegr',
+      key: 'iegr',
+      width: '15%',
+    },
+    {
+      title: 'Combined',
+      dataIndex: 'combined',
+      key: 'combined',
+      width: '15%',
+    },
+    {
+      title: 'Consistency',
+      dataIndex: 'consistency',
+      key: 'consistency',
+      width: '15%',
     },
     {
       title: 'Died',
       dataIndex: 'died',
-      key: 'died',
+      key:'died',
+      width: '1%',
     },
   ];
+  
+
+  // const expandColumns = [
+  //   {
+  //     title:'Match #',
+  //     dataIndex: 'match_number',
+  //     key: 'match_number',
+  //   },
+  //   {
+  //     title: 'Score',
+  //     dataIndex: 'score',
+  //     key: 'score' 
+  //   }
+  // ];
 
 
-  const expandColumns = [
-    {
-      title: 'Match #',
-      dataIndex: 'match_number',
-      key: 'match_number',
-    },
-    {
-      title: 'Score',
-      dataIndex: 'score',
-      key: 'score'
-    }
-  ];
-
-
-  useEffect(() => { document.title = props.title }, [props.title]);
+  useEffect(() => {document.title = props.title}, [props.title]);
   useEffect(() => {
     async function fetchTeams() {
       try {
-        const response = await fetch('https://www.thebluealliance.com/api/v3/event/' + eventname + '/rankings', {
-          method: "GET",
-          headers: {
-            'X-TBA-Auth-Key': process.env.REACT_APP_TBA_AUTH_KEY as string,
-          }
-        });
+        const response = await fetch('https://www.thebluealliance.com/api/v3/event/'+ eventname + '/rankings', {
+        method: "GET",
+        headers: {
+          'X-TBA-Auth-Key': process.env.REACT_APP_TBA_AUTH_KEY as string,
+        },
+      });
+      const data = await response.json();
+      const ls = data['rankings'];
+      ls.forEach((team: { [x: string]: string; }) => {
+        teamList.push(team['team_key'].substring(3));
+        rankList.push(team['rank']);
+      });
+      }
+      catch(err) {
+        console.log(err);
+      }
+    };
+    
+    
+    // fetchData();
+    async function fetchData() {
+      try {
+        await fetchTeams();
+        const response = await fetch(process.env.REACT_APP_PICKLIST_URL as string);
         const data = await response.json();
-        const ls = data['rankings'];
-        console.log(ls);
+        console.log(data);
+// console.log(teamList[0] == parseInt(data[20]['team_number']));
+// console.log(teamList[0],', ', parseInt(data[20]['team_number']));
         displayData = [];
-        for (var i = 0; i < ls.length; i++) {
-          //await fetchData(parseInt(ls[i]['team_key'].substring(3)));
-          await fetchData(254);
-          //console.log(parseInt(ls[i]['team_key'].substring(3)))
+        for(var i = 0; i < teamList.length; i++) 
+        {
+          const match_num   = [];
+          const match_score = [];
+          const match_died  = [];
 
-          let newData = {
-            key: ls[i]['rank'],
-            rank: ls[i]['rank'],
-            team_number: ls[i]['team_key'].substring(3),
-            average_score: avg_score.toFixed(2),
-            died: robot_died.toString(),
+          for(var j = 0; j < data.length; j++)
+          {
+            if(parseInt(data[j]['team_number']) == parseInt(teamList[i])) {
+              console.log(data)
+              console.log(parseInt(data[j]['team_number']), parseInt(data[j]['match_number']), parseInt(data[j]['score']))
+              match_num.push(parseInt(data[j]['match_number']));
+              match_score.push(parseInt(data[j]['score']));
+              match_died.push(data[j]['robot_died'])//TBD call died
+              console.log('OwO')
+            }
           }
-          console.log(expandData);
-          console.log(newData);
+
+          console.log(match_score);
+          avg_score = 0;
+          match_score.forEach(score => {
+            avg_score += score;
+            console.log(score);
+          });
+          avg_score /= match_score.length;
+          console.log(avg_score);
+
+          // expandData = [];
+          // for(var j = 0; j < match_num.length; j++) {
+          //   let newChildren = {
+          //     key: team_number * 1000 + match_num[j],
+          //     match_number: match_num[j],
+          //     score: match_score[j],
+          //   }
+          //   expandData.push(newChildren);
+          // }
+
+          robotEverDied = 'false' //TBD died
+          match_died.forEach(died => {
+            if(died == true) {
+              robotEverDied = 'true'
+            }
+          });
+
+          const sortedArray: number[] = match_score.sort((n1,n2) => n2 - n1);
+          let topThree: number = 0;
+          if(sortedArray.length < 3)
+          {
+            for(let i = 0; i < sortedArray.length; i++)
+            {
+              topThree = sortedArray[i] //+ sortedArray[1] + sortedArray[2];
+            }
+            topThree /= sortedArray.length;
+          }
+          else
+          {
+            topThree = (sortedArray[0] + sortedArray[1] + sortedArray[2]) / 3;
+          }
+
+          console.log(robotEverDied)
+          console.log(sortedArray)
+          console.log(topThree)
+          let newData = {
+            key: rankList[i],
+            rank: parseInt(rankList[i]),
+            team_number: parseInt(teamList[i]),
+            overall_score: avg_score.toFixed(2),
+            iegr: topThree.toFixed(2),
+            combined: 1,
+            consistency: (topThree - avg_score).toFixed(2),
+            died: robotEverDied.toString(),
+          }
           displayData.push(newData);
         }
-        console.log(displayData);
         setFetchedData(displayData);
+        //setDataDetail(expandData);
       }
       catch (err) {
         console.log(err);
@@ -137,92 +226,41 @@ function Picklists(props: any) {
         setLoading(false);
       }
     };
-
-    fetchTeams();
-
-    async function fetchData(team_number: number) {
-      try {
-        const match_num = [];
-        const match_score = [];
-        const match_died = [];
-
-        const response = await fetch(process.env.REACT_APP_PICKLIST_URL + "?team_number=" + team_number);
-        const data = await response.json();
-
-        for (var i = 0; i < data.length; i++) {
-          match_num.push(parseInt(data[i]['match_number']));
-          match_score.push(parseInt(data[i]['score']));
-          match_died.push()//TBD call died
-        }
-
-        avg_score = 0;
-        match_score.forEach(score => {
-          avg_score += score;
-        });
-        avg_score /= match_score.length;
-
-        expandData = [];
-        for (var i = 0; i < match_num.length; i++) {
-          let newChildren = {
-            key: team_number * 1000 + match_num[i],
-            match_number: match_num[i],
-            score: match_score[i],
-          }
-          expandData.push(newChildren);
-        }
-        setDataDetail(expandData);
-
-        // robot_died = 'false' //TBD died
-        // match_died.forEach(died => {
-        //   if(died == 'true') {
-        //     robot_died = 'true'
-        //   }
-        // });
-      }
-      catch (err) {
-        console.log(err);
-      }
-    };
   }, [team_number]);
-
+  function dadada() {
+    
+  }
   return (
-    <div>
-      <meta name="viewport" content="maximum-scale=1.0" />
+    <body>
       <div className='banner'>
         <header>
           <a href="/scoutingapp/">
             <img src={back} style={{ height: 64 + 'px', paddingTop: '5%' }} alt=''></img>
           </a>
           <table>
-            <tbody>
-              <tr>
-                <td>
-                  <img src={logo} style={{ height: 256 + 'px' }} alt='' ></img>
-                </td>
-                <td>
-                  <h1 style={{ display: 'inline-block', textAlign: 'center' }}>Picklist</h1>
-                </td>
-              </tr>
-            </tbody>
+            <td>
+              <img src={logo} style={{ height: 256 + 'px' }} alt='' ></img>
+            </td>
+              <h1 style={{ display: 'inline-block', textAlign: 'center' }}>Picklist</h1>
           </table>
-        </header>
-        <h2 style={{ whiteSpace: 'pre-line' }}>{loading ? 'Loading... (May take several minutes)' : ''}</h2>
-        <Table
-          columns={columns}
-          dataSource={fetchedData}
+        </header>        
+        <h2 style={{whiteSpace: 'pre-line'}}>{loading ? 'Loading...' : ''}</h2>
+        <Table 
+          columns={columns} 
+          dataSource={fetchedData} 
           rowClassName={(record) => (record.died == 'true' ? 'died' : 'OwO')} //TBD: died
           pagination={tableParams.pagination}
-          expandable={{
-            expandedRowRender: OwO => (
-              <Table
-                columns={expandColumns}
-                dataSource={dataDetail}
-              />
-            ),
-          }}
-        ></Table>
+          // expandable={{
+          //   expandedRowRender: OwO => (
+          //     <Table
+          //       columns={expandColumns}
+          //       dataSource={dataDetail}
+          //     />
+          //   ),
+          // }}
+          ></Table>
       </div>
-    </div>
+    </body>
   );
 }
 
@@ -240,3 +278,9 @@ export default Picklists;
 // 		.catch(error => {
 // 			console.error(error);
 // 		});
+
+// var numericArray: number[] = [13, 2, 3, 4, 1, 5, 8, 11, 0, 76, 8, 6, 8, 9, 5, 3, 87, 579];
+
+// var sortedArray: number[] = numericArray.sort((n1,n2) => n2 - n1);
+
+// console.log(sortedArray);
