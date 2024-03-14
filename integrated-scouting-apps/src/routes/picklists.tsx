@@ -3,6 +3,8 @@ import logo from '../public/images/logo.png';
 import back from '../public/images/back.png';
 import { useEffect, useState } from 'react';
 import { GetProp, Table, TableProps, Button, InputNumber } from 'antd';
+import VerifyLogin from '../verifyToken';
+import { useCookies } from 'react-cookie';
 
 type TablePaginationConfig = Exclude<GetProp<TableProps, 'pagination'>, boolean>;
 
@@ -22,6 +24,9 @@ let rankList: string[] = [];
   const [loading, setLoading] = useState(true);
   const [fetchedData, setFetchedData] = useState<{ [x: string]: any; }[]>([]);
   const [dataDetail, setDataDetail] = useState<{ [x: string]: any; }[]>([]);
+  const [cookies] = useCookies(['login', 'theme']);
+    useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
+    useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => {}}, [cookies.theme]);
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
       current: 1,
