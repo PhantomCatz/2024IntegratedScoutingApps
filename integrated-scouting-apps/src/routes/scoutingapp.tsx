@@ -25,7 +25,7 @@ function ScoutingPage(props: any) {
                   <img src={logo} style={{ height: 256 + 'px' }} alt=''></img>
                 </td>
                 <td>
-                  <h1 style={{ display: 'inline-block', textAlign: 'center' }}>Scouting Ap<a onClick={() => {setCookies('theme', colorThemes[Math.floor(Math.random() * colorThemes.length)])}}>p</a></h1>
+                  <h1 style={{ display: 'inline-block', textAlign: 'center' }}>Scouting Ap<a onClick={async () => {await setCookies('theme', colorThemes[Math.floor(Math.random() * colorThemes.length)])}}>p</a></h1>
                 </td>
               </tr>
             </tbody>
