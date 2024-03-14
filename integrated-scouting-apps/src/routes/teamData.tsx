@@ -7,13 +7,16 @@ import { useParams } from 'react-router-dom';
 import { Table } from 'antd';
 import Column from 'antd/es/table/Column';
 import ColumnGroup from 'antd/es/table/ColumnGroup';
-
+import VerifyLogin from '../verifyToken';
+import { useCookies } from 'react-cookie';
 function TeamData(props: any) {
   const { team_number } = useParams();
   const [loading, setLoading] = useState(true);
   const [fetchedData, setFetchedData] = useState<{ [x: string]: any; }[]>([]);
 
-  useEffect(() => {document.title = props.title}, [props.title]);
+  useEffect(() => { document.title = props.title }, [props.title]);
+  const [cookies] = useCookies(['login']);
+  useEffect(() => { VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
   useEffect(() => {
     async function fetchData(team_number: number) {
       try {
@@ -52,20 +55,28 @@ function TeamData(props: any) {
     }
   }, [team_number]);
   return (
-    <body>
+    <div>
+      <meta name="viewport" content="maximum-scale=1.0" />
       <div className='banner'>
         <header>
           <a href="/scoutingapp/lookup">
             <img src={back} style={{ height: 64 + 'px', paddingTop: '5%' }} alt=''></img>
           </a>
           <table>
-            <td>
-              <img src={logo} style={{ height: 256 + 'px' }} alt='' ></img>
-            </td>
-              <h1 style={{ display: 'inline-block', textAlign: 'center' }}>Team {team_number}</h1>
+            <tbody>
+              <tr>
+                <td>
+                  <img src={logo} style={{ height: 256 + 'px' }} alt='' ></img>
+                </td>
+                <td>
+                  <h1 style={{ display: 'inline-block', textAlign: 'center' }}>Team {team_number}</h1>
+                </td>
+              </tr>
+
+            </tbody>
           </table>
         </header>
-        <h2 style={{whiteSpace: 'pre-line'}}>{loading ? "Loading..." : 'Data for ' + team_number}</h2>
+        <h2 style={{ whiteSpace: 'pre-line' }}>{loading ? "Loading..." : 'Data for ' + team_number}</h2>
         <Table dataSource={fetchedData}>
           <ColumnGroup title="Match Identifier">
             <Column title="Match #" dataIndex="match_number" key="match_number" />
@@ -124,7 +135,7 @@ function TeamData(props: any) {
           </ColumnGroup>
         </Table>
       </div>
-    </body>
+    </div>
   );
 }
 

@@ -6,6 +6,7 @@
  */
 import ReactDOM from 'react-dom/client';
 import HomePage from './routes/home';
+import LoginPage from './routes/login';
 import ScoutingApp from './routes/scoutingapp';
 import MatchScout from './routes/match';
 import DTF from './routes/dtf';
@@ -17,15 +18,19 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import DataLookup from './routes/lookup';
 import TeamData from './routes/teamData';
 import Picklist from './routes/picklists';
+import Watchlist from './routes/watchlist';
 
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<HomePage title="2637 Strategy App" />} />
+        <Route path="/" element={<LoginPage title="2637 Strategy App" />} />
+        <Route path="/:msg" element={<LoginPage title="2637 Strategy App" />} />
+        <Route path="/home" element={<HomePage title="2637 Strategy App" />} />
         <Route path="/scoutingapp" element={<ScoutingApp title="2637 Scouting App" />} />
         <Route path="/dtf" element={<DTF title="2637 Drive Team Feeder" />} />
+        <Route path="/watchlist" element = {<Watchlist title="2637 Watch List"/>}/>
         <Route path="/dtf/:team_number" element={<DTFTeams title="2637 Drive Team Feeder Data" />} />
         <Route path="/scoutingapp/match" element={<MatchScout title="2637 Match Scout" />} />
         <Route path="/scoutingapp/strategic" element={<StrategicScout title="2637 Strategic Scout" />} />
