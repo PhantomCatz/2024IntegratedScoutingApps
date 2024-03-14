@@ -8,7 +8,7 @@ import { useCookies } from 'react-cookie';
 function ScoutingPage(props: any) {
 	useEffect(() => {document.title = props.title; return () => {}}, [props.title]);
   const [cookies, setCookies] = useCookies(['login', 'theme']);
-  const colorThemes = ["og", "看", "dc"];
+  const colorThemes = ["og", "看", "dc", "lg1000"];
   useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
   useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => {}}, [cookies.theme]);
 

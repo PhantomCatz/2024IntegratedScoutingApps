@@ -27,7 +27,7 @@ async function ChangeTheme(cookie: any) {
     }
     else if (cookie.substring(0, 2) === "lg") {
       setInterval(() => {
-        const colors = ["black", "#433C3C", "#692090", "#32a7dc", "indigo", "violet"];
+        const colors = ["#000000", "#433C3C", "#692090", "#32a7dc", "#123456", "#987654"];
         const randomColor = colors[Math.floor(Math.random() * colors.length)];
         document.body.style.backgroundColor = randomColor;
       }, Number(cookie.substring(2)));

@@ -272,6 +272,7 @@ function MatchScout(props: any) {
         const team_color = form.getFieldValue('robotpos').substring(0, form.getFieldValue('robotpos').indexOf('_'));
         setColor((team_color === "red" ? true : false));
         const team_num = form.getFieldValue('robotpos').substring(form.getFieldValue('robotpos').indexOf('_') + 1) - 1;
+        console.log(team_num)
         const fullTeam = (data.alliances[team_color].team_keys[team_num] !== null ? data.alliances[team_color].team_keys[team_num] : 0);
         setTeamNum(Number(fullTeam.substring(3)));
         updateDefendedList();
@@ -309,21 +310,40 @@ function MatchScout(props: any) {
     }
   }
   async function updateDefendedList() {
-    const matchID = eventname + "_" + form.getFieldValue('matchlevel') + form.getFieldValue('matchnum');
-    const response = await fetch('https://www.thebluealliance.com/api/v3/match/' + matchID,
-      {
-        method: "GET",
-        headers: {
-          'X-TBA-Auth-Key': process.env.REACT_APP_TBA_AUTH_KEY as string,
-        }
-      });
-    const data = await response.json();
-    let result: any[] = [];
-    for (const team in data.alliances[color ? 'red' : 'blue'].team_keys) {
-      result.push(data.alliances[color ? 'blue' : 'red'].team_keys[team].substring(3));
+    if (roundIsVisible) {
+      const matchID = eventname + "_" + form.getFieldValue('matchlevel') + form.getFieldValue('matchnum') + "m" + form.getFieldValue('roundnum');
+      const response = await fetch('https://www.thebluealliance.com/api/v3/match/' + matchID,
+        {
+          method: "GET",
+          headers: {
+            'X-TBA-Auth-Key': process.env.REACT_APP_TBA_AUTH_KEY as string,
+          }
+        });
+      const data = await response.json();
+      let result: any[] = [];
+      for (const team in data.alliances[color ? 'red' : 'blue'].team_keys) {
+        result.push(data.alliances[color ? 'blue' : 'red'].team_keys[team].substring(3));
+      }
+      setOpposingTeamNum(result);
+      console.log(opposingTeamNum);
     }
-    setOpposingTeamNum(result);
-    console.log(opposingTeamNum);
+    else {
+      const matchID = eventname + "_" + form.getFieldValue('matchlevel') + form.getFieldValue('matchnum');
+      const response = await fetch('https://www.thebluealliance.com/api/v3/match/' + matchID,
+        {
+          method: "GET",
+          headers: {
+            'X-TBA-Auth-Key': process.env.REACT_APP_TBA_AUTH_KEY as string,
+          }
+        });
+      const data = await response.json();
+      let result: any[] = [];
+      for (const team in data.alliances[color ? 'red' : 'blue'].team_keys) {
+        result.push(data.alliances[color ? 'blue' : 'red'].team_keys[team].substring(3));
+      }
+      setOpposingTeamNum(result);
+      console.log(opposingTeamNum);
+    }
   }
   function preMatch() { //final do not change
     type FieldType = {
@@ -338,7 +358,7 @@ function MatchScout(props: any) {
     const rounds = [
       { label: "Qualifications", value: "qm" },
       { label: "Semi-Finals", value: "sf" },
-      { label: "Finals", value: "f1" },
+      { label: "Finals", value: "f" },
     ];
     const robotpos = [
       { label: "R1", value: "red_1" },
@@ -569,11 +589,11 @@ function MatchScout(props: any) {
       { label: "CS", value: "cs" },
       { label: "LS", value: 'ls' },
       { label: "A", value: 'amp' },
-      { label: "AW", value: 'aw' },
+      // { label: "AW", value: 'aw' },
       { label: "UT", value: 'ut' },
       { label: "CT", value: 'ct' },
       { label: "LT", value: 'lt' },
-      // { label: "LOT", value: 'lot' },
+      { label: "LOT", value: 'lot' },
       // { label: "P", value: 'pod'},
     ];
     const intake = [
@@ -1019,6 +1039,7 @@ function MatchScout(props: any) {
           try {
             setLoading(true);
             if (!window.navigator.onLine) {
+              window.alert("ur offline so heres an offline version; just give to webdev after comp");
               saveAs(new Blob([JSON.stringify(event)], { type: "text/json" }), event.initials + event.matchnum + ".json");
             }
             await setNewMatchScout(event);
