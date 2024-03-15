@@ -10,7 +10,7 @@ import '../public/stylesheets/match.css';
 import field_blue from '../public/images/field_blue.png';
 import field_red from '../public/images/field_red.png';
 import logo from '../public/images/logo.png';
-import { Checkbox, Flex, Form, InputNumber, Select, Tabs, TabsProps } from 'antd';
+import { Checkbox, Flex, Form, Input, InputNumber, message, Select, Tabs, TabsProps } from 'antd';
 import { useRef } from 'react';
 import { Button } from 'antd';
 import React, { useState, useEffect } from 'react'
@@ -29,65 +29,72 @@ function PitScout(props: any) {
   const [color, setColor] = useState(false);
 	useEffect(() => {document.title = props.title; return () => {}}, [props.title]);
   const [cookies] = useCookies(['login', 'theme']);
-  useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
-  useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => {}}, [cookies.theme]);
+  // useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
+  // useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => {}}, [cookies.theme]);
 
   const { team_number } = useParams();
   const [fetchedData, setFetchedData] = useState("");
   const [loading, setLoading] = useState(true);
   const [question, setQuestion] = useState('');
-  useEffect(() => {
-    async function fetchData(team_number: number) {
-      let parsedData = "";
-      try {
-        const url = process.env.REACT_APP_PIT_URL + "?team_number=" + team_number;
-        const response = await fetch(url);
-        const data = await response.json();
-        for (let i = 0; i < data.documents.length; i++) {
-          const matches = data.documents[i];
-          for (let pitInfo in matches) {
-            const pitData = matches[pitInfo];
-            for (let pitStats in pitData) {
-              if (Number.isNaN(Number(pitStats))) {
-                parsedData = parsedData.concat("\n" + pitStats + ":" + pitData[pitStats]);
-              }
-            }
-          }
-          parsedData = parsedData.concat("\n");
-        }
-        setFetchedData(parsedData);
-      }
-      catch (err) {
-        console.log(err);
-      }
-      finally {
-        setLoading(false);
-      }
-    }
+  // useEffect(() => {
+    // async function fetchData(team_number: number) {
+    //   let parsedData = "";
+    //   try {
+    //     const url = process.env.REACT_APP_PIT_URL + "?team_number=" + team_number;
+    //     const response = await fetch(url);
+    //     const data = await response.json();
+    //     for (let i = 0; i < data.documents.length; i++) {
+    //       const matches = data.documents[i];
+    //       for (let pitInfo in matches) {
+    //         const pitData = matches[pitInfo];
+    //         for (let pitStats in pitData) {
+    //           if (Number.isNaN(Number(pitStats))) {
+    //             parsedData = parsedData.concat("\n" + pitStats + ":" + pitData[pitStats]);
+    //           }
+    //         }
+    //       }
+    //       parsedData = parsedData.concat("\n");
+    //     }
+    //     setFetchedData(parsedData);
+    //   }
+    //   catch (err) {
+    //     console.log(err);
+    //   }
+    //   finally {
+    //     setLoading(false);
+    //   }
+    // }
 
-    async function fetchPitQuestions() {
-      try {
-        const url = process.env.REACT_APP_PIT_URL + "?team_number=" + team_number;
-        const response = await fetch(url);
-        const data = await response.json();
-        const robotQuestion = data.robot_questions;
+  const submitPitData = async function submitData(values:any) {
+    try {
+      const url = process.env.REACT_APP_PIT_URL as string;
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+      });
 
-        setQuestion(robotQuestion);
-      } catch (error) {
-        console.error('Error fetching question:', error);
+      if (response.ok) {
+        console.log('Data successfully submitted!');
+      } else {
+        console.log('Failed to submit data. Please try again.');
       }
+    } catch (error) {
+      console.log('Error submitting data:', error);
+      console.log('Failed to submit data. Please try again.');
     }
+  };
+  
 
-    if (team_number) {
-      fetchData(parseInt(team_number));
-    }
-  }, [team_number]);
 
   const [image, setImage] = useState(String);
 
   const handleImageUpload = (e: any) => {
     setImage(URL.createObjectURL(e.target.files[0]));
   };
+
 
   function pitInput() {
     type FieldType = {
@@ -157,7 +164,9 @@ function PitScout(props: any) {
 
 
     return (
+    
       <div>
+      <Form onFinish={submitPitData}>
         {/* how many events */}
         <div>
           <h1 style={{ marginTop: "10%" }} className='pitBody'>How many events have you competed in?</h1>
@@ -232,8 +241,8 @@ function PitScout(props: any) {
 
         {/* go under stage */}
         <div>
-          <h1 className='pitBody' style={{ marginTop: "7%" }}>Under Stage</h1>
-          <Form.Item<FieldType> name="robot_ability_tranversed_stage">
+          <h1 className='pitBody'  style={{ marginTop: "7%" }}>Under Stage</h1>
+          <Form.Item<FieldType> valuePropName="checked" name="robot_ability_tranversed_stage" >
             <Checkbox className='input_checkbox' />
           </Form.Item>
         </div>
@@ -327,13 +336,16 @@ function PitScout(props: any) {
 
         {/* submit */}
         <div>
-          <Button style={{ marginLeft: '25%', marginTop: '10%' }} className='pitButton'>Submit</Button>
+          {/* <Button style={{ marginLeft: '25%', marginTop: '10%' }} className='pitButton'>Submit</Button> */}
+          <Input type="submit" value="Submit" className='submit' />
+
         </div>
+        </Form>
       </div>
     );
   }
 
-  function answers() {
+  {/* function answers() {
     type FieldType = {
       answer: string,
 
@@ -364,25 +376,30 @@ function PitScout(props: any) {
         </div>
 
         {/* submit */}
-        <div>
-          <Button style={{ marginLeft: '25%', marginTop: '10%' }} className='pitButton'>Submit</Button>
-        </div>
-      </div>
-    );
-  }
+      //   <div>
+      //     <Button style={{ marginLeft: '25%', marginTop: '10%' }} className='pitButton'>Submit</Button>
+      //   </div>
+      // </div>
+     
+  //   );
+  // } }
+  
 
   const items: TabsProps['items'] = [
     {
       key: '1',
       label: 'Inputs',
-      children: pitInput(),
-    },
-    {
-      key: '2',
-      label: 'Answer',
-      children: answers(),
-    },
+      children: pitInput()
+      
+    }
   ];
+
+    // {
+    //   key: '2',
+    //   label: 'Answer',
+    //   children: answers(),
+    // },
+  // ];
 
 
   return (
