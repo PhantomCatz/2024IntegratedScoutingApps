@@ -22,7 +22,8 @@ function DTFTeams(props: any) {
   const [fetchedData, setFetchedData] = useState<any>([]);
   const [fetchedGraph, setFetchedGraph] = useState<any>([]);
 
-  useEffect(() => {
+  
+
   async function fetchData(team_number: number) {
     try {
       const response = await fetch('https://us-central1-team2637fixed.cloudfunctions.net/testingDTF' + '?team_number=' + team_number); //process.env.REACT_APP_DTF_URL
@@ -32,7 +33,7 @@ function DTFTeams(props: any) {
       teamsArr_temp = [...fetchedData]
       teamsArr_temp.push(data)
       setFetchedData(teamsArr_temp);
-      return data;
+      return [team_number, data];
     }
     catch (err) {
       console.log(err);
@@ -61,12 +62,14 @@ function DTFTeams(props: any) {
         graphsArr_temp = [...fetchedGraph]
         graphsArr_temp.push(svgDataUri)
         setFetchedGraph(graphsArr_temp);
-        return svgDataUri;
+        return [team_number, svgDataUri];
 
     } catch (error) {
         console.error();
     }
   }; 
+
+  useEffect(() => {
 
   if(team_number){
     const teams = team_number.split(',');
@@ -88,27 +91,79 @@ function DTFTeams(props: any) {
       team3_number = ' ';
     }
 
+    let teams_temp = new Array();
+    let graph_temp = new Array();
+
     teams.forEach(async (element) =>  {
       console.log(element);
+
+      teams_temp.push(await fetchData(parseInt(element)));
+      graph_temp.push(await fetchGraph(parseInt(element)));
+      console.log(teams_temp);
+      console.log(graph_temp);
+
+      let teams_temp2: any;
+      let graph_temp2: any;
+
+      teams_temp2 = teams_temp.pop();
+      graph_temp2 = graph_temp.pop();
+
+      if (team1_number == teams_temp2[0]) {
+        teamsArr[0] = teams_temp2[1];
+      }
+
+      if (team2_number == teams_temp2[0]) {
+        teamsArr[1] = teams_temp2[1];
+      }
+
+      if (team3_number == teams_temp2[0]) {
+        teamsArr[2] = teams_temp2[1];
+      }
+
+      if (team1_number == graph_temp2[0]) {
+        graphsArr[0] = graph_temp2[1];
+      }
+
+      if (team2_number == graph_temp2[0]) {
+        graphsArr[1] = graph_temp2[1];
+      }
+
+      if (team3_number == graph_temp2[0]) {
+        graphsArr[2] = graph_temp2[1];
+      }
+
+      
+      console.log(teamsArr);
+      console.log(graphsArr);
+/*
       teamsArr.push(await fetchData(parseInt(element)));
       graphsArr.push(await fetchGraph(parseInt(element)));
-      setFetchedData(graphsArr)
-    }); 
+      console.log(teamsArr);
+      console.log(graphsArr);
+*/
+    });
+    
   }
 }, []);
 
-  const stringFetchedData0 : string = String(fetchedData[0])
-  const stringFetchedData1 : string = String(fetchedData[1])
-  const stringFetchedData2 : string = String(fetchedData[2])
+  //const stringFetchedData0 : string = String(fetchedData[0])
+  //const stringFetchedData1 : string = String(fetchedData[1])
+  //const stringFetchedData2 : string = String(fetchedData[2])
 
   function Summary() {
 
-    console.log(teamsArr);
-    console.log(graphsArr);
-    console.log(fetchedData);
-    console.log(fetchedGraph);
+    //console.log(teamsArr);
+    //console.log(graphsArr);
+    //console.log(fetchedData);
+    //console.log(fetchedGraph);
 
-    if (Length_Teams == 3 && typeof teamsArr[2] != 'undefined' && typeof graphsArr[2] != 'undefined') {
+    
+
+
+    if (Length_Teams == 3 && typeof teamsArr[0] != 'undefined' && typeof graphsArr[0] != 'undefined' && typeof teamsArr[1] != 'undefined' && typeof graphsArr[1] != 'undefined' && typeof teamsArr[2] != 'undefined' && typeof graphsArr[2] != 'undefined') {
+      //console.log(teamsArr[0].auto.auto_path)
+      //console.log(teamsArr[1].auto.auto_path)
+      //console.log(teamsArr[2].auto.auto_path)
       return (
         <div>
           <h2 className='h2' style={{textAlign:'center'}}>Allience Average Score</h2>
@@ -191,7 +246,7 @@ function DTFTeams(props: any) {
         );
     }
     
-    if (Length_Teams == 2 && typeof teamsArr[1] != 'undefined' && typeof graphsArr[1] != 'undefined') {
+    if (Length_Teams == 2 && typeof teamsArr[0] != 'undefined' && typeof graphsArr[0] != 'undefined' && typeof teamsArr[1] != 'undefined' && typeof graphsArr[1] != 'undefined') {
 
         return (
           <div>
