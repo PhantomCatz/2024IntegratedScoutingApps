@@ -166,7 +166,17 @@ function PitScout(props: any) {
     return (
     
       <div>
-      <Form onFinish={submitPitData}>
+        <Form onFinish={async event => {
+        try{
+          await submitPitData(event);
+          window.location.reload();
+        }
+        catch (error) {
+          console.log('Error submitting data:', error);
+          console.log('Failed to submit data. Please try again.');
+        }
+      }} >
+     
         {/* how many events */}
         <div>
           <h1 style={{ marginTop: "10%" }} className='pitBody'>How many events have you competed in?</h1>
