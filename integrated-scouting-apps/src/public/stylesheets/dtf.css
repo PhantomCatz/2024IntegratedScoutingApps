@@ -131,8 +131,8 @@
 .checkboxRedFixed {
     width: 15%;
     min-width: 15%;
-    height: 60px !important;
-    min-height: 60px !important;
+    height: 118px !important;
+    min-height: 118px !important;
     border: 4px solid white !important;
     border-radius: 25px;
     background-color: red;
@@ -147,5 +147,5 @@
     border-color: #000000;
     width: 100%;
     border-radius: 20px;
-    height: 60px;
+    height: 118px;
 }
