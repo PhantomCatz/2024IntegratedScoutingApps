@@ -32,12 +32,12 @@ function Strategic(props: any) {
       "comment": {
         "comment": event.comments,
       },
-      "driver": {
-        "driverrating": event.driverrating,
-      },
-      "customquestions": {
-        "customquestions": event.customquestions,
-      }
+      // "driver": {
+      //   "driverrating": event.driverrating,
+      // },
+      // "customquestions": {
+      //   "customquestions": event.customquestions,
+      // }
     };
     const WORKING_TEST_DO_NOT_REMOVE_OR_YOU_WILL_BE_FIRED = {
       "matchIdentifier": {
@@ -194,16 +194,16 @@ function Strategic(props: any) {
       label: 'Comment',
       children: comment(),
     },
-    {
-      key: '3',
-      label: 'Driver Skill',
-      children: driverRating(),
-    },
-    {
-      key: '4',
-      label: 'Custom Questions',
-      children: customQuestions(),
-    },
+    // {
+    //   key: '3',
+    //   label: 'Driver Skill',
+    //   children: driverRating(),
+    // },
+    // {
+    //   key: '4',
+    //   label: 'Custom Questions',
+    //   children: customQuestions(),
+    // },
   ];
   return (
     <div>
