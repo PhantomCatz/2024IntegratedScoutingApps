@@ -36,37 +36,60 @@ function PitScout(props: any) {
   const [fetchedData, setFetchedData] = useState("");
   const [loading, setLoading] = useState(false);
   const [question, setQuestion] = useState('');
-  // useEffect(() => {
-    // async function fetchData(team_number: number) {
-    //   let parsedData = "";
-    //   try {
-    //     const url = process.env.REACT_APP_PIT_URL + "?team_number=" + team_number;
-    //     const response = await fetch(url);
-    //     const data = await response.json();
-    //     for (let i = 0; i < data.documents.length; i++) {
-    //       const matches = data.documents[i];
-    //       for (let pitInfo in matches) {
-    //         const pitData = matches[pitInfo];
-    //         for (let pitStats in pitData) {
-    //           if (Number.isNaN(Number(pitStats))) {
-    //             parsedData = parsedData.concat("\n" + pitStats + ":" + pitData[pitStats]);
-    //           }
-    //         }
-    //       }
-    //       parsedData = parsedData.concat("\n");
-    //     }
-    //     setFetchedData(parsedData);
-    //   }
-    //   catch (err) {
-    //     console.log(err);
-    //   }
-    //   finally {
-    //     setLoading(false);
-    //   }
-    // }
+  useEffect(() => {
+    async function fetchData(team_number: number) {
+      let parsedData = "";
+      try {
+        const url = process.env.REACT_APP_PIT_URL + "?team_number=" + team_number;
+        const response = await fetch(url);
+        const data = await response.json();
+        for (let i = 0; i < data.documents.length; i++) {
+          const matches = data.documents[i];
+          for (let pitInfo in matches) {
+            const pitData = matches[pitInfo];
+            for (let pitStats in pitData) {
+              if (Number.isNaN(Number(pitStats))) {
+                parsedData = parsedData.concat("\n" + pitStats + ":" + pitData[pitStats]);
+              }
+            }
+          }
+          parsedData = parsedData.concat("\n");
+        }
+        setFetchedData(parsedData);
+      }
+      catch (err) {
+        console.log(err);
+      }
+      finally {
+        setLoading(false);
+      }
+    }} );
 
   const submitPitData = async function submitData(values:any) {
-    setLoading(true);
+    const body ={
+      // "robot_pic": values.base64String,  
+      "robot_events": values.robot_events,
+      "team_number": values.team_number,
+      "robot_drive_train": values.robot_drive_train,
+      "robot_weight": values.robot_weight,
+      "robot_motor_type": values.robot_motor_type,
+      "robot_motor_counter": values.robot_motor_counter,
+      "robot_wheel_type": values.robot_wheel_type,
+      "robot_intake_capability": values.robot_intake_capability,
+      "robot_shooting_capability": values.robot_shooting_capability,
+      "robot_ability_traversed_stage": values.robot_ability_traversed_stage,
+      "robot_climbing_capabilities": values.robot_climbing_capabilities,
+      "robot_trap_detail": values.robot_trap_detail,
+      "robot_pit_organization": values.robot_pit_organization,
+      "robot_team_safety": values.robot_team_safety,
+      "robot_team_workmanship": values.robot_team_workmanship,
+      "robot_GP": values.robot_GP,
+      "robot_auton_path": imageURI.current,
+      "robot_auton_path_detail": values.robot_auton_path_detail,
+      // "pit_question": question,
+      // "pit_answer": values.pit_answer,
+      
+    }
     try {
       const url = process.env.REACT_APP_PIT_URL as string;
       const response = await fetch(url, {
@@ -74,11 +97,15 @@ function PitScout(props: any) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify(body),
       });
 
       if (response.ok) {
         console.log('Data successfully submitted!');
+        console.log(response);
+        console.log(team_number);
+        console.log(body);
+        // window.location.reload();
       } else {
         console.log('Failed to submit data. Please try again.');
       }
@@ -93,14 +120,26 @@ function PitScout(props: any) {
 
   const [image, setImage] = useState(String);
 
+  // const handleImageUpload = (e: any) => {
+  //   setImage(URL.createObjectURL(e.target.files[0]));
+  // };
   const handleImageUpload = (e: any) => {
-    setImage(URL.createObjectURL(e.target.files[0]));
+    const file = e.target.files[0];
+    const reader = new FileReader();
+  
+    reader.onload = () => {
+      const base64String = reader.result?.toString();
+      // Do something with the base64String, such as storing it in state
+      console.log(base64String); // Log the base64 string to the console for demonstration
+    };
+  
+    reader.readAsDataURL(file);
   };
 
 
   function pitInput() {
     type FieldType = {
-      robot_pic: string;
+      // robot_pic: string;
       robot_events: number;
       team_number: number;
       robot_drive_train: string;
@@ -110,7 +149,7 @@ function PitScout(props: any) {
       robot_wheel_type: string,
       robot_intake_capability: string;
       robot_shooting_capability: string;
-      robot_ability_tranversed_stage: boolean;
+      robot_ability_traversed_stage: boolean;
       robot_climbing_capabilities: string;
       robot_trap_detail: string,
       robot_pit_organization: number,
@@ -119,8 +158,8 @@ function PitScout(props: any) {
       robot_GP: number,
       robot_auton_path: string,
       robot_auton_path_detail: string;
-      pit_question: string,
-      pit_answer: string,
+      // pit_question: string,
+      // pit_answer: string,
     };
 
     const drive_train = [
@@ -170,11 +209,38 @@ function PitScout(props: any) {
     return (
     
       <div>
-        <Form onFinish={async event => {
+        <Form 
+        form={form}
+        initialValues={{
+          // robot_pic: '',
+          robot_events: 0,
+          team_number: 0,
+          robot_drive_train: '',
+          robot_weight: 0,
+          robot_motor_type: '',
+          robot_motor_counter: 0,
+          robot_wheel_type: '',
+          robot_intake_capability: '',
+          robot_shooting_capability: '',
+
+          robot_ability_traversed_stage: false,
+          robot_climbing_capabilities: '',
+          robot_trap_detail: '',
+          robot_pit_organization: 0,
+          robot_team_safety: 0,
+          robot_team_workmanship: 0,
+          robot_GP: 0,
+          robot_auton_path: '',
+          robot_auton_path_detail: '',
+          // pit_question: '',
+          // pit_answer: '',
+        }}
+
+        onFinish={async event => {
         try{
           event.preventDefault();
           await submitPitData(event);
-          window.location.reload();
+          form.resetFields();
         }
         catch (error) {
           console.log('Error submitting data:', error);
@@ -183,136 +249,106 @@ function PitScout(props: any) {
       }} >
      
         {/* how many events */}
-        <div>
+ 
           <h1 style={{ marginTop: "10%" }} className='pitBody'>How many events have you competed in?</h1>
           <Form.Item<FieldType> name="robot_events" rules={[{ required: true, message: 'Please input the robot position!' }]}>
             <InputNumber controls min={0} className="pitinput" />
           </Form.Item>
-        </div>
+        
 
         {/* team # */}
-        <div>
           <h1 className='pitBody'>Team #</h1>
           <Form.Item<FieldType> name="team_number">
             <InputNumber controls min={0} className="pitinput" />
           </Form.Item>
-        </div>
 
         {/* drive train type */}
-        <div>
           <h1 className='pitBody'>Drive Train Type</h1>
           <Form.Item<FieldType> name="robot_drive_train" rules={[{ required: true, message: 'Please input the drive train type!' }]}>
             <Select placeholder='' options={drive_train} className="pitinput" />
           </Form.Item>
-        </div>
 
         {/* robot weight */}
-        <div>
           <h1 className='pitBody'>Robot Weight</h1>
           <Form.Item<FieldType> name="robot_weight">
             <InputNumber controls min={0} className="pitinput" />
           </Form.Item>
-        </div>
 
         {/* motor type */}
-        <div>
           <h1 className='pitBody'>Motor Type</h1>
           <Form.Item<FieldType> name="robot_motor_type" rules={[{ required: true, message: 'Please input the motor type!' }]}>
             <Select placeholder='' options={motor_type} className="pitinput" />
           </Form.Item>
-        </div>
 
         {/* motor counter */}
-        <div>
           <h1 className='pitBody'># of Motors</h1>
           <Form.Item<FieldType> name="robot_motor_counter">
             <InputNumber controls min={0} className="pitinput" />
           </Form.Item>
-        </div>
 
         {/* motor type */}
-        <div>
           <h1 className='pitBody'>Wheel Type</h1>
           <Form.Item<FieldType> name="robot_wheel_type" rules={[{ required: true, message: 'Please input the wheel type!' }]}>
             <Select placeholder="" options={wheel_type} className="pitinput" />
           </Form.Item>
-        </div>
 
         {/* intake capability/*/}
-        <div>
           <h1 className='pitBody'>Intake capability</h1>
           <Form.Item<FieldType> name="robot_intake_capability" rules={[{ required: true, message: 'Please input the intake capability!' }]}>
             <Select placeholder='' options={intakeCap} className="input" />
           </Form.Item>
-        </div>
 
         {/* shooting capability/*/}
-        <div>
           <h1 className='pitBody' style={{ marginTop: "7%" }}>Shooting capability</h1>
           <Form.Item<FieldType> name="robot_shooting_capability" rules={[{ required: true, message: 'Please input the shooting capability!' }]}>
             <Select placeholder='' options={shootingCap} className="input" />
           </Form.Item>
-        </div>
 
         {/* go under stage */}
-        <div>
           <h1 className='pitBody'  style={{ marginTop: "7%" }}>Under Stage</h1>
-          <Form.Item<FieldType> valuePropName="checked" name="robot_ability_tranversed_stage" >
+          <Form.Item<FieldType> valuePropName="checked" name="robot_ability_traversed_stage" >
             <Checkbox className='input_checkbox' />
           </Form.Item>
-        </div>
 
         {/* climbing capabilities */}
-        <div>
           <h1 className='pitBody' style={{ marginTop: "7%" }}>Climbing capability</h1>
           <Form.Item<FieldType> name="robot_climbing_capabilities" rules={[{ required: true, message: 'Please input the climbing capability!' }]}>
             <Select placeholder='' options={climbingCap} className="input" />
           </Form.Item>
-        </div>
 
         {/* How does robot trap? */}
-        <div>
           <h1 className='pitBody' style={{ marginTop: "7%" }}>How does robot trap?</h1>
           <Form.Item<FieldType> name="robot_trap_detail">
             <label>
               <textarea className="pitComment" name="eventNum" rows={3} />
             </label>
           </Form.Item>
-        </div>
 
         {/* pit organization */}
-        <div>
           <h1 className='pitBody'>Pit organization</h1>
           <Form.Item<FieldType> name="robot_pit_organization">
             <InputNumber controls min={1} max={4} className="pitinput" />
           </Form.Item>
-        </div>
 
         {/* Team safety */}
-        <div>
           <h1 className='pitBody'>Team safety</h1>
           <Form.Item<FieldType> name="robot_team_safety">
             <InputNumber controls min={1} max={4} className="pitinput" />
           </Form.Item>
-        </div>
 
         {/* Team workmenship# */}
-        <div>
           <h1 className='pitBody'>Team workmanship</h1>
           <Form.Item<FieldType> name="robot_team_workmanship">
             <InputNumber controls min={1} max={4} className="pitinput" />
           </Form.Item>
-        </div>
 
         {/* Gracious professionalism */}
-        <div>
           <h1 className='pitBody'>Gracious professionalism</h1>
           <Form.Item<FieldType> name="robot_GP">
             <InputNumber controls min={1} max={4} className="pitinput" />
           </Form.Item>
-        </div>
 
-        <div style={{ alignContent: 'center' }}>
+        {/* <div style={{ alignContent: 'center' }}> */}
           <ReactSketchCanvas
             ref={canvasRef}
             width='50rem'
@@ -322,39 +358,35 @@ function PitScout(props: any) {
             backgroundImage={color ? field_red : field_blue}
             exportWithBackgroundImage={true}
             style={{ paddingBottom: '5%' }}
-            onChange={(event) => { canvasRef.current?.exportImage('png').then((data: any) => imageURI.current = data); }}
+            onChange={async () => { canvasRef.current?.exportImage('png').then((data: any) => imageURI.current = data)}}
           />
           <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
             <Button onClick={() => canvasRef.current?.undo()} className='pathbutton'>Undo</Button>
             <Button onClick={() => canvasRef.current?.redo()} className='pathbutton'>Redo</Button>
             <Button onClick={() => canvasRef.current?.clearCanvas()} className='pathbutton'>Clear</Button>
           </Flex>
-        </div>
+        {/* </div> */}
 
         {/* auton path details */}
-        <div>
           <h1 className='pitBody' style={{ marginTop: "7%" }}>Auton path details</h1>
           <Form.Item<FieldType> name="robot_auton_path_detail">
             <label>
               <textarea className="pitComment" name="eventNum" rows={3} />
             </label>
           </Form.Item>
-        </div>
+        
 
         {/* robot pictures */}
-        <div style={{ marginBottom: "5%" }}>
-          <h1 className='pitBody' style={{ fontSize: '260%', marginTop: '0%' }}>Robot Pictures</h1>
-          <input className='uploadButton' style={{ opacity: "1" }} type="file" accept="image/*" onChange={handleImageUpload} multiple />
-          {image ? <img src={image} className="image" alt="preview" width={"100%"} height={"100%"} /> : null}
+        {/* <div style={{ marginBottom: "5%" }}> */}
+          {/* <h1 className='pitBody' style={{ fontSize: '260%', marginTop: '0%' }}>Robot Pictures</h1>
+          <input className='uploadButton' style={{ opacity: "1" }} type="file" accept="image/*" onChange={handleImageUpload} />
+          {image ? <img src={image} className="image" alt="preview" width={"100%"} height={"100%"} /> : null} */}
 
-        </div>
 
         {/* submit */}
-        <div>
           {/* <Button style={{ marginLeft: '25%', marginTop: '10%' }} className='pitButton'>Submit</Button> */}
           <Input type="submit" value="Submit" className='submit' />
 
-        </div>
         </Form>
       </div>
     );

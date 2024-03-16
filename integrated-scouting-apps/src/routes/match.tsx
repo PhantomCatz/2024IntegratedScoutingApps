@@ -161,7 +161,7 @@ function MatchScout(props: any) {
         "EG_trapScored": event.trapscored,
         "EG_harmony": event.harmony,
         "EG_mic_score": event.spotlit,
-        "EG_climbing_affect": event.climbingaffected,
+        "EG_climbing_affect": false,
       },
       "overAll": {
         //"OA_hoarded": event.hoarded,
@@ -250,7 +250,7 @@ function MatchScout(props: any) {
           "Content-Type": "application/json",
         }
       })
-        .then(response => response.json()).then(data => console.log(data));
+        .then(async (response) => await response.json()).then(async (data) => window.alert("Submit Successful!"));
     }
     catch (err) {
       console.log(err);
@@ -300,8 +300,6 @@ function MatchScout(props: any) {
     }
     catch (err) {
       console.log(err);
-      window.alert("error has occured; please tell nathan asap");
-      window.alert(err);
     }
   }
   async function calculateMatchLevel() {
