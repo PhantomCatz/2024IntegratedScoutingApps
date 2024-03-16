@@ -46,6 +46,8 @@ function TeamData(props: any) {
       }
       catch (err) {
         console.log(err);
+        window.alert("error has occured; please tell nathan asap");
+        window.alert(err);
       }
       finally {
         setLoading(false);

@@ -10,6 +10,7 @@ import { useCookies } from 'react-cookie';
 function LoginPage(props: any) {
 	const { msg } = useParams();
 	const [isLoading, setIsLoading] = useState(false);
+	// eslint-disable-next-line
 	const [cookies, setCookies, removeCookies] = useCookies(['login']);
 	useEffect(() => {document.title = props.title; return () => {}}, [props.title]);
 
@@ -43,6 +44,7 @@ function LoginPage(props: any) {
 			</div>
 			<Form onFinish={async (event) => {
 				try {
+					
 					setIsLoading(true);
 					await fetch((process.env.REACT_APP_LOGIN_URL as string) + "?user_name=" + event.username + "&password=" + event.password, {
 						method: "GET",

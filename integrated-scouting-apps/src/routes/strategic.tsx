@@ -62,6 +62,8 @@ function Strategic(props: any) {
     }
     catch (err) {
       console.log(err);
+      window.alert("error has occured; please tell nathan asap");
+      window.alert(err);
     }
   };
   async function getCustomQuestions(team_number: number) {
@@ -73,6 +75,8 @@ function Strategic(props: any) {
     }
     catch (err) {
       console.log(err);
+      window.alert("error has occured; please tell nathan asap");
+      window.alert(err);
     }
   }
   function preMatch() {
@@ -235,6 +239,7 @@ function Strategic(props: any) {
       <Form
         form={form}
         onFinish={async event => {
+          
           setLoading(true);
           await setNewStrategicScout(event);
           const initials = form.getFieldValue('initials');

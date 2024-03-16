@@ -38,7 +38,7 @@ export default function App() {
         <Route path="/buh" element={<Buh/>} />
         <Route path="/scoutingapp/lookup" element={<DataLookup title="2637 Data Lookup" />} />        
         <Route path="/scoutingapp/lookup/teamData/:team_number" element ={<TeamData title="2637 Data"/>} />
-        <Route path="/scoutingapp/picklists" element={<Picklist title="2637 Strategic Picklist"/>} />
+        <Route path="/scoutingapp/picklists" element={<Picklist title="2637 Picklists"/>} />
       </Routes>
     </BrowserRouter>
   );

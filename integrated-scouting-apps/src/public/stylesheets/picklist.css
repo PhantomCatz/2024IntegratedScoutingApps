@@ -1,0 +1,11 @@
+.ant-table, .ant-table-cell {
+  font-size: 36px !important;
+  background-color: transparent !important;
+  color: white !important;
+  font-family: Figtree;
+  border: 4px solid white !important;
+  font-weight: bold !important;
+}
+.robotdied {
+  color: red !important
+}

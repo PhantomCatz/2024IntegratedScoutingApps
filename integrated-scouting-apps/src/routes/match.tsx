@@ -254,6 +254,8 @@ function MatchScout(props: any) {
     }
     catch (err) {
       console.log(err);
+      window.alert("error has occured; please tell nathan asap");
+      window.alert(err);
     }
   };
   async function updateTeamNumber() {
@@ -298,6 +300,8 @@ function MatchScout(props: any) {
     }
     catch (err) {
       console.log(err);
+      window.alert("error has occured; please tell nathan asap");
+      window.alert(err);
     }
   }
   async function calculateMatchLevel() {
@@ -720,7 +724,7 @@ function MatchScout(props: any) {
             />
           </Form.Item>
         <h2>Ground/Source Intake</h2>
-        <Form.Item<FieldType> name="intake" rules={[{ required: true, message: 'Please input the match level!' }]}>
+        <Form.Item<FieldType> name="intake" rules={[{ required: true, message: 'Please input the intake type!' }]}>
           <Select options={intake} className="input" />
         </Form.Item>
         <h2>Scoring Location</h2>
