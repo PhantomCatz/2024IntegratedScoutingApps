@@ -24,14 +24,14 @@ function Strategic(props: any) {
       "matchIdentifier": {
         "Initials": event.initials,
         "match_event": eventname,
-        "team_number": event.teamnum,
         "match_level": event.matchlevel,
         "match_number": event.matchnum,
-        "timesamplified": event.timesamplified,
+        "team_number": event.teamnum,
       },
-      "comment": {
+      
         "comment": event.comments,
-      },
+      "timesAmplified": event.timesamplified,
+
       // "driver": {
       //   "driverrating": event.driverrating,
       // },
@@ -39,6 +39,7 @@ function Strategic(props: any) {
       //   "customquestions": event.customquestions,
       // }
     };
+    console.log(body);
     const WORKING_TEST_DO_NOT_REMOVE_OR_YOU_WILL_BE_FIRED = {
       "matchIdentifier": {
         "Initials": "LL",
