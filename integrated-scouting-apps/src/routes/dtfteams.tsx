@@ -234,6 +234,8 @@ function DTFTeams(props: any) {
           </div>
           <hr style={{width:'100%', textAlign:'left', marginLeft:'0', height: '100%', marginTop: '10%', marginBottom: '10%'}}/>
           <h2 className='h2' style={{textAlign: 'center'}}>Graph</h2>
+          <h1 className='h1'>x = match number</h1>
+          <h1 className='h1'>y = total points</h1>
           <h2 className='h2'>{team1_number}</h2>
           <div style={{marginBottom: '10%'}}>
             <img src={String(graphsArr[0])} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
@@ -305,6 +307,8 @@ function DTFTeams(props: any) {
             </div>
             <hr style={{width:'100%', textAlign:'left', marginLeft:'0', height: '100%', marginTop: '10%', marginBottom: '10%'}}/>
             <h2 className='h2' style={{textAlign: 'center'}}>Graph</h2>
+            <h1 className='h1'>x = match number</h1>
+            <h1 className='h1'>y = total points</h1>
             <h2 className='h2'>{team1_number + ':'}</h2>
             <div style={{marginBottom: '10%'}}>
               <img src={String(graphsArr[0])} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
@@ -353,6 +357,8 @@ function DTFTeams(props: any) {
             </div>
             <hr style={{width:'100%', textAlign:'left', marginLeft:'0', height: '100%', marginTop: '10%', marginBottom: '10%'}}/>
             <h2 className='h2' style={{textAlign: 'center'}}>Graph</h2>
+            <h1 className='h1'>x = match number</h1>
+            <h1 className='h1'>y = total points</h1>
             <h2 className='h2'>{team1_number}</h2>
             <div style={{marginBottom: '10%'}}>
               <img src={String(graphsArr[0])} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
