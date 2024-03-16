@@ -126,9 +126,13 @@ function Strategic(props: any) {
         <Form.Item<FieldType> name="comments" rules={[{ required: true, message: "Please input some comments!" }]}>
           <TextArea style={{ verticalAlign: 'center' }} className='strategic-input' />
         </Form.Item>
-        <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
+        {/* <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
           <Button onClick={() => setTabNum("1")} className='tabbutton'>Back</Button>
           <Button onClick={() => setTabNum("3")} className='tabbutton'>Next</Button>
+        </Flex> */}
+        <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
+          <Button onClick={() => setTabNum("3")} className='tabbutton'>Back</Button>
+          <Input type="submit" value="Submit" className='submitbutton' />
         </Flex>
       </div>
     );
