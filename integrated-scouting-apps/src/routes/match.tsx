@@ -178,7 +178,7 @@ function MatchScout(props: any) {
         "OA_comments": event.comments,
       }
     };
-    //@typescript-eslint/no-unused-vars
+    // eslint-disable-next-line
     const TESTDONOTREMOVE = {
       "matchIdentifier": {
         "Initials": "Loren Liu",
@@ -351,7 +351,6 @@ function MatchScout(props: any) {
       matchlevel: string,
       matchnum: number,
       robotpos: string,
-      startingloc: string,
       preloaded: boolean,
       roundnum: number,
     };
@@ -367,11 +366,6 @@ function MatchScout(props: any) {
       { label: "B1", value: "blue_1" },
       { label: "B2", value: "blue_2" },
       { label: "B3", value: 'blue_3' },
-    ];
-    const startingloc = [
-      { label: "Upper Speaker", value: "upper_s" },
-      { label: "Middle Speaker", value: "midde_s" },
-      { label: "Lower Speaker", value: 'lower_s' },
     ];
     return (
       <div>
@@ -396,10 +390,6 @@ function MatchScout(props: any) {
         <Form.Item<FieldType> name="robotpos" rules={[{ required: true, message: 'Please input the robot position!' }]}>
           <Select options={robotpos} onChange={updateTeamNumber} className="input" />
         </Form.Item>
-        <h2>Starting Location</h2>
-        <Form.Item<FieldType> name="startingloc" rules={[{ required: true, message: 'Please input the starting location!' }]}>
-          <Select options={startingloc} className="input" />
-        </Form.Item>
         <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
           <Button onClick={() => setTabNum("2")} className='tabbutton'>Next</Button>
         </Flex>
@@ -418,6 +408,7 @@ function MatchScout(props: any) {
       piecespicked?: string,
       auton_comments: string,
       imagepath: string,
+      startingloc: string,
     };
     const scoringloc = [
       { label: "Amp", value: "amp" },
@@ -435,6 +426,11 @@ function MatchScout(props: any) {
       { label: "C4", value: 'c4' },
       { label: "C5", value: 'c5' },
     ];
+    const startingloc = [
+      { label: "Upper Speaker", value: "upper_s" },
+      { label: "Middle Speaker", value: "midde_s" },
+      { label: "Lower", value: 'lower_s' },
+    ];
     return (
       <div>
         <h2>Leave</h2>
@@ -444,6 +440,10 @@ function MatchScout(props: any) {
         <h2>Preload Scored</h2>
         <Form.Item<FieldType> name="preloadscored" valuePropName="checked">
           <Checkbox className='input_checkbox' />
+        </Form.Item>
+        <h2>Starting Location</h2>
+        <Form.Item<FieldType> name="startingloc" rules={[{ required: true, message: 'Please input the starting location!' }]}>
+          <Select options={startingloc} className="input" />
         </Form.Item>
         <h2>Speaker Scored</h2>
         <Form.Item<FieldType> name="auton_speakerscored" rules={[{ required: true, message: 'Please input the number of speaker notes scored!' }]}>
@@ -466,25 +466,6 @@ function MatchScout(props: any) {
             value={formValue.autonSpeakerScored}
           />
         </Form.Item>
-        <h2>Amp Scored</h2>
-        <Form.Item<FieldType> name="auton_ampscored" rules={[{ required: true, message: 'Please input the number of amp notes scored!' }]}>
-          <InputNumber
-            type='number'
-            pattern="\d*"
-            disabled
-            onWheel={(event) => (event.target as HTMLElement).blur()}
-            min={0}
-            className="input"
-            addonAfter={<Button onClick={() => {
-              setFormValue({...formValue, autonAmpScored: formValue.autonAmpScored + 1});
-            }} className='incrementbutton'>+</Button>}
-            addonBefore={<Button onClick={() => {
-              if (Number(formValue.autonAmpScored) > 0) {
-                setFormValue({...formValue, autonAmpScored: formValue.autonAmpScored - 1});
-              }
-            }} className='decrementbutton'>-</Button>}
-          />
-        </Form.Item>
         <h2>Missed Speaker Pieces</h2>
         <Form.Item<FieldType> name="auton_missedpiecesspeaker" rules={[{ required: true, message: 'Please input the number of misssed speaker pieces!' }]}>
           <InputNumber
@@ -501,6 +482,25 @@ function MatchScout(props: any) {
               if (Number(formValue.autonMissedSpeakerPieces) > 0) {
                 setFormValue({...formValue, autonMissedSpeakerPieces: formValue.autonMissedSpeakerPieces - 1});
                 (document.getElementById("auton_ampscored") as HTMLInputElement).value = formValue.autonAmpScored.toString();
+              }
+            }} className='decrementbutton'>-</Button>}
+          />
+        </Form.Item>
+        <h2>Amp Scored</h2>
+        <Form.Item<FieldType> name="auton_ampscored" rules={[{ required: true, message: 'Please input the number of amp notes scored!' }]}>
+          <InputNumber
+            type='number'
+            pattern="\d*"
+            disabled
+            onWheel={(event) => (event.target as HTMLElement).blur()}
+            min={0}
+            className="input"
+            addonAfter={<Button onClick={() => {
+              setFormValue({...formValue, autonAmpScored: formValue.autonAmpScored + 1});
+            }} className='incrementbutton'>+</Button>}
+            addonBefore={<Button onClick={() => {
+              if (Number(formValue.autonAmpScored) > 0) {
+                setFormValue({...formValue, autonAmpScored: formValue.autonAmpScored - 1});
               }
             }} className='decrementbutton'>-</Button>}
           />
@@ -588,13 +588,13 @@ function MatchScout(props: any) {
       { label: "US", value: "us" },
       { label: "CS", value: "cs" },
       { label: "LS", value: 'ls' },
-      { label: "A", value: 'amp' },
+      //{ label: "A", value: 'amp' },
       // { label: "AW", value: 'aw' },
       { label: "UT", value: 'ut' },
       { label: "CT", value: 'ct' },
       { label: "LT", value: 'lt' },
       { label: "LOT", value: 'lot' },
-      // { label: "P", value: 'pod'},
+      { label: "P", value: 'pod'},
     ];
     const intake = [
       { label: "Ground", value: "us" },
@@ -622,6 +622,25 @@ function MatchScout(props: any) {
               }
             }} className='decrementbutton'>-</Button>}
           />
+        </Form.Item>
+        <h2>Missed Speaker Pieces</h2>
+        <Form.Item<FieldType> name="tele_missedpiecesspeaker" rules={[{ required: true, message: 'Please input the number of missed speaker pieces!' }]}>
+          <InputNumber
+            type='number'
+            pattern="\d*"
+            disabled
+            onWheel={(event) => (event.target as HTMLElement).blur()}
+            min={0}
+            className="input"
+            addonAfter={<Button onClick={() => {
+              setFormValue({...formValue, teleopMissedSpeakerPieces: formValue.teleopMissedSpeakerPieces + 1});
+            }} className='incrementbutton'>+</Button>}
+            addonBefore={<Button onClick={() => {
+              if (Number(formValue.teleopMissedSpeakerPieces) > 0) {
+                setFormValue({...formValue, teleopMissedSpeakerPieces: formValue.teleopMissedSpeakerPieces - 1});
+              }
+            }} className='decrementbutton'>-</Button>}
+            />
         </Form.Item>
         <h2>Amp Scored</h2>
         <Form.Item<FieldType> name="tele_ampscored" rules={[{ required: true, message: 'Please input the number of amp notes scored!' }]}>
@@ -662,25 +681,6 @@ function MatchScout(props: any) {
             min={0}
             className="input"/>
         </Form.Item> */}
-        <h2>Missed Speaker Pieces</h2>
-        <Form.Item<FieldType> name="tele_missedpiecesspeaker" rules={[{ required: true, message: 'Please input the number of missed speaker pieces!' }]}>
-          <InputNumber
-            type='number'
-            pattern="\d*"
-            disabled
-            onWheel={(event) => (event.target as HTMLElement).blur()}
-            min={0}
-            className="input"
-            addonAfter={<Button onClick={() => {
-              setFormValue({...formValue, teleopMissedSpeakerPieces: formValue.teleopMissedSpeakerPieces + 1});
-            }} className='incrementbutton'>+</Button>}
-            addonBefore={<Button onClick={() => {
-              if (Number(formValue.teleopMissedSpeakerPieces) > 0) {
-                setFormValue({...formValue, teleopMissedSpeakerPieces: formValue.teleopMissedSpeakerPieces - 1});
-              }
-            }} className='decrementbutton'>-</Button>}
-            />
-        </Form.Item>
         <h2>Missed Amp Pieces</h2>
         <Form.Item<FieldType> name="tele_missedpiecesamp" rules={[{ required: true, message: 'Please input the number of missed amp pieces!' }]}>
           <InputNumber
@@ -780,10 +780,6 @@ function MatchScout(props: any) {
     };
     return (
       <div className='matchbody'>
-        <h2>Climbed</h2>
-        <Form.Item<FieldType> name="climbed" valuePropName="checked">
-          <Checkbox className='input_checkbox' />
-        </Form.Item>
         <h2>Time Left</h2>
         <Form.Item<FieldType> name="timeleft" rules={[{ required: true, message: 'Please input the time left!' }]}>
           <InputNumber
@@ -803,16 +799,8 @@ function MatchScout(props: any) {
             }} className='decrementbutton'>-</Button>}
             />
         </Form.Item>
-        <h2>Harmony</h2>
-        <Form.Item<FieldType> name="harmony" valuePropName="checked">
-          <Checkbox className='input_checkbox' />
-        </Form.Item>
-        <h2>Spotlit</h2>
-        <Form.Item<FieldType> name="spotlit" valuePropName="checked">
-          <Checkbox className='input_checkbox' />
-        </Form.Item>
-        <h2>Climbing Affected</h2>
-        <Form.Item<FieldType> name="climbingaffected" valuePropName="checked">
+        <h2>Climbed</h2>
+        <Form.Item<FieldType> name="climbed" valuePropName="checked">
           <Checkbox className='input_checkbox' />
         </Form.Item>
         <h2>Parked</h2>
@@ -823,6 +811,18 @@ function MatchScout(props: any) {
         <Form.Item<FieldType> name="trapscored" valuePropName="checked">
           <Checkbox className='input_checkbox' />
         </Form.Item>
+        <h2>Harmony</h2>
+        <Form.Item<FieldType> name="harmony" valuePropName="checked">
+          <Checkbox className='input_checkbox' />
+        </Form.Item>
+        <h2>Spotlit</h2>
+        <Form.Item<FieldType> name="spotlit" valuePropName="checked">
+          <Checkbox className='input_checkbox' />
+        </Form.Item>
+        {/* <h2>Climbing Affected</h2>
+        <Form.Item<FieldType> name="climbingaffected" valuePropName="checked">
+          <Checkbox className='input_checkbox' />
+        </Form.Item> */}
         <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
           <Button onClick={() => setTabNum("3")} className='tabbutton'>Back</Button>
           <Button onClick={() => setTabNum("5")} className='tabbutton'>Next</Button>
@@ -1005,7 +1005,6 @@ function MatchScout(props: any) {
                 </td>
               </tr>
             </tbody>
-
           </table>
         </header>
       </div>
@@ -1046,40 +1045,45 @@ function MatchScout(props: any) {
               window.alert("ur offline so heres an offline version; just give to webdev after comp");
               saveAs(new Blob([JSON.stringify(event)], { type: "text/json" }), event.initials + event.matchnum + ".json");
             }
-            await setNewMatchScout(event);
-            const initials = form.getFieldValue('initials');
-            const matchnum = form.getFieldValue('matchnum');
-            const matchLevel = form.getFieldValue('matchlevel');
-            const robotpos = form.getFieldValue('robotpos');
-            form.resetFields();
-            form.setFieldValue('initials', initials);
-            form.setFieldValue('matchnum', matchnum + 1);
-            form.setFieldValue('match_level', matchLevel);
-            form.setFieldValue('robotpos', robotpos); 
-            formValue.driverSkillRating = 0;
-            formValue.autonAmpScored = 0;
-            formValue.autonMissedAmpPieces = 0;                                           
-            formValue.autonSpeakerScored = 0;
-            formValue.autonMissedSpeakerPieces = 0;
-            formValue.teleopSpeakerScored = 0;
-            formValue.teleopAmpScored = 0;
-            formValue.teleopMissedAmpPieces = 0;
-            formValue.teleopMissedSpeakerPieces = 0;
-            formValue.teleopHoardedPieces = 0;
-            formValue.numPenalties = 0;
-            formValue.pushingRating = 0;
-            formValue.counterDefenseRating = 0;
-            formValue.timeLeft = 0;
-            setTeamNum(0);
-            setDefendedIsVisible(false);
-            setWasDefendedIsVisible(false);
-            //autonCanvasRef.current?.clearCanvas();
-            //teleopCanvasRef.current?.clearCanvas()
-            setLoading(false);
+            else {
+              await setNewMatchScout(event);
+              const initials = form.getFieldValue('initials');
+              const matchnum = form.getFieldValue('matchnum');
+              const matchLevel = form.getFieldValue('matchlevel');
+              const robotpos = form.getFieldValue('robotpos');
+              form.resetFields();
+              form.setFieldValue('initials', initials);
+              form.setFieldValue('matchnum', matchnum + 1);
+              form.setFieldValue('matchlevel', matchLevel);
+              form.setFieldValue('robotpos', robotpos); 
+              formValue.driverSkillRating = 0;
+              formValue.autonAmpScored = 0;
+              formValue.autonMissedAmpPieces = 0;                                           
+              formValue.autonSpeakerScored = 0;
+              formValue.autonMissedSpeakerPieces = 0;
+              formValue.teleopSpeakerScored = 0;
+              formValue.teleopAmpScored = 0;
+              formValue.teleopMissedAmpPieces = 0;
+              formValue.teleopMissedSpeakerPieces = 0;
+              formValue.teleopHoardedPieces = 0;
+              formValue.numPenalties = 0;
+              formValue.pushingRating = 0;
+              formValue.counterDefenseRating = 0;
+              formValue.timeLeft = 0;
+              setTeamNum(0);
+              setDefendedIsVisible(false);
+              setWasDefendedIsVisible(false);
+              await updateTeamNumber();
+              await updateDefendedList();
+              //autonCanvasRef.current?.clearCanvas();
+              //teleopCanvasRef.current?.clearCanvas()
+              setLoading(false);
+            }
           }
           catch (err) {
             console.log(err);
-            window.alert("something went wrong so heres a json; give to loren after comp");
+            window.alert("something went wrong so heres a json; give to loren after comp:");
+            window.alert(err);
             saveAs(new Blob([JSON.stringify(event)], { type: "text/json" }), event.initials + event.matchnum + ".json");
           }
         }}

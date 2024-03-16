@@ -27,14 +27,14 @@ function PitScout(props: any) {
   const canvasRef = useRef<ReactSketchCanvasRef>(null);
   const [form] = Form.useForm();
   const [color, setColor] = useState(false);
-	useEffect(() => {document.title = props.title; return () => {}}, [props.title]);
   const [cookies] = useCookies(['login', 'theme']);
-  // useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
-  // useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => {}}, [cookies.theme]);
+	useEffect(() => {document.title = props.title; return () => {}}, [props.title]);
+  useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
+  useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => {}}, [cookies.theme]);
 
   const { team_number } = useParams();
   const [fetchedData, setFetchedData] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [question, setQuestion] = useState('');
   // useEffect(() => {
     // async function fetchData(team_number: number) {
@@ -66,6 +66,7 @@ function PitScout(props: any) {
     // }
 
   const submitPitData = async function submitData(values:any) {
+    setLoading(true);
     try {
       const url = process.env.REACT_APP_PIT_URL as string;
       const response = await fetch(url, {
@@ -85,6 +86,7 @@ function PitScout(props: any) {
       console.log('Error submitting data:', error);
       console.log('Failed to submit data. Please try again.');
     }
+    setLoading(false);
   };
   
 
@@ -168,6 +170,7 @@ function PitScout(props: any) {
       <div>
         <Form onFinish={async event => {
         try{
+          event.preventDefault();
           await submitPitData(event);
           window.location.reload();
         }
@@ -339,7 +342,7 @@ function PitScout(props: any) {
         {/* robot pictures */}
         <div style={{ marginBottom: "5%" }}>
           <h1 className='pitBody' style={{ fontSize: '260%', marginTop: '0%' }}>Robot Pictures</h1>
-          <input className='uploadButton' style={{ opacity: "1" }} type="file" accept="image/*" onChange={handleImageUpload} />
+          <input className='uploadButton' style={{ opacity: "1" }} type="file" accept="image/*" onChange={handleImageUpload} multiple />
           {image ? <img src={image} className="image" alt="preview" width={"100%"} height={"100%"} /> : null}
 
         </div>

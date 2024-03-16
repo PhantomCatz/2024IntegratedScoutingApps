@@ -27,10 +27,13 @@ async function ChangeTheme(cookie: any) {
     }
     else if (cookie.substring(0, 2) === "lg") {
       setInterval(() => {
-        const colors = ["#000000", "#433C3C", "#692090", "#32a7dc", "#123456", "#987654"];
+        const colors = ["#000000", "#433C3C", "#692090", "#32a7dc", "#4A412A", "#987654"];
         const randomColor = colors[Math.floor(Math.random() * colors.length)];
         document.body.style.backgroundColor = randomColor;
       }, Number(cookie.substring(2)));
+    }
+    else if (cookie === "ds") {
+      document.body.style.backgroundColor = "#4A412A";
     }
   }
   catch (err) {
