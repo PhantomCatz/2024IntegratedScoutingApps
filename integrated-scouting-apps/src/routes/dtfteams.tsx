@@ -165,13 +165,12 @@ function DTFTeams(props: any) {
 
 
     if (Length_Teams == 3 && typeof teamsArr[0] != 'undefined' && typeof graphsArr[0] != 'undefined' && typeof teamsArr[1] != 'undefined' && typeof graphsArr[1] != 'undefined' && typeof teamsArr[2] != 'undefined' && typeof graphsArr[2] != 'undefined') {
-      //console.log(teamsArr[0].auto.auto_path)
-      //console.log(teamsArr[1].auto.auto_path)
-      //console.log(teamsArr[2].auto.auto_path)
+
       return (
         <div>
           <h2 className='h2' style={{textAlign:'center'}}>Allience Average Score</h2>
-            <InputNumber disabled defaultValue={teamsArr[0].OA.alliance_avg_score} controls placeholder='team 1' min={1} className="input"/>
+          <InputNumber disabled defaultValue={teamsArr[0].OA.alliance_avg_score} controls placeholder='team 1' min={1} className="input"/>
+          <hr style={{width:'100%', textAlign:'left', marginLeft:'0', height: '100%', marginTop: '10%', marginBottom: '10%'}}/>
           <h2 className='h2' style={{textAlign: 'center'}}>Auton Path</h2>
           <div style={{textAlign: 'center'}}>
             <h2 className='h2'>{team1_number}</h2> 
@@ -187,7 +186,7 @@ function DTFTeams(props: any) {
             <h2 className='h2'>{team3_number}</h2>
             <img src={teamsArr[2].auto.auto_path} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
           </div>
-  
+          <hr style={{width:'100%', textAlign:'left', marginLeft:'0', height: '100%', marginTop: '10%', marginBottom: '10%'}}/>
           <h2 className='h2' style={{textAlign: 'center'}}>Intake Source</h2>
   
           <div>
@@ -202,7 +201,7 @@ function DTFTeams(props: any) {
             <h2 style={{display: 'inline'}} className='h2'>{team3_number + ':'}</h2> 
             <h1 style={{display: 'inline', marginLeft:'5%'}} className='h1'>{teamsArr[2].teleop.teleop_intake}</h1>
           </div>
-          
+          <hr style={{width:'100%', textAlign:'left', marginLeft:'0', height: '100%', marginTop: '10%', marginBottom: '10%'}}/>
           <h2 className='h2' style={{textAlign: 'center'}}>Traversed Stage</h2>
           <div style={{textAlign: 'center'}}>
             <h2 className='h2' style={{display: 'inline'}}>{team1_number}</h2> 
@@ -218,6 +217,7 @@ function DTFTeams(props: any) {
           <div style={{display: 'inline', marginLeft: '4%'}}>
           <Checkbox disabled defaultChecked={teamsArr[2].OA.traverse_under_stage} className='checkboxRedFixed' style={{width: '30%'}}/>
           </div>
+          <hr style={{width:'100%', textAlign:'left', marginLeft:'0', height: '100%', marginTop: '10%', marginBottom: '10%'}}/>
           <h2 className='h2' style={{textAlign: 'center'}}>Driver Skill</h2>
           <div style={{textAlign: 'center'}}>
             <h2 className='h2' style={{display: 'inline'}}>{team1_number}</h2> 
@@ -230,7 +230,7 @@ function DTFTeams(props: any) {
           <InputNumber disabled defaultValue={teamsArr[1].OA.avg_driver_skill} controls placeholder='team 2' min={1} className="inputDisplayNumber" style={{marginLeft: "4%"}}/>
           <InputNumber disabled defaultValue={teamsArr[2].OA.avg_driver_skill} controls placeholder='team 3' min={1} className="inputDisplayNumber" style={{marginLeft: "5%"}}/>
           </div>
-  
+          <hr style={{width:'100%', textAlign:'left', marginLeft:'0', height: '100%', marginTop: '10%', marginBottom: '10%'}}/>
           <h2 className='h2' style={{textAlign: 'center'}}>Graph</h2>
           <h2 className='h2'>{team1_number}</h2>
           <div style={{marginBottom: '10%'}}>
@@ -255,7 +255,8 @@ function DTFTeams(props: any) {
         return (
           <div>
             <h2 className='h2' style={{textAlign:'center'}}>Allience Average Score</h2>
-              <InputNumber disabled defaultValue={teamsArr[0]['OA']['alliance_avg_score']} controls placeholder='team 1' min={1} className="input"/>
+            <InputNumber disabled defaultValue={teamsArr[0]['OA']['alliance_avg_score']} controls placeholder='team 1' min={1} className="input"/>
+            <hr style={{width:'100%', textAlign:'left', marginLeft:'0', height: '100%', marginTop: '10%', marginBottom: '10%'}}/>
             <h2 className='h2' style={{textAlign: 'center'}}>Auton Path</h2>
             <div style={{textAlign: 'center'}}>
               <h2 className='h2'>{team1_number}</h2> 
@@ -266,6 +267,8 @@ function DTFTeams(props: any) {
               <h2 className='h2'>{team2_number}</h2> 
               <img src={teamsArr[1]['auto']['auto_path']} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
             </div>
+
+            <hr style={{width:'100%', textAlign:'left', marginLeft:'0', height: '100%', marginTop: '10%', marginBottom: '10%'}}/>
     
             <h2 className='h2' style={{textAlign: 'center'}}>Intake Source</h2>
     
@@ -278,29 +281,27 @@ function DTFTeams(props: any) {
               <h2 style={{display: 'inline'}} className='h2'>{team2_number + ':'}</h2> 
               <h1 style={{display: 'inline', marginLeft:'5%'}} className='h1'>{teamsArr[1]['teleop']['teleop_intake']}</h1>
             </div>
-            
+            <hr style={{width:'100%', textAlign:'left', marginLeft:'0', height: '100%', marginTop: '10%', marginBottom: '10%'}}/>
             <h2 className='h2' style={{textAlign: 'center'}}>Traversed Stage</h2>
-            <div style={{textAlign: 'center'}}>
-              <h2 className='h2' style={{display: 'inline'}}>{team1_number + ':'}</h2> 
-              <h2 className='h2' style={{display: 'inline', marginLeft: '12%'}}>Team2</h2> 
+            <div>
+              <h2 className='h2' style={{display: 'inline'}}>{team1_number + ': '}</h2> 
+              <Checkbox disabled defaultChecked={teamsArr[0].OA.traverse_under_stage} className='checkboxRedFixed' style={{width: '30%'}}/>
             </div>
-            <div style={{display: 'inline'}}>
-            <Checkbox disabled defaultChecked={teamsArr[0].OA.traverse_under_stage} className='checkboxRedFixed' style={{width: '30%'}}/>
+            <div>
+              <h2 className='h2' style={{display: 'inline'}}>{team2_number + ': '}</h2> 
+              <Checkbox disabled defaultChecked={teamsArr[1].OA.traverse_under_stage} className='checkboxRedFixed' style={{width: '30%'}}/>
             </div>
-            <div style={{display: 'inline', marginLeft: '4%'}}>
-            <Checkbox disabled defaultChecked={teamsArr[1].OA.traverse_under_stage} className='checkboxRedFixed' style={{width: '30%'}}/>
-            </div>
+            <hr style={{width:'100%', textAlign:'left', marginLeft:'0', height: '100%', marginTop: '10%', marginBottom: '10%'}}/>
             <h2 className='h2' style={{textAlign: 'center'}}>Driver Skill</h2>
-            <div style={{textAlign: 'center'}}>
-              <h2 className='h2' style={{display: 'inline'}}>{team1_number + ':'}</h2> 
-              <h2 className='h2' style={{display: 'inline', marginLeft: '12%'}}>{team2_number + ':'}</h2> 
+            <div>
+              <h2 className='h2' style={{display: 'inline'}}>{team1_number + ': '}</h2> 
+              <InputNumber disabled defaultValue={teamsArr[0]['OA']['avg_driver_skill']} controls placeholder='team 1' min={1} className="inputDisplayNumber"/>
             </div>
-    
-            <div style={{display: 'inline'}}>
-            <InputNumber disabled defaultValue={teamsArr[0]['OA']['avg_driver_skill']} controls placeholder='team 1' min={1} className="inputDisplayNumber"/>
-            <InputNumber disabled defaultValue={teamsArr[1]['OA']['avg_driver_skill']} controls placeholder='team 2' min={1} className="inputDisplayNumber" style={{marginLeft: "4%"}}/>
+            <div>
+              <h2 className='h2' style={{display: 'inline'}}>{team2_number + ': '}</h2> 
+              <InputNumber disabled defaultValue={teamsArr[1]['OA']['avg_driver_skill']} controls placeholder='team 2' min={1} className="inputDisplayNumber"/>
             </div>
-    
+            <hr style={{width:'100%', textAlign:'left', marginLeft:'0', height: '100%', marginTop: '10%', marginBottom: '10%'}}/>
             <h2 className='h2' style={{textAlign: 'center'}}>Graph</h2>
             <h2 className='h2'>{team1_number + ':'}</h2>
             <div style={{marginBottom: '10%'}}>
@@ -318,38 +319,37 @@ function DTFTeams(props: any) {
       if (Length_Teams == 1 && typeof teamsArr[0] != 'undefined' && typeof graphsArr[0] != 'undefined') {
 
         return (
-          <div>
+            <div>
             <h2 className='h2' style={{textAlign:'center'}}>Allience Average Score</h2>
-              <InputNumber disabled defaultValue={teamsArr[0]['OA']['alliance_avg_score']} controls placeholder='team 1' min={1} className="input"/>
+            <InputNumber disabled defaultValue={teamsArr[0]['OA']['alliance_avg_score']} controls placeholder='team 1' min={1} className="input"/>
+            <hr style={{width:'100%', textAlign:'left', marginLeft:'0', height: '100%', marginTop: '10%', marginBottom: '10%'}}/>
             <h2 className='h2' style={{textAlign: 'center'}}>Auton Path</h2>
             <div style={{textAlign: 'center'}}>
               <h2 className='h2'>{team1_number}</h2> 
               <img src={teamsArr[0]['auto']['auto_path']} style={{ width: '100%', height: '100%', backgroundColor: 'white' }}/>
             </div>
-
+            <hr style={{width:'100%', textAlign:'left', marginLeft:'0', height: '100%', marginTop: '10%', marginBottom: '10%'}}/>
             <h2 className='h2' style={{textAlign: 'center'}}>Intake Source</h2>
-    
+
             <div>
               <h2 style={{display: 'inline'}} className='h2'>{team1_number + ':'}</h2> 
               <h1 style={{display: 'inline', marginLeft:'5%'}} className='h1'>{teamsArr[0]['teleop']['teleop_intake']}</h1>
             </div>
-            
+            <hr style={{width:'100%', textAlign:'left', marginLeft:'0', height: '100%', marginTop: '10%', marginBottom: '10%'}}/>
+
             <h2 className='h2' style={{textAlign: 'center'}}>Traversed Stage</h2>
-            <div style={{textAlign: 'center'}}>
-              <h2 className='h2' style={{display: 'inline'}}>{team1_number}</h2> 
+            <div>
+              <h2 className='h2' style={{display: 'inline'}}>{team1_number + ': '}</h2> 
+              <Checkbox disabled defaultChecked={teamsArr[0].OA.traverse_under_stage} className='checkboxRedFixed' style={{width: '20%'}}/>
             </div>
-            <div style={{display: 'inline'}}>
-            <Checkbox disabled defaultChecked={teamsArr[0].OA.traverse_under_stage} className='checkboxRedFixed' style={{width: '30%'}}/>
-            </div>
+
+            <hr style={{width:'100%', textAlign:'left', marginLeft:'0', height: '100%', marginTop: '10%', marginBottom: '10%'}}/>
             <h2 className='h2' style={{textAlign: 'center'}}>Driver Skill</h2>
-            <div style={{textAlign: 'center'}}>
-              <h2 className='h2' style={{display: 'inline'}}>{team1_number}</h2> 
+            <div>
+              <h2 className='h2' style={{display: 'inline', marginLeft: '10&'}}>{team1_number + ': '}</h2> 
+              <InputNumber disabled defaultValue={teamsArr[0]['OA']['avg_driver_skill']} controls placeholder='team 1' min={1} className="inputDisplayNumber"/>
             </div>
-    
-            <div style={{display: 'inline'}}>
-            <InputNumber disabled defaultValue={teamsArr[0]['OA']['avg_driver_skill']} controls placeholder='team 1' min={1} className="inputDisplayNumber"/>
-            </div>
-    
+            <hr style={{width:'100%', textAlign:'left', marginLeft:'0', height: '100%', marginTop: '10%', marginBottom: '10%'}}/>
             <h2 className='h2' style={{textAlign: 'center'}}>Graph</h2>
             <h2 className='h2'>{team1_number}</h2>
             <div style={{marginBottom: '10%'}}>
