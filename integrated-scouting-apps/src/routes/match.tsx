@@ -4,66 +4,155 @@ import logo from '../public/images/logo.png';
 import back from '../public/images/back.png';
 import field_blue from '../public/images/field_blue.png';
 import field_red from '../public/images/field_red.png';
-import full_field from '../public/images/full_field.png';
+// import full_field from '../public/images/full_field.png';
 import { useRef, useEffect, useState } from 'react';
 import { Tabs, Input, Form, Select, Checkbox, InputNumber, Flex, Button } from 'antd';
 import { ReactSketchCanvas, ReactSketchCanvasRef } from 'react-sketch-canvas';
 import type { TabsProps } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
+import VerifyLogin from '../verifyToken';
+import { useCookies } from 'react-cookie';
+import { saveAs } from 'file-saver';
 
 function MatchScout(props: any) {
   const [form] = Form.useForm();
-  const [color, setColor] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+  const [color, setColor] = useState(true);
+  const [roundIsVisible, setRoundIsVisible] = useState(false);
+  const [coopPressed, setCoopPressed] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const [tabNum, setTabNum] = useState("1");
+  const [teamNum, setTeamNum] = useState(0);
+  const [defendedIsVisible, setDefendedIsVisible] = useState(false);
+  const [wasDefendedIsVisible, setWasDefendedIsVisible] = useState(false);
+  const [opposingTeamNum, setOpposingTeamNum] = useState([""]);
+  const [formValue, setFormValue] = useState({
+    autonSpeakerScored: 0,
+    autonAmpScored: 0,
+    autonMissedAmpPieces: 0,
+    autonMissedSpeakerPieces: 0,
+    teleopSpeakerScored: 0,
+    teleopAmpScored: 0,
+    teleopMissedAmpPieces: 0,
+    teleopMissedSpeakerPieces: 0,
+    teleopHoardedPieces: 0,
+    numPenalties: 0,
+    pushingRating: 0, 
+    counterDefenseRating: 0,
+    driverSkillRating: 0,
+    timeLeft: 0,
+  });
   const autonImageURI = useRef<string>();
-  const teleopImageURI = useRef<string>();
+  //const teleopImageURI = useRef<string>();
   const autonCanvasRef = useRef<ReactSketchCanvasRef>(null);
-  const teleopCanvasRef = useRef<ReactSketchCanvasRef>(null);
-  useEffect(() => document.title = props.title, [props.title]);
+  //const teleopCanvasRef = useRef<ReactSketchCanvasRef>(null);
   const eventname = process.env.REACT_APP_EVENTNAME;
-  let teamNum = 0;
+  useEffect(() => { document.title = props.title; return () => { }; }, [props.title]);
+  const [cookies] = useCookies(['login', 'theme']);
+  useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
+  useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => {}}, [cookies.theme]);
+  useEffect(() => {
+    if ((document.getElementById("auton_speakerscored") as HTMLInputElement) !== null) {
+      (document.getElementById("auton_speakerscored") as HTMLInputElement).value = formValue.autonSpeakerScored.toString();
+      form.setFieldValue('auton_speakerscored', formValue.autonSpeakerScored);
+    }
+    if ((document.getElementById("auton_ampscored") as HTMLInputElement) !== null) {
+      (document.getElementById("auton_ampscored") as HTMLInputElement).value = formValue.autonAmpScored.toString();
+      form.setFieldValue('auton_ampscored', formValue.autonAmpScored);
+    }
+    if ((document.getElementById("auton_missedpiecesamp") as HTMLInputElement) !== null) {
+      (document.getElementById("auton_missedpiecesamp") as HTMLInputElement).value = formValue.autonMissedAmpPieces.toString();
+      form.setFieldValue('auton_missedpiecesamp', formValue.autonMissedAmpPieces);
+    }
+    if ((document.getElementById("auton_missedpiecesspeaker") as HTMLInputElement) !== null) {
+      (document.getElementById("auton_missedpiecesspeaker") as HTMLInputElement).value = formValue.autonMissedSpeakerPieces.toString();
+      form.setFieldValue('auton_missedpiecesspeaker', formValue.autonMissedSpeakerPieces);
+    }
+    if ((document.getElementById("tele_speakerscored") as HTMLInputElement) !== null) {
+      (document.getElementById("tele_speakerscored") as HTMLInputElement).value = formValue.teleopSpeakerScored.toString();
+      form.setFieldValue('tele_speakerscored', formValue.teleopSpeakerScored);
+    }
+    if ((document.getElementById("tele_ampscored") as HTMLInputElement) !== null) {
+      (document.getElementById("tele_ampscored") as HTMLInputElement).value = formValue.teleopAmpScored.toString();
+      form.setFieldValue('tele_ampscored', formValue.teleopAmpScored);
+    }
+    if ((document.getElementById("tele_missedpiecesamp") as HTMLInputElement) !== null) {
+      (document.getElementById("tele_missedpiecesamp") as HTMLInputElement).value = formValue.teleopMissedAmpPieces.toString();
+      form.setFieldValue('tele_missedpiecesamp', formValue.teleopMissedAmpPieces);
+    }
+    if ((document.getElementById("tele_missedpiecesspeaker") as HTMLInputElement) !== null) {
+      (document.getElementById("tele_missedpiecesspeaker") as HTMLInputElement).value = formValue.teleopMissedSpeakerPieces.toString();
+      form.setFieldValue('tele_missedpiecesspeaker', formValue.teleopMissedSpeakerPieces);
+    }
+    if ((document.getElementById("tele_hoardedpieces") as HTMLElement) !== null) {
+      (document.getElementById("tele_hoardedpieces") as HTMLInputElement).value = formValue.teleopHoardedPieces.toString();
+      form.setFieldValue('tele_hoardedpieces', formValue.teleopHoardedPieces);
+    }
+    if ((document.getElementById("timeleft") as HTMLElement) !== null) {
+      (document.getElementById("timeleft") as HTMLInputElement).value = formValue.timeLeft.toString();
+      form.setFieldValue('timeleft', formValue.timeLeft);
+    }
+    if ((document.getElementById("numpenalties") as HTMLElement) !== null) {
+      (document.getElementById("numpenalties") as HTMLInputElement).value = formValue.numPenalties.toString();
+      form.setFieldValue('numpenalties', formValue.numPenalties);
+    }
+    if ((document.getElementById("pushing") as HTMLElement) !== null) {
+      (document.getElementById("pushing") as HTMLInputElement).value = formValue.pushingRating.toString();
+      form.setFieldValue('pushing', formValue.pushingRating);
+    }
+    if ((document.getElementById("counterdefense") as HTMLElement) !== null) {
+      (document.getElementById("counterdefense") as HTMLInputElement).value = formValue.counterDefenseRating.toString();
+      form.setFieldValue('counterdefense', formValue.counterDefenseRating);
+    }
+    if ((document.getElementById("driverskill") as HTMLElement) !== null) {
+      (document.getElementById("driverskill") as HTMLInputElement).value = formValue.driverSkillRating.toString();
+      form.setFieldValue('driverskill', formValue.driverSkillRating);
+    }
+    return () => {};
+  }, [formValue, form]);
 
   async function setNewMatchScout(event: any) {
     const body = {
       "matchIdentifier": {
         "Initials": event.initials,
-        "robot_position": event.robotpos,
         "match_event": eventname,
         "match_level": event.matchlevel + (event.roundnum !== undefined ? event.roundnum : ""),
         "match_number": event.matchnum,
         "team_number": teamNum,
+        "robot_position": event.robotpos,
         "starting_position": event.startingloc,
       },
       "auto": {
-        "auto_preLoad": event.preloaded,
         "auto_preload_scored": event.preloadscored,
         "auto_leave": event.leavespawn,
         "auto_amps_scored": event.auton_ampscored,
-        "auto_speaker_scored": event.auton_speakerscored,
+        "auto_speaker_scored": formValue.autonSpeakerScored,
         "auto_scoring_location": event.auton_scoringloc,
         "auto_pieces_picked": event.piecespicked,
         "auto_missed_pieces_amp": event.auton_missedpiecesamp,
         "auto_missed_pieces_speaker": event.auton_missedpiecesspeaker,
         "auto_path": autonImageURI.current,
         "auto_total_points": 0,
-        "auto_comments": event.auton_comments,
+        // "auto_comments": event.auton_comments,
       },
       "teleop": {
         "teleop_coop_pressed": event.cooppressed,
         "teleop_coop_first": event.cooppressed1st,
         "teleop_amps_scored": event.tele_ampscored,
         "teleop_speaker_scored": event.tele_speakerscored,
-        "teleop_times_amplify": event.timesamplified,
-        "teleop_pieces_note_amplifying_scored": event.amplifyscored,
-        "teleop_ground": event.groundintake,
-        "teleop_source": event.sourceintake,
-        "teleop_traverse_stage": event.traversedstage,
+        "teleop_times_amplify": 0,
+        "intake": event.intake,
+        // "teleop_pieces_note_amplifying_scored": event.speakerscored_amplified,
+        // "teleop_traverse_stage": event.traversedstage,
+        "teleop_traverse_stage": false,
         "teleop_missed_pieces_amp": event.tele_missedpiecesamp,
         "teleop_missed_pieces_speaker": event.tele_missedpiecesspeaker,
         "teleop_scoring_location": event.tele_scoringloc,
         "teleop_total_points": 0,
-        "teleop_path": teleopImageURI.current,
+        "teleop_shooting_location": event.shootingloc,
+        "teleop_hoarded_pieces": event.tele_hoardedpieces,
+        "teleop_path": "",
+        //"teleop_path": teleopImageURI.current,
+        // "teleop_times_amplify": event.timesamplified,
       },
       "engGame": {
         "EG_climbed": event.climbed,
@@ -75,79 +164,82 @@ function MatchScout(props: any) {
         "EG_climbing_affect": event.climbingaffected,
       },
       "overAll": {
-        "OA_hoarded": event.hoarded,
+        //"OA_hoarded": event.hoarded,
         "OA_robot_died": event.robotdied,
         "OA_was_defend": event.wasdefended,
+        "OA_was_defend_team": event.wasdefendedteam,
         "OA_defend": event.defended,
-        "OA_pushing_rating": event.pushing, 
+        "OA_defend_team": event.defendedteam,
+        "OA_pushing_rating": event.pushing,
         "OA_counter_defense": event.counterdefense,
         "OA_numbers_penalties": event.numpenalties,
         "OA_penalties_comments": event.penaltiesincurred,
-        "OA_comments": event.comments,
         "OA_driver_skill": event.driverskill,
+        "OA_comments": event.comments,
       }
     };
-    const WORKING_TEST_DO_NOT_REMOVE_OR_YOU_WILL_BE_FIRED = {
+    //@typescript-eslint/no-unused-vars
+    const TESTDONOTREMOVE = {
       "matchIdentifier": {
-        "Initials": "nk",
-        "robot_position": "red_3",
-        "match_event": "2024test",
-        "match_level": "qm",
-        "match_number": 1,
-        "team_number": 0,
+        "Initials": "Loren Liu",
+        "match_event": "2024CALA",
+        "match_level": "Practice",
+        "match_number": 8,
+        "team_number": 2637,
+        "robot_position": "R1",
         "starting_position": "middle"
       },
       "auto": {
-        "auto_preLoad": true,
         "auto_preload_scored": true,
         "auto_leave": true,
-        "auto_amps_scored": 2,
-        "auto_speaker_scored": 1,
-        "auto_scoring_location": "both",
-        "auto_pieces_picked": [
-          0,0
-        ],
-        "auto_missed_pieces_amp": 3,
-        "auto_missed_pieces_speaker": 4,
-        "auto_path": "test",
-        "auto_total_points": 0,
-        "auto_comments": "test"
+        "auto_amps_scored": 6,
+        "auto_speaker_scored": 2,
+        "auto_scoring_location": "strategy list",
+        "auto_pieces_picked": [0, 0, 0, 0, 0, 0, 0, 0],
+        "auto_missed_pieces_amp": 0,
+        "auto_missed_pieces_speaker": 0,
+        "auto_path": "pic askdfghkjaegflaier",
+        "auto_total_points": 0
       },
       "teleop": {
         "teleop_coop_pressed": true,
-        "teleop_coop_first": true,
+        "teleop_coop_first": false,
         "teleop_amps_scored": 1,
-        "teleop_speaker_scored": 1,
-        "teleop_times_amplify": 1,
-        "teleop_pieces_note_amplifying_scored": 12,
-        "teleop_ground": true,
-        "teleop_source": true,
+        "teleop_speaker_scored": 5,
+        "teleop_times_amplify": 5,
+        // "teleop_pieces_note_amplifying_scored": 7,
+        "intake": "string",
         "teleop_traverse_stage": true,
-        "teleop_missed_pieces_amp": 1,
-        "teleop_missed_pieces_speaker": 2,
-        "teleop_scoring_location": "both",
-        "teleop_total_points": 0
+        "teleop_missed_pieces_amp": 2,
+        "teleop_missed_pieces_speaker": 3,
+        "teleop_scoring_location": "strategyyyy",
+        "teleop_total_points": 0,
+        "teleop_shooting_location": ["a","b"],
+        "teleop_hoarded_pieces":7,
+        "teleop_path": "dfkahjsljkhfglwqekjh"
       },
       "engGame": {
         "EG_climbed": true,
-        "EG_timeLeft_when_climb": 1,
-        "EG_parked": true,
+        "EG_timeLeft_when_climb": 12,
+        "EG_parked": false,
         "EG_trapScored": true,
-        "EG_harmony": false,
+        "EG_harmony": true,
         "EG_mic_score": true,
-        "EG_climbing_affect": true
+        "EG_climbing_affect": false
       },
       "overAll": {
         "OA_hoarded": true,
         "OA_robot_died": false,
         "OA_was_defend": true,
-        "OA_defend": true,
-        "OA_pushing_rating": 1,
-        "OA_counter_defense": 1,
+        "OA_was_defend_team":[1,2,3],
+        "OA_defend": false,
+        "OA_defend_team":[1,4,6],
+        "OA_pushing_rating": 3,
+        "OA_counter_defense": 3,
         "OA_numbers_penalties": 1,
-        "OA_penalties_comments": "test",
-        "OA_comments": "test",
-        "OA_driver_skill": 1
+        "OA_penalties_comments": "attacking others?",
+        "OA_driver_skill": 3,
+        "OA_comments": "comments"
       }
     }
     try {
@@ -158,7 +250,7 @@ function MatchScout(props: any) {
           "Content-Type": "application/json",
         }
       })
-      .then(response => response.json()).then(data => console.log(data));
+        .then(response => response.json()).then(data => console.log(data));
     }
     catch (err) {
       console.log(err);
@@ -166,7 +258,7 @@ function MatchScout(props: any) {
   };
   async function updateTeamNumber() {
     try {
-      if (isVisible) {
+      if (roundIsVisible) {
         const matchID = eventname + "_" + form.getFieldValue('matchlevel') + form.getFieldValue('matchnum') + "m" + form.getFieldValue('roundnum');
         const response = await fetch('https://www.thebluealliance.com/api/v3/match/' + matchID,
           {
@@ -180,9 +272,10 @@ function MatchScout(props: any) {
         const team_color = form.getFieldValue('robotpos').substring(0, form.getFieldValue('robotpos').indexOf('_'));
         setColor((team_color === "red" ? true : false));
         const team_num = form.getFieldValue('robotpos').substring(form.getFieldValue('robotpos').indexOf('_') + 1) - 1;
+        console.log(team_num)
         const fullTeam = (data.alliances[team_color].team_keys[team_num] !== null ? data.alliances[team_color].team_keys[team_num] : 0);
-        teamNum = Number(fullTeam.substring(3));
-        console.log(teamNum);
+        setTeamNum(Number(fullTeam.substring(3)));
+        updateDefendedList();
       }
       else {
         const matchID = eventname + "_" + form.getFieldValue('matchlevel') + form.getFieldValue('matchnum');
@@ -199,8 +292,8 @@ function MatchScout(props: any) {
         setColor((team_color === "red" ? true : false));
         const team_num = form.getFieldValue('robotpos').substring(form.getFieldValue('robotpos').indexOf('_') + 1) - 1;
         const fullTeam = (data.alliances[team_color].team_keys[team_num] !== null ? data.alliances[team_color].team_keys[team_num] : 0);
-        teamNum = Number(fullTeam.substring(3));
-        console.log(teamNum);
+        setTeamNum(Number(fullTeam.substring(3)));
+        updateDefendedList();
       }
     }
     catch (err) {
@@ -210,13 +303,49 @@ function MatchScout(props: any) {
   async function calculateMatchLevel() {
     const matchlevel = form.getFieldValue('matchlevel');
     if (matchlevel !== "qm") {
-      setIsVisible(true);
+      setRoundIsVisible(true);
     }
     else {
-      setIsVisible(false);
+      setRoundIsVisible(false);
     }
   }
-  function preMatch() {
+  async function updateDefendedList() {
+    if (roundIsVisible) {
+      const matchID = eventname + "_" + form.getFieldValue('matchlevel') + form.getFieldValue('matchnum') + "m" + form.getFieldValue('roundnum');
+      const response = await fetch('https://www.thebluealliance.com/api/v3/match/' + matchID,
+        {
+          method: "GET",
+          headers: {
+            'X-TBA-Auth-Key': process.env.REACT_APP_TBA_AUTH_KEY as string,
+          }
+        });
+      const data = await response.json();
+      let result: any[] = [];
+      for (const team in data.alliances[color ? 'red' : 'blue'].team_keys) {
+        result.push(data.alliances[color ? 'blue' : 'red'].team_keys[team].substring(3));
+      }
+      setOpposingTeamNum(result);
+      console.log(opposingTeamNum);
+    }
+    else {
+      const matchID = eventname + "_" + form.getFieldValue('matchlevel') + form.getFieldValue('matchnum');
+      const response = await fetch('https://www.thebluealliance.com/api/v3/match/' + matchID,
+        {
+          method: "GET",
+          headers: {
+            'X-TBA-Auth-Key': process.env.REACT_APP_TBA_AUTH_KEY as string,
+          }
+        });
+      const data = await response.json();
+      let result: any[] = [];
+      for (const team in data.alliances[color ? 'red' : 'blue'].team_keys) {
+        result.push(data.alliances[color ? 'blue' : 'red'].team_keys[team].substring(3));
+      }
+      setOpposingTeamNum(result);
+      console.log(opposingTeamNum);
+    }
+  }
+  function preMatch() { //final do not change
     type FieldType = {
       initials: string,
       matchlevel: string,
@@ -228,8 +357,8 @@ function MatchScout(props: any) {
     };
     const rounds = [
       { label: "Qualifications", value: "qm" },
-      { label: "Semifinals", value: "sf"},
-      { label: "Finals", value: "f1" },
+      { label: "Semi-Finals", value: "sf" },
+      { label: "Finals", value: "f" },
     ];
     const robotpos = [
       { label: "R1", value: "red_1" },
@@ -246,9 +375,10 @@ function MatchScout(props: any) {
     ];
     return (
       <div>
+        <h2 style={{ color: 'white', paddingBottom: '35px' }}>Team: {teamNum}</h2>
         <h2>Scouter Initials</h2>
         <Form.Item<FieldType> name="initials" rules={[{ required: true, message: 'Please input your initials!' }]}>
-          <Input maxLength={2} className="input"/>
+          <Input maxLength={2} className="input" />
         </Form.Item>
         <h2>Match #</h2>
         <Form.Item<FieldType> name="matchnum" rules={[{ required: true, message: 'Please input the match number!' }]}>
@@ -256,32 +386,27 @@ function MatchScout(props: any) {
         </Form.Item>
         <h2>Match Level</h2>
         <Form.Item<FieldType> name="matchlevel" rules={[{ required: true, message: 'Please input the match level!' }]}>
-          <Select options={rounds} onChange={()=> {calculateMatchLevel(); updateTeamNumber();}} className="input"/>
+          <Select options={rounds} onChange={() => { calculateMatchLevel(); updateTeamNumber(); }} className="input" />
         </Form.Item>
-        <h2 style={{ display: isVisible ? 'inherit' : 'none' }}>Round #</h2>
-        <Form.Item<FieldType> name="roundnum" rules={[{ required: isVisible ? true : false, message: 'Please input the round number!' }]}>
-            <InputNumber min={1} onChange={updateTeamNumber} style={{ display: isVisible ? 'inherit' : 'none' }} className="input" type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()}/>
+        <h2 style={{ display: roundIsVisible ? 'inherit' : 'none' }}>Round #</h2>
+        <Form.Item<FieldType> name="roundnum" rules={[{ required: roundIsVisible ? true : false, message: 'Please input the round number!' }]} style={{ display: roundIsVisible ? 'inherit' : 'none' }}>
+          <InputNumber min={1} onChange={updateTeamNumber} style={{ display: roundIsVisible ? 'inherit' : 'none' }} className="input" type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} />
         </Form.Item>
         <h2>Robot Position</h2>
         <Form.Item<FieldType> name="robotpos" rules={[{ required: true, message: 'Please input the robot position!' }]}>
-          <Select options={robotpos} onChange={updateTeamNumber} className="input"/>
+          <Select options={robotpos} onChange={updateTeamNumber} className="input" />
         </Form.Item>
         <h2>Starting Location</h2>
         <Form.Item<FieldType> name="startingloc" rules={[{ required: true, message: 'Please input the starting location!' }]}>
-          <Select options={startingloc} className="input"/>
+          <Select options={startingloc} className="input" />
         </Form.Item>
-        <h2>Preloaded</h2>
-        <Form.Item<FieldType> name="preloaded" valuePropName="checked">
-          <Checkbox className='input_checkbox'/>
-        </Form.Item>
-        <Flex justify='in-between' style={{paddingBottom: '10%'}}>
-          <Button onClick={() => setTabNum("1")} className='tabbutton'>Back</Button>
+        <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
           <Button onClick={() => setTabNum("2")} className='tabbutton'>Next</Button>
         </Flex>
       </div>
     );
   }
-  function AutonMatch() { //needs to be capitalized to have the dynamic field work
+  function AutonMatch() { //needs to be capitalized to have the dynamic field work (2024-03-06) DONE YAY
     type FieldType = {
       auton_speakerscored: number,
       auton_ampscored: number,
@@ -290,7 +415,7 @@ function MatchScout(props: any) {
       leavespawn: boolean,
       auton_scoringloc: string,
       preloadscored: boolean,
-      piecespicked: string,
+      piecespicked?: string,
       auton_comments: string,
       imagepath: string,
     };
@@ -301,62 +426,127 @@ function MatchScout(props: any) {
       { label: "None", value: 'none' },
     ];
     const piecespicked = [
-      { label: "W1", value: "wing1" },
-      { label: "W2", value: "wing2" },
-      { label: "W3", value: 'wing3' },
-      { label: "C1", value: "center1" },
-      { label: "C2", value: "center2" },
-      { label: "C3", value: 'center3' },
+      { label: "W1", value: "w1" },
+      { label: "W2", value: "w2" },
+      { label: "W3", value: 'w3' },
+      { label: "C1", value: "c1" },
+      { label: "C2", value: "c2" },
+      { label: "C3", value: 'c3' },
+      { label: "C4", value: 'c4' },
+      { label: "C5", value: 'c5' },
     ];
     return (
       <div>
         <h2>Leave</h2>
         <Form.Item<FieldType> name="leavespawn" valuePropName="checked">
-          <Checkbox className='input_checkbox'/>
-        </Form.Item>
-        <h2>Speaker Scored</h2>
-        <Form.Item<FieldType> name="auton_speakerscored" rules={[{ required: true, message: 'Please input the number of speaker notes scored!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} className="input"/>
-        </Form.Item>
-        <h2>Amp Scored</h2>
-        <Form.Item<FieldType> name="auton_ampscored" rules={[{ required: true, message: 'Please input the number of amp notes scored!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} className="input"/>
-        </Form.Item>
-        <h2>Missed Amp Pieces</h2>
-        <Form.Item<FieldType> name="auton_missedpiecesamp" rules={[{ required: true, message: 'Please input the number of missed amp pieces!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} className="input"/>
-        </Form.Item>
-        <h2>Missed Speaker Pieces</h2>
-        <Form.Item<FieldType> name="auton_missedpiecesspeaker" rules={[{ required: true, message: 'Please input the number of misssed speaker pieces!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} className="input"/>
-        </Form.Item>
-        <h2>Scoring Location</h2>
-        <Form.Item<FieldType> name="auton_scoringloc" rules={[{ required: true, message: 'Please input the scoring location!' }]}>
-          <Select options={scoringloc} className='input'/>
+          <Checkbox className='input_checkbox' />
         </Form.Item>
         <h2>Preload Scored</h2>
         <Form.Item<FieldType> name="preloadscored" valuePropName="checked">
-          <Checkbox className='input_checkbox'/>
+          <Checkbox className='input_checkbox' />
+        </Form.Item>
+        <h2>Speaker Scored</h2>
+        <Form.Item<FieldType> name="auton_speakerscored" rules={[{ required: true, message: 'Please input the number of speaker notes scored!' }]}>
+          <InputNumber
+            id="auton_speakerscored"
+            type='number'
+            pattern="\d*"
+            disabled
+            onWheel={(event) => (event.target as HTMLInputElement).blur()}
+            min={0}
+            className="input"
+            addonAfter={<Button onClick={() => {
+              setFormValue({...formValue, autonSpeakerScored: formValue.autonSpeakerScored + 1});
+            }} className='incrementbutton'>+</Button>}
+            addonBefore={<Button onClick={() => {
+              if (Number(formValue.autonSpeakerScored) > 0) {
+                setFormValue({...formValue, autonSpeakerScored: formValue.autonSpeakerScored - 1});
+              }
+            }} className='decrementbutton'>-</Button>}
+            value={formValue.autonSpeakerScored}
+          />
+        </Form.Item>
+        <h2>Amp Scored</h2>
+        <Form.Item<FieldType> name="auton_ampscored" rules={[{ required: true, message: 'Please input the number of amp notes scored!' }]}>
+          <InputNumber
+            type='number'
+            pattern="\d*"
+            disabled
+            onWheel={(event) => (event.target as HTMLElement).blur()}
+            min={0}
+            className="input"
+            addonAfter={<Button onClick={() => {
+              setFormValue({...formValue, autonAmpScored: formValue.autonAmpScored + 1});
+            }} className='incrementbutton'>+</Button>}
+            addonBefore={<Button onClick={() => {
+              if (Number(formValue.autonAmpScored) > 0) {
+                setFormValue({...formValue, autonAmpScored: formValue.autonAmpScored - 1});
+              }
+            }} className='decrementbutton'>-</Button>}
+          />
+        </Form.Item>
+        <h2>Missed Speaker Pieces</h2>
+        <Form.Item<FieldType> name="auton_missedpiecesspeaker" rules={[{ required: true, message: 'Please input the number of misssed speaker pieces!' }]}>
+          <InputNumber
+            type='number'
+            pattern="\d*"
+            disabled
+            onWheel={(event) => (event.target as HTMLElement).blur()}
+            min={0}
+            className="input"
+            addonAfter={<Button onClick={() => {
+              setFormValue({...formValue, autonMissedSpeakerPieces: formValue.autonMissedSpeakerPieces + 1});
+            }} className='incrementbutton'>+</Button>}
+            addonBefore={<Button onClick={() => {
+              if (Number(formValue.autonMissedSpeakerPieces) > 0) {
+                setFormValue({...formValue, autonMissedSpeakerPieces: formValue.autonMissedSpeakerPieces - 1});
+                (document.getElementById("auton_ampscored") as HTMLInputElement).value = formValue.autonAmpScored.toString();
+              }
+            }} className='decrementbutton'>-</Button>}
+          />
+        </Form.Item>
+        <h2>Missed Amp Pieces</h2>
+        <Form.Item<FieldType> name="auton_missedpiecesamp" rules={[{ required: true, message: 'Please input the number of missed amp pieces!' }]}>
+          <InputNumber
+            type='number'
+            pattern="\d*"
+            disabled
+            onWheel={(event) => (event.target as HTMLElement).blur()}
+            min={0}
+            className="input"
+            addonAfter={<Button onClick={() => {
+              setFormValue({...formValue, autonMissedAmpPieces: formValue.autonMissedAmpPieces + 1});
+            }} className='incrementbutton'>+</Button>}
+            addonBefore={<Button onClick={() => {
+              if (Number(formValue.autonMissedAmpPieces) > 0) {
+                setFormValue({...formValue, autonMissedAmpPieces: formValue.autonMissedAmpPieces - 1});
+              }
+            }} className='decrementbutton'>-</Button>}
+          />
+        </Form.Item>
+        <h2>Scoring Location</h2>
+        <Form.Item<FieldType> name="auton_scoringloc" rules={[{ required: true, message: 'Please input the scoring location!' }]}>
+          <Select options={scoringloc} className='input' />
         </Form.Item>
         <h2>Pieces Picked</h2>
-        <Form.Item<FieldType> name="piecespicked" rules={[{ required: true, message: 'Please input the pieces picked!' }]}>
-          <Select mode='multiple' options={piecespicked} className='input' showSearch={false}/>
+        <Form.Item<FieldType> name="piecespicked">
+          <Select mode='multiple' options={piecespicked} className='input' showSearch={false} />
         </Form.Item>
-        <h2>Comments</h2>
+        {/* <h2>Comments</h2>
         <Form.Item<FieldType> name="auton_comments" rules={[{ required: true, message: 'Please input the comments!' }]}>
           <TextArea style={{verticalAlign: 'center'}} className='input'/>
-        </Form.Item>
+        </Form.Item> */}
         <div style={{ alignContent: 'center' }}>
           <ReactSketchCanvas
             ref={autonCanvasRef}
             id="teleop"
-            width='800px'
-            height='800px'
+            width='882px'
+            height='882px'
             strokeWidth={8}
             strokeColor='#32a7dc'
             backgroundImage={color ? field_red : field_blue}
             exportWithBackgroundImage={true}
-            style={{paddingBottom: '5%'}}
+            style={{ paddingBottom: '5%' }}
             onChange={async () => await autonCanvasRef.current?.exportImage('png').then(data => autonImageURI.current = data)}
           />
           <Flex justify='in-between'>
@@ -364,7 +554,7 @@ function MatchScout(props: any) {
             <Button onClick={() => autonCanvasRef.current?.redo()} className='pathbutton'>Redo</Button>
             <Button onClick={() => autonCanvasRef.current?.clearCanvas()} className='pathbutton'>Clear</Button>
           </Flex>
-          <Flex justify='in-between' style={{paddingBottom: '10%'}}>
+          <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
             <Button onClick={() => setTabNum("1")} className='tabbutton'>Back</Button>
             <Button onClick={() => setTabNum("3")} className='tabbutton'>Next</Button>
           </Flex>
@@ -376,16 +566,17 @@ function MatchScout(props: any) {
     type FieldType = {
       tele_speakerscored: number,
       tele_ampscored: number,
-      timesamplified: number,
-      groundintake: boolean,
-      sourceintake: boolean,
+      intake: string,
       tele_scoringloc: string,
-      amplifyscored: boolean,
+      shootingloc: string,
       cooppressed: boolean,
       cooppressed1st: boolean,
       traversedstage: boolean,
       tele_missedpiecesamp: number,
       tele_missedpiecesspeaker: number,
+      tele_hoardedpieces: number,
+      timesamplified: number,
+      // speakerscored_amplified: number,
     };
     const scoringloc = [
       { label: "Amp", value: "amp" },
@@ -393,60 +584,169 @@ function MatchScout(props: any) {
       { label: "Both", value: 'both' },
       { label: "None", value: 'none' },
     ];
+    const shootingloc = [
+      { label: "US", value: "us" },
+      { label: "CS", value: "cs" },
+      { label: "LS", value: 'ls' },
+      { label: "A", value: 'amp' },
+      // { label: "AW", value: 'aw' },
+      { label: "UT", value: 'ut' },
+      { label: "CT", value: 'ct' },
+      { label: "LT", value: 'lt' },
+      { label: "LOT", value: 'lot' },
+      // { label: "P", value: 'pod'},
+    ];
+    const intake = [
+      { label: "Ground", value: "us" },
+      { label: "Source", value: "cs" },
+      { label: "Both", value: 'ls' },
+      { label: "None", value: 'amp' },
+    ];
     return (
       <div>
         <h2>Speaker Scored</h2>
         <Form.Item<FieldType> name="tele_speakerscored" rules={[{ required: true, message: 'Please input the number of speaker notes scored!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input"/>
+          <InputNumber
+            type='number'
+            pattern="\d*"
+            disabled
+            onWheel={(event) => (event.target as HTMLElement).blur()}
+            min={0}
+            className="input"
+            addonAfter={<Button onClick={() => {
+              setFormValue({...formValue, teleopSpeakerScored: formValue.teleopSpeakerScored + 1});
+            }} className='incrementbutton'>+</Button>}
+            addonBefore={<Button onClick={() => {
+              if (Number(formValue.teleopSpeakerScored) > 0) {
+                setFormValue({...formValue, teleopSpeakerScored: formValue.teleopSpeakerScored - 1});
+              }
+            }} className='decrementbutton'>-</Button>}
+          />
         </Form.Item>
         <h2>Amp Scored</h2>
         <Form.Item<FieldType> name="tele_ampscored" rules={[{ required: true, message: 'Please input the number of amp notes scored!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input"/>
+          <InputNumber
+            type='number'
+            pattern="\d*"
+            disabled
+            onWheel={(event) => (event.target as HTMLElement).blur()}
+            min={0}
+            className="input"
+            addonAfter={<Button onClick={() => {
+              setFormValue({...formValue, teleopAmpScored: formValue.teleopAmpScored + 1});
+            }} className='incrementbutton'>+</Button>}
+            addonBefore={<Button onClick={() => {
+              if (Number(formValue.teleopAmpScored) > 0) {
+                setFormValue({...formValue, teleopAmpScored: formValue.teleopAmpScored - 1});
+              }
+            }} className='decrementbutton'>-</Button>}
+          />
+        </Form.Item>
+        {/* <h2>Times Amplified</h2>
+        <Form.Item<FieldType> name="timesamplified" rules={[{ required: true, message: 'Please input the times the speaker was amplified!' }]}>
+          <InputNumber 
+          type='number'
+          pattern="\d*"
+            disabled
+          onWheel={(event) => (event.target as HTMLElement).blur()} 
+          min={0}
+          className="input"/>
+        </Form.Item> */}
+        {/* <h2>Speaker Scored during Amp</h2>
+        <Form.Item<FieldType> name="speakerscored_amplified" rules={[{ required: true, message: 'Please input the number of notes scored during the amplification period!' }]}>
+          <InputNumber
+            type='number'
+            pattern="\d*"
+            disabled
+            onWheel={(event) => (event.target as HTMLElement).blur()}
+            min={0}
+            className="input"/>
+        </Form.Item> */}
+        <h2>Missed Speaker Pieces</h2>
+        <Form.Item<FieldType> name="tele_missedpiecesspeaker" rules={[{ required: true, message: 'Please input the number of missed speaker pieces!' }]}>
+          <InputNumber
+            type='number'
+            pattern="\d*"
+            disabled
+            onWheel={(event) => (event.target as HTMLElement).blur()}
+            min={0}
+            className="input"
+            addonAfter={<Button onClick={() => {
+              setFormValue({...formValue, teleopMissedSpeakerPieces: formValue.teleopMissedSpeakerPieces + 1});
+            }} className='incrementbutton'>+</Button>}
+            addonBefore={<Button onClick={() => {
+              if (Number(formValue.teleopMissedSpeakerPieces) > 0) {
+                setFormValue({...formValue, teleopMissedSpeakerPieces: formValue.teleopMissedSpeakerPieces - 1});
+              }
+            }} className='decrementbutton'>-</Button>}
+            />
         </Form.Item>
         <h2>Missed Amp Pieces</h2>
         <Form.Item<FieldType> name="tele_missedpiecesamp" rules={[{ required: true, message: 'Please input the number of missed amp pieces!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} className="input"/>
+          <InputNumber
+            type='number'
+            pattern="\d*"
+            disabled
+            onWheel={(event) => (event.target as HTMLElement).blur()}
+            min={0}
+            className="input"
+            addonAfter={<Button onClick={() => {
+              setFormValue({...formValue, teleopMissedAmpPieces: formValue.teleopMissedAmpPieces + 1});
+            }} className='incrementbutton'>+</Button>}
+            addonBefore={<Button onClick={() => {
+              if (Number(formValue.teleopMissedAmpPieces) > 0) {
+                setFormValue({...formValue, teleopMissedAmpPieces: formValue.teleopMissedAmpPieces - 1});
+              }
+            }} className='decrementbutton'>-</Button>}
+          />
         </Form.Item>
-        <h2>Missed Speaker Pieces</h2>
-        <Form.Item<FieldType> name="tele_missedpiecesspeaker" rules={[{ required: true, message: 'Please input the number of missed speaker pieces!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} className="input"/>
-        </Form.Item>
-        <h2>Times Amplified</h2>
-        <Form.Item<FieldType> name="timesamplified" rules={[{ required: true, message: 'Please input the number of times the speaker was amplified!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input"/>
-        </Form.Item>
-        <h2>Amplified Score</h2>
-        <Form.Item<FieldType> name="amplifyscored" rules={[{ required: true, message: 'Please input the number of notes scored during the amplifier period!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input"/>
-        </Form.Item>
-        <h2>Ground Intake</h2>
-        <Form.Item<FieldType> name="groundintake" valuePropName="checked">
-          <Checkbox className='input_checkbox'/>
-        </Form.Item>
-        <h2>Source Intake</h2>
-        <Form.Item<FieldType> name="sourceintake" valuePropName="checked">
-          <Checkbox className='input_checkbox'/>
+        <h2>Pieces Hoarded</h2>
+        <Form.Item<FieldType> name="tele_hoardedpieces" rules={[{ required: false }]}>
+          <InputNumber
+            type='number'
+            pattern="\d*"
+            disabled
+            onWheel={(event) => (event.target as HTMLElement).blur()}
+            min={0}
+            className="input"
+            addonAfter={<Button onClick={() => {
+              setFormValue({...formValue, teleopHoardedPieces: formValue.teleopHoardedPieces + 1});
+            }} className='incrementbutton'>+</Button>}
+            addonBefore={<Button onClick={() => {
+              if (Number(formValue.teleopHoardedPieces) > 0) {
+                setFormValue({...formValue, teleopHoardedPieces: formValue.teleopHoardedPieces - 1});
+              }
+            }} className='decrementbutton'>-</Button>}
+            />
+          </Form.Item>
+        <h2>Ground/Source Intake</h2>
+        <Form.Item<FieldType> name="intake" rules={[{ required: true, message: 'Please input the match level!' }]}>
+          <Select options={intake} className="input" />
         </Form.Item>
         <h2>Scoring Location</h2>
         <Form.Item<FieldType> name="tele_scoringloc" rules={[{ required: true, message: 'Please input the scoring location!' }]}>
-          <Select options={scoringloc} className="input"/>
+          <Select options={scoringloc} className="input" />
+        </Form.Item>
+        <h2>Shooting Location</h2>
+        <Form.Item<FieldType> name="shootingloc">
+          <Select mode='multiple' options={shootingloc} className='input' showSearch={false} />
         </Form.Item>
         <h2>Coopertition Pressed</h2>
         <Form.Item<FieldType> name="cooppressed" valuePropName="checked">
-          <Checkbox className='input_checkbox'/> 
+          <Checkbox className='input_checkbox' onClick={() => setCoopPressed(!coopPressed)} />
         </Form.Item>
-        <h2>Cooperated First</h2>
-        <Form.Item<FieldType> name="cooppressed1st" valuePropName="checked">
-          <Checkbox className='input_checkbox'/>
+        <h2 style={{ display: coopPressed ? 'inherit' : 'none' }}>Cooperated First</h2>
+        <Form.Item<FieldType> name="cooppressed1st" valuePropName="checked" style={{ display: coopPressed ? 'inherit' : 'none' }}>
+          <Checkbox className='input_checkbox' style={{ display: coopPressed ? 'inherit' : 'none' }} />
         </Form.Item>
-        <h2>Traversed Stage</h2>
+        {/* <h2>Traversed Stage</h2>
         <Form.Item<FieldType> name="traversedstage" valuePropName="checked">
           <Checkbox className='input_checkbox'/>
-        </Form.Item>
-        <div style={{ alignContent: 'center' }}>
+        </Form.Item> */}
+        {/* <div style={{ alignContent: 'center' }}>
           <ReactSketchCanvas
             ref={teleopCanvasRef}
-            width='800px'
+            width='882px'
             height='400px'
             strokeWidth={8}
             strokeColor='#32a7dc'
@@ -459,16 +759,16 @@ function MatchScout(props: any) {
             <Button onClick={() => teleopCanvasRef.current?.undo()} className='pathbutton'>Undo</Button>
             <Button onClick={() => teleopCanvasRef.current?.redo()} className='pathbutton'>Redo</Button>
             <Button onClick={() => teleopCanvasRef.current?.clearCanvas()} className='pathbutton'>Clear</Button>
-          </Flex>
-          <Flex justify='in-between' style={{paddingBottom: '10%'}}>
-            <Button onClick={() => setTabNum("2")} className='tabbutton'>Back</Button>
-            <Button onClick={() => setTabNum("4")} className='tabbutton'>Next</Button>
-          </Flex>
-        </div>
+         </Flex> */}
+        <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
+          <Button onClick={() => setTabNum("2")} className='tabbutton'>Back</Button>
+          <Button onClick={() => setTabNum("4")} className='tabbutton'>Next</Button>
+        </Flex>
       </div>
+      //</div>
     );
   }
-  function endMatch() {
+  function endMatch() { //final do not touch
     type FieldType = {
       climbed: boolean,
       timeleft: number,
@@ -482,33 +782,48 @@ function MatchScout(props: any) {
       <div className='matchbody'>
         <h2>Climbed</h2>
         <Form.Item<FieldType> name="climbed" valuePropName="checked">
-          <Checkbox className='input_checkbox'/>
+          <Checkbox className='input_checkbox' />
         </Form.Item>
         <h2>Time Left</h2>
         <Form.Item<FieldType> name="timeleft" rules={[{ required: true, message: 'Please input the time left!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input"/>
+          <InputNumber
+            type='number'
+            pattern="\d*"
+            disabled
+            onWheel={(event) => (event.target as HTMLElement).blur()}
+            min={0}
+            className="input"
+            addonAfter={<Button onClick={() => {
+              setFormValue({...formValue, timeLeft: formValue.timeLeft + 1});
+            }} className='incrementbutton'>+</Button>}
+            addonBefore={<Button onClick={() => {
+              if (Number(formValue.timeLeft) > 0) {
+                setFormValue({...formValue, timeLeft: formValue.timeLeft - 1});
+              }
+            }} className='decrementbutton'>-</Button>}
+            />
         </Form.Item>
         <h2>Harmony</h2>
         <Form.Item<FieldType> name="harmony" valuePropName="checked">
-          <Checkbox className='input_checkbox'/>
+          <Checkbox className='input_checkbox' />
         </Form.Item>
         <h2>Spotlit</h2>
         <Form.Item<FieldType> name="spotlit" valuePropName="checked">
-          <Checkbox className='input_checkbox'/>
+          <Checkbox className='input_checkbox' />
         </Form.Item>
         <h2>Climbing Affected</h2>
         <Form.Item<FieldType> name="climbingaffected" valuePropName="checked">
-          <Checkbox className='input_checkbox'/>
+          <Checkbox className='input_checkbox' />
         </Form.Item>
         <h2>Parked</h2>
         <Form.Item<FieldType> name="parked" valuePropName="checked">
-          <Checkbox className='input_checkbox'/>
+          <Checkbox className='input_checkbox' />
         </Form.Item>
         <h2>Trap Scored</h2>
         <Form.Item<FieldType> name="trapscored" valuePropName="checked">
-          <Checkbox className='input_checkbox'/>
+          <Checkbox className='input_checkbox' />
         </Form.Item>
-        <Flex justify='in-between' style={{paddingBottom: '10%'}}>
+        <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
           <Button onClick={() => setTabNum("3")} className='tabbutton'>Back</Button>
           <Button onClick={() => setTabNum("5")} className='tabbutton'>Next</Button>
         </Flex>
@@ -520,10 +835,12 @@ function MatchScout(props: any) {
       robotdied: boolean;
       pushing: number;
       defended: boolean;
+      defendedteam: string;
       hoarded: boolean;
       wasdefended: boolean;
+      wasdefendedteam: string;
       numpenalties: number;
-      penaltiesincurred: string;
+      penaltiesincurred?: string;
       comments: string;
       driverskill: number,
       counterdefense: number,
@@ -532,48 +849,116 @@ function MatchScout(props: any) {
       <div className='matchbody'>
         <h2>Robot Died</h2>
         <Form.Item<FieldType> name="robotdied" valuePropName="checked">
-          <Checkbox className='input_checkbox'/>
+          <Checkbox className='input_checkbox' />
         </Form.Item>
         <h2>Pushing (0-4)</h2>
         <Form.Item<FieldType> name="pushing" rules={[{ required: true, message: 'Please input the pushing rating!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} max={4} value={0} className="input"/>
+          <InputNumber
+            type='number'
+            pattern="\d*"
+            onWheel={(event) => (event.target as HTMLElement).blur()}
+            min={0} max={4}
+            className="input"
+            addonAfter={<Button onClick={() => {
+              if(Number(formValue.pushingRating) < 4)
+              {
+                setFormValue({...formValue, pushingRating: formValue.pushingRating + 1});
+              }
+            }} className='incrementbutton'>+</Button>}
+            addonBefore={<Button onClick={() => {
+              if (Number(formValue.pushingRating) > 0) {
+                setFormValue({...formValue, pushingRating: formValue.pushingRating - 1});
+              }
+            }} className='decrementbutton'>-</Button>}
+          />
         </Form.Item>
         <h2>Counterdefense (0-4)</h2>
         <Form.Item<FieldType> name="counterdefense" rules={[{ required: true, message: 'Please input the counterdefense rating!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} max={4} value={0} className="input"/>
+          <InputNumber
+            type='number'
+            pattern="\d*"
+            onWheel={(event) => (event.target as HTMLElement).blur()}
+            min={0} max={4}
+            className="input"
+            addonAfter={<Button onClick={() => {
+              if (Number(formValue.counterDefenseRating) < 4) {
+                setFormValue({...formValue, counterDefenseRating: formValue.counterDefenseRating + 1});
+              }
+            }} className='incrementbutton'>+</Button>}
+            addonBefore={<Button onClick={() => {
+              if (Number(formValue.counterDefenseRating) > 0) {
+                setFormValue({...formValue, counterDefenseRating: formValue.counterDefenseRating - 1});
+              }
+            }} className='decrementbutton'>-</Button>}
+          />
         </Form.Item>
         <h2>Driver Skill (0-4)</h2>
-        <Form.Item<FieldType> name="driverskill" rules={[{ required: true, message: 'Please input the driver skill rating!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} max={4} value={0} className="input"/>
+        <Form.Item<FieldType> name="driverskill" rules={[{ required: true, message: 'Please input the driverskill rating!' }]}>
+          <InputNumber
+            type='number'
+            pattern="\d*"
+            onWheel={(event) => (event.target as HTMLElement).blur()}
+            min={0} max={4}
+            className="input"
+            addonAfter={<Button onClick={() => {
+              if (Number(formValue.driverSkillRating) < 4) {
+                setFormValue({...formValue, driverSkillRating: formValue.driverSkillRating + 1});
+              }
+            }} className='incrementbutton'>+</Button>}
+            addonBefore={<Button onClick={() => {
+              if (Number(formValue.driverSkillRating) > 0) {
+                setFormValue({...formValue, driverSkillRating: formValue.driverSkillRating - 1});
+              }
+            }} className='decrementbutton'>-</Button>}
+          />
         </Form.Item>
         <h2>Defended</h2>
         <Form.Item<FieldType> name="defended" valuePropName="checked">
-          <Checkbox className='input_checkbox'/>
+          <Checkbox className='input_checkbox' onChange={() => { updateDefendedList(); setDefendedIsVisible(!defendedIsVisible); }} />
         </Form.Item>
-        <h2>Hoarded</h2>
-        <Form.Item<FieldType> name="hoarded" valuePropName="checked">
-          <Checkbox className='input_checkbox'/>
+        <h2 style={{ display: defendedIsVisible ? 'inherit' : 'none' }}>Defended whom?</h2>
+        <Form.Item<FieldType> name="defendedteam" valuePropName="checked" style={{ display: defendedIsVisible ? 'inherit' : 'none' }}>
+          <Select mode='multiple' options={opposingTeamNum.map((team) => ({ label: team, value: team }))} className="input" showSearch={false} style={{ display: defendedIsVisible ? 'inherit' : 'none' }} />
         </Form.Item>
         <h2>Was Defended</h2>
         <Form.Item<FieldType> name="wasdefended" valuePropName="checked">
-          <Checkbox className='input_checkbox'/>
+          <Checkbox className='input_checkbox' onChange={() => { updateDefendedList(); setWasDefendedIsVisible(!wasDefendedIsVisible); }} />
+        </Form.Item>
+        <h2 style={{ display: wasDefendedIsVisible ? 'inherit' : 'none' }}>Was defended by whom?</h2>
+        <Form.Item<FieldType> name="wasdefendedteam" valuePropName="checked" style={{ display: wasDefendedIsVisible ? 'inherit' : 'none' }}>
+          <Select mode='multiple' options={opposingTeamNum.map((team) => ({ label: team, value: team }))} className="input" showSearch={false} style={{ display: wasDefendedIsVisible ? 'inherit' : 'none' }} />
         </Form.Item>
         <h2>Number of Penalties</h2>
         <Form.Item<FieldType> name="numpenalties" rules={[{ required: true, message: 'Please input the number of penalties incurred!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input"/>
+          <InputNumber
+            type='number'
+            pattern="\d*"
+            onWheel={(event) => (event.target as HTMLElement).blur()}
+            min={0}
+            className="input"
+            addonAfter={<Button onClick={() => {
+              setFormValue({...formValue, numPenalties: formValue.numPenalties + 1});
+            }} className='incrementbutton'>+</Button>}
+            addonBefore={<Button onClick={() => {
+              if (Number(formValue.numPenalties) > 0) {
+                setFormValue({...formValue, numPenalties: formValue.numPenalties - 1});
+              }
+            }} className='decrementbutton'>-</Button>}
+          />
         </Form.Item>
         <h2>Penalties Incurred</h2>
-        <Form.Item<FieldType> name="penaltiesincurred" rules={[{ required: true, message: 'Please describe the penalties incurred!' }]}>
-          <TextArea style={{verticalAlign: 'center'}} className='input'/>
+        <Form.Item<FieldType> name="penaltiesincurred">
+          <TextArea style={{ verticalAlign: 'center' }} className='input' />
         </Form.Item>
         <h2>Comments</h2>
-        <Form.Item<FieldType> name="comments" rules={[{ required: true, message: 'Please input the comments!' }]}>
-          <TextArea style={{verticalAlign: 'center'}} className='input'/>
+        <Form.Item<FieldType> name="comments">
+          <TextArea style={{ verticalAlign: 'center' }} className='input' />
         </Form.Item>
-        <Flex justify='in-between' style={{paddingBottom: '10%'}}>
+        <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
           <Button onClick={() => setTabNum("4")} className='tabbutton'>Back</Button>
-          <Input type="submit" value="Submit" className='tabbutton'/>
+          <Input type="submit" value="Submit" className='submitbutton' />
         </Flex>
+        <h2 style={{ display: isLoading ? 'inherit' : 'none' }}>Submitting data...</h2>
       </div>
     )
   }
@@ -605,33 +990,31 @@ function MatchScout(props: any) {
     },
   ];
   return (
-    <body>
+    <div>
       <div className='banner'>
-        <meta name="viewport" content="user-scalable=no" />
         <header>
-          <a href='/scoutingapp'>
-            <img src={back} style={{height: 64 + 'px', paddingTop: '5%'}} alt=''/>
-          </a>
+          <a href='/scoutingapp'><img src={back} style={{ height: 64 + 'px', paddingTop: '5%' }} alt=''></img></a>
           <table>
-            <td>
-              <img src={logo} style={{ height: 256 + 'px' }} alt=''/>
-            </td>
-            <td>
-              <h1 style={{display: 'inline-block', textAlign: 'center'}}>Match Scout</h1>
-            </td>
+            <tbody>
+              <tr>
+                <td>
+                  <img src={logo} style={{ height: 256 + 'px' }} alt=''></img>
+                </td>
+                <td>
+                  <h1 style={{ display: 'inline-block', textAlign: 'center' }}>Match Scout</h1>
+                </td>
+              </tr>
+            </tbody>
+
           </table>
         </header>
       </div>
       <Form
         form={form}
         initialValues={{
-          auton_speakerscored: false,
-          auton_ampscored: false,
           leavespawn: false,
           preloadscored: false,
 
-          groundintake: false,
-          sourceintake: false,
           amplifyscored: false,
           cooppressed: false,
           cooppressed1st: false,
@@ -646,28 +1029,64 @@ function MatchScout(props: any) {
 
           robotdied: false,
           defended: false,
-          hoarded: false,
+          //hoarded: false,
           wasdefended: false,
+          wasdefendedteam: [],
+          defendedteam: [],
+          piecespicked: [],
+          shootingloc: [],
+
+          penaltiesincurred: " ",
+          comments: " ",
         }}
         onFinish={async event => {
           try {
+            setLoading(true);
+            if (!window.navigator.onLine) {
+              window.alert("ur offline so heres an offline version; just give to webdev after comp");
+              saveAs(new Blob([JSON.stringify(event)], { type: "text/json" }), event.initials + event.matchnum + ".json");
+            }
             await setNewMatchScout(event);
             const initials = form.getFieldValue('initials');
             const matchnum = form.getFieldValue('matchnum');
+            const matchLevel = form.getFieldValue('matchlevel');
+            const robotpos = form.getFieldValue('robotpos');
             form.resetFields();
             form.setFieldValue('initials', initials);
             form.setFieldValue('matchnum', matchnum + 1);
+            form.setFieldValue('match_level', matchLevel);
+            form.setFieldValue('robotpos', robotpos); 
+            formValue.driverSkillRating = 0;
+            formValue.autonAmpScored = 0;
+            formValue.autonMissedAmpPieces = 0;                                           
+            formValue.autonSpeakerScored = 0;
+            formValue.autonMissedSpeakerPieces = 0;
+            formValue.teleopSpeakerScored = 0;
+            formValue.teleopAmpScored = 0;
+            formValue.teleopMissedAmpPieces = 0;
+            formValue.teleopMissedSpeakerPieces = 0;
+            formValue.teleopHoardedPieces = 0;
+            formValue.numPenalties = 0;
+            formValue.pushingRating = 0;
+            formValue.counterDefenseRating = 0;
+            formValue.timeLeft = 0;
+            setTeamNum(0);
+            setDefendedIsVisible(false);
+            setWasDefendedIsVisible(false);
+            //autonCanvasRef.current?.clearCanvas();
+            //teleopCanvasRef.current?.clearCanvas()
+            setLoading(false);
           }
           catch (err) {
             console.log(err);
+            window.alert("something went wrong so heres a json; give to loren after comp");
+            saveAs(new Blob([JSON.stringify(event)], { type: "text/json" }), event.initials + event.matchnum + ".json");
           }
         }}
       >
-        <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} className='tabs' centered onChange={async (key) => {
-          setTabNum(key);
-        }}/>
+        <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} className='tabs' centered onChange={async (key) => { setTabNum(key) }} />
       </Form>
-    </body>
+    </div>
   );
 }
 

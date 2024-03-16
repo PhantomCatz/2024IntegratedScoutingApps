@@ -23,16 +23,20 @@ h2 {
 body {
     margin: 0;
     font-family: Audiowide !important;
-    background-color: #32a7dc !important;
+    background-color: #433C3C;
     padding-left: 5%;
     padding-right: 5%;
+    color: white;
+}
+a {
+    text-decoration: none;
     color: white;
 }
 .banner {
     font-size: 50px;
     vertical-align: top;
 }
-.mainbutton {
+.mainbutton, .mainbutton:focus-within {
     width: 100%;
     min-width: 100%;
     height: 15%;
@@ -40,21 +44,20 @@ body {
     margin-top: 10%;
     border: 4px solid white !important;
     border-radius: 25px;
-    background-color: transparent;
+    background-color: transparent !important;
     font-size: 500%;
     font-family: Audiowide;
     color: white !important;
-
 }
 .homebutton {
     width: 100%;
     min-width: 100%;
-    height: 50%;
-    min-height: 50%;
+    height: 33%;
+    min-height: 33%;
     margin-top: 10%;
     border: 4px solid white !important;
     border-radius: 100px;
-    background-color: #32a7dc;
+    background-color: transparent;
     font-family: Audiowide;
     color: white !important;
     font-size: 500%;
@@ -71,7 +74,7 @@ body {
     min-height: 20% !important; 
     border: 4px solid white !important;
     border-radius: 25px;
-    background-color: #32a7dc;
+    background-color: transparent;
     font-size: 300% !important;
     font-family: Figtree !important;
     font-weight: normal;
@@ -79,4 +82,7 @@ body {
     text-align: center !important;
     align-items: center !important;
     margin-left: 25%;
+}
+.died {
+    color: red;
 }

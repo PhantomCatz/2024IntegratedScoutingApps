@@ -23,7 +23,7 @@
 .body {
     margin: 0;
     font-family: Audiowide !important;
-    background-color: #32a7dc !important;
+    background-color: #433C3C !important;
     padding-left: 5%;
     padding-right: 5%;
     color: white;
@@ -38,7 +38,7 @@
     padding-top: 5% !important;
 }
 .ant-form-item-explain-error {
-    font-size: 64px !important;
+    font-size: 48px !important;
     font-family: Figtree !important;
     font-weight: bold !important;
     color: red !important;
@@ -69,7 +69,7 @@
     min-height: 20% !important; 
     border: 4px solid white !important;
     border-radius: 25px;
-    background-color: #32a7dc;
+    background-color: #433C3C;
     font-size: 300% !important;
     font-family: Figtree !important;
     font-weight: normal;
@@ -144,8 +144,8 @@
 
 .ant-checkbox-checked {
     background-color: #61f761;
-    border-color: #ffffff;
-    width: 105%;
-    border-radius: 40px;
-    height: 65px;
+    border-color: #000000;
+    width: 100%;
+    border-radius: 20px;
+    height: 60px;
 }
