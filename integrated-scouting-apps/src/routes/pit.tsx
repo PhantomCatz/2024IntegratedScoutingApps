@@ -131,6 +131,7 @@ function PitScout(props: any) {
     ];
     const motor_type = [
       { label: "Falcon 500", value: "falcon500" },
+      { label: "Kraken", value: "kraken"},
       { label: "NEO", value: "neo" },
       { label: "CIM", value: 'cim' },
       { label: "Other", value: 'other' },
@@ -160,6 +161,7 @@ function PitScout(props: any) {
       { label: "Solo Climb", value: "solo_climb" },
       { label: "Harmonize", value: "harmonize" },
       { label: "Triple Climb", value: 'triple_climb' },
+      { label: "No Climb", value: "no_climb"}
     ];
 
 
