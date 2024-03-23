@@ -31,7 +31,7 @@ function PitScout(props: any) {
   const [cookies] = useCookies(['login', 'theme']);
   // useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
   // useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => {}}, [cookies.theme]);
-
+  
   const { team_number } = useParams();
   const [fetchedData, setFetchedData] = useState("");
   const [loading, setLoading] = useState(true);
@@ -67,7 +67,7 @@ function PitScout(props: any) {
 
   const submitPitData = async function submitData(values:any) {
     const body ={
-      // "robot_pic": values.base64String,  
+      "robot_pic": values.base64String,  
       "robot_events": values.robot_events,
       "team_number": values.team_number,
       "robot_drive_train": values.robot_drive_train,
@@ -131,14 +131,16 @@ function PitScout(props: any) {
       // Do something with the base64String, such as storing it in state
       console.log(base64String); // Log the base64 string to the console for demonstration
     };
+    const image = file
   
     reader.readAsDataURL(file);
+
   };
 
 
   function pitInput() {
     type FieldType = {
-      // robot_pic: string;
+      robot_pic: string;
       robot_events: number;
       team_number: number;
       robot_drive_train: string;
@@ -211,7 +213,7 @@ function PitScout(props: any) {
         <Form 
         form={form}
         initialValues={{
-          // robot_pic: '',
+          robot_pic: '',
           robot_events: 0,
           team_number: 0,
           robot_drive_train: '',
@@ -328,6 +330,7 @@ function PitScout(props: any) {
             <InputNumber controls min={1} max={4} className="pitinput" />
           </Form.Item>
 
+
         {/* Team safety */}
           <h1 className='pitBody'>Team safety</h1>
           <Form.Item<FieldType> name="robot_team_safety">
@@ -375,11 +378,11 @@ function PitScout(props: any) {
         
 
         {/* robot pictures */}
-        {/* <div style={{ marginBottom: "5%" }}> */}
-          {/* <h1 className='pitBody' style={{ fontSize: '260%', marginTop: '0%' }}>Robot Pictures</h1>
+        <div style={{ marginBottom: "5%" }}>
+          <h1 className='pitBody' style={{ fontSize: '260%', marginTop: '0%' }}>Robot Pictures</h1>
           <input className='uploadButton' style={{ opacity: "1" }} type="file" accept="image/*" onChange={handleImageUpload} />
-          {image ? <img src={image} className="image" alt="preview" width={"100%"} height={"100%"} /> : null} */}
-
+          {image ? <img src={image} className="image" alt="preview" width={"100%"} height={"100%"} /> : null} 
+        </div>  
 
         {/* submit */}
           {/* <Button style={{ marginLeft: '25%', marginTop: '10%' }} className='pitButton'>Submit</Button> */}
@@ -465,7 +468,7 @@ function PitScout(props: any) {
           </table>
         </header>
       </div>
-
+      
       <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} className='tabs' centered onChange={async (key) => { setTabNum(key) }} />
     </div>
   );
