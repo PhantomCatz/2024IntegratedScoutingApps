@@ -7,19 +7,17 @@
 
 .pitinput {
     width: 100%;
-    margin-bottom:8%;
     min-width: 100%;
-    height: 45% !important;
-    min-height: 45% !important;
+    height: 20% !important;
+    min-height: 20% !important;
     border: 4px solid white !important;
     border-radius: 25px;
-    background-color: transparent;
+    background-color: transparent !important;
     font-size: 500% !important;
-    font-family: Audiowide !important;
+    font-family: Figtree !important;
     font-weight: bold;
     color: white !important;
     text-align: center !important;
-    background: transparent !important;
 
 
 }
@@ -42,10 +40,10 @@
 
 }
 .pitBody {
-    font-size: 280%;
+    font-size: 60px;
     margin: 0;
     margin-bottom:1%;
-    font-family: Audiowide !important;
+    font-family: Figtree !important;
     background-color: transparent !important;
     color: white;
 }
