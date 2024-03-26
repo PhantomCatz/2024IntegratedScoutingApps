@@ -26,12 +26,11 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LoginPage title="2637 Strategy App" />} />
-        <Route path="/:msg" element={<LoginPage title="2637 Strategy App" />} />
         <Route path="/home" element={<HomePage title="2637 Strategy App" />} />
         <Route path="/scoutingapp" element={<ScoutingApp title="2637 Scouting App" />} />
         <Route path="/dtf" element={<DTF title="2637 Drive Team Feeder" />} />
         <Route path="/watchlist" element = {<Watchlist title="2637 Watch List"/>}/>
-        <Route path="/dtf/:team_number" element={<DTFTeams title="2637 Drive Team Feeder Data" />} />
+        <Route path="/dtf/:team_number" element={<DTFTeams title="2637 Drive Team Feeders" />} />
         <Route path="/scoutingapp/match" element={<MatchScout title="2637 Match Scout" />} />
         <Route path="/scoutingapp/strategic" element={<StrategicScout title="2637 Strategic Scout" />} />
         <Route path="/scoutingapp/pit" element={<PitScout title="2637 Pit Scout" />} />

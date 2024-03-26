@@ -8,7 +8,7 @@ import { base64url, SignJWT } from 'jose';
 import { useCookies } from 'react-cookie';
 
 function LoginPage(props: any) {
-	const { msg } = useParams();
+	const [msg, setMsg] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 	// eslint-disable-next-line
 	const [cookies, setCookies, removeCookies] = useCookies(['login']);
@@ -38,13 +38,11 @@ function LoginPage(props: any) {
 								</td>
 							</tr>
 						</tbody>
-
 					</table>
 				</header>
 			</div>
 			<Form onFinish={async (event) => {
 				try {
-					
 					setIsLoading(true);
 					await fetch((process.env.REACT_APP_LOGIN_URL as string) + "?user_name=" + event.username + "&password=" + event.password, {
 						method: "GET",
@@ -56,22 +54,24 @@ function LoginPage(props: any) {
 						console.log(response);
 						if (response.toString() === "true") {
 							const hash = base64url.decode(process.env.REACT_APP_HASH as string);
-							const signed = await new SignJWT({ username: event.username, password: event.password }).setExpirationTime(new Date(new Date().getTime() + 5 * 60 * 60 * 100)).setProtectedHeader({ alg: 'HS256' }).sign(hash);
+							const signed = await new SignJWT({ username: event.username, password: event.password }).setExpirationTime("5hrs").setProtectedHeader({ alg: 'HS256' }).sign(hash);
 							removeCookies("login");
 							setCookies("login", signed);
 							window.location.href = "/home";
 						}
-						else if (response.login === "nullData") {
-							window.location.href = "/Incorrect%20Login";
+						else if (response[process.env.REACT_APP_RESPONSE as string]) {
+							setMsg("Incorrect login");
 						}
 						else {
-							window.location.href = "/Fatal%20Error";
+							setMsg("Fatal error; tell a WebDev member immediately!");
 						}
 						setIsLoading(false);
 					});
 				}
 				catch (err) {
 					console.log(err);
+					window.alert("Error occured, please do not do leave this message and notify a Webdev member immediately.");
+					window.alert(err);
 				}
 			}}>
 				<h2 style={{ color: "red" }}>{msg}</h2>

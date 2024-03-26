@@ -41,8 +41,8 @@ h2 {
     border-color: #000000;
     width: 100%;
     border-radius: 20px !important;
-    height: 118px !important;
-    min-height: 118px !important;
+    height: 120px !important;
+    min-height: 120px !important;
 }
 .ant-select-selection-item {
     font-size: 48px !important;
@@ -73,10 +73,10 @@ h2 {
     text-align: center !important;
 }
 .ant-select-selection-overflow-item {
-    height: 118px !important;
+    height: 120px !important;
 }
 .ant-select-selection-placeholder, .ant-select-selection-item {
-    height: 118px !important;
+    height: 120px !important;
     line-height: 50px !important;
     color: white;
     font-family: Figtree !important;
@@ -89,7 +89,7 @@ h2 {
 }
 .ant-select-selector {
     width: 100% !important;
-    height: 118px !important;
+    height: 120px !important;
     background-color: transparent !important;
     border: 0px transparent !important;
     text-align: center !important;
@@ -125,8 +125,8 @@ h2 {
 .input_checkbox {
     width: 100%;
     min-width: 100%;
-    height: 118px !important;
-    min-height: 118px !important;
+    height: 120px !important;
+    min-height: 120px !important;
     border: 4px solid white !important;
     border-radius: 25px;
     background-color: red;
@@ -181,7 +181,7 @@ h2 {
     padding-top: 0 !important;
 }
 .incrementbutton {
-    height: 118px !important;
+    height: 120px !important;
     border-top-right-radius: 20px !important;
     border-bottom-right-radius: 20px !important;
     background-color: transparent !important;
@@ -191,7 +191,7 @@ h2 {
     width: 250px !important;
 }
 .decrementbutton {
-    height: 118px !important;
+    height: 120px !important;
     border-top-left-radius: 20px !important;
     border-bottom-left-radius: 20px !important;
     background-color: transparent !important;

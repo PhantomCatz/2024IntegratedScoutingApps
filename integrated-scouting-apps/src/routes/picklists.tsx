@@ -23,6 +23,7 @@ function Picklists(props: any) {
         const kv = [];
         const response = await fetch(process.env.REACT_APP_PICKLIST_URL as string);
         const data = await response.json();
+        console.log(data);
         for (const team in data) {
           if (teams[data[team].team_number] === undefined) {
             teams[data[team].team_number] = (data[team]);
@@ -35,9 +36,16 @@ function Picklists(props: any) {
             if (teams[data[team].team_number].third_score === undefined) {
               teams[data[team].team_number].third_score = 0;
             }
+            if (teams[data[team].team_number].robot_died === undefined) {
+              teams[data[team].team_number].robot_died = 0;
+            }
+            if (teams[data[team].team_number].match_number === undefined) {
+              teams[data[team].team_number].match_number = 0;
+            }
           }
           else {
             if (data[team].score > teams[data[team].team_number].first_score) {
+              teams[data[team].team_number].third_score = teams[data[team].team_number].second_score;
               teams[data[team].team_number].second_score = teams[data[team].team_number].first_score;
               teams[data[team].team_number].first_score = data[team].score;
             }
@@ -48,36 +56,46 @@ function Picklists(props: any) {
             else if (data[team].score > teams[data[team].team_number].third_score) {
               teams[data[team].team_number].third_score = data[team].score;
             }
-            teams[data[team].team_number].score += data[team].score; //total score
-            teams[data[team].team_number].auto_score += data[team].auto_score; //total auto score
-            teams[data[team].team_number].tele_amp_score += data[team].tele_amp_score; //total auto score
-            teams[data[team].team_number].tele_speaker_score += data[team].tele_speaker_score; //total auto score
-            teams[data[team].team_number].match_number = 0; //set matchnum 0
+            teams[data[team].team_number].score += data[team].score;
+            teams[data[team].team_number].auto_scored_pieces += data[team].auto_scored_pieces; 
+            teams[data[team].team_number].teleop_amps_scored+= data[team].teleop_amps_scored; 
+            teams[data[team].team_number].teleop_speaker_scored += data[team].teleop_speaker_scored;
+  
+            teams[data[team].team_number].auto_missed_pieces += data[team].auto_missed_pieces;
+            teams[data[team].team_number].teleop_missed_amps += data[team].teleop_missed_amps;
+            teams[data[team].team_number].teleop_missed_speaker += data[team].teleop_missed_speaker;
+
+            teams[data[team].team_number].match_number++;
           }
           if (data[team].robot_died) {
             teams[data[team].team_number].robot_died++;
           }
-          console.log("team " + teams[data[team].team_number].team_number);
-          console.log("1 " + teams[data[team].team_number].first_score);
-          console.log("2 " + teams[data[team].team_number].second_score);
-          console.log("3 " + teams[data[team].team_number].third_score);
         }
-        for (const team in data) {
-          teams[data[team].team_number].match_number++; //set total num match
-          teams[data[team].team_number].avg_score = Math.round(teams[data[team].team_number].score / teams[data[team].team_number].match_number * 100) / 100;
-          teams[data[team].team_number].iegr = Math.round((teams[data[team].team_number].first_score + teams[data[team].team_number].second_score + teams[data[team].team_number].third_score) / 3  * 100) / 100;
+        for (const team in teams) {
+          teams[teams[team].team_number].avg_score = Math.round((teams[teams[team].team_number].score / teams[teams[team].team_number].match_number) * 100) / 100;
+          teams[teams[team].team_number].iegr = Math.round((teams[teams[team].team_number].first_score + teams[teams[team].team_number].second_score + teams[teams[team].team_number].third_score) / 3  * 100) / 100;
+
+          teams[teams[team].team_number].auto_score_ratio = teams[teams[team].team_number].auto_scored_pieces + "/" + (teams[teams[team].team_number].auto_scored_pieces + teams[teams[team].team_number].auto_missed_pieces);
+          teams[teams[team].team_number].auto_scored_pieces = Math.round(teams[teams[team].team_number].auto_scored_pieces / teams[teams[team].team_number].match_number * 100) / 100;
+
+          teams[teams[team].team_number].amp_score_ratio = teams[teams[team].team_number].teleop_amps_scored + "/" + (teams[teams[team].team_number].teleop_amps_scored + teams[teams[team].team_number].teleop_missed_amps);
+          teams[teams[team].team_number].speaker_score_ratio = teams[teams[team].team_number].teleop_speaker_scored + "/" + (teams[teams[team].team_number].teleop_speaker_scored + teams[teams[team].team_number].teleop_missed_speaker);
+          teams[teams[team].team_number].teleop_amps_scored = Math.round(teams[teams[team].team_number].teleop_amps_scored / teams[teams[team].team_number].match_number * 100) / 100;
+          teams[teams[team].team_number].teleop_speaker_scored = Math.round(teams[teams[team].team_number].teleop_speaker_scored / teams[teams[team].team_number].match_number * 100) / 100;
         }
         for (const team in teams) {
           kv.push(teams[team]);
         }
         setFetchedData(kv);
-        console.log(kv);
-        setLoading(false);
+        console.log(kv)
       }
       catch (err) {
-        window.alert("error has occured; please tell nathan asap");
-        window.alert(err);
         console.log(err);
+        window.alert("Error occured, please do not do leave this message and notify a Webdev member immediately.");
+        window.alert(err);
+      }
+      finally {
+        setLoading(false);
       }
     };
     fetchData();
@@ -104,16 +122,16 @@ function Picklists(props: any) {
         </header>        
         <h2 style={{whiteSpace: 'pre-line'}}>{loading ? 'Loading Data...' : ''}</h2>
         <Table dataSource={fetchedData} pagination={{ pageSize: 500 }}>
-          {/* <Column title="Rank #" dataIndex="rank" key="rank" sorter={(a: any, b: any) => a.rank - b.rank}/> */}
+          <Column title="Rank #" dataIndex="rank" key="rank" sorter={(a: any, b: any) => a.rank - b.rank}/>
           <Column title="Team #" dataIndex="team_number" key="team_number" sorter={(a: any, b: any) => a.team_number - b.team_number}/>
-           <Column title="Overall Score" dataIndex="avg_score" key="avg_score" sorter={(a: any, b: any) => a.avg_score - b.avg_score} defaultSortOrder={"descend"}/>
+          <Column title="Overall Score" dataIndex="avg_score" key="avg_score" sorter={(a: any, b: any) => a.avg_score - b.avg_score} defaultSortOrder={"descend"}/>
           <Column title="IEGR (Top 3)" dataIndex="iegr" key="iegr" sorter={(a: any, b: any) => a.iegr - b.iegr}/>
-          <Column title="Auto Notes Avg" dataIndex="auto_avg_score" key="auto_avg_score" sorter={(a: any, b: any) => a.auto_avg_score - b.auto_avg_score}/>
-          <Column title="Auto Notes Score/Attempt" dataIndex="auto_score_ratio" key="auto_score_ratio" sorter={(a: any, b: any) => a.auto_score_ratio.length - b.auto_score_ratio.length}/>
-          <Column title="Teleop Notes Amp Avg" dataIndex="tele_avg_amp_score" key="tele_avg_amp_score" sorter={(a: any, b: any) => a.tele_avg_amp_score - b.tele_avg_amp_score}/>
-          <Column title="Amp Notes Score/Attempt" dataIndex="amp_score_ratio" key="amp_score_ratio" sorter={(a: any, b: any) => a.amp_score_ratio.length - b.amp_score_ratio.length}/>
-          <Column title="Teleop Notes Speaker Avg" dataIndex="tele_avg_speaker_score" key="tele_avg_speaker_score" sorter={(a: any, b: any) => a.tele_avg_speaker_score - b.tele_avg_speaker_score}/>
-          <Column title="Speaker Notes Score/Attempt" dataIndex="speaker_score_ratio" key="speaker_score_ratio" sorter={(a: any, b: any) => a.speaker_score_ratio.length - b.speaker_score_ratio.length}/>
+          <Column title="Auton Avg" dataIndex="auto_scored_pieces" key="auto_scored_pieces" sorter={(a: any, b: any) => a.auto_scored_pieces - b.auto_scored_pieces}/>
+          <Column title="Auton (Scr/Att)" dataIndex="auto_score_ratio" key="auto_score_ratio" sorter={(a: any, b: any) => a.auto_score_ratio.length - b.auto_score_ratio.length}/>
+          <Column title="Teleop Amp Avg" dataIndex="teleop_amps_scored" key="teleop_amps_scored" sorter={(a: any, b: any) => a.teleop_amps_scored - b.teleop_amps_scored}/>
+          <Column title="Teleop Amp (Scr/Att)" dataIndex="amp_score_ratio" key="amp_score_ratio" sorter={(a: any, b: any) => a.amp_score_ratio.length - b.amp_score_ratio.length}/>
+          <Column title="Teleop Spkr Avg" dataIndex="teleop_speaker_scored" key="teleop_speaker_scored" sorter={(a: any, b: any) => a.teleop_speaker_scored - b.teleop_speaker_scored}/>
+          <Column title="Teleop Spkr (Scr/Att)" dataIndex="speaker_score_ratio" key="speaker_score_ratio" sorter={(a: any, b: any) => a.speaker_score_ratio.length - b.speaker_score_ratio.length}/>
           <Column title="Robot Deaths" dataIndex="robot_died" key="robot_died" sorter={(a: any, b: any) => a.robot_died - b.robot_died} className='robotdied'/>
         </Table>
       </div>

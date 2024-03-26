@@ -19,6 +19,7 @@ import { useParams } from 'react-router-dom';
 import { ReactSketchCanvas, ReactSketchCanvasRef } from 'react-sketch-canvas';
 import VerifyLogin from '../verifyToken';
 import { useCookies } from 'react-cookie';
+import { saveAs } from 'file-saver';
 
 
 function PitScout(props: any) {
@@ -59,59 +60,55 @@ function PitScout(props: any) {
       }
       catch (err) {
         console.log(err);
+        window.alert("Error occured, please do not do leave this message and notify a Webdev member immediately.");
+        window.alert(err);
       }
       finally {
         setLoading(false);
       }
     }} );
 
-  const submitPitData = async function submitData(values:any) {
-    const body ={
-      // "robot_pic": values.base64String,  
-      "robot_events": values.robot_events,
-      "team_number": values.team_number,
-      "robot_drive_train": values.robot_drive_train,
-      "robot_weight": values.robot_weight,
-      "robot_motor_type": values.robot_motor_type,
-      "robot_motor_counter": values.robot_motor_counter,
-      "robot_wheel_type": values.robot_wheel_type,
-      "robot_intake_capability": values.robot_intake_capability,
-      "robot_shooting_capability": values.robot_shooting_capability,
-      "robot_ability_traversed_stage": values.robot_ability_traversed_stage,
-      "robot_climbing_capabilities": values.robot_climbing_capabilities,
-      "robot_trap_detail": values.robot_trap_detail,
-      "robot_pit_organization": values.robot_pit_organization,
-      "robot_team_safety": values.robot_team_safety,
-      "robot_team_workmanship": values.robot_team_workmanship,
-      "robot_GP": values.robot_GP,
+  async function submitData(event:any) {
+    const body = {
+      // "robot_pic": event.base64String,  
+      "robot_events": event.robot_events,
+      "team_number": event.team_number,
+      "robot_drive_train": event.robot_drive_train,
+      "robot_weight": event.robot_weight,
+      "robot_motor_type": event.robot_motor_type,
+      "robot_motor_counter": event.robot_motor_counter,
+      "robot_wheel_type": event.robot_wheel_type,
+      "robot_intake_capability": event.robot_intake_capability,
+      "robot_shooting_capability": event.robot_shooting_capability,
+      "robot_ability_traversed_stage": event.robot_ability_traversed_stage,
+      "robot_climbing_capabilities": event.robot_climbing_capabilities,
+      "robot_trap_detail": event.robot_trap_detail,
+      "robot_pit_organization": event.robot_pit_organization,
+      "robot_team_safety": event.robot_team_safety,
+      "robot_team_workmanship": event.robot_team_workmanship,
+      "robot_GP": event.robot_GP,
       "robot_auton_path": imageURI.current,
-      "robot_auton_path_detail": values.robot_auton_path_detail,
+      "robot_auton_path_detail": event.robot_auton_path_detail,
       // "pit_question": question,
-      // "pit_answer": values.pit_answer,
+      // "pit_answer": event.pit_answer,
       
     }
     try {
-      const url = process.env.REACT_APP_PIT_URL as string;
-      const response = await fetch(url, {
+      await fetch(process.env.REACT_APP_PIT_URL as string, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(body),
+      }).then(async (response) => await response.json()).then(async (data) => {
+        window.alert(data.insertedId);
+        saveAs(new Blob([JSON.stringify(body)], { type: "text/json" }), event.initials + event.team_number + ".json");
       });
-
-      if (response.ok) {
-        console.log('Data successfully submitted!');
-        console.log(response);
-        console.log(team_number);
-        console.log(body);
-        // window.location.reload();
-      } else {
-        console.log('Failed to submit data. Please try again.');
-      }
-    } catch (error) {
-      console.log('Error submitting data:', error);
-      console.log('Failed to submit data. Please try again.');
+    }
+    catch (err) {
+      console.log(err);
+      window.alert("Error occured, please do not do leave this message and notify a Webdev member immediately.");
+      window.alert(err);
     }
     setLoading(false);
   };
@@ -238,8 +235,7 @@ function PitScout(props: any) {
 
         onFinish={async event => {
         try{
-          event.preventDefault();
-          await submitPitData(event);
+          await submitData(event);
           form.resetFields();
         }
         catch (error) {

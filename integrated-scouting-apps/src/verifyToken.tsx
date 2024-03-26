@@ -20,7 +20,7 @@ async function ChangeTheme(cookie: any) {
       document.body.style.backgroundColor = "#32a7dc";
     }
     else if (cookie === "看") {
-      document.body.style.backgroundColor = "black";
+      document.body.style.backgroundColor = "#000000";
     }
     else if (cookie === "dc") {
       document.body.style.backgroundColor = "#5865F2";
@@ -37,7 +37,7 @@ async function ChangeTheme(cookie: any) {
     }
   }
   catch (err) {
-    console.log(err);
   }
 }
+// eslint-disable-next-line
 export default {VerifyLogin, ChangeTheme};

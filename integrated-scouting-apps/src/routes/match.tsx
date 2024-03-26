@@ -4,15 +4,15 @@ import logo from '../public/images/logo.png';
 import back from '../public/images/back.png';
 import field_blue from '../public/images/field_blue.png';
 import field_red from '../public/images/field_red.png';
-// import full_field from '../public/images/full_field.png';
-import { useRef, useEffect, useState } from 'react';
+
+import { useEffect, useState, useRef } from 'react';
 import { Tabs, Input, Form, Select, Checkbox, InputNumber, Flex, Button } from 'antd';
-import { ReactSketchCanvas, ReactSketchCanvasRef } from 'react-sketch-canvas';
 import type { TabsProps } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import VerifyLogin from '../verifyToken';
 import { useCookies } from 'react-cookie';
 import { saveAs } from 'file-saver';
+import { ReactSketchCanvas, ReactSketchCanvasRef } from 'react-sketch-canvas';
 
 function MatchScout(props: any) {
   const [form] = Form.useForm();
@@ -41,13 +41,11 @@ function MatchScout(props: any) {
     driverSkillRating: 0,
     timeLeft: 0,
   });
-  const autonImageURI = useRef<string>();
-  //const teleopImageURI = useRef<string>();
-  const autonCanvasRef = useRef<ReactSketchCanvasRef>(null);
-  //const teleopCanvasRef = useRef<ReactSketchCanvasRef>(null);
   const eventname = process.env.REACT_APP_EVENTNAME;
-  useEffect(() => { document.title = props.title; return () => { }; }, [props.title]);
+  useEffect(() => { document.title = props.title; return () => {}; }, [props.title]);
   const [cookies] = useCookies(['login', 'theme']);
+  const autonCanvasRef = useRef<ReactSketchCanvasRef>(null);
+  const autonImageURI = useRef<string>();
   useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
   useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => {}}, [cookies.theme]);
   useEffect(() => {
@@ -111,152 +109,162 @@ function MatchScout(props: any) {
   }, [formValue, form]);
 
   async function setNewMatchScout(event: any) {
-    const body = {
-      "matchIdentifier": {
-        "Initials": event.initials,
-        "match_event": eventname,
-        "match_level": event.matchlevel + (event.roundnum !== undefined ? event.roundnum : ""),
-        "match_number": event.matchnum,
-        "team_number": teamNum,
-        "robot_position": event.robotpos,
-        "starting_position": event.startingloc,
-      },
-      "auto": {
-        "auto_preload_scored": event.preloadscored,
-        "auto_leave": event.leavespawn,
-        "auto_amps_scored": event.auton_ampscored,
-        "auto_speaker_scored": formValue.autonSpeakerScored,
-        "auto_scoring_location": event.auton_scoringloc,
-        "auto_pieces_picked": event.piecespicked,
-        "auto_missed_pieces_amp": event.auton_missedpiecesamp,
-        "auto_missed_pieces_speaker": event.auton_missedpiecesspeaker,
-        "auto_path": autonImageURI.current,
-        "auto_total_points": 0,
-        // "auto_comments": event.auton_comments,
-      },
-      "teleop": {
-        "teleop_coop_pressed": event.cooppressed,
-        "teleop_coop_first": event.cooppressed1st,
-        "teleop_amps_scored": event.tele_ampscored,
-        "teleop_speaker_scored": event.tele_speakerscored,
-        "teleop_times_amplify": 0,
-        "intake": event.intake,
-        // "teleop_pieces_note_amplifying_scored": event.speakerscored_amplified,
-        // "teleop_traverse_stage": event.traversedstage,
-        "teleop_traverse_stage": false,
-        "teleop_missed_pieces_amp": event.tele_missedpiecesamp,
-        "teleop_missed_pieces_speaker": event.tele_missedpiecesspeaker,
-        "teleop_scoring_location": event.tele_scoringloc,
-        "teleop_total_points": 0,
-        "teleop_shooting_location": event.shootingloc,
-        "teleop_hoarded_pieces": event.tele_hoardedpieces,
-        "teleop_path": "",
-        //"teleop_path": teleopImageURI.current,
-        // "teleop_times_amplify": event.timesamplified,
-      },
-      "engGame": {
-        "EG_climbed": event.climbed,
-        "EG_timeLeft_when_climb": event.timeleft,
-        "EG_parked": event.parked,
-        "EG_trapScored": event.trapscored,
-        "EG_harmony": event.harmony,
-        "EG_mic_score": event.spotlit,
-        "EG_climbing_affect": false,
-      },
-      "overAll": {
-        //"OA_hoarded": event.hoarded,
-        "OA_robot_died": event.robotdied,
-        "OA_was_defend": event.wasdefended,
-        "OA_was_defend_team": event.wasdefendedteam,
-        "OA_defend": event.defended,
-        "OA_defend_team": event.defendedteam,
-        "OA_pushing_rating": event.pushing,
-        "OA_counter_defense": event.counterdefense,
-        "OA_numbers_penalties": event.numpenalties,
-        "OA_penalties_comments": event.penaltiesincurred,
-        "OA_driver_skill": event.driverskill,
-        "OA_comments": event.comments,
-      }
-    };
-    // eslint-disable-next-line
-    const TESTDONOTREMOVE = {
-      "matchIdentifier": {
-        "Initials": "Loren Liu",
-        "match_event": "2024CALA",
-        "match_level": "Practice",
-        "match_number": 8,
-        "team_number": 2637,
-        "robot_position": "R1",
-        "starting_position": "middle"
-      },
-      "auto": {
-        "auto_preload_scored": true,
-        "auto_leave": true,
-        "auto_amps_scored": 6,
-        "auto_speaker_scored": 2,
-        "auto_scoring_location": "strategy list",
-        "auto_pieces_picked": [0, 0, 0, 0, 0, 0, 0, 0],
-        "auto_missed_pieces_amp": 0,
-        "auto_missed_pieces_speaker": 0,
-        "auto_path": "pic askdfghkjaegflaier",
-        "auto_total_points": 0
-      },
-      "teleop": {
-        "teleop_coop_pressed": true,
-        "teleop_coop_first": false,
-        "teleop_amps_scored": 1,
-        "teleop_speaker_scored": 5,
-        "teleop_times_amplify": 5,
-        // "teleop_pieces_note_amplifying_scored": 7,
-        "intake": "string",
-        "teleop_traverse_stage": true,
-        "teleop_missed_pieces_amp": 2,
-        "teleop_missed_pieces_speaker": 3,
-        "teleop_scoring_location": "strategyyyy",
-        "teleop_total_points": 0,
-        "teleop_shooting_location": ["a","b"],
-        "teleop_hoarded_pieces":7,
-        "teleop_path": "dfkahjsljkhfglwqekjh"
-      },
-      "engGame": {
-        "EG_climbed": true,
-        "EG_timeLeft_when_climb": 12,
-        "EG_parked": false,
-        "EG_trapScored": true,
-        "EG_harmony": true,
-        "EG_mic_score": true,
-        "EG_climbing_affect": false
-      },
-      "overAll": {
-        "OA_hoarded": true,
-        "OA_robot_died": false,
-        "OA_was_defend": true,
-        "OA_was_defend_team":[1,2,3],
-        "OA_defend": false,
-        "OA_defend_team":[1,4,6],
-        "OA_pushing_rating": 3,
-        "OA_counter_defense": 3,
-        "OA_numbers_penalties": 1,
-        "OA_penalties_comments": "attacking others?",
-        "OA_driver_skill": 3,
-        "OA_comments": "comments"
-      }
+    if (teamNum === 0) {
+      window.alert("Team number is 0, please check in Pre.");
     }
-    try {
-      await fetch(process.env.REACT_APP_MATCH_URL as string, {
-        method: "POST",
-        body: JSON.stringify(body),
-        headers: {
-          "Content-Type": "application/json",
+    else {
+      const body = {
+        "matchIdentifier": {
+          "Initials": event.initials,
+          "match_event": eventname,
+          "match_level": event.matchlevel + (event.roundnum !== undefined ? event.roundnum : ""),
+          "match_number": event.matchnum,
+          "team_number": teamNum,
+          "robot_position": event.robotpos,
+          "starting_position": event.startingloc,
+        },
+        "auto": {
+          "auto_preload_scored": event.preloadscored,
+          "auto_leave": event.leavespawn,
+          "auto_amps_scored": event.auton_ampscored,
+          "auto_speaker_scored": formValue.autonSpeakerScored,
+          "auto_scoring_location": event.auton_scoringloc,
+          "auto_pieces_picked": event.piecespicked,
+          "auto_missed_pieces_amp": event.auton_missedpiecesamp,
+          "auto_missed_pieces_speaker": event.auton_missedpiecesspeaker,
+          "auto_path": autonImageURI.current,
+          "auto_total_points": 0,
+          // "auto_comments": event.auton_comments,
+        },
+        "teleop": {
+          "teleop_coop_pressed": event.cooppressed,
+          "teleop_coop_first": event.cooppressed1st,
+          "teleop_amps_scored": event.tele_ampscored,
+          "teleop_speaker_scored": event.tele_speakerscored,
+          "teleop_times_amplify": 0,
+          "intake": event.intake,
+          // "teleop_pieces_note_amplifying_scored": event.speakerscored_amplified,
+          // "teleop_traverse_stage": event.traversedstage,
+          "teleop_traverse_stage": false,
+          "teleop_missed_pieces_amp": event.tele_missedpiecesamp,
+          "teleop_missed_pieces_speaker": event.tele_missedpiecesspeaker,
+          "teleop_scoring_location": event.tele_scoringloc,
+          "teleop_total_points": 0,
+          "teleop_shooting_location": event.shootingloc,
+          "teleop_hoarded_pieces": event.tele_hoardedpieces,
+          "teleop_path": "removed lol",
+        },
+        "engGame": {
+          "EG_climbed": event.climbed,
+          "EG_timeLeft_when_climb": event.timeleft,
+          "EG_parked": event.parked,
+          "EG_trapScored": event.trapscored,
+          "EG_harmony": event.harmony,
+          "EG_mic_score": false,
+          "EG_climbing_affect": false,
+        },
+        "overAll": {
+          "OA_robot_died": event.robotdied,
+          "OA_was_defend": event.wasdefended,
+          "OA_was_defend_team": event.wasdefendedteam,
+          "OA_defend": event.defended,
+          "OA_defend_team": event.defendedteam,
+          "OA_pushing_rating": event.pushing,
+          "OA_counter_defense": event.counterdefense,
+          "OA_numbers_penalties": event.numpenalties,
+          "OA_penalties_comments": event.penaltiesincurred,
+          "OA_driver_skill": event.driverskill,
+          "OA_comments": event.comments,
         }
-      })
-        .then(async (response) => await response.json()).then(async (data) => window.alert("Submit Successful!"));
+      };
+      // eslint-disable-next-line
+      const TESTDONOTREMOVE = {
+        "matchIdentifier": {
+          "Initials": "test",
+          "match_event": "test",
+          "match_level": "test",
+          "match_number": -1,
+          "team_number": -1,
+          "robot_position": "test",
+          "starting_position": "test"
+        },
+        "auto": {
+          "auto_preload_scored": false,
+          "auto_leave": false,
+          "auto_amps_scored": -1,
+          "auto_speaker_scored": -1,
+          "auto_scoring_location": "test",
+          "auto_pieces_picked": [],
+          "auto_missed_pieces_amp": -1,
+          "auto_missed_pieces_speaker": -1,
+          "auto_path": "test",
+          "auto_total_points": -1,
+        },
+        "teleop": {
+          "teleop_coop_pressed": false,
+          "teleop_coop_first": false,
+          "teleop_amps_scored": -1,
+          "teleop_speaker_scored": -1,
+          "teleop_times_amplify": -1,
+          "intake": "test",
+          "teleop_traverse_stage": false,
+          "teleop_missed_pieces_amp": -1,
+          "teleop_missed_pieces_speaker": -1,
+          "teleop_scoring_location": "test",
+          "teleop_total_points": -1,
+          "teleop_shooting_location": [],
+          "teleop_hoarded_pieces": -1,
+          "teleop_path": "test",
+        },
+        "engGame": {
+          "EG_climbed": false,
+          "EG_timeLeft_when_climb": -1,
+          "EG_parked": false,
+          "EG_trapScored": false,
+          "EG_harmony": false,
+          "EG_mic_score": false,
+          "EG_climbing_affect": false,
+        },
+        "overAll": {
+          "OA_hoarded": false,
+          "OA_robot_died": false,
+          "OA_was_defend": false,
+          "OA_was_defend_team":[],
+          "OA_defend": false,
+          "OA_defend_team":[],
+          "OA_pushing_rating": -1,
+          "OA_counter_defense": -1,
+          "OA_numbers_penalties": -1,
+          "OA_penalties_comments": "test",
+          "OA_driver_skill": -1,
+          "OA_comments": "test",
+        }
+      }
+      try {
+        if (!window.navigator.onLine) {
+          window.alert("Your device is offline; please download the following .json file and give it to a Webdev member.");
+          saveAs(new Blob([JSON.stringify(body)], { type: "text/json" }), event.initials + event.matchnum + ".json");
+        }
+        else {
+          await fetch(process.env.REACT_APP_MATCH_URL as string, {
+            method: "POST",
+            body: JSON.stringify(body),
+            headers: {
+              "Content-Type": "application/json",
+            }
+          })
+          .then(async (response) => await response.json()).then(async (data) => {
+            window.alert(data.insertedId);
+          });
+        }
+      }
+      catch (err) {
+        console.log(err);
+        window.alert("Error occured, please do not do leave this message and notify a Webdev member!");
+        window.alert(err);
+      }
     }
-    catch (err) {
-      console.log(err);
-      window.alert("error has occured; please tell nathan asap");
-      window.alert(err);
-    }
+    
   };
   async function updateTeamNumber() {
     try {
@@ -270,11 +278,9 @@ function MatchScout(props: any) {
             }
           });
         const data = await response.json();
-        console.log(data);
         const team_color = form.getFieldValue('robotpos').substring(0, form.getFieldValue('robotpos').indexOf('_'));
         setColor((team_color === "red" ? true : false));
         const team_num = form.getFieldValue('robotpos').substring(form.getFieldValue('robotpos').indexOf('_') + 1) - 1;
-        console.log(team_num)
         const fullTeam = (data.alliances[team_color].team_keys[team_num] !== null ? data.alliances[team_color].team_keys[team_num] : 0);
         setTeamNum(Number(fullTeam.substring(3)));
         updateDefendedList();
@@ -289,7 +295,6 @@ function MatchScout(props: any) {
             }
           });
         const data = await response.json();
-        console.log(data);
         const team_color = form.getFieldValue('robotpos').substring(0, form.getFieldValue('robotpos').indexOf('_'));
         setColor((team_color === "red" ? true : false));
         const team_num = form.getFieldValue('robotpos').substring(form.getFieldValue('robotpos').indexOf('_') + 1) - 1;
@@ -299,7 +304,6 @@ function MatchScout(props: any) {
       }
     }
     catch (err) {
-      console.log(err);
     }
   }
   async function calculateMatchLevel() {
@@ -312,42 +316,44 @@ function MatchScout(props: any) {
     }
   }
   async function updateDefendedList() {
-    if (roundIsVisible) {
-      const matchID = eventname + "_" + form.getFieldValue('matchlevel') + form.getFieldValue('matchnum') + "m" + form.getFieldValue('roundnum');
-      const response = await fetch('https://www.thebluealliance.com/api/v3/match/' + matchID,
-        {
-          method: "GET",
-          headers: {
-            'X-TBA-Auth-Key': process.env.REACT_APP_TBA_AUTH_KEY as string,
-          }
-        });
-      const data = await response.json();
-      let result: any[] = [];
-      for (const team in data.alliances[color ? 'red' : 'blue'].team_keys) {
-        result.push(data.alliances[color ? 'blue' : 'red'].team_keys[team].substring(3));
+    try {
+      if (roundIsVisible) {
+        const matchID = eventname + "_" + form.getFieldValue('matchlevel') + form.getFieldValue('matchnum') + "m" + form.getFieldValue('roundnum');
+        const response = await fetch('https://www.thebluealliance.com/api/v3/match/' + matchID,
+          {
+            method: "GET",
+            headers: {
+              'X-TBA-Auth-Key': process.env.REACT_APP_TBA_AUTH_KEY as string,
+            }
+          });
+        const data = await response.json();
+        let result: any[] = [];
+        for (const team in data.alliances[color ? 'red' : 'blue'].team_keys) {
+          result.push(data.alliances[color ? 'blue' : 'red'].team_keys[team].substring(3));
+        }
+        setOpposingTeamNum(result);
       }
-      setOpposingTeamNum(result);
-      console.log(opposingTeamNum);
+      else {
+        const matchID = eventname + "_" + form.getFieldValue('matchlevel') + form.getFieldValue('matchnum');
+        const response = await fetch('https://www.thebluealliance.com/api/v3/match/' + matchID,
+          {
+            method: "GET",
+            headers: {
+              'X-TBA-Auth-Key': process.env.REACT_APP_TBA_AUTH_KEY as string,
+            }
+          });
+        const data = await response.json();
+        let result: any[] = [];
+        for (const team in data.alliances[color ? 'red' : 'blue'].team_keys) {
+          result.push(data.alliances[color ? 'blue' : 'red'].team_keys[team].substring(3));
+        }
+        setOpposingTeamNum(result);
+      }
     }
-    else {
-      const matchID = eventname + "_" + form.getFieldValue('matchlevel') + form.getFieldValue('matchnum');
-      const response = await fetch('https://www.thebluealliance.com/api/v3/match/' + matchID,
-        {
-          method: "GET",
-          headers: {
-            'X-TBA-Auth-Key': process.env.REACT_APP_TBA_AUTH_KEY as string,
-          }
-        });
-      const data = await response.json();
-      let result: any[] = [];
-      for (const team in data.alliances[color ? 'red' : 'blue'].team_keys) {
-        result.push(data.alliances[color ? 'blue' : 'red'].team_keys[team].substring(3));
-      }
-      setOpposingTeamNum(result);
-      console.log(opposingTeamNum);
+    catch (err) {
     }
   }
-  function preMatch() { //final do not change
+  function preMatch() {
     type FieldType = {
       initials: string,
       matchlevel: string,
@@ -398,7 +404,7 @@ function MatchScout(props: any) {
       </div>
     );
   }
-  function AutonMatch() { //needs to be capitalized to have the dynamic field work (2024-03-06) DONE YAY
+  function AutonMatch() {
     type FieldType = {
       auton_speakerscored: number,
       auton_ampscored: number,
@@ -413,10 +419,10 @@ function MatchScout(props: any) {
       startingloc: string,
     };
     const scoringloc = [
-      { label: "Amp", value: "amp" },
-      { label: "Speaker", value: "speaker" },
-      { label: "Both", value: 'both' },
-      { label: "None", value: 'none' },
+      { label: "Amp", value: "Amp" },
+      { label: "Speaker", value: "Speaker" },
+      { label: "Both", value: 'Both' },
+      { label: "None", value: 'None' },
     ];
     const piecespicked = [
       { label: "W1", value: "w1" },
@@ -429,9 +435,10 @@ function MatchScout(props: any) {
       { label: "C5", value: 'c5' },
     ];
     const startingloc = [
-      { label: "Upper Speaker", value: "upper_s" },
-      { label: "Middle Speaker", value: "midde_s" },
-      { label: "Lower", value: 'lower_s' },
+      { label: "Upper Speaker", value: "Middle Speaker" },
+      { label: "Middle Speaker", value: "Middle Speaker" },
+      { label: "Lower Speaker", value: 'Lower Speaker' },
+      { label: "Lower", value: 'Lower' },
     ];
     return (
       <div>
@@ -465,7 +472,6 @@ function MatchScout(props: any) {
                 setFormValue({...formValue, autonSpeakerScored: formValue.autonSpeakerScored - 1});
               }
             }} className='decrementbutton'>-</Button>}
-            value={formValue.autonSpeakerScored}
           />
         </Form.Item>
         <h2>Missed Speaker Pieces</h2>
@@ -581,28 +587,28 @@ function MatchScout(props: any) {
       // speakerscored_amplified: number,
     };
     const scoringloc = [
-      { label: "Amp", value: "amp" },
-      { label: "Speaker", value: "speaker" },
-      { label: "Both", value: 'both' },
-      { label: "None", value: 'none' },
+      { label: "Amp", value: "Amp" },
+      { label: "Speaker", value: "Speaker" },
+      { label: "Both", value: 'Both' },
+      { label: "None", value: 'None' },
     ];
     const shootingloc = [
-      { label: "US", value: "us" },
-      { label: "CS", value: "cs" },
-      { label: "LS", value: 'ls' },
+      { label: "US", value: "Upper Speaker" },
+      { label: "CS", value: "Center Speaker" },
+      { label: "LS", value: 'Lower Speaker' },
       //{ label: "A", value: 'amp' },
       // { label: "AW", value: 'aw' },
-      { label: "UT", value: 'ut' },
-      { label: "CT", value: 'ct' },
-      { label: "LT", value: 'lt' },
-      { label: "LOT", value: 'lot' },
-      { label: "P", value: 'pod'},
+      { label: "UT", value: 'Upper Truss' },
+      { label: "St", value: 'Stage' },
+      { label: "LT", value: 'Lower Truss' },
+      { label: "LOT", value: 'Lower Opponent Truss' },
+      { label: "P", value: 'Podium'},
     ];
     const intake = [
-      { label: "Ground", value: "us" },
-      { label: "Source", value: "cs" },
-      { label: "Both", value: 'ls' },
-      { label: "None", value: 'amp' },
+      { label: "Ground", value: "Ground" },
+      { label: "Source", value: "Source" },
+      { label: "Both", value: 'Both' },
+      { label: "None", value: 'None' },
     ];
     return (
       <div>
@@ -663,26 +669,6 @@ function MatchScout(props: any) {
             }} className='decrementbutton'>-</Button>}
           />
         </Form.Item>
-        {/* <h2>Times Amplified</h2>
-        <Form.Item<FieldType> name="timesamplified" rules={[{ required: true, message: 'Please input the times the speaker was amplified!' }]}>
-          <InputNumber 
-          type='number'
-          pattern="\d*"
-            disabled
-          onWheel={(event) => (event.target as HTMLElement).blur()} 
-          min={0}
-          className="input"/>
-        </Form.Item> */}
-        {/* <h2>Speaker Scored during Amp</h2>
-        <Form.Item<FieldType> name="speakerscored_amplified" rules={[{ required: true, message: 'Please input the number of notes scored during the amplification period!' }]}>
-          <InputNumber
-            type='number'
-            pattern="\d*"
-            disabled
-            onWheel={(event) => (event.target as HTMLElement).blur()}
-            min={0}
-            className="input"/>
-        </Form.Item> */}
         <h2>Missed Amp Pieces</h2>
         <Form.Item<FieldType> name="tele_missedpiecesamp" rules={[{ required: true, message: 'Please input the number of missed amp pieces!' }]}>
           <InputNumber
@@ -741,27 +727,6 @@ function MatchScout(props: any) {
         <Form.Item<FieldType> name="cooppressed1st" valuePropName="checked" style={{ display: coopPressed ? 'inherit' : 'none' }}>
           <Checkbox className='input_checkbox' style={{ display: coopPressed ? 'inherit' : 'none' }} />
         </Form.Item>
-        {/* <h2>Traversed Stage</h2>
-        <Form.Item<FieldType> name="traversedstage" valuePropName="checked">
-          <Checkbox className='input_checkbox'/>
-        </Form.Item> */}
-        {/* <div style={{ alignContent: 'center' }}>
-          <ReactSketchCanvas
-            ref={teleopCanvasRef}
-            width='882px'
-            height='400px'
-            strokeWidth={8}
-            strokeColor='#32a7dc'
-            backgroundImage={full_field}
-            exportWithBackgroundImage={true}
-            style={{paddingBottom: '5%'}}
-            onChange={async () => await teleopCanvasRef.current?.exportImage('png').then(data => teleopImageURI.current = data)}
-          />
-          <Flex justify='in-between'>
-            <Button onClick={() => teleopCanvasRef.current?.undo()} className='pathbutton'>Undo</Button>
-            <Button onClick={() => teleopCanvasRef.current?.redo()} className='pathbutton'>Redo</Button>
-            <Button onClick={() => teleopCanvasRef.current?.clearCanvas()} className='pathbutton'>Clear</Button>
-         </Flex> */}
         <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
           <Button onClick={() => setTabNum("2")} className='tabbutton'>Back</Button>
           <Button onClick={() => setTabNum("4")} className='tabbutton'>Next</Button>
@@ -770,12 +735,11 @@ function MatchScout(props: any) {
       //</div>
     );
   }
-  function endMatch() { //final do not touch
+  function endMatch() {
     type FieldType = {
       climbed: boolean,
       timeleft: number,
       harmony: boolean,
-      spotlit: boolean,
       climbingaffected: boolean,
       parked: boolean,
       trapscored: boolean,
@@ -817,14 +781,6 @@ function MatchScout(props: any) {
         <Form.Item<FieldType> name="harmony" valuePropName="checked">
           <Checkbox className='input_checkbox' />
         </Form.Item>
-        <h2>Spotlit</h2>
-        <Form.Item<FieldType> name="spotlit" valuePropName="checked">
-          <Checkbox className='input_checkbox' />
-        </Form.Item>
-        {/* <h2>Climbing Affected</h2>
-        <Form.Item<FieldType> name="climbingaffected" valuePropName="checked">
-          <Checkbox className='input_checkbox' />
-        </Form.Item> */}
         <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
           <Button onClick={() => setTabNum("3")} className='tabbutton'>Back</Button>
           <Button onClick={() => setTabNum("5")} className='tabbutton'>Next</Button>
@@ -956,11 +912,11 @@ function MatchScout(props: any) {
         <Form.Item<FieldType> name="comments">
           <TextArea style={{ verticalAlign: 'center' }} className='input' />
         </Form.Item>
+        <h2 style={{ display: isLoading ? 'inherit' : 'none' }}>Submitting data...</h2>
         <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
           <Button onClick={() => setTabNum("4")} className='tabbutton'>Back</Button>
           <Input type="submit" value="Submit" className='submitbutton' />
         </Flex>
-        <h2 style={{ display: isLoading ? 'inherit' : 'none' }}>Submitting data...</h2>
       </div>
     )
   }
@@ -1023,7 +979,6 @@ function MatchScout(props: any) {
 
           climbed: false,
           harmony: false,
-          spotlit: false,
           climbingaffected: false,
           parked: false,
           trapscored: false,
@@ -1040,53 +995,46 @@ function MatchScout(props: any) {
           penaltiesincurred: " ",
           comments: " ",
         }}
-        onFinish={async event => {
+        onFinish={async (event) => {
           try {
             setLoading(true);
-            if (!window.navigator.onLine) {
-              window.alert("ur offline so heres an offline version; just give to webdev after comp");
-              saveAs(new Blob([JSON.stringify(event)], { type: "text/json" }), event.initials + event.matchnum + ".json");
-            }
-            else {
-              await setNewMatchScout(event);
-              const initials = form.getFieldValue('initials');
-              const matchnum = form.getFieldValue('matchnum');
-              const matchLevel = form.getFieldValue('matchlevel');
-              const robotpos = form.getFieldValue('robotpos');
-              form.resetFields();
-              form.setFieldValue('initials', initials);
-              form.setFieldValue('matchnum', matchnum + 1);
-              form.setFieldValue('matchlevel', matchLevel);
-              form.setFieldValue('robotpos', robotpos); 
-              formValue.driverSkillRating = 0;
-              formValue.autonAmpScored = 0;
-              formValue.autonMissedAmpPieces = 0;                                           
-              formValue.autonSpeakerScored = 0;
-              formValue.autonMissedSpeakerPieces = 0;
-              formValue.teleopSpeakerScored = 0;
-              formValue.teleopAmpScored = 0;
-              formValue.teleopMissedAmpPieces = 0;
-              formValue.teleopMissedSpeakerPieces = 0;
-              formValue.teleopHoardedPieces = 0;
-              formValue.numPenalties = 0;
-              formValue.pushingRating = 0;
-              formValue.counterDefenseRating = 0;
-              formValue.timeLeft = 0;
-              setTeamNum(0);
-              setDefendedIsVisible(false);
-              setWasDefendedIsVisible(false);
-              await updateTeamNumber();
-              await updateDefendedList();
-              //autonCanvasRef.current?.clearCanvas();
-              //teleopCanvasRef.current?.clearCanvas()
-              setLoading(false);
-            }
+            await setNewMatchScout(event);
+            setFormValue({
+              autonSpeakerScored: 0,
+              autonAmpScored: 0,
+              autonMissedAmpPieces: 0,
+              autonMissedSpeakerPieces: 0,
+              teleopSpeakerScored: 0,
+              teleopAmpScored: 0,
+              teleopMissedAmpPieces: 0,
+              teleopMissedSpeakerPieces: 0,
+              teleopHoardedPieces: 0,
+              numPenalties: 0,
+              pushingRating: 0, 
+              counterDefenseRating: 0,
+              driverSkillRating: 0,
+              timeLeft: 0,
+            });
+            const initials = form.getFieldValue("initials");
+            const matchnum = form.getFieldValue("matchnum");
+            const matchlevel = form.getFieldValue("matchlevel");
+            const robotpos = form.getFieldValue("robotpos");
+            form.resetFields();
+            form.setFieldValue("initials", initials);
+            form.setFieldValue("matchnum", matchnum + 1);
+            form.setFieldValue("matchlevel", matchlevel);
+            form.setFieldValue("robotpos", robotpos);
+            await calculateMatchLevel();
+            await updateTeamNumber();
+            await updateDefendedList();
           }
           catch (err) {
             console.log(err);
-            window.alert("something went wrong so heres a json; give to loren after comp:");
+            window.alert("Error occured, please do not do leave this message and notify a Webdev member immediately.");
             window.alert(err);
-            saveAs(new Blob([JSON.stringify(event)], { type: "text/json" }), event.initials + event.matchnum + ".json");
+          }
+          finally {
+            setLoading(false);
           }
         }}
       >
