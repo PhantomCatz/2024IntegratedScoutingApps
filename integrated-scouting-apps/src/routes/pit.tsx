@@ -71,6 +71,7 @@ function PitScout(props: any) {
   async function submitData(event:any) {
     const body = {
       // "robot_pic": event.base64String,  
+      "scouter_initial": event.scouter_initial,
       "robot_events": event.robot_events,
       "team_number": event.team_number,
       "robot_drive_train": event.robot_drive_train,
@@ -137,6 +138,7 @@ function PitScout(props: any) {
   function pitInput() {
     type FieldType = {
       // robot_pic: string;
+      scouter_initial: string;
       robot_events: number;
       team_number: number;
       robot_drive_train: string;
@@ -210,6 +212,7 @@ function PitScout(props: any) {
         form={form}
         initialValues={{
           // robot_pic: '',
+          scouter_initial: '',
           robot_events: 0,
           team_number: 0,
           robot_drive_train: '',
@@ -243,10 +246,16 @@ function PitScout(props: any) {
           console.log('Failed to submit data. Please try again.');
         }
       }} >
+
+        {/* scouter initial */}
+          <h1 style={{ marginTop: "10%" }} className='pitBody'>Pit scout Initial</h1>
+          <Form.Item<FieldType> name="scouter_initial" rules={[{ required: true, message: 'Please input scouter initial!' }]}>
+            <Input maxLength={2} className="pitinput" />
+          </Form.Item>
      
         {/* how many events */}
  
-          <h1 style={{ marginTop: "10%" }} className='pitBody'>How many events have you competed in?</h1>
+          <h1 className='pitBody'>How many events have you competed in?</h1>
           <Form.Item<FieldType> name="robot_events" rules={[{ required: true, message: 'Please input the robot position!' }]}>
             <InputNumber controls min={0} className="pitinput" />
           </Form.Item>
@@ -431,7 +440,7 @@ function PitScout(props: any) {
   const items: TabsProps['items'] = [
     {
       key: '1',
-      label: 'Inputs',
+      label: '',
       children: pitInput()
       
     }
