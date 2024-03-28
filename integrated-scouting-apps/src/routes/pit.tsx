@@ -126,14 +126,18 @@ function PitScout(props: any) {
   const handleImageUpload = (e: any) => {
     const file = e.target.files[0];
     const reader = new FileReader();
-  
+
+    console.log('Uploaded file type:', file.type);
+
     reader.onload = () => {
       const base64String = reader.result?.toString();
       // Do something with the base64String, such as storing it in state
       console.log(base64String); // Log the base64 string to the console for demonstration
     };
-  
+
     reader.readAsDataURL(file);
+    console.log('Changed file type:', file.type);
+
   };
 
 
@@ -204,13 +208,9 @@ function PitScout(props: any) {
       { label: "No Climb", value: "no_climb"}
     ];
 
-
-
-
     return (
-    
       <div>
-        <Form 
+        <Form
         form={form}
         initialValues={{
           // robot_pic: '',
@@ -250,7 +250,7 @@ function PitScout(props: any) {
       }} >
 
         {/* scouter initial */}
-          <h1 style={{ marginTop: "10%" }} className='pitBody'>Pit scout Initial</h1>
+        <h1 style={{ marginTop: "10%" }} className='pitBody'>Pit scout Initial</h1>
           <Form.Item<FieldType> name="scouter_initial" rules={[{ required: true, message: 'Please input scouter initial!' }]}>
             <Input maxLength={2} className="pitinput" />
           </Form.Item>
@@ -384,20 +384,18 @@ function PitScout(props: any) {
         
 
         {/* robot pictures */}
-        {/* <div style={{ marginBottom: "5%" }}> */}
-          {/* <h1 className='pitBody' style={{ fontSize: '260%', marginTop: '0%' }}>Robot Pictures</h1>
+        <div style={{ marginBottom: "5%" }}>
+          <h1 className='pitBody' style={{ fontSize: '260%', marginTop: '0%' }}>Robot Pictures</h1>
           <input className='uploadButton' style={{ opacity: "1" }} type="file" accept="image/*" onChange={handleImageUpload} />
-          {image ? <img src={image} className="image" alt="preview" width={"100%"} height={"100%"} /> : null} */}
-
+          {image ? <img src={image} className="image" alt="preview" width={"100%"} height={"100%"} /> : null}
+        </div>
 
         {/* submit */}
-          {/* <Button style={{ marginLeft: '25%', marginTop: '10%' }} className='pitButton'>Submit</Button> */}
-          <Input type="submit" value="Submit" className='submit' />
-
-        </Form>
-      </div>
-    );
-  }
+        <Button style={{ marginLeft: '25%', marginTop: '10%' }} className='pitButton' htmlType="submit">Submit</Button>
+      </Form>
+    </div>
+  );
+}
 
   {/* function answers() {
     type FieldType = {
@@ -434,15 +432,12 @@ function PitScout(props: any) {
       //     <Button style={{ marginLeft: '25%', marginTop: '10%' }} className='pitButton'>Submit</Button>
       //   </div>
       // </div>
-     
-  //   );
-  // } }
   
 
   const items: TabsProps['items'] = [
     {
       key: '1',
-      label: '',
+      label: 'Inputs',
       children: pitInput()
       
     }
