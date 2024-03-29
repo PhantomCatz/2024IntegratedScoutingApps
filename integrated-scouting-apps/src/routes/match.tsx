@@ -107,7 +107,6 @@ function MatchScout(props: any) {
     }
     return () => {};
   }, [formValue, form]);
-
   async function setNewMatchScout(event: any) {
     if (teamNum === 0) {
       window.alert("Team number is 0, please check in Pre.");
@@ -124,7 +123,7 @@ function MatchScout(props: any) {
           "starting_position": event.startingloc,
         },
         "auto": {
-          "auto_preload_scored": event.preloadscored,
+          "auto_preload_scored": false,
           "auto_leave": event.leavespawn,
           "auto_amps_scored": event.auton_ampscored,
           "auto_speaker_scored": formValue.autonSpeakerScored,
@@ -134,17 +133,14 @@ function MatchScout(props: any) {
           "auto_missed_pieces_speaker": event.auton_missedpiecesspeaker,
           "auto_path": autonImageURI.current,
           "auto_total_points": 0,
-          // "auto_comments": event.auton_comments,
         },
         "teleop": {
-          "teleop_coop_pressed": event.cooppressed,
-          "teleop_coop_first": event.cooppressed1st,
+          "teleop_coop_pressed": false,
+          "teleop_coop_first": false,
           "teleop_amps_scored": event.tele_ampscored,
           "teleop_speaker_scored": event.tele_speakerscored,
           "teleop_times_amplify": 0,
           "intake": event.intake,
-          // "teleop_pieces_note_amplifying_scored": event.speakerscored_amplified,
-          // "teleop_traverse_stage": event.traversedstage,
           "teleop_traverse_stage": false,
           "teleop_missed_pieces_amp": event.tele_missedpiecesamp,
           "teleop_missed_pieces_speaker": event.tele_missedpiecesspeaker,
@@ -442,12 +438,25 @@ function MatchScout(props: any) {
     ];
     return (
       <div>
+        <div style={{ alignContent: 'center' }}>
+          <ReactSketchCanvas
+            ref={autonCanvasRef}
+            strokeWidth={8}
+            height='2882px'
+            width='2882px'
+            strokeColor='#32a7dc'
+            backgroundImage={color ? field_red : field_blue}
+            exportWithBackgroundImage
+            style={{ paddingBottom: '5%' }}
+          />
+          <Flex justify='in-between'>
+            <Button onClick={() => autonCanvasRef.current?.undo()} className='pathbutton'>Undo</Button>
+            <Button onClick={() => autonCanvasRef.current?.redo()} className='pathbutton'>Redo</Button>
+            <Button onClick={() => autonCanvasRef.current?.clearCanvas()} className='pathbutton'>Clear</Button>
+            <Button onClick={async () => await autonCanvasRef.current?.exportImage('png').then(async (data) => {autonImageURI.current = await data; console.log(await autonImageURI.current)})} className='pathbutton'>Save</Button>
+          </Flex>
         <h2>Leave</h2>
         <Form.Item<FieldType> name="leavespawn" valuePropName="checked">
-          <Checkbox className='input_checkbox' />
-        </Form.Item>
-        <h2>Preload Scored</h2>
-        <Form.Item<FieldType> name="preloadscored" valuePropName="checked">
           <Checkbox className='input_checkbox' />
         </Form.Item>
         <h2>Starting Location</h2>
@@ -544,24 +553,7 @@ function MatchScout(props: any) {
         <Form.Item<FieldType> name="auton_comments" rules={[{ required: true, message: 'Please input the comments!' }]}>
           <TextArea style={{verticalAlign: 'center'}} className='input'/>
         </Form.Item> */}
-        <div style={{ alignContent: 'center' }}>
-          <ReactSketchCanvas
-            ref={autonCanvasRef}
-            id="teleop"
-            width='882px'
-            height='882px'
-            strokeWidth={8}
-            strokeColor='#32a7dc'
-            backgroundImage={color ? field_red : field_blue}
-            exportWithBackgroundImage={true}
-            style={{ paddingBottom: '5%' }}
-            onChange={async () => await autonCanvasRef.current?.exportImage('png').then(data => autonImageURI.current = data)}
-          />
-          <Flex justify='in-between'>
-            <Button onClick={() => autonCanvasRef.current?.undo()} className='pathbutton'>Undo</Button>
-            <Button onClick={() => autonCanvasRef.current?.redo()} className='pathbutton'>Redo</Button>
-            <Button onClick={() => autonCanvasRef.current?.clearCanvas()} className='pathbutton'>Clear</Button>
-          </Flex>
+        
           <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
             <Button onClick={() => setTabNum("1")} className='tabbutton'>Back</Button>
             <Button onClick={() => setTabNum("3")} className='tabbutton'>Next</Button>
@@ -718,14 +710,6 @@ function MatchScout(props: any) {
         <h2>Shooting Location</h2>
         <Form.Item<FieldType> name="shootingloc">
           <Select mode='multiple' options={shootingloc} className='input' showSearch={false} />
-        </Form.Item>
-        <h2>Coopertition Pressed</h2>
-        <Form.Item<FieldType> name="cooppressed" valuePropName="checked">
-          <Checkbox className='input_checkbox' onClick={() => setCoopPressed(!coopPressed)} />
-        </Form.Item>
-        <h2 style={{ display: coopPressed ? 'inherit' : 'none' }}>Cooperated First</h2>
-        <Form.Item<FieldType> name="cooppressed1st" valuePropName="checked" style={{ display: coopPressed ? 'inherit' : 'none' }}>
-          <Checkbox className='input_checkbox' style={{ display: coopPressed ? 'inherit' : 'none' }} />
         </Form.Item>
         <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
           <Button onClick={() => setTabNum("2")} className='tabbutton'>Back</Button>
@@ -970,11 +954,8 @@ function MatchScout(props: any) {
         form={form}
         initialValues={{
           leavespawn: false,
-          preloadscored: false,
 
           amplifyscored: false,
-          cooppressed: false,
-          cooppressed1st: false,
           traversedstage: false,
 
           climbed: false,

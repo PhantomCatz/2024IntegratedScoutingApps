@@ -1,19 +1,18 @@
 import '../public/stylesheets/style.css';
 import '../public/stylesheets/dtf.css';
-import { SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import VerifyLogin from '../verifyToken';
 import { useCookies } from "react-cookie";
 import logo from '../public/images/logo.png';
 import back from '../public/images/back.png';
 import { useParams } from "react-router-dom";
-import { Button, Checkbox, Flex, Input, Tabs } from "antd";
+import { Checkbox, Flex, Input, Tabs } from "antd";
 import TextArea from 'antd/es/input/TextArea';
 
 function DTFTeams(props: any) {
   const {team_number} = useParams();
   const [cookies] = useCookies(['login', 'theme']);
   const [loading, setLoading] = useState(false);
-  const [tabNum, setTabNum] = useState("1");
   const [items, setItems] = useState<{ key: string; label: string; children: JSX.Element; }[]>([]);
   useEffect(() => { document.title = props.title; return () => {}; }, [props.title]);
   useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
@@ -35,9 +34,16 @@ function DTFTeams(props: any) {
       let index = 2;
       const match: { key: string; label: string; children: JSX.Element; }[] = [];
       const summaryInfo = [];
+      const graphSummaryInfo = [];
       for (const team in teams) {
         const response = await (await fetch(process.env.REACT_APP_DTF_URL as string + "?team_number=" + teams[team])).json();
-        const graphResponse = (await (await fetch(process.env.REACT_APP_DTF_GRAPH_URL as string + "1?team_number=" + teams[team])).text()).replaceAll("#6E7079", "#FFFFFF").replaceAll("#5470c6", "#32a7dc").replaceAll("#E0E6F1", "#FFFFFF").replaceAll("12px", "18px;font-weight:bold");
+        const teleSpeakerGraph = (await (await fetch(process.env.REACT_APP_DTF_GRAPH_URL as string + "1?team_number=" + teams[team])).text()).replaceAll("#6E7079", "#fff").replaceAll("#5470c6", "#32a7dc").replaceAll("#E0E6F1", "#fff").replaceAll("12px", "18px;font-weight:bold");
+        const teleAmpGraph = (await (await fetch(process.env.REACT_APP_DTF_GRAPH_URL as string + "2?team_number=" + teams[team])).text()).replaceAll("#6E7079", "#fff").replaceAll("#5470c6", "#32a7dc").replaceAll("#E0E6F1", "#fff").replaceAll("12px", "18px;font-weight:bold");
+        const ratioGraph = (await (await fetch(process.env.REACT_APP_DTF_GRAPH_URL as string + "3?team_number=" + teams[team])).text()).replaceAll("#6E7079", "#fff").replaceAll("#ccc", "#fff").replaceAll("#333", "#fff").replaceAll("#464646", "#fff").replaceAll("12px", "16px;font-weight:bold").replaceAll("18px", "16px").replaceAll(' stroke-width="2" paint-order="stroke" stroke-miterlimit="2"', "");
+        console.log(ratioGraph);
+        const autoSpeakerGraph = (await (await fetch(process.env.REACT_APP_DTF_GRAPH_URL as string + "4?team_number=" + teams[team])).text()).replaceAll("#6E7079", "#fff").replaceAll("#5470c6", "#32a7dc").replaceAll("#E0E6F1", "#fff").replaceAll("12px", "18px;font-weight:bold");
+        const autoAmpGraph = (await (await fetch(process.env.REACT_APP_DTF_GRAPH_URL as string + "5?team_number=" + teams[team])).text()).replaceAll("#6E7079", "#fff").replaceAll("#5470c6", "#32a7dc").replaceAll("#E0E6F1", "#fff").replaceAll("12px", "18px;font-weight:bold");
+        const autonPathResponse = await (await fetch(process.env.REACT_APP_DTF_AUTON_GRAPH_URL as string + "?team_number=" + teams[team])).json();
         const team1 = [
           {
             key: "1",
@@ -56,8 +62,9 @@ function DTFTeams(props: any) {
                   <Flex vertical align='flex-start'>
                     <h2>Spkr Min</h2>
                     <Input className="dtf-input" disabled value={response.auto.auto_speaker_min} />
-                  </Flex>             
+                  </Flex>
                 </Flex>
+                <img src={`data:image/svg+xml;utf8,${encodeURIComponent(autoSpeakerGraph)}`} width="100%" alt='' /> 
                 <Flex justify='in-between'>
                   <Flex vertical align='flex-start'>
                     <h2>Amp Avg</h2>
@@ -70,14 +77,13 @@ function DTFTeams(props: any) {
                   <Flex vertical align='flex-start'>
                     <h2>Amp Min</h2>
                     <Input className="dtf-input" disabled value={response.auto.auto_amps_min} />
-                  </Flex>             
+                  </Flex>
                 </Flex>
+                <img src={`data:image/svg+xml;utf8,${encodeURIComponent(autoAmpGraph)}`} width="100%" alt='' />
                 <h2>Score Ratio (Speaker : Amp)</h2>
                 <Input className="input" disabled value={response.auto.auto_scoring_ratio_avg} />
                 <h2>Start Position</h2>
                 <Input className="input" disabled value={response.auto.robot_start_position} />
-                <h2>Graph</h2>
-                <img src={`data:image/svg+xml;utf8,${encodeURIComponent(graphResponse)}`} width="100%" alt='' />
               </div>
             )
           },
@@ -100,6 +106,7 @@ function DTFTeams(props: any) {
                     <Input className="dtf-input" disabled value={response.teleop.teleop_speaker_min} />
                   </Flex>             
                 </Flex>
+                <img src={`data:image/svg+xml;utf8,${encodeURIComponent(teleSpeakerGraph)}`} width="100%" alt='' /> 
                 <Flex justify='in-between'>
                   <Flex vertical align='flex-start'>
                     <h2>Amp Avg</h2>
@@ -114,6 +121,7 @@ function DTFTeams(props: any) {
                     <Input className="dtf-input" disabled value={response.teleop.teleop_amps_min} />
                   </Flex>             
                 </Flex>
+                <img src={`data:image/svg+xml;utf8,${encodeURIComponent(teleAmpGraph)}`} width="100%" alt='' /> 
                 <h2>Score Ratio (Speaker : Amp)</h2>
                 <Input className="input" disabled value={response.teleop.teleop_scoring_ratio_avg} />
                 <h2>Intake</h2>
@@ -130,6 +138,7 @@ function DTFTeams(props: any) {
                 <Input className="input" disabled value={response.endGame.robot_climbing_ratio} />
                 <h2>Harmony</h2>
                 <Checkbox className={response.endGame.robot_climbing_ratio ? "input_checkbox_filled" : "input_checkbox"} disabled checked={response.endGame.robot_climbing_ratio ? true : false}/>
+                <img src={`data:image/svg+xml;utf8,${encodeURIComponent(ratioGraph)}`} width="100%" alt='' style={{marginTop: '5%'}} />
               </div>
             )
           },
@@ -157,6 +166,7 @@ function DTFTeams(props: any) {
         });
         index++;
         summaryInfo.push(response);
+        graphSummaryInfo.push(autonPathResponse.LISAGAY);
       }
       match.push({
         key: "1",
@@ -169,18 +179,18 @@ function DTFTeams(props: any) {
             <Flex justify='in-between'>
               <Flex vertical align='center'>
                 <h2 className='summary_text'>{teams[0]}</h2>
-                <img className="dtf-input" src="" />
+                <img src={graphSummaryInfo[0]} alt="" height={'294px'} width={'294px'}/>
               </Flex>
               {teams[1] !== undefined && (
               <Flex vertical align='center'>
                 <h2 className='summary_text'>{teams[1]}</h2>
-                <img className="dtf-input" src=""  />
+                <img src={graphSummaryInfo[1]} alt="" height={'294px'} width={'294px'}/>
               </Flex>
               )}
               {teams[2] !== undefined && (
               <Flex vertical align='center'>
                 <h2 className='summary_text'>{teams[2]} </h2>
-                <img className="dtf-input" src=""/>
+                <img src={graphSummaryInfo[2]} alt="" height={'294px'} width={'294px'}/>
               </Flex>
               )}
             </Flex>
@@ -258,7 +268,7 @@ function DTFTeams(props: any) {
     <div>
       <div className='banner'>
         <header>
-          <a href='/scoutingapp'><img src={back} style={{ height: 64 + 'px', paddingTop: '5%' }} alt=''></img></a>
+          <a href='/dtf'><img src={back} style={{ height: 64 + 'px', paddingTop: '5%' }} alt=''></img></a>
           <table>
             <tbody>
               <tr>
