@@ -76,7 +76,7 @@ function Watchlist(props: any) {
     return (
       <div>
         <div>
-          <h1 className='pitBody'>Team #</h1>
+          <h1 className='watchlistBody'>Team #</h1>
           <Form<FieldType> onFinish={async values => {
             try{
               console.log(values, 'OwO');
@@ -91,15 +91,15 @@ function Watchlist(props: any) {
           <Form.Item<FieldType> name="team_number">
               <InputNumber controls min={0} className="pitinput" />
             </Form.Item>
-            <h1 className='pitBody'>Pit/Strategic</h1>
+            <h1 className='watchlistBody'>Pit/Strategic</h1>
             <Form.Item<FieldType> name="isPit" rules={[{ required: true, message: 'Please input.' }]}>
               <Select placeholder='Match' options={appOptions} className="input" />
             </Form.Item>
             <div>
-              <h1 style={{ marginTop: "10%" }} className='pitBody'>Custom Question</h1>
+              <h1 style={{ marginTop: "10%" }} className='watchlistBody'>Custom Question</h1>
               <Form.Item<FieldType> name="question">
                 <label>
-                  <textarea className="pitComment" name="eventNum" rows={3} />
+                  <textarea className="watchlistComment" name="eventNum" rows={3} />
                 </label>
               </Form.Item>
               <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
@@ -120,7 +120,7 @@ function Watchlist(props: any) {
     return (
       <div>
         <div>
-          <h1 className='pitBody'>Team #</h1>
+          <h1 className='watchlistBody'>Team #</h1>
           <Form
             onFinish={async values => {
               window.location.href = "/watchlist/" + values.team_number;
