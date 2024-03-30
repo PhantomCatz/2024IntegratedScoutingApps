@@ -19,6 +19,8 @@ import DataLookup from './routes/lookup';
 import TeamData from './routes/teamData';
 import Picklist from './routes/picklists';
 import Watchlist from './routes/watchlist';
+import WatchlistGet from './routes/watchlistdata';
+import WatchlistUpdate from './routes/watchlistupdate'
 
 
 export default function App() {
@@ -28,16 +30,18 @@ export default function App() {
         <Route path="/" element={<LoginPage title="2637 Strategy App" />} />
         <Route path="/home" element={<HomePage title="2637 Strategy App" />} />
         <Route path="/scoutingapp" element={<ScoutingApp title="2637 Scouting App" />} />
-        <Route path="/dtf" element={<DTF title="2637 Drive Team Feeder" />} />
-        <Route path="/watchlist" element = {<Watchlist title="2637 Watch List"/>}/>
-        <Route path="/dtf/:team_number" element={<DTFTeams title="2637 Drive Team Feeders" />} />
         <Route path="/scoutingapp/match" element={<MatchScout title="2637 Match Scout" />} />
         <Route path="/scoutingapp/strategic" element={<StrategicScout title="2637 Strategic Scout" />} />
         <Route path="/scoutingapp/pit" element={<PitScout title="2637 Pit Scout" />} />
-        <Route path="/buh" element={<Buh/>} />
         <Route path="/scoutingapp/lookup" element={<DataLookup title="2637 Data Lookup" />} />        
         <Route path="/scoutingapp/lookup/teamData/:team_number" element ={<TeamData title="2637 Data"/>} />
         <Route path="/scoutingapp/picklists" element={<Picklist title="2637 Picklists"/>} />
+        <Route path="/dtf" element={<DTF title="2637 Drive Team Feeder" />} />
+        <Route path="/dtf/:team_number" element={<DTFTeams title="2637 Drive Team Feeders" />} />
+        <Route path="/watchlist" element = {<Watchlist title="2637 Watch List"/>}/>
+        <Route path="/watchlist/:team_number" element={<WatchlistGet title="2637 Watch List"/>} />
+        <Route path="/watchlist/update/:question_info" element={<WatchlistUpdate title="2637 Watch List"/>} />
+        <Route path="/buh" element={<Buh/>} />
       </Routes>
     </BrowserRouter>
   );
