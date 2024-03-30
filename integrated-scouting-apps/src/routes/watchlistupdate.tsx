@@ -96,7 +96,7 @@ function WatchlistUpdate(props: any) {
     return (
       <div>
         <div>
-          <h1 className='pitBody'>Team #</h1>
+          <h1 className='watchlistBody'>Team #</h1>
           <Form<FieldType> onFinish={async values => {
             try{
               console.log(values.answer, 'OwO');
@@ -109,17 +109,17 @@ function WatchlistUpdate(props: any) {
           }}>
           {/* <Form<FieldType> onFinish={handleSubmit}> */}
           <Form.Item<FieldType> name="team_number">
-              <InputNumber disabled={true} defaultValue={team_number} controls min={0} className="pitinput" />
+              <InputNumber disabled={true} defaultValue={team_number} controls min={0} className="watchlistinput" />
             </Form.Item>
-            <h1 className='pitBody'>Pit/Strategic</h1>
+            <h1 className='watchlistBody'>Pit/Strategic</h1>
             <Form.Item<FieldType> name="isPit">
               <Select disabled={true} defaultValue={question_type ? 'Pit' : 'Strategic'} options={appOptions} className="input" />
             </Form.Item>
             <div>
-              <h1 style={{ marginTop: "10%" }} className='pitBody'>{question}<br/>Answer:</h1>
+              <h1 style={{ marginTop: "10%" }} className='watchlistBody'>{question}<br/>Answer:</h1>
               <Form.Item<FieldType> name="answer" rules={[{ required: true, message: 'Please input.' }]}>
                 <label>
-                  <textarea className="pitComment" name="eventNum" rows={3} />
+                  <textarea className="watchlistComment" name="eventNum" rows={3} />
                 </label>
               </Form.Item>
               <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
