@@ -46,6 +46,8 @@ function TeamData(props: any) {
       }
       catch (err) {
         console.log(err);
+        window.alert("error has occured; please tell nathan asap");
+        window.alert(err);
       }
       finally {
         setLoading(false);
@@ -84,7 +86,6 @@ function TeamData(props: any) {
             <Column title="Match Level" dataIndex="match_level" key="match_level" />
           </ColumnGroup>
           <ColumnGroup title="Auton">
-            <Column title="Preloaded" dataIndex="auto_preLoad" key="auto_preLoad" />
             <Column title="Preload Scored" dataIndex="auto_preload_scored" key="auto_preload_scored" />
             <Column title="Leave" dataIndex="auto_leave" key="auto_leave" />
             <Column title="Amp Scored" dataIndex="auto_amps_scored" key="auto_amps_scored" />
@@ -93,25 +94,21 @@ function TeamData(props: any) {
             <Column title="Pieces Picked" dataIndex="auto_pieces_picked" key="auto_pieces_picked" />
             <Column title="Missed Amp Pieces" dataIndex="auto_missed_pieces_amp" key="auto_misssed_pieces_amp" />
             <Column title="Missed Speaker Pieces" dataIndex="auto_missed_pieces_speaker" key="auto_missed_pieces_speaker" />
-            <Column title="Auto Path" dataIndex="auto_path" key="auto_path" />
             <Column title="Total Points" dataIndex="auto_total_points" key="auto_total_points" />
-            <Column title="Comments" dataIndex="auto_comments" key="auto_comments" />
+            <Column title="Auto Path" dataIndex="auto_path" key="auto_path" />
           </ColumnGroup>
           <ColumnGroup title="Teleop">
             <Column title="Coopertition Pressed" dataIndex="teleop_coop_pressed" key="teleop_coop_pressed" />
             <Column title="Cooperated First" dataIndex="teleop_coop_first" key="teleop_coop_first" />
             <Column title="Amp Scored" dataIndex="teleop_amps_scored" key="teleop_amps_scored" />
             <Column title="Speaker Scored" dataIndex="teleop_speaker_scored" key="teleop_speaker_scored" />
-            <Column title="Times Amplified" dataIndex="teleop_times_amplify" key="teleop_times_amplify" />
             <Column title="Amplified Scored" dataIndex="teleop_pieces_note_amplifying_scored" key="teleop_pieces_note_amplifying_scored" />
-            <Column title="Ground Intake" dataIndex="teleop_ground" key="teleop_ground" />
-            <Column title="Source Intake" dataIndex="teleop_source" key="teleop_source" />
-            <Column title="Traversed Stage" dataIndex="teleop_traverse_stage" key="teleop_traverse_stage" />
+            <Column title="Intake" dataIndex="intake" key="intake" />
             <Column title="Missed Amp Pieces" dataIndex="teleop_missed_pieces_amp" key="teleop_misssed_pieces_amp" />
             <Column title="Missed Speaker Pieces" dataIndex="teleop_missed_pieces_speaker" key="teleop_missed_pieces_speaker" />
             <Column title="Total Points" dataIndex="teleop_total_points" key="teleop_total_points" />
             <Column title="Scoring Location" dataIndex="teleop_scoring_location" key="teleop_scoring_location" />
-            <Column title="Teleop Path" dataIndex="teleop_path" key="auto_path" />
+            <Column title="Pieces Hoarded" dataIndex="tele_hoardedpieces" key="tele_hoardedpieces" />
           </ColumnGroup>
           <ColumnGroup title="End">
             <Column title="Climbed" dataIndex="EG_climbed" key="EG_climbed" />
@@ -123,10 +120,11 @@ function TeamData(props: any) {
             <Column title="Climbing Affected" dataIndex="EG_climbing_affect" key="EG_climbing_affect" />
           </ColumnGroup>
           <ColumnGroup title="Overall">
-            <Column title="Hoarded" dataIndex="OA_hoarded" key="OA_hoarded" />
             <Column title="Robot Died" dataIndex="OA_robot_died" key="OA_robot_died" />
             <Column title="Was Defended" dataIndex="OA_was_defend" key="OA_was_defend" />
+            <Column title="Was Defended Teams" dataIndex="OA_was_defend_team" key="OA_was_defend_team" />
             <Column title="Defended" dataIndex="OA_defend" key="OA_defend" />
+            <Column title="Defended" dataIndex="OA_defend_team" key="OA_defend_team" />
             <Column title="Pushing" dataIndex="OA_pushing_rating" key="OA_pushing_rating" />
             <Column title="Counterdefense" dataIndex="OA_counter_defense" key="OA_counter_defense" />
             <Column title="Number of Penalties" dataIndex="OA_numbers_penalties" key="OA_numbers_penalties" />

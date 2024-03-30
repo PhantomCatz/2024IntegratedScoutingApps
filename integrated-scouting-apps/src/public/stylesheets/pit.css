@@ -1,103 +1,31 @@
-/**
- * @author Robin Kang, add more...
- * @since 2024-2-3
- * @version 1.0.0
- * @description CSS for the pit scout
- */
-
-.pitinput {
-    width: 100%;
-    margin-bottom:8%;
-    min-width: 100%;
-    height: 45% !important;
-    min-height: 45% !important;
+.input {
+    width: 100% !important;
+    min-width: 100% !important;
+    height: 120px !important;
+    min-height: 120px !important;
     border: 4px solid white !important;
-    border-radius: 25px;
+    border-radius: 25px !important;
     background-color: transparent;
     font-size: 500% !important;
-    font-family: Audiowide !important;
-    font-weight: bold;
+    font-family: Figtree !important;
+    font-weight: bold !important;
     color: white !important;
     text-align: center !important;
     background: transparent !important;
-
-
 }
-.pitComment {
-    width: 90%;
-    margin-bottom: 8%;
-    min-width: 90%;
-    height: 20% !important;
-    min-height: 20% !important;
-    border: 4px solid white !important;
-    border-radius: 25px;
-    background-color: transparent;
-    font-size: 500% !important;
-    font-family: Audiowide !important;
-    font-weight: bold;
-    color: white !important;
-    text-align: center !important;
-    background: transparent !important;
-
-
-}
-.pitBody {
-    font-size: 280%;
-    margin: 0;
-    margin-bottom:1%;
-    font-family: Audiowide !important;
-    background-color: transparent !important;
-    color: white;
-}
-.pitButton {
-    width: 49%;
-    min-width: 49%;
-    height: 45% !important;
-    min-height: 45% !important;
-    border: 4px solid white !important;
-    border-radius: 25px;
-    background-color: transparent;
-    font-size: 450% !important;
-    font-family: Audiowide !important;
-    font-weight: bold;
-    color: white !important;
-    text-align: center !important;
-    display:inline-block;
-    margin-bottom: 7%
-
-}
-.pitpathbutton {
+.textbox_input {
     width: 100%;
     min-width: 100%;
-    height: 60% !important;
-    min-height: 60% !important;
+    height: 500px !important;
+    min-height: 500px !important;
     border: 4px solid white !important;
     border-radius: 25px;
-    background-color: transparent;
-    font-size: 300% !important;
+    background-color: #433C3C;
+    font-size: 500% !important;
     font-family: Figtree !important;
     font-weight: bold;
     color: white !important;
     text-align: center !important;
-}
-.uploadButton{
-    width: 80%;
-    min-width: 80%;
-    height: auto !important;
-    min-height: 45% !important;
-    border: 4px solid white !important;
-    border-radius: 25px;
-    background-color: transparent;
-    font-size:275% !important;
-    font-family: Audiowide !important;
-    font-weight: bold;
-    color: white !important;
-    text-align: center !important;
-    display:inline-block;
-    padding-top: 7%;
-    margin-bottom: 7%
-
-}
-input[type=file]::-webkit-file-upload-button {
-    visibility: hidden;
+    background: transparent !important;
+    margin-bottom: 5%;
 }

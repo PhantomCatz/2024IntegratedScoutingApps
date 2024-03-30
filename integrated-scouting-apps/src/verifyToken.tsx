@@ -20,21 +20,24 @@ async function ChangeTheme(cookie: any) {
       document.body.style.backgroundColor = "#32a7dc";
     }
     else if (cookie === "看") {
-      document.body.style.backgroundColor = "black";
+      document.body.style.backgroundColor = "#000000";
     }
     else if (cookie === "dc") {
       document.body.style.backgroundColor = "#5865F2";
     }
     else if (cookie.substring(0, 2) === "lg") {
       setInterval(() => {
-        const colors = ["#000000", "#433C3C", "#692090", "#32a7dc", "#123456", "#987654"];
+        const colors = ["#000000", "#433C3C", "#692090", "#32a7dc", "#4A412A", "#987654"];
         const randomColor = colors[Math.floor(Math.random() * colors.length)];
         document.body.style.backgroundColor = randomColor;
       }, Number(cookie.substring(2)));
     }
+    else if (cookie === "ds") {
+      document.body.style.backgroundColor = "#4A412A";
+    }
   }
   catch (err) {
-    console.log(err);
   }
 }
+// eslint-disable-next-line
 export default {VerifyLogin, ChangeTheme};
