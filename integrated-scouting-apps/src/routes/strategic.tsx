@@ -1,115 +1,232 @@
+import '../public/stylesheets/style.css';
 import '../public/stylesheets/strategic.css';
 import logo from '../public/images/logo.png';
 import back from '../public/images/back.png';
-import { useEffect, useState } from 'react';
+import { JSX, useEffect, useState } from 'react';
 import { Tabs, Input, Form, Select, InputNumber, Button, Flex } from 'antd';
-import type { TabsProps } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import VerifyLogin from '../verifyToken';
 import { useCookies } from 'react-cookie';
+import { saveAs } from 'file-saver';
+
 function Strategic(props: any) {
   const [form] = Form.useForm();
   const [tabNum, setTabNum] = useState("1");
+  const [teamNum, setTeamNum] = useState(0);
   const [isLoading, setLoading] = useState(false);
-  const [customQuestionText, setCustomQuestionText] = useState("");
+  const [timesAmplified, setTimesAmplified] = useState(0);
+  const [roundIsVisible, setRoundIsVisible] = useState(false);
+  const [items, setItems] = useState([
+    {
+      key: '1',
+      label: 'Pre',
+      children: preMatch(),
+    },
+    {
+      key: '2',
+      label: 'Comment',
+      children: comment(),
+    },
+  ]);
 	useEffect(() => {document.title = props.title; return () => {}}, [props.title]);
   const [cookies] = useCookies(['login', 'theme']);
   useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
   useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => {}}, [cookies.theme]);
-
+  useEffect(() => { getComments(teamNum); return () => {}}, [teamNum]);
   const eventname = process.env.REACT_APP_EVENTNAME;
 
   async function setNewStrategicScout(event: any) {
-    const body = {
-      "matchIdentifier": {
-        "Initials": event.initials,
-        "match_event": eventname,
-        "match_level": event.matchlevel,
-        "match_number": event.matchnum,
-        "team_number": event.teamnum,
-      },
-      
-        "comment": event.comments,
-      "timesAmplified": event.timesamplified,
-
-      // "driver": {
-      //   "driverrating": event.driverrating,
-      // },
-      // "customquestions": {
-      //   "customquestions": event.customquestions,
-      // }
-    };
-    console.log(body);
-    const WORKING_TEST_DO_NOT_REMOVE_OR_YOU_WILL_BE_FIRED = {
-      "matchIdentifier": {
-        "Initials": "LL",
-        "match_event": "2024CALA",
-        "team_number": 2637,
-        "match_level": "Qual",
-        "match_number": 4
-      },
-      "comment": {
-        "comment": "asdfasdfasdf"
-      }
-    };
-    try {
-      await fetch(process.env.REACT_APP_STRATEGIC_URL as string, {
-        method: "POST",
-        body: JSON.stringify(body),
-        headers: {
-          "Content-Type": "application/json",
-        }
-      }).then(response => response.json()).then(data => console.log(data));
+    if (teamNum === 0) {
+      window.alert("Team number is 0, please check in Pre.");
     }
-    catch (err) {
-      console.log(err);
+    else {
+      const body = {
+        "matchIdentifier": {
+          "Initials": event.initials,
+          "match_event": eventname,
+          "match_level": event.matchlevel,
+          "match_number": event.matchnum,
+          "team_number": event.teamnum,
+        },
+        
+          "comment": event.comments,
+        "timesAmplified": event.timesamplified,
+  
+        // "driver": {
+        //   "driverrating": event.driverrating,
+        // },
+        // "customquestions": {
+        //   "customquestions": event.customquestions,
+        // }
+      };
+      // eslint-disable-next-line
+      const WORKING_TEST_DO_NOT_REMOVE_OR_YOU_WILL_BE_FIRED = {
+        "matchIdentifier": {
+          "Initials": "LL",
+          "match_event": "2024CALA",
+          "team_number": 2637,
+          "match_level": "Qual",
+          "match_number": 4
+        },
+        "comment": {
+          "comment": "asdfasdfasdf"
+        }
+      };
+      try {
+        await fetch(process.env.REACT_APP_STRATEGIC_URL as string, {
+          method: "POST",
+          body: JSON.stringify(body),
+          headers: {
+            "Content-Type": "application/json",
+          }
+        }).then(async (response) => response.json()).then(async (data) => {
+          window.alert(data.insertedId === undefined ? "Error occured, please do not do anything and go immediately to a Webdev member!" : data.insertedId);
+          saveAs(new Blob([JSON.stringify(body)], { type: "text/json" }), event.initials + event.matchnum + ".json");
+        });
+      }
+      catch (err) {
+        console.log(err);
+        window.alert("Error occured, please do not do anything and go immediately to a Webdev member!");
+        window.alert(err);
+      }
     }
   };
-  async function getCustomQuestions(team_number: number) {
+  async function updateTeamNumber() {
     try {
-      const response = await fetch(process.env.REACT_APP_STRATEGIC_URL as string + "?team_number=" + team_number);
-      const data = response.json();
-      setCustomQuestionText(data.toString());
-      console.log(data);
+      if (roundIsVisible) {
+        const matchID = eventname + "_" + form.getFieldValue('matchlevel') + form.getFieldValue('matchnum') + "m" + form.getFieldValue('roundnum');
+        const response = await fetch('https://www.thebluealliance.com/api/v3/match/' + matchID,
+          {
+            method: "GET",
+            headers: {
+              'X-TBA-Auth-Key': process.env.REACT_APP_TBA_AUTH_KEY as string,
+            }
+          });
+        const data = await response.json();
+        const team_color = form.getFieldValue('robotpos').substring(0, form.getFieldValue('robotpos').indexOf('_'));
+        const team_num = form.getFieldValue('robotpos').substring(form.getFieldValue('robotpos').indexOf('_') + 1) - 1;
+        const fullTeam = (data.alliances[team_color].team_keys[team_num] !== null ? data.alliances[team_color].team_keys[team_num] : 0);
+        setTeamNum(Number(fullTeam.substring(3)));
+      }
+      else {
+        const matchID = eventname + "_" + form.getFieldValue('matchlevel') + form.getFieldValue('matchnum');
+        const response = await fetch('https://www.thebluealliance.com/api/v3/match/' + matchID,
+          {
+            method: "GET",
+            headers: {
+              'X-TBA-Auth-Key': process.env.REACT_APP_TBA_AUTH_KEY as string,
+            }
+          });
+        const data = await response.json();
+        const team_color = form.getFieldValue('robotpos').substring(0, form.getFieldValue('robotpos').indexOf('_'));
+        const team_num = form.getFieldValue('robotpos').substring(form.getFieldValue('robotpos').indexOf('_') + 1) - 1;
+        const fullTeam = (data.alliances[team_color].team_keys[team_num] !== null ? data.alliances[team_color].team_keys[team_num] : 0);
+        setTeamNum(Number(fullTeam.substring(3)));
+      }
+    }
+    catch (err) {
+    }
+  }
+  async function calculateMatchLevel() {
+    const matchlevel = form.getFieldValue('matchlevel');
+    if (matchlevel !== "qm") {
+      setRoundIsVisible(true);
+    }
+    else {
+      setRoundIsVisible(false);
+    }
+  }
+  async function getComments(teamnum: number) {
+    try {
+      if (form.getFieldValue("teamnum") !== 0) {
+        const response =  await fetch(process.env.REACT_APP_STRATEGIC_LOOKUP_URL as string + "?team_number=" + teamnum);
+        const data = await response.json();
+        const match: { key: string; label: string; children: JSX.Element; }[] = [];
+        let index = 3;
+        for (const question of data['documents']) {
+          match.push({
+            key: index.toString(),
+            label: question.matchIdentifier.match_level  + question.matchIdentifier.match_number,
+            children: (
+              <div>
+                <h2>Scouter Initials</h2>
+                <Input className="input" disabled value={question.matchIdentifier.Initials} />
+                <h2>Match Level</h2>
+                <Input className="input" disabled value={question.matchIdentifier.match_level} />
+                <h2>Match #</h2>
+                <Input className="input" disabled value={question.matchIdentifier.match_number} />
+                <h2>Round #</h2>
+                <Input className="input" disabled value={question.matchIdentifier.round_number} />
+                <h2>Robot Position</h2>
+                <Input className="input" disabled value={question.matchIdentifier.robotpos} />
+                <h2>Times Amplified</h2>
+                <Input className="input" disabled value={question.timesAmplified} />
+                <h2>Comments</h2>
+                <TextArea className="strategic-input" disabled value={question.comment}/>
+              </div>
+              )});
+          match.sort((a, b) => parseInt(a.key.substring(1)) - parseInt(b.key.substring(1)));
+          index++;
+        }
+        for (let i = 0; i < match.length; i++) {
+          setItems([...items, match[i]]);
+        }
+      }
+      if ((document.getElementById("timesamplified") as HTMLInputElement) !== null) {
+        (document.getElementById("timesamplified") as HTMLInputElement).value = timesAmplified.toString();
+        form.setFieldValue("timesamplified", timesAmplified);
+      }
     }
     catch (err) {
       console.log(err);
+      window.alert("Error occured, please do not do leave this message and notify a Webdev member immediately.");
+      window.alert(err);
     }
-  }
+  };
   function preMatch() {
     type FieldType = {
-      initials?: string;
-      teamnum?: number;
-      matchlevel?: string;
-      matchnum?: number;
-      timesamplified?: number;
+      initials: string;
+      teamnum: number;
+      matchlevel: string;
+      matchnum: number;
+      roundnum: number;
+      robotpos: string;
     };
     const rounds = [
       { label: "Qualifications", value: "qm" },
       { label: "Elimination", value: "sf" },
       { label: "Finals", value: "f" },
     ];
+    const robotpos = [
+      { label: "R1", value: "red_1" },
+      { label: "R2", value: "red_2" },
+      { label: "R3", value: 'red_3' },
+      { label: "B1", value: "blue_1" },
+      { label: "B2", value: "blue_2" },
+      { label: "B3", value: 'blue_3' },
+    ];
     return (
       <div>
+        <h2>Team: {teamNum}</h2>
         <h2>Scouter Initials</h2>
         <Form.Item<FieldType> name="initials" rules={[{ required: true, message: 'Please input your initials!' }]}>
           <Input maxLength={2} className="input" />
         </Form.Item>
-        <h2>Team #</h2>
-        <Form.Item<FieldType> name="teamnum" rules={[{ required: true, message: 'Please input the team number!' }]}>
-          <InputNumber min={1} className="input" onChange={(event) => { getCustomQuestions(event as number) }} />
-        </Form.Item>
         <h2>Match Level</h2>
         <Form.Item<FieldType> name="matchlevel" rules={[{ required: true, message: 'Please input the match level!' }]}>
-          <Select options={rounds} className="input" />
+          <Select options={rounds} className="input" onChange={() => {calculateMatchLevel(); updateTeamNumber();}}/>
         </Form.Item>
         <h2>Match #</h2>
         <Form.Item<FieldType> name="matchnum" rules={[{ required: true, message: 'Please input the match number!' }]}>
-          <InputNumber min={1} className="input" />
+          <InputNumber min={1} className="input" onChange={() => {updateTeamNumber();}}/>
         </Form.Item>
-        <h2>Times Amplified</h2>
-        <Form.Item<FieldType> name="timesamplified" rules={[{ required: true, message: 'Please input the number of times the speaker was amplified!' }]}>
-          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} min={0} value={0} className="input" />
+        <h2 style={{ display: roundIsVisible ? 'inherit' : 'none' }}>Round #</h2>
+        <Form.Item<FieldType> name="roundnum" rules={[{ required: roundIsVisible ? true : false, message: 'Please input the round number!' }]} style={{ display: roundIsVisible ? 'inherit' : 'none' }}>
+          <InputNumber min={1} onChange={() => {updateTeamNumber();}} style={{ display: roundIsVisible ? 'inherit' : 'none' }} className="input" type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} />
+        </Form.Item>
+        <h2>Robot Position</h2>
+        <Form.Item<FieldType> name="robotpos" rules={[{ required: true, message: 'Please input the robot position!' }]}>
+          <Select options={robotpos} onChange={() => {updateTeamNumber();}} className="input" />
         </Form.Item>
         <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
           <Button onClick={() => setTabNum("2")} className='tabbutton'>Next</Button>
@@ -119,7 +236,8 @@ function Strategic(props: any) {
   }
   function comment() {
     type FieldType = {
-      comments?: string;
+      comments: string;
+      timesamplified: number;
     };
     return (
       <div>
@@ -131,85 +249,18 @@ function Strategic(props: any) {
           <Button onClick={() => setTabNum("1")} className='tabbutton'>Back</Button>
           <Button onClick={() => setTabNum("3")} className='tabbutton'>Next</Button>
         </Flex> */}
-        <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
-          <Button onClick={() => setTabNum("3")} className='tabbutton'>Back</Button>
-          <Input type="submit" value="Submit" className='submitbutton' />
-        </Flex>
-      </div>
-    );
-  }
-  function driverRating() {
-    type FieldType = {
-      driverrating?: string;
-    };
-    return (
-      <div>
-        <h2>Driver Rating</h2>
-        <Form.Item<FieldType> name="driverrating" rules={[{ required: true, message: "Please input something about the driver rating!" }]}>
-          <TextArea style={{ verticalAlign: 'center' }} className='strategic-input' />
+        <h2>Times Amplified</h2>
+        <Form.Item<FieldType> name="timesamplified" rules={[{ required: true, message: 'Please input the number of times the speaker was amplified!' }]}>
+          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLInputElement).blur()} min={0} className="input" />
         </Form.Item>
+        <h2 style={{ display: isLoading ? 'inherit' : 'none' }}>Submitting data...</h2>
         <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
-          <Button onClick={() => setTabNum("2")} className='tabbutton'>Back</Button>
-          <Button onClick={() => setTabNum("4")} className='tabbutton'>Next</Button>
-        </Flex>
-      </div>
-    );
-  }
-  function customQuestions() {
-    type FieldType = {
-      answer: string,
-    };
-    const questions = [
-      { label: "team", value: "team" },
-      { label: "team", value: "team" },
-      { label: "team", value: 'team' },
-    ];
-    return (
-      <div>
-        <h2>Custom Question</h2>
-        <div>
-          <Form.Item<FieldType> rules={[{ required: true, message: 'Please input.' }]}>
-            <Select placeholder='Question' options={questions} className="input" />
-          </Form.Item>
-        </div>
-        <div>
-          <h2 style={{ marginTop: "10%" }}>Answer</h2>
-          <Form.Item<FieldType> name="answer">
-            <label>
-              <textarea className="pitComment" name="answer" rows={3} />
-            </label>
-          </Form.Item>
-        </div>
-        <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
-          <Button onClick={() => setTabNum("3")} className='tabbutton'>Back</Button>
+          <Button onClick={() => { setTabNum("1"); console.log(teamNum)}} className='tabbutton'>Back</Button>
           <Input type="submit" value="Submit" className='submitbutton' />
         </Flex>
-        <h2 style={{ display: isLoading ? 'inherit' : 'none' }}>Submitting data...</h2>
       </div>
     );
   }
-  const items: TabsProps['items'] = [
-    {
-      key: '1',
-      label: 'Pre',
-      children: preMatch(),
-    },
-    {
-      key: '2',
-      label: 'Comment',
-      children: comment(),
-    },
-    // {
-    //   key: '3',
-    //   label: 'Driver Skill',
-    //   children: driverRating(),
-    // },
-    // {
-    //   key: '4',
-    //   label: 'Custom Questions',
-    //   children: customQuestions(),
-    // },
-  ];
   return (
     <div>
       <meta name="viewport" content="maximum-scale=1.0" />
@@ -237,16 +288,29 @@ function Strategic(props: any) {
         form={form}
         onFinish={async event => {
           setLoading(true);
-          await setNewStrategicScout(event);
-          const initials = form.getFieldValue('initials');
-          const matchnum = form.getFieldValue('matchnum');
-          form.resetFields();
-          form.setFieldValue('initials', initials);
-          form.setFieldValue('matchnum', matchnum + 1);
-          setLoading(false);
+          try {
+            await setNewStrategicScout(event);
+            const initials = form.getFieldValue('initials');
+            const matchnum = form.getFieldValue('matchnum');
+            const matchlevel = form.getFieldValue('matchlevel');
+            form.resetFields();
+            form.setFieldValue('initials', initials);
+            form.setFieldValue('matchnum', matchnum + 1);
+            form.setFieldValue('matchlevel', matchlevel);
+            await calculateMatchLevel();
+            await updateTeamNumber();
+          }
+          catch (err) {
+            console.log(err);
+            window.alert("Error occured, please do not do leave this message and notify a Webdev member immediately.");
+            window.alert(err);
+          }
+          finally {
+            setLoading(false);
+          }
         }}
       >
-        <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} className='tabs' onChange={async (key) => { setTabNum(key) }} />
+        <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} centered className='tabs' onChange={async (key) => { setTabNum(key); }} />
       </Form>
     </div>
   );

@@ -1,152 +1,59 @@
-@font-face {
-    font-family: Audiowide;
-    src: url('../fonts/Audiowide-Regular.woff') format('woff');
-}
-@font-face {
-    font-family: Figtree;
-    src: url('../fonts/Figtree-VariableFont_wght.ttf') format('woff');
-}
-.h1 {
-    color: white;
-    font-family: Figtree;
-    font-weight: bold;
-    font-size: 42px;
-    margin-bottom: 0 !important;
-}
-.h2 {
-    color: white;
-    font-family: Figtree;
-    font-weight: bold;
-    font-size: 64px;
-    margin-bottom: 0 !important;
-}
-.body {
-    margin: 0;
-    font-family: Audiowide !important;
-    background-color: #433C3C !important;
-    padding-left: 5%;
-    padding-right: 5%;
-    color: white;
-    width: 100%;
-}
-.ant-tabs-tab {
-    font-size: 56px !important;
-    font-family: Figtree !important;
-    font-weight: bold !important;
-    color: white !important;
-    height: 15% !important;
-    padding-top: 5% !important;
-}
-.ant-form-item-explain-error {
-    font-size: 48px !important;
-    font-family: Figtree !important;
-    font-weight: bold !important;
-    color: red !important;
-    text-align: center !important;
-}
-.banner {
-    font-size: 50px;
-    vertical-align: top;
-}
-
-.showTeamName {
-    display: 'inline-block'!important;
-    text-align: 'center' !important;
-    padding-bottom: 15% !important;
-    padding-left: 25% !important;
-}
-.data {
-    color: white;
-    font-family: Figtree;
-    font-weight: bold;
-    font-size: 64px !important;
-    margin-bottom: 0 !important;
-}
-.submit{
-    width: 100%;
-    max-width: 50%;
-    height: 20% !important;
-    min-height: 20% !important; 
+.dtf-input {
+    width: 95% !important;
+    height: 120px !important;
     border: 4px solid white !important;
     border-radius: 25px;
-    background-color: #433C3C;
-    font-size: 300% !important;
+    background-color: transparent !important;
+    font-size: 500% !important;
     font-family: Figtree !important;
-    font-weight: normal;
+    font-weight: bold;
     color: white !important;
     text-align: center !important;
-    align-items: center !important;
-    margin-left: 25%;
-    margin-top: 15%;
-    font-weight:bold;
 }
-
-.input {
-    width: 100%;
+.input_checkbox {
+    width: 294px !important;
     min-width: 100%;
-    height: 100% !important;
-    min-height: 100% !important;
-    border: 4px solid white !important;
-    border-radius: 25px;
-    background-color: transparent;
-    font-size: 500% !important;
-    font-family: Figtree !important;
-    font-weight: bold;
-    color: white !important;
-    text-align: center !important;
-    background: transparent !important;
-}
-
-.comment {
-    width: 90%;
-    min-width: 90%;
-    height: 200% !important;
-    min-height: 200% !important;
-    border: 4px solid white !important;
-    border-radius: 25px;
-    background-color: transparent;
-    font-size: 250% !important;
-    font-family: Figtree !important;
-    font-weight: bold;
-    color: white !important;
-    text-align: left !important;
-    background: transparent !important;
-}
-
-.inputDisplayNumber {
-    width: 30%;
-    min-width: 30%;
-    height: 20% !important;
-    min-height: 20% !important;
-    border: 4px solid white !important;
-    border-radius: 25px;
-    background-color: transparent;
-    font-size: 500% !important;
-    font-family: Figtree !important;
-    font-weight: bold;
-    color: white !important;
-    text-align: center !important;
-    background: transparent !important;
-}
-
-.checkboxRedFixed {
-    width: 15%;
-    min-width: 15%;
-    height: 118px !important;
-    min-height: 118px !important;
+    height: 120px !important;
+    min-height: 120px !important;
     border: 4px solid white !important;
     border-radius: 25px;
     background-color: red;
-    font-size: 500%;
+    font-size: 500% !important;
     font-family: Figtree !important;
+    font-weight: bold;
     color: white !important;
     text-align: center !important;
 }
-
-.ant-checkbox-checked {
+.input_checkbox_filled {
+    width: 294px !important;
+    min-width: 100%;
+    height: 120px !important;
+    min-height: 120px !important;
+    border: 4px solid white !important;
+    border-radius: 25px;
     background-color: #61f761;
-    border-color: #000000;
+    font-size: 500% !important;
+    font-family: Figtree !important;
+    font-weight: bold;
+    color: white !important;
+    text-align: center !important;
+}
+.textbox_input {
     width: 100%;
-    border-radius: 20px;
-    height: 118px;
+    min-width: 100%;
+    height: 1000px !important;
+    min-height: 1000px !important;
+    border: 4px solid white !important;
+    border-radius: 25px;
+    background-color: #433C3C;
+    font-size: 500% !important;
+    font-family: Figtree !important;
+    font-weight: bold;
+    color: white !important;
+    text-align: center !important;
+    background: transparent !important;
+    margin-bottom: 5%;
+}
+.summary_text {
+    text-align: center !important;
 }
