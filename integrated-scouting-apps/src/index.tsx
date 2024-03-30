@@ -19,6 +19,8 @@ import DataLookup from './routes/lookup';
 import TeamData from './routes/teamData';
 import Picklist from './routes/picklists';
 import Watchlist from './routes/watchlist';
+import WatchlistGet from './routes/watchlistdata';
+import WatchlistUpdate from './routes/watchlistupdate'
 
 
 export default function App() {
@@ -31,6 +33,8 @@ export default function App() {
         <Route path="/scoutingapp" element={<ScoutingApp title="2637 Scouting App" />} />
         <Route path="/dtf" element={<DTF title="2637 Drive Team Feeder" />} />
         <Route path="/watchlist" element = {<Watchlist title="2637 Watch List"/>}/>
+        <Route path="/watchlist/:team_number" element={<WatchlistGet title="2637 Watch List"/>} />
+        <Route path="/watchlist/update/:question_info" element={<WatchlistUpdate title="2637 Watch List"/>} />
         <Route path="/dtf/:team_number" element={<DTFTeams title="2637 Drive Team Feeder Data" />} />
         <Route path="/scoutingapp/match" element={<MatchScout title="2637 Match Scout" />} />
         <Route path="/scoutingapp/strategic" element={<StrategicScout title="2637 Strategic Scout" />} />

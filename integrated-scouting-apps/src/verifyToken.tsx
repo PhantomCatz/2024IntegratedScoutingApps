@@ -5,12 +5,12 @@ async function VerifyLogin(cookie: any) {
     const hash = base64url.decode(process.env.REACT_APP_HASH as string);
     const payload = await jwtVerify(cookie, hash);
     if (!payload) {
-      window.location.href = "/";
+      //window.location.href = "/";
     }
   }
   catch (err) {
     console.log(err);
-    window.location.href = "/";
+    //window.location.href = "/";
   }
 }
 async function ChangeTheme(cookie: any) {

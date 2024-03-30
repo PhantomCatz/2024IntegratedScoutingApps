@@ -1,20 +1,13 @@
 import '../public/stylesheets/style.css';
 import '../public/stylesheets/watchlist.css';
 import '../public/stylesheets/match.css';
-import field_blue from '../public/images/field_blue.png';
-import field_red from '../public/images/field_red.png';
 import logo from '../public/images/logo.png';
-import { Checkbox, Flex, Form, Input, InputNumber, Select, Tabs, TabsProps, Upload, message } from 'antd';
-import {useRef } from 'react';
-import {Button} from 'antd';
+import { Flex, Form, Input, InputNumber, Select, Tabs, TabsProps, Table} from 'antd';
+import { Button } from 'antd';
 import React, { useState, useEffect } from 'react';
 import back from '../public/images/back.png';
-import { useParams } from 'react-router-dom';
-import { ReactSketchCanvas, ReactSketchCanvasRef } from 'react-sketch-canvas';
-import FormItemInput from 'antd/es/form/FormItemInput';
 import { useCookies } from 'react-cookie';
 import VerifyLogin from '../verifyToken';
-
 
 function Watchlist(props: any) {
 
@@ -22,9 +15,9 @@ function Watchlist(props: any) {
     team_number: number;
     question: string;
     answer?: string;
-    question_type: string;
+    isPit: boolean;
   };
-  
+
   const [tabNum, setTabNum] = useState("1");
   useEffect(() => {document.title = props.title}, [props.title]);
 
@@ -37,17 +30,17 @@ function Watchlist(props: any) {
       custom0: {
         question: values.question,
         answer: values.answer,
-        question_type: values.question_type,
+        isPit: values.isPit,
       },
     }; 
     
     console.log("Team Number:", requestBody.team_number);
     console.log("Custom Question:", requestBody.custom0.question);
     console.log("Custom Answer:", requestBody.custom0.answer);
-    console.log("Question Type:", requestBody.custom0.question_type);
+    console.log("Question Type:", requestBody.custom0.isPit);
     
     try {
-      const response = await fetch(process.env.REACT_APP_WATCHLIST_URL as string, {
+      const response = await fetch(process.env.REACT_APP_WATCHLIST_SEND_URL as string, {
         method: "POST",
         body: JSON.stringify(requestBody),
         headers: {
@@ -65,17 +58,20 @@ function Watchlist(props: any) {
       console.error("An unexpected error occurred:", error);
     }
   }
+
+
+
   function input(){
     type FieldType = {
-      team_number: number,//name not specified
+      team_number: number, //name not specified
       question: string,
       answer?: string,
-      question_type: string,
-
+      isPit: boolean,
     };
+
     const appOptions = [
-      { label: "Pit", value: "pit" },
-      { label: "Strategic", value: "Strategic" },
+      { label: "Pit", value: true },
+      { label: "Strategic", value: false },
     ];
     return (
       <div>
@@ -83,19 +79,20 @@ function Watchlist(props: any) {
           <h1 className='pitBody'>Team #</h1>
           <Form<FieldType> onFinish={async values => {
             try{
+              console.log(values, 'OwO');
               await handleSubmit(values);
               window.location.reload();
-
             }
             catch (err){
               console.log(err);
             }
           }}>
           {/* <Form<FieldType> onFinish={handleSubmit}> */}
-            <Form.Item<FieldType> name="team_number">
+          <Form.Item<FieldType> name="team_number">
               <InputNumber controls min={0} className="pitinput" />
             </Form.Item>
-            <Form.Item<FieldType> name="question_type" rules={[{ required: true, message: 'Please input.' }]}>
+            <h1 className='pitBody'>Pit/Strategic</h1>
+            <Form.Item<FieldType> name="isPit" rules={[{ required: true, message: 'Please input.' }]}>
               <Select placeholder='Match' options={appOptions} className="input" />
             </Form.Item>
             <div>
@@ -105,17 +102,45 @@ function Watchlist(props: any) {
                   <textarea className="pitComment" name="eventNum" rows={3} />
                 </label>
               </Form.Item>
+              <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
+                <Input type="submit" value="Submit" className='submit'/>
+              </Flex>
             </div>
+            
+          </Form>
+        </div>
+      </div>
+    );
+  }
+
+  function watchListDisplay(){
+    type FieldType = {
+      team_number: number,
+    };
+    return (
+      <div>
+        <div>
+          <h1 className='pitBody'>Team #</h1>
+          <Form
+            onFinish={async values => {
+              window.location.href = "/watchlist/" + values.team_number;
+            }}
+          >
+            <Form.Item<FieldType> name="team_number">
+              <InputNumber controls min={0} className="input" required={true}/>
+            </Form.Item>
             <div>
-              <Button type="primary" htmlType="submit" className="submitbutton">
-                Submit
-              </Button>
+              <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
+                <Input type="submit" value="Submit" className='submit'/>
+              </Flex>
             </div>
           </Form>
         </div>
       </div>
     );
   }
+
+
 
   const items: TabsProps['items'] = [
     {
@@ -125,9 +150,9 @@ function Watchlist(props: any) {
     },
     {
       key: '2',
-      label: 'WatchList',
-      children: <h1>Still making</h1>,
-    },
+      label: 'Get',
+      children: watchListDisplay(),
+    }
 ];
   
   
@@ -145,11 +170,75 @@ function Watchlist(props: any) {
           </table>
         </header>
       </div>
-
-    
       <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} className='tabs' centered onChange={async (key) => {setTabNum(key)}}/>
-
     </div>
   );
 }
 export default Watchlist;
+
+// import '../public/stylesheets/dtf.css';
+// import logo from '../public/images/logo.png';
+// import back from '../public/images/back.png';
+// import { useEffect } from 'react';
+// import { Input, Form, InputNumber } from 'antd';
+// import VerifyLogin from '../verifyToken';
+// import { useCookies } from 'react-cookie';
+// function Watchlist(props: any) {
+// 	const [form] = Form.useForm();
+// 	useEffect(() => {document.title = props.title; return () => {}}, [props.title]);
+// 	const [cookies] = useCookies(['login', 'theme']);
+// 	useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
+//   useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => {}}, [cookies.theme]);
+
+// 	return (
+// 		<div>
+// 			<meta name="viewport" content="maximum-scale=1.0" />
+// 			<div className='banner'>
+// 				<header>
+// 					<a href='/home'>
+// 						<img src={back} style={{ height: 64 + 'px', paddingTop: '5%' }} alt=''></img>
+// 					</a>
+// 					<table>
+// 						<tbody>
+// 							<tr>
+// 								<td>
+// 									<img src={logo} style={{ height: 256 + 'px' }} alt=''></img>
+// 								</td>
+// 								<td>
+// 									<h1 style={{ display: 'inline-block', textAlign: 'center' }}>Drive Team Feeder</h1>
+// 								</td>
+// 							</tr>
+
+// 						</tbody>
+
+// 					</table>
+// 				</header>
+// 			</div>
+// 			<Form
+// 				form={form}
+// 				onFinish={async event => {
+// 					const teamNums = [event.team1Num, event.team2Num, event.team3Num].filter(num => num !== undefined);
+// 					window.location.href = "/dtf/" + teamNums.join(",");
+// 				}}
+// 			>
+// 				<div>
+// 					<h2>Team 1 Number</h2>
+// 					<Form.Item name="team1Num" rules={[{ required: true, message: "Please input the team number!" }]}>
+// 						<InputNumber min={0} className="input" />
+// 					</Form.Item>
+// 					<h2>Team 2 Number</h2>
+// 					<Form.Item name="team2Num">
+// 						<InputNumber min={0} className="input" />
+// 					</Form.Item>
+// 					<h2>Team 3 Number</h2>
+// 					<Form.Item name="team3Num">
+// 						<InputNumber min={0} className="input" />
+// 					</Form.Item>
+// 					<Input type="submit" value="Submit" className='submit' />
+// 				</div>
+// 			</Form>
+// 		</div>
+// 	);
+// }
+
+// export default Watchlist;
