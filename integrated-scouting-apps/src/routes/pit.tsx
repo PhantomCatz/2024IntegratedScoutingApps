@@ -3,8 +3,7 @@ import '../public/stylesheets/pit.css';
 import '../public/stylesheets/match.css';
 import field_blue from '../public/images/field_blue.png';
 import logo from '../public/images/logo.png';
-import { Checkbox, Flex, Form, Input, InputNumber, message, Select, Upload } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { Checkbox, Flex, Form, Input, InputNumber, Select, Upload } from 'antd';
 import { useRef } from 'react';
 import { Button } from 'antd';
 import React, { useState, useEffect } from 'react';
@@ -357,12 +356,13 @@ function PitScout(props: any) {
           beforeUpload={(file) => {
             const isImage = file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg';
             if (!isImage) {
-              message.error(`${file.name} is not an image file`);
+              window.alert(`${file.name} is not an image`);
             }
-            return isImage || Upload.LIST_IGNORE;
+            return isImage;
           }}
+          style={{width: '100%'}}
         >
-          <Button icon={<UploadOutlined />}>Upload Images</Button>
+          <Button className='input' style={{marginBottom: '5%'}}>Upload Images</Button>
         </Upload>
         <h2 style={{display: loading ? 'inherit' : 'none'}}>Submitting data...</h2>
         <Input type="submit" value="Submit" className='submit' style={{marginBottom: '5%'}} onClick={async (event) => {await canvasRef.current?.exportImage('png').then((data) => {imageURI.current = data;})}} />

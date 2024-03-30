@@ -1,3 +1,24 @@
+.ant-upload, .ant-upload-select {
+    width: 100% !important;
+}
+.ant-upload-list-item-name {
+    font-size: 48px !important;
+    font-family: Figtree !important;
+    color: white !important;
+}
+.ant-upload-list-item-container {
+    height: 120px !important;
+}
+.anticon-paper-clip {
+    height: 0px !important;
+    width: 0px !important;
+}
+.ant-tooltip {
+    display: none;
+}
+.ant-upload-list-item-actions {
+    padding-right: 5%;
+}
 .input {
     width: 100% !important;
     min-width: 100% !important;

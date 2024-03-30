@@ -2,7 +2,7 @@ import '../public/stylesheets/style.css';
 import '../public/stylesheets/strategic.css';
 import logo from '../public/images/logo.png';
 import back from '../public/images/back.png';
-import { JSX, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Tabs, Input, Form, Select, InputNumber, Button, Flex } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import VerifyLogin from '../verifyToken';
@@ -14,25 +14,12 @@ function Strategic(props: any) {
   const [tabNum, setTabNum] = useState("1");
   const [teamNum, setTeamNum] = useState(0);
   const [isLoading, setLoading] = useState(false);
-  const [timesAmplified, setTimesAmplified] = useState(0);
   const [roundIsVisible, setRoundIsVisible] = useState(false);
-  const [items, setItems] = useState([
-    {
-      key: '1',
-      label: 'Pre',
-      children: preMatch(),
-    },
-    {
-      key: '2',
-      label: 'Comment',
-      children: comment(),
-    },
-  ]);
 	useEffect(() => {document.title = props.title; return () => {}}, [props.title]);
   const [cookies] = useCookies(['login', 'theme']);
   useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
   useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => {}}, [cookies.theme]);
-  useEffect(() => { getComments(teamNum); return () => {}}, [teamNum]);
+  //useEffect(() => { getComments(teamNum); return () => {}}, [teamNum]);
   const eventname = process.env.REACT_APP_EVENTNAME;
 
   async function setNewStrategicScout(event: any) {
@@ -136,53 +123,53 @@ function Strategic(props: any) {
       setRoundIsVisible(false);
     }
   }
-  async function getComments(teamnum: number) {
-    try {
-      if (form.getFieldValue("teamnum") !== 0) {
-        const response =  await fetch(process.env.REACT_APP_STRATEGIC_LOOKUP_URL as string + "?team_number=" + teamnum);
-        const data = await response.json();
-        const match: { key: string; label: string; children: JSX.Element; }[] = [];
-        let index = 3;
-        for (const question of data['documents']) {
-          match.push({
-            key: index.toString(),
-            label: question.matchIdentifier.match_level  + question.matchIdentifier.match_number,
-            children: (
-              <div>
-                <h2>Scouter Initials</h2>
-                <Input className="input" disabled value={question.matchIdentifier.Initials} />
-                <h2>Match Level</h2>
-                <Input className="input" disabled value={question.matchIdentifier.match_level} />
-                <h2>Match #</h2>
-                <Input className="input" disabled value={question.matchIdentifier.match_number} />
-                <h2>Round #</h2>
-                <Input className="input" disabled value={question.matchIdentifier.round_number} />
-                <h2>Robot Position</h2>
-                <Input className="input" disabled value={question.matchIdentifier.robotpos} />
-                <h2>Times Amplified</h2>
-                <Input className="input" disabled value={question.timesAmplified} />
-                <h2>Comments</h2>
-                <TextArea className="strategic-input" disabled value={question.comment}/>
-              </div>
-              )});
-          match.sort((a, b) => parseInt(a.key.substring(1)) - parseInt(b.key.substring(1)));
-          index++;
-        }
-        for (let i = 0; i < match.length; i++) {
-          setItems([...items, match[i]]);
-        }
-      }
-      if ((document.getElementById("timesamplified") as HTMLInputElement) !== null) {
-        (document.getElementById("timesamplified") as HTMLInputElement).value = timesAmplified.toString();
-        form.setFieldValue("timesamplified", timesAmplified);
-      }
-    }
-    catch (err) {
-      console.log(err);
-      window.alert("Error occured, please do not do leave this message and notify a Webdev member immediately.");
-      window.alert(err);
-    }
-  };
+  // async function getComments(teamnum: number) {
+  //   try {
+  //     if (form.getFieldValue("teamnum") !== 0) {
+  //       const response =  await fetch(process.env.REACT_APP_STRATEGIC_LOOKUP_URL as string + "?team_number=" + teamnum);
+  //       const data = await response.json();
+  //       const match: { key: string; label: string; children: JSX.Element; }[] = [];
+  //       let index = 3;
+  //       for (const question of data['documents']) {
+  //         match.push({
+  //           key: index.toString(),
+  //           label: question.matchIdentifier.match_level  + question.matchIdentifier.match_number,
+  //           children: (
+  //             <div>
+  //               <h2>Scouter Initials</h2>
+  //               <Input className="input" disabled value={question.matchIdentifier.Initials} />
+  //               <h2>Match Level</h2>
+  //               <Input className="input" disabled value={question.matchIdentifier.match_level} />
+  //               <h2>Match #</h2>
+  //               <Input className="input" disabled value={question.matchIdentifier.match_number} />
+  //               <h2>Round #</h2>
+  //               <Input className="input" disabled value={question.matchIdentifier.round_number} />
+  //               <h2>Robot Position</h2>
+  //               <Input className="input" disabled value={question.matchIdentifier.robotpos} />
+  //               <h2>Times Amplified</h2>
+  //               <Input className="input" disabled value={question.timesAmplified} />
+  //               <h2>Comments</h2>
+  //               <TextArea className="strategic-input" disabled value={question.comment}/>
+  //             </div>
+  //             )});
+  //         match.sort((a, b) => parseInt(a.key.substring(1)) - parseInt(b.key.substring(1)));
+  //         index++;
+  //       }
+  //       for (let i = 0; i < match.length; i++) {
+  //         setItems([...items, match[i]]);
+  //       }
+  //     }
+  //     if ((document.getElementById("timesamplified") as HTMLInputElement) !== null) {
+  //       (document.getElementById("timesamplified") as HTMLInputElement).value = timesAmplified.toString();
+  //       form.setFieldValue("timesamplified", timesAmplified);
+  //     }
+  //   }
+  //   catch (err) {
+  //     console.log(err);
+  //     window.alert("Error occured, please do not do leave this message and notify a Webdev member immediately.");
+  //     window.alert(err);
+  //   }
+  // };
   function preMatch() {
     type FieldType = {
       initials: string;
@@ -245,22 +232,30 @@ function Strategic(props: any) {
         <Form.Item<FieldType> name="comments" rules={[{ required: true, message: "Please input some comments!" }]}>
           <TextArea style={{ verticalAlign: 'center' }} className='strategic-input' />
         </Form.Item>
-        {/* <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
-          <Button onClick={() => setTabNum("1")} className='tabbutton'>Back</Button>
-          <Button onClick={() => setTabNum("3")} className='tabbutton'>Next</Button>
-        </Flex> */}
         <h2>Times Amplified</h2>
         <Form.Item<FieldType> name="timesamplified" rules={[{ required: true, message: 'Please input the number of times the speaker was amplified!' }]}>
           <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLInputElement).blur()} min={0} className="input" />
         </Form.Item>
         <h2 style={{ display: isLoading ? 'inherit' : 'none' }}>Submitting data...</h2>
         <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
-          <Button onClick={() => { setTabNum("1"); console.log(teamNum)}} className='tabbutton'>Back</Button>
+          <Button onClick={() => { setTabNum("1"); }} className='tabbutton'>Back</Button>
           <Input type="submit" value="Submit" className='submitbutton' />
         </Flex>
       </div>
     );
   }
+  const items = [
+    {
+      key: '1',
+      label: 'Pre',
+      children: preMatch(),
+    },
+    {
+      key: '2',
+      label: 'Comment',
+      children: comment(),
+    },
+  ];
   return (
     <div>
       <meta name="viewport" content="maximum-scale=1.0" />

@@ -36,7 +36,7 @@ function DataLookup(props: any) {
 			}
 		};
 		getTeams();
-	}, []);
+	}, [eventname]);
 
 	return (
 		<div>
