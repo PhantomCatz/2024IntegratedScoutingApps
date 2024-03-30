@@ -10,7 +10,7 @@
     src: url('../fonts/Audiowide-Regular.woff') format('woff');
 }
 @font-face {
-    font-family: Figtree !important;
+    font-family: Figtree;
     src: url('../fonts/Figtree-VariableFont_wght.ttf') format('woff');
 }
 h2 {
@@ -35,7 +35,7 @@ a {
 .ant-tabs-tab-active {
     color: #32a7dc !important;
 }
-.ant-btn-default:hover {
+.ant-btn-default:hover, .ant-input-outlined:hover {
     background-color: transparent !important;
 }
 .ant-select-item {

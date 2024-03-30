@@ -218,15 +218,15 @@ function Strategic(props: any) {
         </Form.Item>
         <h2>Match #</h2>
         <Form.Item<FieldType> name="matchnum" rules={[{ required: true, message: 'Please input the match number!' }]}>
-          <InputNumber min={1} className="input" onChange={updateTeamNumber}/>
+          <InputNumber min={1} className="input" onChange={() => {updateTeamNumber();}}/>
         </Form.Item>
         <h2 style={{ display: roundIsVisible ? 'inherit' : 'none' }}>Round #</h2>
         <Form.Item<FieldType> name="roundnum" rules={[{ required: roundIsVisible ? true : false, message: 'Please input the round number!' }]} style={{ display: roundIsVisible ? 'inherit' : 'none' }}>
-          <InputNumber min={1} onChange={updateTeamNumber} style={{ display: roundIsVisible ? 'inherit' : 'none' }} className="input" type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} />
+          <InputNumber min={1} onChange={() => {updateTeamNumber();}} style={{ display: roundIsVisible ? 'inherit' : 'none' }} className="input" type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} />
         </Form.Item>
         <h2>Robot Position</h2>
         <Form.Item<FieldType> name="robotpos" rules={[{ required: true, message: 'Please input the robot position!' }]}>
-          <Select options={robotpos} onChange={updateTeamNumber} className="input" />
+          <Select options={robotpos} onChange={() => {updateTeamNumber();}} className="input" />
         </Form.Item>
         <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
           <Button onClick={() => setTabNum("2")} className='tabbutton'>Next</Button>
@@ -251,11 +251,11 @@ function Strategic(props: any) {
         </Flex> */}
         <h2>Times Amplified</h2>
         <Form.Item<FieldType> name="timesamplified" rules={[{ required: true, message: 'Please input the number of times the speaker was amplified!' }]}>
-          <InputNumber type='number' pattern="\d*" disabled onWheel={(event) => (event.target as HTMLInputElement).blur()} min={0} className="input" />
+          <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLInputElement).blur()} min={0} className="input" />
         </Form.Item>
         <h2 style={{ display: isLoading ? 'inherit' : 'none' }}>Submitting data...</h2>
         <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
-          <Button onClick={() => { setTabNum("1")}} className='tabbutton'>Back</Button>
+          <Button onClick={() => { setTabNum("1"); console.log(teamNum)}} className='tabbutton'>Back</Button>
           <Input type="submit" value="Submit" className='submitbutton' />
         </Flex>
       </div>

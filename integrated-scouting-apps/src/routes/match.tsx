@@ -786,7 +786,7 @@ function MatchScout(props: any) {
         <Form.Item<FieldType> name="robotdied" valuePropName="checked">
           <Checkbox className='input_checkbox' />
         </Form.Item>
-        <h2>Pushing (0-4)</h2>
+        <h2>Pushing (1-4) (0 if N/A)</h2>
         <Form.Item<FieldType> name="pushing" rules={[{ required: true, message: 'Please input the pushing rating!' }]}>
           <InputNumber
             type='number'
@@ -807,7 +807,7 @@ function MatchScout(props: any) {
             }} className='decrementbutton'>-</Button>}
           />
         </Form.Item>
-        <h2>Counterdefense (0-4)</h2>
+        <h2>Count. Defense (1-4) (0 if N/A)</h2>
         <Form.Item<FieldType> name="counterdefense" rules={[{ required: true, message: 'Please input the counterdefense rating!' }]}>
           <InputNumber
             type='number'
@@ -827,7 +827,7 @@ function MatchScout(props: any) {
             }} className='decrementbutton'>-</Button>}
           />
         </Form.Item>
-        <h2>Driver Skill (0-4)</h2>
+        <h2>Driver Skill (1-4) (0 if N/A)</h2>
         <Form.Item<FieldType> name="driverskill" rules={[{ required: true, message: 'Please input the driverskill rating!' }]}>
           <InputNumber
             type='number'
@@ -902,31 +902,26 @@ function MatchScout(props: any) {
       key: '1',
       label: 'Pre',
       children: preMatch(),
-      disabled: true,
     },
     {
       key: '2',
       label: 'Auton',
       children: AutonMatch(),
-      disabled: true,
     },
     {
       key: '3',
       label: 'Teleop',
       children: teleopMatch(),
-      disabled: true,
     },
     {
       key: '4',
       label: 'End',
       children: endMatch(),
-      disabled: true,
     },
     {
       key: '5',
       label: 'OA',
       children: overall(),
-      disabled: true,
     },
   ];
   return (
@@ -1012,7 +1007,7 @@ function MatchScout(props: any) {
           }
         }}
       >
-        <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} className='tabs' centered onChange={async (key) => { setTabNum(key) }} />
+        <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} className='tabs' centered onChange={async (key) => { if (Number(key) === 1 || Number(key) === 3) {await autonCanvasRef.current?.exportImage('png').then( (data) => {autonImageURI.current = data; console.log(data)})} setTabNum(key); }} />
       </Form>
     </div>
   );

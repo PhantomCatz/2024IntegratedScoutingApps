@@ -1,5 +1,6 @@
 import '../public/stylesheets/login.css';
 import logo from '../public/images/logo.png';
+import VerifyLogin from '../verifyToken';
 import no_image from '../public/images/no_image.png';
 import { useEffect, useState } from 'react';
 import { Form, Input } from 'antd';
@@ -10,7 +11,8 @@ function LoginPage(props: any) {
 	const [msg, setMsg] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 	// eslint-disable-next-line
-	const [cookies, setCookies, removeCookies] = useCookies(['login']);
+	const [cookies, setCookies, removeCookies] = useCookies(['login', 'theme']);
+  useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => {}}, [cookies.theme]);
 	useEffect(() => {document.title = props.title; return () => {}}, [props.title]);
 
 	type FieldType = {
