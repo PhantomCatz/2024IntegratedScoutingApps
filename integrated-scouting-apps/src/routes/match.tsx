@@ -18,7 +18,6 @@ function MatchScout(props: any) {
   const [form] = Form.useForm();
   const [color, setColor] = useState(true);
   const [roundIsVisible, setRoundIsVisible] = useState(false);
-  const [coopPressed, setCoopPressed] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [tabNum, setTabNum] = useState("1");
   const [teamNum, setTeamNum] = useState(0);
@@ -431,7 +430,7 @@ function MatchScout(props: any) {
       { label: "C5", value: 'c5' },
     ];
     const startingloc = [
-      { label: "Upper Speaker", value: "Middle Speaker" },
+      { label: "Upper Speaker", value: "Upper Speaker" },
       { label: "Middle Speaker", value: "Middle Speaker" },
       { label: "Lower Speaker", value: 'Lower Speaker' },
       { label: "Lower", value: 'Lower' },
@@ -439,29 +438,28 @@ function MatchScout(props: any) {
     return (
       <div>
         <div style={{ alignContent: 'center' }}>
-          <ReactSketchCanvas
-            ref={autonCanvasRef}
-            strokeWidth={8}
-            height='2882px'
-            width='2882px'
-            strokeColor='#32a7dc'
-            backgroundImage={color ? field_red : field_blue}
-            exportWithBackgroundImage
-            style={{ paddingBottom: '5%' }}
-          />
-          <Flex justify='in-between'>
-            <Button onClick={() => autonCanvasRef.current?.undo()} className='pathbutton'>Undo</Button>
-            <Button onClick={() => autonCanvasRef.current?.redo()} className='pathbutton'>Redo</Button>
-            <Button onClick={() => autonCanvasRef.current?.clearCanvas()} className='pathbutton'>Clear</Button>
-            <Button onClick={async () => await autonCanvasRef.current?.exportImage('png').then(async (data) => {autonImageURI.current = await data; console.log(await autonImageURI.current)})} className='pathbutton'>Save</Button>
-          </Flex>
-        <h2>Leave</h2>
-        <Form.Item<FieldType> name="leavespawn" valuePropName="checked">
-          <Checkbox className='input_checkbox' />
-        </Form.Item>
         <h2>Starting Location</h2>
         <Form.Item<FieldType> name="startingloc" rules={[{ required: true, message: 'Please input the starting location!' }]}>
           <Select options={startingloc} className="input" />
+        </Form.Item>
+        <ReactSketchCanvas
+          ref={autonCanvasRef}
+          strokeWidth={8}
+          height='882px'
+          strokeColor='#32a7dc'
+          backgroundImage={color ? field_red : field_blue}
+          exportWithBackgroundImage
+          svgStyle={{width: '882px', height: '882px'}}
+          style={{ marginBottom: '5%' }}
+        />
+        <Flex justify='in-between'>
+          <Button onClick={() => autonCanvasRef.current?.undo()} className='pathbutton'>Undo</Button>
+          <Button onClick={() => autonCanvasRef.current?.redo()} className='pathbutton'>Redo</Button>
+          <Button onClick={() => autonCanvasRef.current?.clearCanvas()} className='pathbutton'>Clear</Button>
+        </Flex>
+        <h2>Leave</h2>
+        <Form.Item<FieldType> name="leavespawn" valuePropName="checked">
+          <Checkbox className='input_checkbox' />
         </Form.Item>
         <h2>Speaker Scored</h2>
         <Form.Item<FieldType> name="auton_speakerscored" rules={[{ required: true, message: 'Please input the number of speaker notes scored!' }]}>
@@ -549,15 +547,10 @@ function MatchScout(props: any) {
         <Form.Item<FieldType> name="piecespicked">
           <Select mode='multiple' options={piecespicked} className='input' showSearch={false} />
         </Form.Item>
-        {/* <h2>Comments</h2>
-        <Form.Item<FieldType> name="auton_comments" rules={[{ required: true, message: 'Please input the comments!' }]}>
-          <TextArea style={{verticalAlign: 'center'}} className='input'/>
-        </Form.Item> */}
-        
-          <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
-            <Button onClick={() => setTabNum("1")} className='tabbutton'>Back</Button>
-            <Button onClick={() => setTabNum("3")} className='tabbutton'>Next</Button>
-          </Flex>
+        <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
+          <Button onClick={async () => {setTabNum("1"); await autonCanvasRef.current?.exportImage('png').then( (data) => {autonImageURI.current = data;})}} className='tabbutton'>Back</Button>
+          <Button onClick={async () => {setTabNum("3"); await autonCanvasRef.current?.exportImage('png').then( (data) => {autonImageURI.current = data;})}} className='tabbutton'>Next</Button>
+        </Flex>
         </div>
       </div>
     );
@@ -909,26 +902,31 @@ function MatchScout(props: any) {
       key: '1',
       label: 'Pre',
       children: preMatch(),
+      disabled: true,
     },
     {
       key: '2',
       label: 'Auton',
       children: AutonMatch(),
+      disabled: true,
     },
     {
       key: '3',
       label: 'Teleop',
       children: teleopMatch(),
+      disabled: true,
     },
     {
       key: '4',
       label: 'End',
       children: endMatch(),
+      disabled: true,
     },
     {
       key: '5',
       label: 'OA',
       children: overall(),
+      disabled: true,
     },
   ];
   return (
@@ -954,25 +952,20 @@ function MatchScout(props: any) {
         form={form}
         initialValues={{
           leavespawn: false,
-
           amplifyscored: false,
           traversedstage: false,
-
           climbed: false,
           harmony: false,
           climbingaffected: false,
           parked: false,
           trapscored: false,
-
           robotdied: false,
           defended: false,
-          //hoarded: false,
           wasdefended: false,
           wasdefendedteam: [],
           defendedteam: [],
           piecespicked: [],
           shootingloc: [],
-
           penaltiesincurred: " ",
           comments: " ",
         }}

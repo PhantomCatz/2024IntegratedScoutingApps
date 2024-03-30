@@ -40,7 +40,6 @@ function DTFTeams(props: any) {
         const teleSpeakerGraph = (await (await fetch(process.env.REACT_APP_DTF_GRAPH_URL as string + "1?team_number=" + teams[team])).text()).replaceAll("#6E7079", "#fff").replaceAll("#5470c6", "#32a7dc").replaceAll("#E0E6F1", "#fff").replaceAll("12px", "18px;font-weight:bold");
         const teleAmpGraph = (await (await fetch(process.env.REACT_APP_DTF_GRAPH_URL as string + "2?team_number=" + teams[team])).text()).replaceAll("#6E7079", "#fff").replaceAll("#5470c6", "#32a7dc").replaceAll("#E0E6F1", "#fff").replaceAll("12px", "18px;font-weight:bold");
         const ratioGraph = (await (await fetch(process.env.REACT_APP_DTF_GRAPH_URL as string + "3?team_number=" + teams[team])).text()).replaceAll("#6E7079", "#fff").replaceAll("#ccc", "#fff").replaceAll("#333", "#fff").replaceAll("#464646", "#fff").replaceAll("12px", "16px;font-weight:bold").replaceAll("18px", "16px").replaceAll(' stroke-width="2" paint-order="stroke" stroke-miterlimit="2"', "");
-        console.log(ratioGraph);
         const autoSpeakerGraph = (await (await fetch(process.env.REACT_APP_DTF_GRAPH_URL as string + "4?team_number=" + teams[team])).text()).replaceAll("#6E7079", "#fff").replaceAll("#5470c6", "#32a7dc").replaceAll("#E0E6F1", "#fff").replaceAll("12px", "18px;font-weight:bold");
         const autoAmpGraph = (await (await fetch(process.env.REACT_APP_DTF_GRAPH_URL as string + "5?team_number=" + teams[team])).text()).replaceAll("#6E7079", "#fff").replaceAll("#5470c6", "#32a7dc").replaceAll("#E0E6F1", "#fff").replaceAll("12px", "18px;font-weight:bold");
         const autonPathResponse = await (await fetch(process.env.REACT_APP_DTF_AUTON_GRAPH_URL as string + "?team_number=" + teams[team])).json();
@@ -83,7 +82,7 @@ function DTFTeams(props: any) {
                 <h2>Score Ratio (Speaker : Amp)</h2>
                 <Input className="input" disabled value={response.auto.auto_scoring_ratio_avg} />
                 <h2>Start Position</h2>
-                <Input className="input" disabled value={response.auto.robot_start_position} />
+                <Input className="input" disabled value={response.auto.robot_start_position} style={{marginBottom: '5%'}} />
               </div>
             )
           },
@@ -125,7 +124,7 @@ function DTFTeams(props: any) {
                 <h2>Score Ratio (Speaker : Amp)</h2>
                 <Input className="input" disabled value={response.teleop.teleop_scoring_ratio_avg} />
                 <h2>Intake</h2>
-                <Input className="input" disabled value={response.teleop.teleop_intake} />
+                <Input className="input" disabled value={response.teleop.teleop_intake} style={{marginBottom: '5%'}} />
               </div>
             )
           },
@@ -179,18 +178,18 @@ function DTFTeams(props: any) {
             <Flex justify='in-between'>
               <Flex vertical align='center'>
                 <h2 className='summary_text'>{teams[0]}</h2>
-                <img src={graphSummaryInfo[0]} alt="" height={'294px'} width={'294px'}/>
+                <img src={graphSummaryInfo[0]} alt="" height={'100%'} width={'100%'}/>
               </Flex>
               {teams[1] !== undefined && (
               <Flex vertical align='center'>
                 <h2 className='summary_text'>{teams[1]}</h2>
-                <img src={graphSummaryInfo[1]} alt="" height={'294px'} width={'294px'}/>
+                <img src={graphSummaryInfo[1]} alt="" height={'100%'} width={'100%'}/>
               </Flex>
               )}
               {teams[2] !== undefined && (
               <Flex vertical align='center'>
                 <h2 className='summary_text'>{teams[2]} </h2>
-                <img src={graphSummaryInfo[2]} alt="" height={'294px'} width={'294px'}/>
+                <img src={graphSummaryInfo[2]} alt="" height={'100%'} width={'100%'}/>
               </Flex>
               )}
             </Flex>
@@ -233,24 +232,6 @@ function DTFTeams(props: any) {
               )}
             </Flex>
             <h2>Driver Skill</h2>
-            <Flex justify='in-between'>
-              <Flex vertical align='center'>
-                <h2 className='summary_text'>{teams[0]}</h2>
-                <Input className="dtf-input" disabled value={summaryInfo[0].teleop.teleop_intake} />
-              </Flex>
-              {summaryInfo[1] !== undefined && (
-              <Flex vertical align='center'>
-                <h2 className='summary_text'>{teams[1]}</h2>
-                <Input className="dtf-input" disabled value={summaryInfo[1].teleop.teleop_intake} />
-              </Flex>
-              )}
-              {summaryInfo[2] !== undefined && (
-              <Flex vertical align='center'>
-                <h2 className='summary_text'>{teams[2]} </h2>
-                <Input className="dtf-input" disabled value={summaryInfo[2].teleop.teleop_intake} />
-              </Flex>
-              )}
-            </Flex>
           </div>
         )
       });

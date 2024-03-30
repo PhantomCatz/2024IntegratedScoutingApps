@@ -1,9 +1,8 @@
 import '../public/stylesheets/login.css';
 import logo from '../public/images/logo.png';
-import back from '../public/images/back.png';
+import no_image from '../public/images/no_image.png';
 import { useEffect, useState } from 'react';
 import { Form, Input } from 'antd';
-import { useParams } from 'react-router-dom';
 import { base64url, SignJWT } from 'jose';
 import { useCookies } from 'react-cookie';
 
@@ -20,12 +19,10 @@ function LoginPage(props: any) {
 	};
 	return (
 		<div>
-			<meta name="viewport" content="maximum-scale=1.0" />
 			<div className='banner'>
-				<meta name="viewport" content="user-scalable=no" />
 				<header>
 					<a href='/'>
-						<img src={back} style={{ height: 64 + 'px', paddingTop: '5%' }} alt='' />
+						<img src={no_image} style={{ height: 64 + 'px', paddingTop: '5%' }} alt='' />
 					</a>
 					<table>
 						<tbody>

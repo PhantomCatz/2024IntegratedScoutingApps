@@ -38,6 +38,9 @@ a {
 .ant-btn-default:hover {
     background-color: transparent !important;
 }
+.ant-select-item {
+    height: 125px !important;
+}
 .banner {
     font-size: 50px;
     vertical-align: top;
