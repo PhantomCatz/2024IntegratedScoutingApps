@@ -39,4 +39,4 @@ async function ChangeTheme(cookie: any) {
   }
 }
 // eslint-disable-next-line
-export default {VerifyLogin, ChangeTheme};
+export default { VerifyLogin, ChangeTheme };

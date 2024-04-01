@@ -19,7 +19,7 @@ function Buh() {
 			<h1>tOwOt</h1>
 			<img width="100%" height="25%" src={juwon} alt=""></img>
 			<h1>Backend Dev</h1>
-			<img width="100%" height="25%" src={loren} alt=""/>
+			<img width="100%" height="25%" src={loren} alt="" />
 			<h1>Front End Developer</h1>
 			<img width="100%" height="25%" src={nathan} alt=""></img>
 			<h1>Pit Scout Developer</h1>

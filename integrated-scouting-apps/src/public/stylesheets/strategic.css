@@ -5,6 +5,7 @@
     padding-bottom: 13px;
     background-color: transparent;
 }
+
 .ant-tabs-tab {
     font-size: 56px !important;
     font-family: Figtree !important;
@@ -13,6 +14,7 @@
     height: 15% !important;
     padding-top: 5% !important;
 }
+
 .strategic-input {
     width: 100%;
     min-width: 100%;
@@ -28,6 +30,7 @@
     text-align: center !important;
     background: transparent !important;
 }
+
 .ant-form-item-explain-error {
     font-size: 48px !important;
     font-family: Figtree !important;
@@ -35,10 +38,12 @@
     color: red !important;
     text-align: center !important;
 }
+
 .banner {
     font-size: 50px;
     vertical-align: top;
 }
+
 .submitbutton {
     width: 50%;
     min-width: 50%;

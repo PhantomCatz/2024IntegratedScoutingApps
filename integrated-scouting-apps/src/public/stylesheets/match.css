@@ -1,13 +1,18 @@
-input[type="checkbox"], .ant-checkbox-inner {
+input[type="checkbox"],
+.ant-checkbox-inner {
     height: 0px !important;
     width: 0px !important;
 }
-input[type="number"]::-webkit-inner-spin-button, .ant-input-number-handler-wrap {
+
+input[type="number"]::-webkit-inner-spin-button,
+.ant-input-number-handler-wrap {
     opacity: 0.0 !important;
 }
+
 h2 {
     margin: 0;
 }
+
 .ant-input {
     height: 20%;
     min-height: 20%;
@@ -15,9 +20,11 @@ h2 {
     padding-bottom: 13px;
     background-color: transparent;
 }
+
 .ant-form-item-control-input {
     height: fit-content;
 }
+
 .ant-input-number {
     height: 20% !important;
     min-height: 20% !important;
@@ -28,6 +35,7 @@ h2 {
     color: white !important;
     text-align: center !important;
 }
+
 .ant-tabs-tab {
     font-size: 48px !important;
     font-family: Figtree !important;
@@ -36,7 +44,9 @@ h2 {
     height: 15% !important;
     padding-top: 5% !important;
 }
-.ant-checkbox-checked, .ant-checkbox-wrapper-checked {
+
+.ant-checkbox-checked,
+.ant-checkbox-wrapper-checked {
     background-color: #61f761 !important;
     border-color: #000000;
     width: 100%;
@@ -44,6 +54,7 @@ h2 {
     height: 120px !important;
     min-height: 120px !important;
 }
+
 .ant-select-selection-item {
     font-size: 48px !important;
     font-family: Figtree !important;
@@ -52,6 +63,7 @@ h2 {
     height: 15% !important;
     text-align: center !important;
 }
+
 .ant-input-number-input {
     font-family: Figtree !important;
     font-weight: bold !important;
@@ -59,6 +71,7 @@ h2 {
     text-align: center !important;
     padding: 0px !important;
 }
+
 .ant-form-item-explain-error {
     font-size: 48px !important;
     font-family: Figtree !important;
@@ -66,16 +79,20 @@ h2 {
     color: red !important;
     text-align: center !important;
 }
+
 .ant-select-item-option-content {
     font-size: 64px !important;
     font-family: Figtree !important;
     font-weight: bold !important;
     text-align: center !important;
 }
+
 .ant-select-selection-overflow-item {
     height: 120px !important;
 }
-.ant-select-selection-placeholder, .ant-select-selection-item {
+
+.ant-select-selection-placeholder,
+.ant-select-selection-item {
     height: 120px !important;
     line-height: 50px !important;
     color: white;
@@ -87,6 +104,7 @@ h2 {
     justify-content: center !important;
     padding-right: 0px !important;
 }
+
 .ant-select-selector {
     width: 100% !important;
     height: 120px !important;
@@ -95,19 +113,25 @@ h2 {
     text-align: center !important;
     font-size: small;
 }
+
 .anticon {
     width: 0px !important;
     height: 0px !important;
 }
+
 .rc-virtual-list-holder {
     max-height: 500% !important;
 }
-.ant-tabs-tab,.ant-tabs-tab-active {
+
+.ant-tabs-tab,
+.ant-tabs-tab-active {
     margin-top: 50px !important;
 }
+
 .ant-input-number-group-addon {
     padding: 0px !important;
 }
+
 .input {
     width: 100%;
     min-width: 100%;
@@ -122,6 +146,7 @@ h2 {
     color: white !important;
     text-align: center !important;
 }
+
 .input_checkbox {
     width: 100%;
     min-width: 100%;
@@ -136,6 +161,7 @@ h2 {
     color: white !important;
     text-align: center !important;
 }
+
 .pathbutton {
     width: 33% !important;
     min-width: 33%;
@@ -150,6 +176,7 @@ h2 {
     color: white !important;
     text-align: center !important;
 }
+
 .tabbutton {
     width: 50%;
     min-width: 50%;
@@ -165,6 +192,7 @@ h2 {
     text-align: center !important;
     margin-top: 5%;
 }
+
 .submitbutton {
     width: 50%;
     min-width: 50%;
@@ -180,6 +208,7 @@ h2 {
     margin-top: 5%;
     padding-top: 0 !important;
 }
+
 .incrementbutton {
     height: 120px !important;
     border-top-right-radius: 20px !important;
@@ -190,6 +219,7 @@ h2 {
     border-left: 4px solid white !important;
     width: 250px !important;
 }
+
 .decrementbutton {
     height: 120px !important;
     border-top-left-radius: 20px !important;

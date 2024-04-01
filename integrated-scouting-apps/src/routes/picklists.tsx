@@ -13,9 +13,9 @@ function Picklists(props: any) {
   const [cookies] = useCookies(['login', 'theme']);
   const [loading, setLoading] = useState(false);
   const [fetchedData, setFetchedData] = useState<{ [x: string]: any; }[]>([]);
-  useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
-  useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => {}}, [cookies.theme]);
-  useEffect(() => {document.title = props.title}, [props.title]);
+  useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => { } }, [cookies.login]);
+  useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => { } }, [cookies.theme]);
+  useEffect(() => { document.title = props.title }, [props.title]);
   useEffect(() => {
     async function fetchData() {
       try {
@@ -58,10 +58,10 @@ function Picklists(props: any) {
               teams[data[team].team_number].third_score = data[team].score;
             }
             teams[data[team].team_number].score += data[team].score;
-            teams[data[team].team_number].auto_scored_pieces += data[team].auto_scored_pieces; 
-            teams[data[team].team_number].teleop_amps_scored+= data[team].teleop_amps_scored; 
+            teams[data[team].team_number].auto_scored_pieces += data[team].auto_scored_pieces;
+            teams[data[team].team_number].teleop_amps_scored += data[team].teleop_amps_scored;
             teams[data[team].team_number].teleop_speaker_scored += data[team].teleop_speaker_scored;
-  
+
             teams[data[team].team_number].auto_missed_pieces += data[team].auto_missed_pieces;
             teams[data[team].team_number].teleop_missed_amps += data[team].teleop_missed_amps;
             teams[data[team].team_number].teleop_missed_speaker += data[team].teleop_missed_speaker;
@@ -74,7 +74,7 @@ function Picklists(props: any) {
         }
         for (const team in teams) {
           teams[teams[team].team_number].avg_score = Math.round((teams[teams[team].team_number].score / teams[teams[team].team_number].match_number) * 100) / 100;
-          teams[teams[team].team_number].iegr = Math.round((teams[teams[team].team_number].first_score + teams[teams[team].team_number].second_score + teams[teams[team].team_number].third_score) / 3  * 100) / 100;
+          teams[teams[team].team_number].iegr = Math.round((teams[teams[team].team_number].first_score + teams[teams[team].team_number].second_score + teams[teams[team].team_number].third_score) / 3 * 100) / 100;
 
           teams[teams[team].team_number].auto_score_ratio = teams[teams[team].team_number].auto_scored_pieces + "/" + (teams[teams[team].team_number].auto_scored_pieces + teams[teams[team].team_number].auto_missed_pieces);
           teams[teams[team].team_number].auto_scored_pieces = Math.round(teams[teams[team].team_number].auto_scored_pieces / teams[teams[team].team_number].match_number * 100) / 100;
@@ -120,20 +120,20 @@ function Picklists(props: any) {
               </tr>
             </tbody>
           </table>
-        </header>        
-        <h2 style={{whiteSpace: 'pre-line'}}>{loading ? 'Loading Data...' : ''}</h2>
+        </header>
+        <h2 style={{ whiteSpace: 'pre-line' }}>{loading ? 'Loading Data...' : ''}</h2>
         <Table dataSource={fetchedData} pagination={{ pageSize: 500 }}>
-          <Column title="Rank #" dataIndex="rank" key="rank" sorter={(a: any, b: any) => a.rank - b.rank}/>
-          <Column title="Team #" dataIndex="team_number" key="team_number" sorter={(a: any, b: any) => a.team_number - b.team_number}/>
-          <Column title="Overall Score" dataIndex="avg_score" key="avg_score" sorter={(a: any, b: any) => a.avg_score - b.avg_score} defaultSortOrder={"descend"}/>
-          <Column title="IEGR (Top 3)" dataIndex="iegr" key="iegr" sorter={(a: any, b: any) => a.iegr - b.iegr}/>
-          <Column title="Auton Avg" dataIndex="auto_scored_pieces" key="auto_scored_pieces" sorter={(a: any, b: any) => a.auto_scored_pieces - b.auto_scored_pieces}/>
-          <Column title="Auton (Scr/Att)" dataIndex="auto_score_ratio" key="auto_score_ratio" sorter={(a: any, b: any) => a.auto_score_ratio.length - b.auto_score_ratio.length}/>
-          <Column title="Teleop Amp Avg" dataIndex="teleop_amps_scored" key="teleop_amps_scored" sorter={(a: any, b: any) => a.teleop_amps_scored - b.teleop_amps_scored}/>
-          <Column title="Teleop Amp (Scr/Att)" dataIndex="amp_score_ratio" key="amp_score_ratio" sorter={(a: any, b: any) => a.amp_score_ratio.length - b.amp_score_ratio.length}/>
-          <Column title="Teleop Spkr Avg" dataIndex="teleop_speaker_scored" key="teleop_speaker_scored" sorter={(a: any, b: any) => a.teleop_speaker_scored - b.teleop_speaker_scored}/>
-          <Column title="Teleop Spkr (Scr/Att)" dataIndex="speaker_score_ratio" key="speaker_score_ratio" sorter={(a: any, b: any) => a.speaker_score_ratio.length - b.speaker_score_ratio.length}/>
-          <Column title="Robot Deaths" dataIndex="robot_died" key="robot_died" sorter={(a: any, b: any) => a.robot_died - b.robot_died} className='robotdied'/>
+          <Column title="Rank #" dataIndex="rank" key="rank" sorter={(a: any, b: any) => a.rank - b.rank} />
+          <Column title="Team #" dataIndex="team_number" key="team_number" sorter={(a: any, b: any) => a.team_number - b.team_number} />
+          <Column title="Overall Score" dataIndex="avg_score" key="avg_score" sorter={(a: any, b: any) => a.avg_score - b.avg_score} defaultSortOrder={"descend"} />
+          <Column title="IEGR (Top 3)" dataIndex="iegr" key="iegr" sorter={(a: any, b: any) => a.iegr - b.iegr} />
+          <Column title="Auton Avg" dataIndex="auto_scored_pieces" key="auto_scored_pieces" sorter={(a: any, b: any) => a.auto_scored_pieces - b.auto_scored_pieces} />
+          <Column title="Auton (Scr/Att)" dataIndex="auto_score_ratio" key="auto_score_ratio" sorter={(a: any, b: any) => a.auto_score_ratio.length - b.auto_score_ratio.length} />
+          <Column title="Teleop Amp Avg" dataIndex="teleop_amps_scored" key="teleop_amps_scored" sorter={(a: any, b: any) => a.teleop_amps_scored - b.teleop_amps_scored} />
+          <Column title="Teleop Amp (Scr/Att)" dataIndex="amp_score_ratio" key="amp_score_ratio" sorter={(a: any, b: any) => a.amp_score_ratio.length - b.amp_score_ratio.length} />
+          <Column title="Teleop Spkr Avg" dataIndex="teleop_speaker_scored" key="teleop_speaker_scored" sorter={(a: any, b: any) => a.teleop_speaker_scored - b.teleop_speaker_scored} />
+          <Column title="Teleop Spkr (Scr/Att)" dataIndex="speaker_score_ratio" key="speaker_score_ratio" sorter={(a: any, b: any) => a.speaker_score_ratio.length - b.speaker_score_ratio.length} />
+          <Column title="Robot Deaths" dataIndex="robot_died" key="robot_died" sorter={(a: any, b: any) => a.robot_died - b.robot_died} className='robotdied' />
         </Table>
       </div>
     </div>

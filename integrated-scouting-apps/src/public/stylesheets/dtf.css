@@ -10,6 +10,7 @@
     color: white !important;
     text-align: center !important;
 }
+
 .input_checkbox {
     width: 294px !important;
     min-width: 100%;
@@ -24,6 +25,7 @@
     color: white !important;
     text-align: center !important;
 }
+
 .input_checkbox_filled {
     width: 294px !important;
     min-width: 100%;
@@ -38,6 +40,7 @@
     color: white !important;
     text-align: center !important;
 }
+
 .textbox_input {
     width: 100%;
     min-width: 100%;
@@ -54,6 +57,7 @@
     background: transparent !important;
     margin-bottom: 5%;
 }
+
 .summary_text {
     text-align: center !important;
 }

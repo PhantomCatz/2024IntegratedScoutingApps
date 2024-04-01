@@ -30,9 +30,9 @@ function PitScout(props: any) {
     robot_team_workmanship: 0,
     robot_GP: 0,
   });
-	useEffect(() => {document.title = props.title; return () => {}}, [props.title]);
-  useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
-  useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => {}}, [cookies.theme]);
+  useEffect(() => { document.title = props.title; return () => { } }, [props.title]);
+  useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => { } }, [cookies.login]);
+  useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => { } }, [cookies.theme]);
   useEffect(() => {
     if ((document.getElementById("robot_events") as HTMLInputElement) !== null) {
       (document.getElementById("robot_events") as HTMLInputElement).value = formValue.robot_events.toString();
@@ -62,7 +62,7 @@ function PitScout(props: any) {
       (document.getElementById("robot_GP") as HTMLInputElement).value = formValue.robot_GP.toString();
       form.setFieldValue('robot_GP', formValue.robot_GP);
     }
-    return () => {};
+    return () => { };
   }, [formValue, form]);
 
   async function submitData(event: any) {
@@ -136,7 +136,7 @@ function PitScout(props: any) {
     ];
     const motor_type = [
       { label: "Falcon 500", value: "falcon500" },
-      { label: "Kraken", value: "kraken"},
+      { label: "Kraken", value: "kraken" },
       { label: "NEO", value: "neo" },
       { label: "CIM", value: 'cim' },
       { label: "Other", value: 'other' },
@@ -167,14 +167,14 @@ function PitScout(props: any) {
       { label: "Solo Climb", value: "solo_climb" },
       { label: "Harmonize", value: "harmonize" },
       { label: "Triple Climb", value: 'triple_climb' },
-      { label: "No Climb", value: "no_climb"}
+      { label: "No Climb", value: "no_climb" }
     ];
     return (
       <div>
         <h2>Scouter Initials</h2>
         <Form.Item<FieldType> name="scouter_initial" rules={[{ required: true, message: 'Please input your initials!' }]}>
           <Input maxLength={2} className="input" />
-        </Form.Item> 
+        </Form.Item>
         <h2>Team #</h2>
         <Form.Item<FieldType> name="team_number" rules={[{ required: true, message: 'Please input the team number!' }]}>
           <InputNumber controls min={1} max={9999} className="input" />
@@ -188,11 +188,11 @@ function PitScout(props: any) {
             max={4}
             className="input"
             addonAfter={<Button onClick={() => {
-              setFormValue({...formValue, robot_events: formValue.robot_events + 1});
+              setFormValue({ ...formValue, robot_events: formValue.robot_events + 1 });
             }} className='incrementbutton'>+</Button>}
             addonBefore={<Button onClick={() => {
               if (Number(formValue.robot_events) > 0) {
-                setFormValue({...formValue, robot_events: formValue.robot_events - 1});
+                setFormValue({ ...formValue, robot_events: formValue.robot_events - 1 });
               }
             }} className='decrementbutton'>-</Button>}
           />
@@ -204,17 +204,17 @@ function PitScout(props: any) {
         <h2>Robot Weight</h2>
         <Form.Item<FieldType> name="robot_weight" rules={[{ required: true, message: 'Please input the robot weight in lbs!' }]}>
           <InputNumber
-            controls 
+            controls
             disabled
             min={0}
             max={4}
             className="input"
             addonAfter={<Button onClick={() => {
-              setFormValue({...formValue, robot_weight: formValue.robot_weight + 1});
+              setFormValue({ ...formValue, robot_weight: formValue.robot_weight + 1 });
             }} className='incrementbutton'>+</Button>}
             addonBefore={<Button onClick={() => {
               if (Number(formValue.robot_weight) > 0) {
-                setFormValue({...formValue, robot_weight: formValue.robot_weight - 1});
+                setFormValue({ ...formValue, robot_weight: formValue.robot_weight - 1 });
               }
             }} className='decrementbutton'>-</Button>}
           />
@@ -226,17 +226,17 @@ function PitScout(props: any) {
         <h2># of Motors</h2>
         <Form.Item<FieldType> name="robot_motor_counter" rules={[{ required: true, message: 'Please input the number of motors!' }]}>
           <InputNumber
-            controls 
+            controls
             disabled
             min={0}
             max={4}
             className="input"
             addonAfter={<Button onClick={() => {
-              setFormValue({...formValue, robot_motor_counter: formValue.robot_motor_counter + 1});
+              setFormValue({ ...formValue, robot_motor_counter: formValue.robot_motor_counter + 1 });
             }} className='incrementbutton'>+</Button>}
             addonBefore={<Button onClick={() => {
               if (Number(formValue.robot_motor_counter) > 0) {
-                setFormValue({...formValue, robot_motor_counter: formValue.robot_motor_counter - 1});
+                setFormValue({ ...formValue, robot_motor_counter: formValue.robot_motor_counter - 1 });
               }
             }} className='decrementbutton'>-</Button>}
           />
@@ -273,10 +273,10 @@ function PitScout(props: any) {
           strokeColor='#32a7dc'
           backgroundImage={field_blue}
           exportWithBackgroundImage
-          svgStyle={{width: '882px', height: '882px'}}
+          svgStyle={{ width: '882px', height: '882px' }}
           style={{ marginBottom: '5%' }}
         />
-        <Flex justify='in-between' style={{marginBottom: '5%'}}>
+        <Flex justify='in-between' style={{ marginBottom: '5%' }}>
           <Button onClick={() => canvasRef.current?.undo()} className='pathbutton'>Undo</Button>
           <Button onClick={() => canvasRef.current?.redo()} className='pathbutton'>Redo</Button>
           <Button onClick={() => canvasRef.current?.clearCanvas()} className='pathbutton'>Clear</Button>
@@ -284,17 +284,17 @@ function PitScout(props: any) {
         <h2>Pit Organization</h2>
         <Form.Item<FieldType> name="robot_pit_organization" rules={[{ required: true, message: 'Please input the pit organization rating!' }]}>
           <InputNumber
-            controls 
+            controls
             disabled
             min={0}
             max={4}
             className="input"
             addonAfter={<Button onClick={() => {
-              setFormValue({...formValue, robot_pit_organization: formValue.robot_pit_organization + 1});
+              setFormValue({ ...formValue, robot_pit_organization: formValue.robot_pit_organization + 1 });
             }} className='incrementbutton'>+</Button>}
             addonBefore={<Button onClick={() => {
               if (Number(formValue.robot_pit_organization) > 0) {
-                setFormValue({...formValue, robot_pit_organization: formValue.robot_pit_organization - 1});
+                setFormValue({ ...formValue, robot_pit_organization: formValue.robot_pit_organization - 1 });
               }
             }} className='decrementbutton'>-</Button>}
           />
@@ -302,17 +302,17 @@ function PitScout(props: any) {
         <h2>Team Safety</h2>
         <Form.Item<FieldType> name="robot_team_safety" rules={[{ required: true, message: 'Please input the team safety rating!' }]}>
           <InputNumber
-            controls 
+            controls
             disabled
             min={0}
             max={4}
             className="input"
             addonAfter={<Button onClick={() => {
-              setFormValue({...formValue, robot_team_safety: formValue.robot_team_safety + 1});
+              setFormValue({ ...formValue, robot_team_safety: formValue.robot_team_safety + 1 });
             }} className='incrementbutton'>+</Button>}
             addonBefore={<Button onClick={() => {
               if (Number(formValue.robot_team_safety) > 0) {
-                setFormValue({...formValue, robot_team_safety: formValue.robot_team_safety - 1});
+                setFormValue({ ...formValue, robot_team_safety: formValue.robot_team_safety - 1 });
               }
             }} className='decrementbutton'>-</Button>}
           />
@@ -320,35 +320,35 @@ function PitScout(props: any) {
         <h2>Team Workmanship</h2>
         <Form.Item<FieldType> name="robot_team_workmanship" rules={[{ required: true, message: 'Please input the team workmanship rating!' }]}>
           <InputNumber
-            controls 
+            controls
             disabled
             min={0}
             max={4}
             className="input"
             addonAfter={<Button onClick={() => {
-              setFormValue({...formValue, robot_team_workmanship: formValue.robot_team_workmanship + 1});
+              setFormValue({ ...formValue, robot_team_workmanship: formValue.robot_team_workmanship + 1 });
             }} className='incrementbutton'>+</Button>}
             addonBefore={<Button onClick={() => {
               if (Number(formValue.robot_team_workmanship) > 0) {
-                setFormValue({...formValue, robot_team_workmanship: formValue.robot_team_workmanship - 1});
+                setFormValue({ ...formValue, robot_team_workmanship: formValue.robot_team_workmanship - 1 });
               }
             }} className='decrementbutton'>-</Button>}
           />
         </Form.Item>
         <h2>Gracious Professionalism (0-4)</h2>
-        <Form.Item<FieldType> name="robot_GP" rules={[{ required: true, message: 'Please input the GP rating!'}]}>
+        <Form.Item<FieldType> name="robot_GP" rules={[{ required: true, message: 'Please input the GP rating!' }]}>
           <InputNumber
             controls
-            disabled 
+            disabled
             min={0}
             max={4}
             className="input"
             addonAfter={<Button onClick={() => {
-              setFormValue({...formValue, robot_GP: formValue.robot_GP + 1});
+              setFormValue({ ...formValue, robot_GP: formValue.robot_GP + 1 });
             }} className='incrementbutton'>+</Button>}
             addonBefore={<Button onClick={() => {
               if (Number(formValue.robot_GP) > 0) {
-                setFormValue({...formValue, robot_GP: formValue.robot_GP - 1});
+                setFormValue({ ...formValue, robot_GP: formValue.robot_GP - 1 });
               }
             }} className='decrementbutton'>-</Button>}
           />
@@ -363,19 +363,19 @@ function PitScout(props: any) {
               }
               else {
                 const reader = new FileReader();
-                reader.onload = (event) => {setRobotImageURI([...robotImageURI, event.target?.result as string]);}
-                reader.readAsDataURL(file);  
+                reader.onload = (event) => { setRobotImageURI([...robotImageURI, event.target?.result as string]); }
+                reader.readAsDataURL(file);
               }
               return isImage || Upload.LIST_IGNORE;
             }}
-            style={{width: '100%'}}
+            style={{ width: '100%' }}
             name='robot_images'
           >
-            <Button className='input' style={{marginBottom: '5%'}}>Upload Images</Button>
+            <Button className='input' style={{ marginBottom: '5%' }}>Upload Images</Button>
           </Upload>
         </Form.Item>
-        <h2 style={{display: loading ? 'inherit' : 'none'}}>Submitting data...</h2>
-        <Input type="submit" value="Submit" className='submit' style={{marginBottom: '5%'}} onClick={async (event) => {await canvasRef.current?.exportImage('png').then((data) => {imageURI.current = data;})}} />
+        <h2 style={{ display: loading ? 'inherit' : 'none' }}>Submitting data...</h2>
+        <Input type="submit" value="Submit" className='submit' style={{ marginBottom: '5%' }} onClick={async (event) => { await canvasRef.current?.exportImage('png').then((data) => { imageURI.current = data; }) }} />
       </div>
     );
   }
@@ -384,7 +384,7 @@ function PitScout(props: any) {
       <div className='banner'>
         <header>
           <a href='/scoutingapp'>
-            <img src={back} style={{ height: 64 + 'px', paddingTop: '5%' }} alt=''></img>  
+            <img src={back} style={{ height: 64 + 'px', paddingTop: '5%' }} alt=''></img>
           </a>
           <table>
             <tbody>
@@ -400,39 +400,39 @@ function PitScout(props: any) {
           </table>
         </header>
       </div>
-      <Form 
+      <Form
         form={form}
         initialValues={{
           robot_ability_traversed_stage: false,
           robot_trap_detail: '',
         }}
         onFinish={async (event) => {
-        try {
-          setLoading(true);
-          await submitData(event);
-          const initials = form.getFieldValue("scouter_initial");
-          const f = form.getFieldValue("robot_images");
-          console.log(f);
-          form.resetFields();
-          form.setFieldsValue({"scouter_initial": initials});
-          setFormValue({
-            robot_events: 0,
-            robot_weight: 0,
-            robot_motor_counter: 0,
-            robot_pit_organization: 0,
-            robot_team_safety: 0,
-            robot_team_workmanship: 0,
-            robot_GP: 0,
-          });
-        }
-        catch (err) {
-          console.log(err);
-          window.alert("Error occured, please do not do leave this message and notify a Webdev member immediately.");
-          window.alert(err);
-        }
-        finally {
-          setLoading(false);
-        }
+          try {
+            setLoading(true);
+            await submitData(event);
+            const initials = form.getFieldValue("scouter_initial");
+            const f = form.getFieldValue("robot_images");
+            console.log(f);
+            form.resetFields();
+            form.setFieldsValue({ "scouter_initial": initials });
+            setFormValue({
+              robot_events: 0,
+              robot_weight: 0,
+              robot_motor_counter: 0,
+              robot_pit_organization: 0,
+              robot_team_safety: 0,
+              robot_team_workmanship: 0,
+              robot_GP: 0,
+            });
+          }
+          catch (err) {
+            console.log(err);
+            window.alert("Error occured, please do not do leave this message and notify a Webdev member immediately.");
+            window.alert(err);
+          }
+          finally {
+            setLoading(false);
+          }
         }}
       >
         {Pit()}

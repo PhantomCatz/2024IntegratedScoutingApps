@@ -15,10 +15,10 @@ function Strategic(props: any) {
   const [teamNum, setTeamNum] = useState(0);
   const [isLoading, setLoading] = useState(false);
   const [roundIsVisible, setRoundIsVisible] = useState(false);
-	useEffect(() => {document.title = props.title; return () => {}}, [props.title]);
+  useEffect(() => { document.title = props.title; return () => { } }, [props.title]);
   const [cookies] = useCookies(['login', 'theme']);
-  useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
-  useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => {}}, [cookies.theme]);
+  useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => { } }, [cookies.login]);
+  useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => { } }, [cookies.theme]);
   //useEffect(() => { getComments(teamNum); return () => {}}, [teamNum]);
   const eventname = process.env.REACT_APP_EVENTNAME;
 
@@ -35,7 +35,7 @@ function Strategic(props: any) {
           "match_number": event.matchnum,
           "team_number": event.teamnum,
         },
-          "comment": event.comments,
+        "comment": event.comments,
         "timesAmplified": event.timesamplified,
       };
       // eslint-disable-next-line
@@ -64,9 +64,9 @@ function Strategic(props: any) {
               "Content-Type": "application/json",
             }
           })
-          .then(async (response) => await response.json()).then(async (data) => {
-            window.alert(data.insertedId);
-          });
+            .then(async (response) => await response.json()).then(async (data) => {
+              window.alert(data.insertedId);
+            });
         }
       }
       catch (err) {
@@ -199,19 +199,19 @@ function Strategic(props: any) {
         </Form.Item>
         <h2>Match Level</h2>
         <Form.Item<FieldType> name="matchlevel" rules={[{ required: true, message: 'Please input the match level!' }]}>
-          <Select options={rounds} className="input" onChange={() => {calculateMatchLevel(); updateTeamNumber();}}/>
+          <Select options={rounds} className="input" onChange={() => { calculateMatchLevel(); updateTeamNumber(); }} />
         </Form.Item>
         <h2>Match #</h2>
         <Form.Item<FieldType> name="matchnum" rules={[{ required: true, message: 'Please input the match number!' }]}>
-          <InputNumber min={1} className="input" onChange={() => {updateTeamNumber();}}/>
+          <InputNumber min={1} className="input" onChange={() => { updateTeamNumber(); }} />
         </Form.Item>
         <h2 style={{ display: roundIsVisible ? 'inherit' : 'none' }}>Round #</h2>
         <Form.Item<FieldType> name="roundnum" rules={[{ required: roundIsVisible ? true : false, message: 'Please input the round number!' }]} style={{ display: roundIsVisible ? 'inherit' : 'none' }}>
-          <InputNumber min={1} onChange={() => {updateTeamNumber();}} style={{ display: roundIsVisible ? 'inherit' : 'none' }} className="input" type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} />
+          <InputNumber min={1} onChange={() => { updateTeamNumber(); }} style={{ display: roundIsVisible ? 'inherit' : 'none' }} className="input" type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLElement).blur()} />
         </Form.Item>
         <h2>Robot Position</h2>
         <Form.Item<FieldType> name="robotpos" rules={[{ required: true, message: 'Please input the robot position!' }]}>
-          <Select options={robotpos} onChange={() => {updateTeamNumber();}} className="input" />
+          <Select options={robotpos} onChange={() => { updateTeamNumber(); }} className="input" />
         </Form.Item>
         <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
           <Button onClick={() => setTabNum("2")} className='tabbutton'>Next</Button>

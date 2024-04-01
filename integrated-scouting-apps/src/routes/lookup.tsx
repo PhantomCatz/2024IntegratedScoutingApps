@@ -12,9 +12,9 @@ function DataLookup(props: any) {
 	const [form] = Form.useForm();
 	const [cookies] = useCookies(['login', 'theme']);
 	const [fetchedData, setFetchedData] = useState([]);
-	useEffect(() => {document.title = props.title; return () => {}}, [props.title]);
-	useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
-	useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => {}}, [cookies.theme]);
+	useEffect(() => { document.title = props.title; return () => { } }, [props.title]);
+	useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => { } }, [cookies.login]);
+	useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => { } }, [cookies.theme]);
 	useEffect(() => {
 		async function getTeams() {
 			try {

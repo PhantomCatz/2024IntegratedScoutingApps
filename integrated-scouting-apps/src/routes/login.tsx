@@ -12,8 +12,8 @@ function LoginPage(props: any) {
 	const [isLoading, setIsLoading] = useState(false);
 	// eslint-disable-next-line
 	const [cookies, setCookies, removeCookies] = useCookies(['login', 'theme']);
-  useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => {}}, [cookies.theme]);
-	useEffect(() => {document.title = props.title; return () => {}}, [props.title]);
+	useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => { } }, [cookies.theme]);
+	useEffect(() => { document.title = props.title; return () => { } }, [props.title]);
 
 	type FieldType = {
 		username: string,
@@ -82,7 +82,7 @@ function LoginPage(props: any) {
 				<Form.Item<FieldType> name="password" rules={[{ required: true, message: 'Please input your password!' }]}>
 					<Input.Password className='input' autoComplete='current-password' />
 				</Form.Item>
-				<Input type="submit" value="Submit" className='submit' style={{marginTop: '5%'}} />
+				<Input type="submit" value="Submit" className='submit' style={{ marginTop: '5%' }} />
 				<h2 style={{ display: isLoading ? 'inherit' : 'none' }}>Submitting data...</h2>
 			</Form>
 		</div>

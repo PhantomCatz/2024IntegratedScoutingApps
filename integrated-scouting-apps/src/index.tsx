@@ -36,15 +36,15 @@ export default function App() {
         <Route path="/scoutingapp/strategic/comment" element={<StrategicComment title="2637 Strategic Scout" />} />
         <Route path="/scoutingapp/strategic/driverskill" element={<DriverSkill title="2637 Driver Skill" />} />
         <Route path="/scoutingapp/pit" element={<PitScout title="2637 Pit Scout" />} />
-        <Route path="/scoutingapp/lookup" element={<DataLookup title="2637 Data Lookup" />} />        
-        <Route path="/scoutingapp/lookup/teamData/:team_number" element ={<TeamData title="2637 Data Lookup" />} />
+        <Route path="/scoutingapp/lookup" element={<DataLookup title="2637 Data Lookup" />} />
+        <Route path="/scoutingapp/lookup/teamData/:team_number" element={<TeamData title="2637 Data Lookup" />} />
         <Route path="/scoutingapp/picklists" element={<Picklist title="2637 Picklists" />} />
         <Route path="/dtf" element={<DTF title="2637 Drive Team Feeder" />} />
         <Route path="/dtf/:team_number" element={<DTFTeams title="2637 Drive Team Feeder" />} />
-        <Route path="/watchlist" element = {<Watchlist title="2637 Watch List"/>}/>
+        <Route path="/watchlist" element={<Watchlist title="2637 Watch List" />} />
         <Route path="/watchlist/:team_number" element={<WatchlistGet title="2637 Watch List" />} />
         <Route path="/watchlist/update/:question_info" element={<WatchlistUpdate title="2637 Watch List" />} />
-        <Route path="/buh" element={<Buh/>} />
+        <Route path="/buh" element={<Buh />} />
       </Routes>
     </BrowserRouter>
   );
