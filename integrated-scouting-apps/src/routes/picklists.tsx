@@ -7,6 +7,7 @@ import VerifyLogin from '../verifyToken';
 import { useCookies } from 'react-cookie';
 import Column from 'antd/es/table/Column';
 import { Table } from 'antd';
+import { saveAs } from 'file-saver';
 
 function Picklists(props: any) {
   const [cookies] = useCookies(['login', 'theme']);
@@ -23,7 +24,7 @@ function Picklists(props: any) {
         const kv = [];
         const response = await fetch(process.env.REACT_APP_PICKLIST_URL as string);
         const data = await response.json();
-        console.log(data);
+        saveAs(new Blob([JSON.stringify(data)], { type: "text/json" }), "j.json");
         for (const team in data) {
           if (teams[data[team].team_number] === undefined) {
             teams[data[team].team_number] = (data[team]);

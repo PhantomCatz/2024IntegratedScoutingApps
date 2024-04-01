@@ -16,7 +16,6 @@ async function VerifyLogin(cookie: any) {
 async function ChangeTheme(cookie: any) {
   try {
     if (cookie === "og") {
-      setTimeout(() => {}, 50);
       document.body.style.backgroundColor = "#32a7dc";
     }
     else if (cookie === "看") {
