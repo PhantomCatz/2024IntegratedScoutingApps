@@ -4,13 +4,20 @@ async function VerifyLogin(cookie: any) {
   try {
     const hash = base64url.decode(process.env.REACT_APP_HASH as string);
     const payload = await jwtVerify(cookie, hash);
-    if (!payload) {
+    if (payload && window.location.pathname === "/") {
+      window.location.href = "/home";
+    }
+    else if (!payload && window.location.pathname !== "/") {
       window.location.href = "/";
     }
   }
   catch (err) {
-    console.log(err);
-    window.location.href = "/";
+    if (window.location.pathname === "/") {
+
+    }
+    else {
+      window.location.href = "/";
+    }
   }
 }
 async function ChangeTheme(cookie: any) {
