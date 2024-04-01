@@ -442,6 +442,7 @@ function MatchScout(props: any) {
         <Form.Item<FieldType> name="startingloc" rules={[{ required: true, message: 'Please input the starting location!' }]}>
           <Select options={startingloc} className="input" />
         </Form.Item>
+        <h2>Auton Path</h2>
         <ReactSketchCanvas
           ref={autonCanvasRef}
           strokeWidth={8}
@@ -1007,7 +1008,7 @@ function MatchScout(props: any) {
           }
         }}
       >
-        <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} className='tabs' centered onChange={async (key) => { if (Number(key) === 1 || Number(key) === 3) {await autonCanvasRef.current?.exportImage('png').then( (data) => {autonImageURI.current = data; console.log(data)})} setTabNum(key); }} />
+        <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} className='tabs' centered onChange={async (key) => { if ((Number(key) === 1 || Number(key) === 3) && Number(tabNum) === 2) {await autonCanvasRef.current?.exportImage('png').then( (data) => {autonImageURI.current = data;})} setTabNum(key); }} />
       </Form>
     </div>
   );

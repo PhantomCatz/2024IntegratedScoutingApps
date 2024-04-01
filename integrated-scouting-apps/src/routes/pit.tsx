@@ -3,8 +3,7 @@ import '../public/stylesheets/pit.css';
 import '../public/stylesheets/match.css';
 import field_blue from '../public/images/field_blue.png';
 import logo from '../public/images/logo.png';
-import { Checkbox, Flex, Form, Input, InputNumber, message, Select, Upload } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { Checkbox, Flex, Form, Input, InputNumber, Select, Upload } from 'antd';
 import { useRef } from 'react';
 import { Button } from 'antd';
 import React, { useState, useEffect } from 'react';
@@ -21,6 +20,7 @@ function PitScout(props: any) {
   const [form] = Form.useForm();
   const [cookies] = useCookies(['login', 'theme']);
   const [loading, setLoading] = useState(false);
+  const [robotImageURI, setRobotImageURI] = useState([""]);
   const [formValue, setFormValue] = useState({
     robot_events: 0,
     robot_weight: 0,
@@ -126,6 +126,7 @@ function PitScout(props: any) {
       robot_GP: number,
       robot_auton_path: string,
       robot_auton_path_detail: string;
+      robot_images: string;
     };
     const drive_train = [
       { label: "Tank", value: "tank" },
@@ -353,17 +354,26 @@ function PitScout(props: any) {
           />
         </Form.Item>
         <h2>Robot Images</h2>
-        <Upload
-          beforeUpload={(file) => {
-            const isImage = file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg';
-            if (!isImage) {
-              message.error(`${file.name} is not an image file`);
-            }
-            return isImage || Upload.LIST_IGNORE;
-          }}
-        >
-          <Button icon={<UploadOutlined />}>Upload Images</Button>
-        </Upload>
+        <Form.Item<FieldType> name="robot_images">
+          <Upload
+            beforeUpload={(file) => {
+              const isImage = file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg';
+              if (!isImage) {
+                window.alert(`${file.name} is not an image`);
+              }
+              else {
+                const reader = new FileReader();
+                reader.onload = (event) => {setRobotImageURI([...robotImageURI, event.target?.result as string]);}
+                reader.readAsDataURL(file);  
+              }
+              return isImage || Upload.LIST_IGNORE;
+            }}
+            style={{width: '100%'}}
+            name='robot_images'
+          >
+            <Button className='input' style={{marginBottom: '5%'}}>Upload Images</Button>
+          </Upload>
+        </Form.Item>
         <h2 style={{display: loading ? 'inherit' : 'none'}}>Submitting data...</h2>
         <Input type="submit" value="Submit" className='submit' style={{marginBottom: '5%'}} onClick={async (event) => {await canvasRef.current?.exportImage('png').then((data) => {imageURI.current = data;})}} />
       </div>
@@ -401,6 +411,8 @@ function PitScout(props: any) {
           setLoading(true);
           await submitData(event);
           const initials = form.getFieldValue("scouter_initial");
+          const f = form.getFieldValue("robot_images");
+          console.log(f);
           form.resetFields();
           form.setFieldsValue({"scouter_initial": initials});
           setFormValue({
