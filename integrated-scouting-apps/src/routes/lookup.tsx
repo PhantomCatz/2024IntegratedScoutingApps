@@ -71,7 +71,7 @@ function DataLookup(props: any) {
 					<Form.Item name="teamNum" rules={[{ required: true, message: "Please input the team number!" }]}>
 						<InputNumber min={0} className="input" />
 					</Form.Item>
-					<Input type="submit" value="Submit" className='submit' />
+					<Input type="submit" value="Submit" className='submit'/>
 					<h2>List of Teams</h2>
 					{fetchedData}
 				</div>

@@ -13,6 +13,12 @@ import VerifyLogin from '../verifyToken';
 import { useCookies } from 'react-cookie';
 import { saveAs } from 'file-saver';
 import { ReactSketchCanvas, ReactSketchCanvasRef } from 'react-sketch-canvas';
+import React from 'react';
+import { render } from '@testing-library/react';
+import QRCodes from './qrCodes';
+
+
+
 
 function MatchScout(props: any) {
   const [form] = Form.useForm();
@@ -24,6 +30,7 @@ function MatchScout(props: any) {
   const [defendedIsVisible, setDefendedIsVisible] = useState(false);
   const [wasDefendedIsVisible, setWasDefendedIsVisible] = useState(false);
   const [opposingTeamNum, setOpposingTeamNum] = useState([""]);
+  const [text, setText] = React.useState("");
   const [formValue, setFormValue] = useState({
     autonSpeakerScored: 0,
     autonAmpScored: 0,
@@ -104,6 +111,7 @@ function MatchScout(props: any) {
       (document.getElementById("driverskill") as HTMLInputElement).value = formValue.driverSkillRating.toString();
       form.setFieldValue('driverskill', formValue.driverSkillRating);
     }
+    
     return () => {};
   }, [formValue, form]);
   async function setNewMatchScout(event: any) {
@@ -235,12 +243,15 @@ function MatchScout(props: any) {
           "OA_comments": "test",
         }
       }
-      try {
+      try { //LISA
         if (!window.navigator.onLine) {
-          window.alert("Your device is offline; please download the following .json file and give it to a Webdev member.");
-          saveAs(new Blob([JSON.stringify(body)], { type: "text/json" }), event.initials + event.matchnum + ".json");
+          window.alert("Your device is currently offline. Redirecting you to a QR Code on another tab.");
+          const qrCodeData = JSON.stringify(body);
+          localStorage.setItem('qrCodeData', qrCodeData); 
+          window.open('/qrCodes');
+          // saveAs(new Blob([JSON.stringify(body)], { type: "text/json" }), event.initials + event.matchnum + ".json");
         }
-        else {
+        else { 
           await fetch(process.env.REACT_APP_MATCH_URL as string, {
             method: "POST",
             body: JSON.stringify(body),
@@ -349,6 +360,7 @@ function MatchScout(props: any) {
     }
   }
   function preMatch() {
+
     type FieldType = {
       initials: string,
       matchlevel: string,
@@ -370,6 +382,7 @@ function MatchScout(props: any) {
       { label: "B2", value: "blue_2" },
       { label: "B3", value: 'blue_3' },
     ];
+   
     return (
       <div>
         <h2 style={{ color: 'white', paddingBottom: '35px' }}>Team: {teamNum}</h2>
@@ -398,7 +411,8 @@ function MatchScout(props: any) {
         </Flex>
       </div>
     );
-  }
+}
+
   function AutonMatch() {
     type FieldType = {
       auton_speakerscored: number,
@@ -925,6 +939,7 @@ function MatchScout(props: any) {
       children: overall(),
     },
   ];
+ 
   return (
     <div>
       <div className='banner'>
@@ -1000,7 +1015,7 @@ function MatchScout(props: any) {
           }
           catch (err) {
             console.log(err);
-            window.alert("Error occured, please do not do leave this message and notify a Webdev member immediately.");
+            window.alert("Error occured, Please Do Not Do Leave this Message and Notify a Webdev Member Immediately.");
             window.alert(err);
           }
           finally {
