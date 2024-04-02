@@ -26,7 +26,7 @@ h2 {
 body {
     margin: 0;
     font-family: Audiowide !important;
-    background-color: #433C3C;
+    background-color: #32a7dc;
     padding-left: 5%;
     padding-right: 5%;
     color: white;
@@ -37,10 +37,6 @@ a {
     color: white;
 }
 
-.ant-tabs-tab-active {
-    color: #32a7dc !important;
-}
-
 .ant-btn-default:hover,
 .ant-input-outlined:hover {
     background-color: transparent !important;
@@ -48,6 +44,17 @@ a {
 
 .ant-select-item {
     height: 125px !important;
+}
+
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: black !important;
+}
+.ant-tabs-ink-bar {
+    background-color: black !important;
+}
+
+.ant-tabs-ink-bar-animated {
+    transition: width 0.2s,left 0.2s,right 0.2s !important;
 }
 
 .banner {

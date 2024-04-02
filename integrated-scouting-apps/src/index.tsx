@@ -14,6 +14,7 @@ import DTFTeams from './routes/dtfteams';
 import StrategicScout from './routes/strategic';
 import StrategicComment from './routes/strategicComment';
 import DriverSkill from './routes/driverSkill';
+import StrategicLookup from './routes/strategicLookup';
 import PitScout from './routes/pit';
 import Buh from './routes/buh';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -35,6 +36,7 @@ export default function App() {
         <Route path="/scoutingapp/strategic" element={<StrategicScout title="2637 Strategic Scout" />} />
         <Route path="/scoutingapp/strategic/comment" element={<StrategicComment title="2637 Strategic Scout" />} />
         <Route path="/scoutingapp/strategic/driverskill" element={<DriverSkill title="2637 Driver Skill" />} />
+        <Route path="/scoutingapp/strategic/lookup" element={<StrategicLookup title="2637 Strategic Lookup" />} />
         <Route path="/scoutingapp/pit" element={<PitScout title="2637 Pit Scout" />} />
         <Route path="/scoutingapp/lookup" element={<DataLookup title="2637 Data Lookup" />} />
         <Route path="/scoutingapp/lookup/teamData/:team_number" element={<TeamData title="2637 Data Lookup" />} />

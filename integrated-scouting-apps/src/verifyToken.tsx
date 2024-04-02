@@ -33,9 +33,7 @@ async function ChangeTheme(cookie: any) {
     }
     else if (cookie.substring(0, 2) === "lg") {
       setInterval(() => {
-        const colors = ["#000000", "#433C3C", "#692090", "#32a7dc", "#4A412A", "#987654"];
-        const randomColor = colors[Math.floor(Math.random() * colors.length)];
-        document.body.style.backgroundColor = randomColor;
+        document.body.style.backgroundColor = `rgb(${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)})`;
       }, Number(cookie.substring(2)));
     }
     else if (cookie === "ds") {

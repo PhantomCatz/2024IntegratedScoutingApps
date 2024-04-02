@@ -19,7 +19,8 @@ function Strategic(props: any) {
   const [cookies] = useCookies(['login', 'theme']);
   useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => { } }, [cookies.login]);
   useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => { } }, [cookies.theme]);
-  //useEffect(() => { getComments(teamNum); return () => {}}, [teamNum]);
+  // useEffect(() => { getComments(teamNum); return () => {}}, [teamNum]);
+  // useEffect(() => { calculateMatchLevel(); return () => {}}, [form, calculateMatchLevel()]);
   const eventname = process.env.REACT_APP_EVENTNAME;
 
   async function setNewStrategicScout(event: any) {
@@ -121,53 +122,6 @@ function Strategic(props: any) {
       setRoundIsVisible(false);
     }
   }
-  // async function getComments(teamnum: number) {
-  //   try {
-  //     if (form.getFieldValue("teamnum") !== 0) {
-  //       const response =  await fetch(process.env.REACT_APP_STRATEGIC_LOOKUP_URL as string + "?team_number=" + teamnum);
-  //       const data = await response.json();
-  //       const match: { key: string; label: string; children: JSX.Element; }[] = [];
-  //       let index = 3;
-  //       for (const question of data['documents']) {
-  //         match.push({
-  //           key: index.toString(),
-  //           label: question.matchIdentifier.match_level  + question.matchIdentifier.match_number,
-  //           children: (
-  //             <div>
-  //               <h2>Scouter Initials</h2>
-  //               <Input className="input" disabled value={question.matchIdentifier.Initials} />
-  //               <h2>Match Level</h2>
-  //               <Input className="input" disabled value={question.matchIdentifier.match_level} />
-  //               <h2>Match #</h2>
-  //               <Input className="input" disabled value={question.matchIdentifier.match_number} />
-  //               <h2>Round #</h2>
-  //               <Input className="input" disabled value={question.matchIdentifier.round_number} />
-  //               <h2>Robot Position</h2>
-  //               <Input className="input" disabled value={question.matchIdentifier.robotpos} />
-  //               <h2>Times Amplified</h2>
-  //               <Input className="input" disabled value={question.timesAmplified} />
-  //               <h2>Comments</h2>
-  //               <TextArea className="strategic-input" disabled value={question.comment}/>
-  //             </div>
-  //             )});
-  //         match.sort((a, b) => parseInt(a.key.substring(1)) - parseInt(b.key.substring(1)));
-  //         index++;
-  //       }
-  //       for (let i = 0; i < match.length; i++) {
-  //         setItems([...items, match[i]]);
-  //       }
-  //     }
-  //     if ((document.getElementById("timesamplified") as HTMLInputElement) !== null) {
-  //       (document.getElementById("timesamplified") as HTMLInputElement).value = timesAmplified.toString();
-  //       form.setFieldValue("timesamplified", timesAmplified);
-  //     }
-  //   }
-  //   catch (err) {
-  //     console.log(err);
-  //     window.alert("Error occured, please do not do leave this message and notify a Webdev member immediately.");
-  //     window.alert(err);
-  //   }
-  // };
   function preMatch() {
     type FieldType = {
       initials: string;
@@ -273,7 +227,6 @@ function Strategic(props: any) {
                 </td>
               </tr>
             </tbody>
-
           </table>
         </header>
       </div>

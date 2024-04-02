@@ -257,6 +257,8 @@ function MatchScout(props: any) {
         console.log(err);
         window.alert("Error occured, please do not do leave this message and notify a Webdev member!");
         window.alert(err);
+        window.alert("Please download the following .json file and give it to a Webdev member.");
+        saveAs(new Blob([JSON.stringify(body)], { type: "text/json" }), event.initials + event.matchnum + ".json");
       }
     }
 

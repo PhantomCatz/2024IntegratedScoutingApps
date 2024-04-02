@@ -258,7 +258,7 @@ function DriverSkill(props: any) {
                   <img src={logo} style={{ height: 256 + 'px' }} alt='' />
                 </td>
                 <td>
-                  <h1 style={{ display: 'inline-block', textAlign: 'center' }}>2637 Driver Skill</h1>
+                  <h1 style={{ display: 'inline-block', textAlign: 'center' }}>Driver Skill</h1>
                 </td>
               </tr>
             </tbody>
