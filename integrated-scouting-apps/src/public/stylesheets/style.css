@@ -9,10 +9,12 @@
     font-family: Audiowide;
     src: url('../fonts/Audiowide-Regular.woff') format('woff');
 }
+
 @font-face {
     font-family: Figtree;
     src: url('../fonts/Figtree-VariableFont_wght.ttf') format('woff');
 }
+
 h2 {
     color: white;
     font-family: Figtree !important;
@@ -20,32 +22,48 @@ h2 {
     font-size: 60px !important;
     margin-bottom: 0 !important;
 }
+
 body {
     margin: 0;
     font-family: Audiowide !important;
-    background-color: #433C3C;
+    background-color: #32a7dc;
     padding-left: 5%;
     padding-right: 5%;
     color: white;
 }
+
 a {
     text-decoration: none;
     color: white;
 }
-.ant-tabs-tab-active {
-    color: #32a7dc !important;
-}
-.ant-btn-default:hover, .ant-input-outlined:hover {
+
+.ant-btn-default:hover,
+.ant-input-outlined:hover {
     background-color: transparent !important;
 }
+
 .ant-select-item {
     height: 125px !important;
 }
+
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: black !important;
+}
+.ant-tabs-ink-bar {
+    background-color: black !important;
+}
+
+.ant-tabs-ink-bar-animated {
+    transition: width 0.2s,left 0.2s,right 0.2s !important;
+}
+
 .banner {
     font-size: 50px;
     vertical-align: top;
 }
-.mainbutton, .mainbutton:hover {
+
+.mainbutton,
+.mainbutton:hover {
     width: 100%;
     min-width: 100%;
     height: 20%;
@@ -59,7 +77,9 @@ a {
     font-family: Audiowide;
     color: white !important;
 }
-.homebutton, .homebutton:hover {
+
+.homebutton,
+.homebutton:hover {
     width: 100%;
     min-width: 100%;
     height: 33%;
@@ -77,11 +97,12 @@ a {
     text-decoration: none;
     transition: none !important;
 }
-.submit{
+
+.submit {
     width: 100%;
     max-width: 50%;
     height: 20% !important;
-    min-height: 20% !important; 
+    min-height: 20% !important;
     border: 4px solid white !important;
     border-radius: 25px;
     background-color: transparent;
@@ -92,8 +113,9 @@ a {
     text-align: center !important;
     align-items: center !important;
     margin-left: 25%;
-    font-weight:bold;
+    font-weight: bold;
 }
+
 .died {
     color: red;
 }

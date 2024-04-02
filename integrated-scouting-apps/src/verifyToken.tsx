@@ -4,13 +4,20 @@ async function VerifyLogin(cookie: any) {
   try {
     const hash = base64url.decode(process.env.REACT_APP_HASH as string);
     const payload = await jwtVerify(cookie, hash);
-    if (!payload) {
+    if (payload && window.location.pathname === "/") {
+      window.location.href = "/home";
+    }
+    else if (!payload && window.location.pathname !== "/") {
       window.location.href = "/";
     }
   }
   catch (err) {
-    console.log(err);
-    window.location.href = "/";
+    if (window.location.pathname === "/") {
+
+    }
+    else {
+      window.location.href = "/";
+    }
   }
 }
 async function ChangeTheme(cookie: any) {
@@ -26,9 +33,7 @@ async function ChangeTheme(cookie: any) {
     }
     else if (cookie.substring(0, 2) === "lg") {
       setInterval(() => {
-        const colors = ["#000000", "#433C3C", "#692090", "#32a7dc", "#4A412A", "#987654"];
-        const randomColor = colors[Math.floor(Math.random() * colors.length)];
-        document.body.style.backgroundColor = randomColor;
+        document.body.style.backgroundColor = `rgb(${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)})`;
       }, Number(cookie.substring(2)));
     }
     else if (cookie === "ds") {
@@ -39,4 +44,4 @@ async function ChangeTheme(cookie: any) {
   }
 }
 // eslint-disable-next-line
-export default {VerifyLogin, ChangeTheme};
+export default { VerifyLogin, ChangeTheme };

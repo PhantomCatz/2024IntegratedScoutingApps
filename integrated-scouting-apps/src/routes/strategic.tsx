@@ -6,17 +6,17 @@ import { useEffect } from 'react';
 import VerifyLogin from '../verifyToken';
 import { useCookies } from 'react-cookie';
 function ScoutingPage(props: any) {
-	useEffect(() => {document.title = props.title; return () => {}}, [props.title]);
+  useEffect(() => { document.title = props.title; return () => { } }, [props.title]);
   const [cookies] = useCookies(['login', 'theme']);
-  useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
-  useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => {}}, [cookies.theme]);
+  useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => { } }, [cookies.login]);
+  useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => { } }, [cookies.theme]);
 
   return (
     <div>
       <meta name="viewport" content="maximum-scale=1.0" />
       <div className='banner'>
         <header>
-          <a href='/home'><img src={back} style={{ height: 64 + 'px', paddingTop: '5%' }} alt=''></img></a>
+          <a href='/scoutingapp'><img src={back} style={{ height: 64 + 'px', paddingTop: '5%' }} alt=''></img></a>
           <table>
             <tbody>
               <tr>
@@ -35,6 +35,7 @@ function ScoutingPage(props: any) {
       <div>
         <Button className='mainbutton' href='/scoutingapp/strategic/comment'>Comment</Button>
         <Button className='mainbutton' href='/scoutingapp/strategic/driverskill'>Driver Skill</Button>
+        <Button className='mainbutton' href='/scoutingapp/strategic/lookup'>Strategic Lookup</Button>
       </div>
     </div>
   );
