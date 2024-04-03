@@ -32,20 +32,17 @@ function Watchlist(props: any) {
           isPit: event.isPit,
         },
       };
-      const response = await fetch(process.env.REACT_APP_WATCHLIST_SEND_URL as string, {
+      console.log(requestBody)
+      await fetch(process.env.REACT_APP_WATCHLIST_SEND_URL as string, {
         method: "POST",
         body: JSON.stringify(requestBody),
         headers: {
           "Content-Type": "application/json",
         },
+      }).then((response) => response).then(data => {
+        console.log(data)
       });
-      if (response.ok) {
-        const responseData = await response.json();
-        console.log("Data sent successfully:", responseData);
-      } else {
-        const errorData = await response.json();
-        console.error("Error sending data:", errorData.message);
-      }
+      
     } catch (error) {
       console.error("An unexpected error occurred:", error);
     }

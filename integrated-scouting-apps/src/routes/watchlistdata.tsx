@@ -52,10 +52,15 @@ function WatchlistGet(props: any) {
         const response = await fetch(process.env.REACT_APP_WATCHLIST_GET_URL + '?team_number=' + team_number); //process.env.REACT_APP_DTF_URL
         const data = await response.json();
         console.log(data.documents[0]);
+        console.log(Object.keys(data.documents[0]).length)
+        let arrlen = Object.keys(data.documents[0]).length - 2
         // customArr = data.documents;
-        for(let i = 0; i < data.documents.length; i++) 
+        for(let i = 0; i < arrlen; i++) 
         {
-          customArr[i] = data.documents[0]['custom0'];
+          console.log(data.documents[0].length)
+          console.log('custom' + i as string)
+          console.log(data.documents[0]['custom' + i as string])
+          customArr[i] = data.documents[0]['custom' + i as string];
           console.log(customArr[i]);
           console.log(customArr[i].question)
         }
