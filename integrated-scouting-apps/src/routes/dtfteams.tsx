@@ -35,14 +35,17 @@ function DTFTeams(props: any) {
       const match: { key: string; label: string; children: JSX.Element; }[] = [];
       const summaryInfo = [];
       const graphSummaryInfo = [];
+      const teamScoreSummaryInfo = [];
       for (const team in teams) {
         const response = await (await fetch(process.env.REACT_APP_DTF_URL as string + "?team_number=" + teams[team])).json();
-        const teleSpeakerGraph = (await (await fetch(process.env.REACT_APP_DTF_GRAPH_URL as string + "1?team_number=" + teams[team])).text()).replaceAll("#6E7079", "#fff").replaceAll("#5470c6", "#32a7dc").replaceAll("#E0E6F1", "#fff").replaceAll("12px", "18px;font-weight:bold");
-        const teleAmpGraph = (await (await fetch(process.env.REACT_APP_DTF_GRAPH_URL as string + "2?team_number=" + teams[team])).text()).replaceAll("#6E7079", "#fff").replaceAll("#5470c6", "#32a7dc").replaceAll("#E0E6F1", "#fff").replaceAll("12px", "18px;font-weight:bold");
+        const teleSpeakerGraph = (await (await fetch(process.env.REACT_APP_DTF_GRAPH_URL as string + "1?team_number=" + teams[team])).text()).replaceAll("#6E7079", "#fff").replaceAll("#5470c6", "#fff").replaceAll("#E0E6F1", "#fff").replaceAll("12px", "18px;font-weight:bold");
+        const teleAmpGraph = (await (await fetch(process.env.REACT_APP_DTF_GRAPH_URL as string + "2?team_number=" + teams[team])).text()).replaceAll("#6E7079", "#fff").replaceAll("#5470c6", "#fff").replaceAll("#E0E6F1", "#fff").replaceAll("12px", "18px;font-weight:bold");
         const ratioGraph = (await (await fetch(process.env.REACT_APP_DTF_GRAPH_URL as string + "3?team_number=" + teams[team])).text()).replaceAll("#6E7079", "#fff").replaceAll("#ccc", "#fff").replaceAll("#333", "#fff").replaceAll("#464646", "#fff").replaceAll("12px", "16px;font-weight:bold").replaceAll("18px", "16px").replaceAll(' stroke-width="2" paint-order="stroke" stroke-miterlimit="2"', "");
-        const autoSpeakerGraph = (await (await fetch(process.env.REACT_APP_DTF_GRAPH_URL as string + "4?team_number=" + teams[team])).text()).replaceAll("#6E7079", "#fff").replaceAll("#5470c6", "#32a7dc").replaceAll("#E0E6F1", "#fff").replaceAll("12px", "18px;font-weight:bold");
-        const autoAmpGraph = (await (await fetch(process.env.REACT_APP_DTF_GRAPH_URL as string + "5?team_number=" + teams[team])).text()).replaceAll("#6E7079", "#fff").replaceAll("#5470c6", "#32a7dc").replaceAll("#E0E6F1", "#fff").replaceAll("12px", "18px;font-weight:bold");
+        const autoSpeakerGraph = (await (await fetch(process.env.REACT_APP_DTF_GRAPH_URL as string + "4?team_number=" + teams[team])).text()).replaceAll("#6E7079", "#fff").replaceAll("#5470c6", "#fff").replaceAll("#E0E6F1", "#fff").replaceAll("12px", "18px;font-weight:bold");
+        const autoAmpGraph = (await (await fetch(process.env.REACT_APP_DTF_GRAPH_URL as string + "5?team_number=" + teams[team])).text()).replaceAll("#6E7079", "#fff").replaceAll("#5470c6", "#fff").replaceAll("#E0E6F1", "#fff").replaceAll("12px", "18px;font-weight:bold");
         const autonPathResponse = await (await fetch(process.env.REACT_APP_DTF_AUTON_GRAPH_URL as string + "?team_number=" + teams[team])).json();
+        const teamScore = await (await fetch(process.env.REACT_APP_DTF_TEAM_SCORE_URL as string + "?team_number=" + teams[team])).json();
+        console.log(teamScore);
         const team1 = [
           {
             key: "1",
@@ -80,7 +83,7 @@ function DTFTeams(props: any) {
                 </Flex>
                 <img src={`data:image/svg+xml;utf8,${encodeURIComponent(autoAmpGraph)}`} width="100%" alt='' />
                 <h2>Score Ratio (Speaker : Amp)</h2>
-                <Input className="input" disabled value={response.auto.auto_scoring_ratio_avg} />
+                <Input className="input" disabled value={response.auto.auto_speaker_total + " : " + response.auto.auto_amps_total} />
                 <h2>Start Position</h2>
                 <Input className="input" disabled value={response.auto.robot_start_position} style={{ marginBottom: '5%' }} />
               </div>
@@ -122,7 +125,7 @@ function DTFTeams(props: any) {
                 </Flex>
                 <img src={`data:image/svg+xml;utf8,${encodeURIComponent(teleAmpGraph)}`} width="100%" alt='' />
                 <h2>Score Ratio (Speaker : Amp)</h2>
-                <Input className="input" disabled value={response.teleop.teleop_scoring_ratio_avg} />
+                <Input className="input" disabled value={response.teleop.teleop_speaker_total + " : " + response.teleop.teleop_amps_total} />
                 <h2>Intake</h2>
                 <Input className="input" disabled value={response.teleop.teleop_intake} style={{ marginBottom: '5%' }} />
               </div>
@@ -134,9 +137,9 @@ function DTFTeams(props: any) {
             children: (
               <div>
                 <h2>Climb Ratio (Made : Total)</h2>
-                <Input className="input" disabled value={response.endGame.robot_climbing_ratio} />
+                <Input className="input" disabled value={response.endGame.climbed + " : " + response.endGame.total} />
                 <h2>Harmony</h2>
-                <Checkbox className={response.endGame.robot_climbing_ratio ? "input_checkbox_filled" : "input_checkbox"} disabled checked={response.endGame.robot_climbing_ratio ? true : false} />
+                <Checkbox className={response.endGame.harmony ? "input_checkbox_filled" : "input_checkbox"} disabled checked={response.endGame.harmony} />
                 <img src={`data:image/svg+xml;utf8,${encodeURIComponent(ratioGraph)}`} width="100%" alt='' style={{ marginTop: '5%' }} />
               </div>
             )
@@ -166,6 +169,7 @@ function DTFTeams(props: any) {
         index++;
         summaryInfo.push(response);
         graphSummaryInfo.push(autonPathResponse.LISAGAY);
+        teamScoreSummaryInfo.push(teamScore);
       }
       match.push({
         key: "1",
@@ -232,6 +236,24 @@ function DTFTeams(props: any) {
               )}
             </Flex>
             <h2>Driver Skill</h2>
+            <Flex justify='in-between'>
+              <Flex vertical align='center'>
+                <h2 className='summary_text'>{teams[0]}</h2>
+                <Input className="dtf-input" disabled value={Math.round(summaryInfo[0].OA.avg_OA_driver_skill * 100) / 100} />
+              </Flex>
+              {summaryInfo[1] !== undefined && (
+                <Flex vertical align='center'>
+                  <h2 className='summary_text'>{teams[1]}</h2>
+                  <Input className="dtf-input" disabled value={Math.round(summaryInfo[1].OA.avg_OA_driver_skill * 100) / 100} />
+                </Flex>
+              )}
+              {summaryInfo[2] !== undefined && (
+                <Flex vertical align='center'>
+                  <h2 className='summary_text'>{teams[2]} </h2>
+                  <Input className="dtf-input" disabled value={Math.round(summaryInfo[1].OA.avg_OA_driver_skill * 100) / 100} />
+                </Flex>
+              )}
+            </Flex>
           </div>
         )
       });

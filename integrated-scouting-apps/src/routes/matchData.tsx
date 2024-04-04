@@ -62,7 +62,7 @@ function TeamData(props: any) {
       <meta name="viewport" content="maximum-scale=1.0" />
       <div className='banner'>
         <header>
-          <a href="/scoutingapp/lookup">
+          <a href="/scoutingapp/lookup/match">
             <img src={back} style={{ height: 64 + 'px', paddingTop: '5%' }} alt=''></img>
           </a>
           <table>
@@ -80,10 +80,10 @@ function TeamData(props: any) {
           </table>
         </header>
         <h2 style={{ whiteSpace: 'pre-line' }}>{loading ? "Loading..." : 'Data for ' + team_number}</h2>
-        <Table dataSource={fetchedData}>
+        <Table dataSource={fetchedData} >
           <ColumnGroup title="Match Identifier">
-            <Column title="Match #" dataIndex="match_number" key="match_number" />
-            <Column title="Match Level" dataIndex="match_level" key="match_level" />
+            <Column title="Match #" dataIndex="match_number" key="match_number" fixed="left" />
+            <Column title="Match Level" dataIndex="match_level" key="match_level" fixed="left" />
           </ColumnGroup>
           <ColumnGroup title="Auton">
             <Column title="Preload Scored" dataIndex="auto_preload_scored" key="auto_preload_scored" />
