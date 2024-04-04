@@ -249,7 +249,7 @@ function MatchScout(props: any) {
             }
           })
             .then(async (response) => await response.json()).then(async (data) => {
-              window.alert(data.insertedId);
+              window.alert(data.match.insertedId);
             });
         }
       }
@@ -449,7 +449,7 @@ function MatchScout(props: any) {
             ref={autonCanvasRef}
             strokeWidth={8}
             height='882px'
-            strokeColor='#32a7dc'
+            strokeColor='#fff'
             backgroundImage={color ? field_red : field_blue}
             exportWithBackgroundImage
             svgStyle={{ width: '882px', height: '882px' }}
@@ -995,6 +995,8 @@ function MatchScout(props: any) {
             form.setFieldValue("matchnum", matchnum + 1);
             form.setFieldValue("matchlevel", matchlevel);
             form.setFieldValue("robotpos", robotpos);
+            setWasDefendedIsVisible(false);
+            setDefendedIsVisible(false);
             await calculateMatchLevel();
             await updateTeamNumber();
             await updateDefendedList();
