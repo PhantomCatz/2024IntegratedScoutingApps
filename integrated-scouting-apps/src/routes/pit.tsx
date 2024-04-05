@@ -135,6 +135,18 @@ function PitScout(props: any) {
       saveAs(new Blob([JSON.stringify(body)], { type: "text/json" }), event.scouter_initial + event.team_number + ".json");
     }
   };
+  async function getPitScout(team_number: number) {
+    try {
+      const response = await fetch(process.env.REACT_APP_PIT_LOOKUP_URL as string + "?team_number=" + team_number);
+      const data = await response.json();
+      if (data.documents[0] !== undefined) {
+        window.alert("This team has already been scouted! You are still able to rescout.");
+      }
+    }
+    catch (err) {
+      console.log(err);
+    }
+  }
   function Pit() {
     type FieldType = {
       scouter_initial: string;
@@ -205,7 +217,7 @@ function PitScout(props: any) {
         </Form.Item>
         <h2>Team #</h2>
         <Form.Item<FieldType> name="team_number" rules={[{ required: true, message: 'Please input the team number!' }]}>
-          <InputNumber controls min={1} max={9999} className="input" />
+          <InputNumber controls min={1} max={9999} className="input" onChange={(event) => {getPitScout(event as number)}} />
         </Form.Item>
         <h2>Drive Train Type</h2>
         <Form.Item<FieldType> name="robot_drive_train" rules={[{ required: true, message: 'Please input the drive train type!' }]}>
@@ -257,7 +269,7 @@ function PitScout(props: any) {
           <Select options={climbingCap} className="input" />
         </Form.Item>
         <h2>Robot Trap</h2>
-        <Form.Item<FieldType> name="robot_trap_detail">
+        <Form.Item<FieldType> valuePropName="checked" name="robot_trap_detail">
           <Checkbox className='input_checkbox' />
         </Form.Item>
         <h2>Auton Path</h2>
@@ -405,7 +417,7 @@ function PitScout(props: any) {
         form={form}
         initialValues={{
           robot_ability_traversed_stage: false,
-          robot_trap_detail: '',
+          robot_trap_detail: false,
         }}
         onFinish={async (event) => {
           try {

@@ -58,7 +58,7 @@ function Strategic(props: any) {
           saveAs(new Blob([JSON.stringify(body)], { type: "text/json" }), event.initials + event.matchnum + ".json");
         }
         else {
-          await fetch(process.env.REACT_APP_STRATEGIC_COMMENT_URL as string, {
+          await fetch(process.env.REACT_APP_STRATEGIC_URL as string, {
             method: "POST",
             body: JSON.stringify(body),
             headers: {
@@ -213,7 +213,7 @@ function Strategic(props: any) {
       <meta name="viewport" content="maximum-scale=1.0" />
       <div className='banner'>
         <header>
-          <a href='/scoutingapp/strategic/'>
+          <a href='/scoutingapp/'>
             <img src={back} style={{ height: 64 + 'px', paddingTop: '5%' }} alt='' />
           </a>
           <table>
