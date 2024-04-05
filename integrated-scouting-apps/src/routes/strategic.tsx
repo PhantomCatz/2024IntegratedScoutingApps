@@ -213,7 +213,7 @@ function Strategic(props: any) {
       <meta name="viewport" content="maximum-scale=1.0" />
       <div className='banner'>
         <header>
-          <a href='/scoutingapp/strategic/'>
+          <a href='/scoutingapp/'>
             <img src={back} style={{ height: 64 + 'px', paddingTop: '5%' }} alt='' />
           </a>
           <table>
