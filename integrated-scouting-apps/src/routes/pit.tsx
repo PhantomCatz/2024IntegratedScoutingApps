@@ -12,6 +12,7 @@ import { ReactSketchCanvas, ReactSketchCanvasRef } from 'react-sketch-canvas';
 import VerifyLogin from '../verifyToken';
 import { useCookies } from 'react-cookie';
 import { saveAs } from 'file-saver';
+import TextArea from 'antd/es/input/TextArea';
 
 function PitScout(props: any) {
   const imageURI = useRef<string>();
@@ -28,6 +29,7 @@ function PitScout(props: any) {
     robot_team_safety: 0,
     robot_team_workmanship: 0,
     robot_GP: 0,
+    comments: "",
   });
   useEffect(() => { document.title = props.title; return () => { } }, [props.title]);
   useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => { } }, [cookies.login]);
@@ -86,6 +88,7 @@ function PitScout(props: any) {
       "robot_GP": event.robot_GP,
       "robot_auton_path": imageURI.current,
       "images": robotImageURI,
+      "comments": event.comments,
     };
      // eslint-disable-next-line
     const TESTDONOTREMOVE = {
@@ -108,7 +111,8 @@ function PitScout(props: any) {
       "robot_trap_detail": "test",
       "robot_weight": -1,
       "robot_wheel_type": "test",
-      "team_number": -1
+      "team_number": -1,
+      "comments": ""
   };
     try {
       if (!window.navigator.onLine) {
@@ -167,6 +171,7 @@ function PitScout(props: any) {
       robot_GP: number;
       robot_auton_path: string;
       robot_images: string;
+      comments: string;
     };
     const drive_train = [
       { label: "Tank", value: "tank" },
@@ -360,6 +365,10 @@ function PitScout(props: any) {
             }} className='decrementbutton'>-</Button>}
           />
         </Form.Item>
+        <h2>Comments</h2>
+        <Form.Item<FieldType> name="comments" rules={[{ required: true, message: "Please input some comments!" }]}>
+          <TextArea style={{ verticalAlign: 'center' }} className='input' />
+        </Form.Item>
         <h2>Robot Images</h2>
         <Form.Item<FieldType> name="robot_images">
           <Upload
@@ -434,6 +443,7 @@ function PitScout(props: any) {
               robot_team_safety: 0,
               robot_team_workmanship: 0,
               robot_GP: 0,
+              comments: "",
             });
           }
           catch (err) {
