@@ -22,8 +22,9 @@ function Strategic(props: any) {
   // useEffect(() => { getComments(teamNum); return () => {}}, [teamNum]);
   // useEffect(() => { calculateMatchLevel(); return () => {}}, [form, calculateMatchLevel()]);
   const eventname = process.env.REACT_APP_EVENTNAME;
-
+  
   async function setNewStrategicScout(event: any) {
+    console.log(teamNum)
     if (teamNum === 0) {
       window.alert("Team number is 0, please check in Pre.");
     }
@@ -34,7 +35,7 @@ function Strategic(props: any) {
           "match_event": eventname,
           "match_level": event.matchlevel,
           "match_number": event.matchnum,
-          "team_number": event.teamnum,
+          "team_number": teamNum,
         },
         "comment": event.comments,
         "timesAmplified": event.timesamplified,
@@ -58,6 +59,7 @@ function Strategic(props: any) {
           saveAs(new Blob([JSON.stringify(body)], { type: "text/json" }), event.initials + event.matchnum + ".json");
         }
         else {
+          console.log(body)
           await fetch(process.env.REACT_APP_STRATEGIC_URL as string, {
             method: "POST",
             body: JSON.stringify(body),
@@ -92,7 +94,9 @@ function Strategic(props: any) {
         const team_color = form.getFieldValue('robotpos').substring(0, form.getFieldValue('robotpos').indexOf('_'));
         const team_num = form.getFieldValue('robotpos').substring(form.getFieldValue('robotpos').indexOf('_') + 1) - 1;
         const fullTeam = (data.alliances[team_color].team_keys[team_num] !== null ? data.alliances[team_color].team_keys[team_num] : 0);
-        setTeamNum(Number(fullTeam.substring(3)));
+        setTeamNum(parseInt(fullTeam.substring(3)));
+        console.log(fullTeam)
+        console.log(Number(fullTeam.substring(3)))
       }
       else {
         const matchID = eventname + "_" + form.getFieldValue('matchlevel') + form.getFieldValue('matchnum');
@@ -107,7 +111,9 @@ function Strategic(props: any) {
         const team_color = form.getFieldValue('robotpos').substring(0, form.getFieldValue('robotpos').indexOf('_'));
         const team_num = form.getFieldValue('robotpos').substring(form.getFieldValue('robotpos').indexOf('_') + 1) - 1;
         const fullTeam = (data.alliances[team_color].team_keys[team_num] !== null ? data.alliances[team_color].team_keys[team_num] : 0);
-        setTeamNum(Number(fullTeam.substring(3)));
+        setTeamNum(parseInt(fullTeam.substring(3)));
+        console.log(fullTeam)
+        console.log(Number(fullTeam.substring(3)))
       }
     }
     catch (err) {
@@ -235,6 +241,8 @@ function Strategic(props: any) {
         onFinish={async event => {
           setLoading(true);
           try {
+            await updateTeamNumber();
+            console.log(teamNum)
             await setNewStrategicScout(event);
             const initials = form.getFieldValue('initials');
             const matchnum = form.getFieldValue('matchnum');
