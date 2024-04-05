@@ -22,7 +22,7 @@ function TeamData(props: any) {
     async function fetchData(team_number: number) {
       try {
         const table = [];
-        const response = await fetch(process.env.REACT_APP_LOOKUP_URL + "?team_number=" + team_number);
+        const response = await fetch(process.env.REACT_APP_MATCH_LOOKUP_URL + "?team_number=" + team_number);
         const data = await response.json();
         for (const matches in data.documents) {
           const kv: { [key: string]: any } = {};

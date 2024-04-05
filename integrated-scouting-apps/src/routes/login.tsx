@@ -44,7 +44,7 @@ function LoginPage(props: any) {
 			<Form onFinish={async (event) => {
 				try {
 					setIsLoading(true);
-					await fetch((process.env.REACT_APP_LOGIN_URL as string) + "?user_name=" + event.username + "&password=" + event.password, {
+					await fetch((process.env.REACT_APP_LOGIN_URL as string) + "?user_name=" + event.username.toLowerCase() + "&password=" + event.password, {
 						method: "GET",
 						headers: {
 							"Content-Type": "application/json",

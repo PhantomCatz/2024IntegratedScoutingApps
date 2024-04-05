@@ -58,7 +58,7 @@ function Strategic(props: any) {
           saveAs(new Blob([JSON.stringify(body)], { type: "text/json" }), event.initials + event.matchnum + ".json");
         }
         else {
-          await fetch(process.env.REACT_APP_STRATEGIC_COMMENT_URL as string, {
+          await fetch(process.env.REACT_APP_STRATEGIC_URL as string, {
             method: "POST",
             body: JSON.stringify(body),
             headers: {

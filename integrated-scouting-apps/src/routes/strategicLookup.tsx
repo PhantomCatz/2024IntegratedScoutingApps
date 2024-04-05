@@ -8,8 +8,10 @@ import { useCookies } from 'react-cookie';
 import { Input, InputNumber, Tabs } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 function TeamData(props: any) {
+  const eventname = process.env.REACT_APP_EVENTNAME as string;
   const [cookies] = useCookies(['login', 'theme']);
   const [tabNum, setTabNum] = useState("1");
+  const [fetchedData, setFetchedData] = useState([]);
   const [items, setItems] = useState([
     {
       key: '1',
@@ -20,34 +22,56 @@ function TeamData(props: any) {
   useEffect(() => { document.title = props.title }, [props.title]);
   useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => { } }, [cookies.login]);
   useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => { } }, [cookies.theme]);
+  useEffect(() => {
+		async function getTeams() {
+			try {
+				const response = await fetch('https://www.thebluealliance.com/api/v3/event/' + eventname + "/teams", {
+					method: "GET",
+					headers: {
+						'X-TBA-Auth-Key': process.env.REACT_APP_TBA_AUTH_KEY as string,
+					}
+				});
+				const data = await response.json();
+				const teamNumbers = data.map((team: any) => <h2><a onClick={async () => {await getComments(team.team_number as number)}}>{team.team_number}</a></h2>);
+				setFetchedData(teamNumbers);
+				console.log(data);
+			}
+			catch (err) {
+				console.log(err);
+				window.alert("Error occured, please do not do leave this message and notify a Webdev member immediately.");
+				window.alert(err);
+			}
+		};
+		getTeams();
+	}, [eventname]);
 
   async function getComments(team_number: number) {
     try {
       if (team_number !== 0) {
-        const response = await fetch(process.env.REACT_APP_STRATEGIC_COMMENT_LOOKUP_URL as string + "?team_number=" + team_number);
+        const response = await fetch(process.env.REACT_APP_COMMENT_LOOKUP_URL as string + "?team_number=" + team_number);
         const data = await response.json();
         const match: { key: string; label: string; children: JSX.Element; }[] = [];
         let index = 2;
-        for (const question of data['documents']) {
+        for (const strategicComment of data['documents']) {
           match.push({
             key: index.toString(),
-            label: question.matchIdentifier.match_level + " " + question.matchIdentifier.match_number,
+            label: strategicComment.matchIdentifier.match_level + " " + strategicComment.matchIdentifier.match_number,
             children: (
               <div>
                 <h2>Scouter Initials</h2>
-                <Input className="input" disabled value={question.matchIdentifier.Initials} />
+                <Input className="input" disabled value={strategicComment.matchIdentifier.Initials} />
                 <h2>Match Level</h2>
-                <Input className="input" disabled value={question.matchIdentifier.match_level} />
+                <Input className="input" disabled value={strategicComment.matchIdentifier.match_level} />
                 <h2>Match #</h2>
-                <Input className="input" disabled value={question.matchIdentifier.match_number} />
+                <Input className="input" disabled value={strategicComment.matchIdentifier.match_number} />
                 <h2>Round #</h2>
-                <Input className="input" disabled value={question.matchIdentifier.round_number} />
+                <Input className="input" disabled value={strategicComment.matchIdentifier.round_number} />
                 <h2>Robot Position</h2>
-                <Input className="input" disabled value={question.matchIdentifier.robotpos} />
+                <Input className="input" disabled value={strategicComment.matchIdentifier.robotpos} />
                 <h2>Times Amplified</h2>
-                <Input className="input" disabled value={question.timesAmplified} />
+                <Input className="input" disabled value={strategicComment.timesAmplified} />
                 <h2>Comments</h2>
-                <TextArea className="strategic-input" disabled value={question.comment} style={{marginBottom: '5%'}} />
+                <TextArea className="strategic-input" disabled value={strategicComment.comment} style={{marginBottom: '5%'}} />
               </div>
             )
           });
@@ -61,8 +85,6 @@ function TeamData(props: any) {
     }
     catch (err) {
       console.log(err);
-      window.alert("Error occured, please do not do leave this message and notify a Webdev member immediately.");
-      window.alert(err);
     }
   };
   // async function getDriverSkill(team_number: number) {
@@ -72,24 +94,24 @@ function TeamData(props: any) {
   //       const data = await response.json();
   //       const match: { key: string; label: string; children: JSX.Element; }[] = [];
   //       let index = 2;
-  //       for (const question of data['documents']) {
+  //       for (const strategicComment of data['documents']) {
   //         match.push({
   //           key: index.toString(),
-  //           label: question.matchIdentifier.match_level + " " + question.matchIdentifier.match_number,
+  //           label: strategicComment.matchIdentifier.match_level + " " + strategicComment.matchIdentifier.match_number,
   //           children: (
   //             <div>
   //               <h2>Scouter Initials</h2>
-  //               <Input className="input" disabled value={question.matchIdentifier.Initials} />
+  //               <Input className="input" disabled value={strategicComment.matchIdentifier.Initials} />
   //               <h2>Match Level</h2>
-  //               <Input className="input" disabled value={question.matchIdentifier.match_level} />
+  //               <Input className="input" disabled value={strategicComment.matchIdentifier.match_level} />
   //               <h2>Match #</h2>
-  //               <Input className="input" disabled value={question.matchIdentifier.match_number} />
+  //               <Input className="input" disabled value={strategicComment.matchIdentifier.match_number} />
   //               <h2>Round #</h2>
-  //               <Input className="input" disabled value={question.matchIdentifier.round_number} />
+  //               <Input className="input" disabled value={strategicComment.matchIdentifier.round_number} />
   //               <h2>Robot Position</h2>
-  //               <Input className="input" disabled value={question.matchIdentifier.robotpos} />
+  //               <Input className="input" disabled value={strategicComment.matchIdentifier.robotpos} />
   //               <h2>Comments</h2>
-  //               <TextArea className="strategic-input" disabled value={question.driverskill} style={{marginBottom: '5%'}} />
+  //               <TextArea className="strategic-input" disabled value={strategicComment.driverskill} style={{marginBottom: '5%'}} />
   //             </div>
   //           )
   //         });
@@ -116,8 +138,8 @@ function TeamData(props: any) {
       <div>
         <h2>Team Number</h2>
         <InputNumber min={0} max={9999} className="input" id='teamNum' onChange={async (event) => await getComments(event as number)}/>
-        {/* <h2>Strategic Type</h2> */}
-        {/* <Select options={strategic} className="input" id='type' onChange={(event) => {event === "comments" && Number((document.getElementById("teamNum") as HTMLInputElement).value) !== 0 ? getComments(Number((document.getElementById("teamNum") as HTMLInputElement).value)) : getDriverSkill(Number((document.getElementById("teamNum") as HTMLInputElement).value));}}/> */}
+        <h2>List of Teams</h2>
+        {fetchedData}
       </div>
     );
   }

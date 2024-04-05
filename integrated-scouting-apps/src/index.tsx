@@ -15,6 +15,8 @@ import StrategicScout from './routes/strategic';
 // import DriverSkill from './routes/driverSkill';
 import Lookup from './routes/lookup';
 import StrategicLookup from './routes/strategicLookup';
+import PitLookup from './routes/pitLookup';
+
 import PitScout from './routes/pit';
 import Buh from './routes/buh';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -38,6 +40,7 @@ export default function App() {
         <Route path="/scoutingapp/lookup/" element={<Lookup title="2637 Lookup" />} />
         <Route path="/scoutingapp/lookup/strategic" element={<StrategicLookup title="2637 Strategic Lookup" />} />
         <Route path="/scoutingapp/lookup/match" element={<DataLookup title="2637 Data Lookup" />} />
+        <Route path="/scoutingapp/lookup/pit" element={<PitLookup title="2637 Data Lookup" />} />
         <Route path="/scoutingapp/lookup/teamData/:team_number" element={<TeamData title="2637 Data Lookup" />} />
         <Route path="/scoutingapp/pit" element={<PitScout title="2637 Pit Scout" />} />
         <Route path="/scoutingapp/picklists" element={<Picklist title="2637 Picklists" />} />
