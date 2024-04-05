@@ -41,6 +41,7 @@ function Watchlist(props: any) {
         },
       }).then((response) => response).then(data => {
         console.log(data)
+        console.log("Data has been sent");
       });
       
     } catch (error) {
@@ -61,9 +62,15 @@ function Watchlist(props: any) {
     return (
       <div>
         <Form
+        initialValues={{
+          team_number: null,
+          question: "", 
+          isPit: null,
+        }}
           onFinish={async event => {
             try {
               await sendNewWatchlistData(event);
+              window.location.reload();
             }
             catch (err) {
               console.log(err);

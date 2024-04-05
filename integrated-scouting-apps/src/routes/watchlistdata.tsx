@@ -53,9 +53,9 @@ function WatchlistGet(props: any) {
         const data = await response.json();
         console.log(data.documents[0]);
         console.log(Object.keys(data.documents[0]).length)
-        let arrlen = Object.keys(data.documents[0]).length - 2
+        //let arrlen = Object.keys(data.documents[0]).length - 2
         // customArr = data.documents;
-        for(let i = 0; i < arrlen; i++) 
+        for(let i = 0; i < Object.keys(data.documents[0]).length - 2; i++) 
         {
           console.log(data.documents[0].length)
           console.log('custom' + i as string)
@@ -97,12 +97,12 @@ function WatchlistGet(props: any) {
         for(let i = 0; i < arrarr.length; i++)
         {
           console.log(owo)
-          let OwO = arrarr[i].question_type as string
-          if(OwO.toUpperCase() === 'PIT') {
+          let OwO = arrarr[i].isPit
+          if(OwO === true) {
             console.log(owo, owo)
             pitQ.push(arrarr[i].question);
             pitQIndex.push(i)
-          } else if(OwO.toUpperCase() === 'STRATEGIC') {
+          } else if(OwO === false) {
             console.log('OwOOwOOwOOwOOwOOwOOwOOwO')
             strQ.push(arrarr[i].question);
             strQIndex.push(i)
