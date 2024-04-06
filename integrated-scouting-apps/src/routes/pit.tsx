@@ -15,6 +15,7 @@ import { saveAs } from 'file-saver';
 import TextArea from 'antd/es/input/TextArea';
 
 function PitScout(props: any) {
+  const eventname = process.env.REACT_APP_EVENTNAME as string;
   const imageURI = useRef<string>();
   const canvasRef = useRef<ReactSketchCanvasRef>(null);
   const [form] = Form.useForm();
@@ -65,6 +66,32 @@ function PitScout(props: any) {
     }
     return () => { };
   }, [formValue, form]);
+  useEffect(() => {
+		async function getTeams() {
+			try {
+				const response = await (await fetch('https://www.thebluealliance.com/api/v3/event/' + eventname + "/teams", {
+					method: "GET",
+					headers: {
+						'X-TBA-Auth-Key': process.env.REACT_APP_TBA_AUTH_KEY as string,
+					}
+				})).json();
+        let message = "Teams not yet scouted:\n";
+        for (const index in response) {
+          const pitResponse = await (await fetch(process.env.REACT_APP_PIT_LOOKUP_URL as string + "?team_number=" + response[index].team_number)).json();
+          if (pitResponse.documents.length === 0) {
+            message += response[index].team_number + "\n";
+          }
+        }
+        window.alert(message);
+			}
+			catch (err) {
+				console.log(err);
+				window.alert("Error occured, please do not do leave this message and notify a Webdev member immediately.");
+				window.alert(err);
+			}
+		};
+		getTeams();
+	}, [eventname]);
 
   async function submitData(event: any) {
     await canvasRef.current?.exportImage('png').then((data) => { imageURI.current = data; });
@@ -230,7 +257,7 @@ function PitScout(props: any) {
         </Form.Item>
         <h2>Robot Weight</h2>
         <Form.Item<FieldType> name="robot_weight" rules={[{ required: true, message: 'Please input the robot weight in lbs!' }]}>
-          <InputNumber controls min={1} max={4} className="input" />
+          <InputNumber controls className="input" />
         </Form.Item>
         <h2>Motor Type</h2>
         <Form.Item<FieldType> name="robot_motor_type" rules={[{ required: true, message: 'Please input the motor type!' }]}>
@@ -367,7 +394,7 @@ function PitScout(props: any) {
         </Form.Item>
         <h2>Comments</h2>
         <Form.Item<FieldType> name="comments" rules={[{ required: true, message: "Please input some comments!" }]}>
-          <TextArea style={{ verticalAlign: 'center' }} className='input' />
+          <TextArea style={{ verticalAlign: 'center' }} className='textbox_input' />
         </Form.Item>
         <h2>Robot Images</h2>
         <Form.Item<FieldType> name="robot_images">

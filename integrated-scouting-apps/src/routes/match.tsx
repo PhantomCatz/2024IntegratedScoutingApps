@@ -250,6 +250,7 @@ function MatchScout(props: any) {
           })
             .then(async (response) => await response.json()).then(async (data) => {
               window.alert(data.match.insertedId);
+              saveAs(new Blob([JSON.stringify(body)], { type: "text/json" }), event.initials + event.matchnum + ".json");
             });
         }
       }
@@ -885,11 +886,11 @@ function MatchScout(props: any) {
         </Form.Item>
         <h2>Penalties Incurred</h2>
         <Form.Item<FieldType> name="penaltiesincurred">
-          <TextArea style={{ verticalAlign: 'center' }} className='input' />
+          <TextArea style={{ verticalAlign: 'center' }} className='textbox_input' />
         </Form.Item>
         <h2>Comments</h2>
         <Form.Item<FieldType> name="comments">
-          <TextArea style={{ verticalAlign: 'center' }} className='input' />
+          <TextArea style={{ verticalAlign: 'center' }} className='textbox_input' />
         </Form.Item>
         <h2 style={{ display: isLoading ? 'inherit' : 'none' }}>Submitting data...</h2>
         <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
@@ -997,6 +998,7 @@ function MatchScout(props: any) {
             form.setFieldValue("robotpos", robotpos);
             setWasDefendedIsVisible(false);
             setDefendedIsVisible(false);
+            autonCanvasRef.current?.clearCanvas();
             await calculateMatchLevel();
             await updateTeamNumber();
             await updateDefendedList();

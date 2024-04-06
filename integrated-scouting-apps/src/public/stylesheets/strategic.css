@@ -1,6 +1,6 @@
 .ant-input {
-    height: 20%;
-    min-height: 20%;
+    height: 120px;
+    min-height: 120px;
     padding-top: 13px;
     padding-bottom: 13px;
     background-color: transparent;
@@ -39,15 +39,10 @@
     text-align: center !important;
 }
 
-.banner {
-    font-size: 50px;
-    vertical-align: top;
-}
-
 .submitbutton {
     width: 50%;
     min-width: 50%;
-    height: 126px !important;
+    height: 120px !important;
     border: 4px solid white !important;
     border-radius: 25px;
     background-color: transparent;

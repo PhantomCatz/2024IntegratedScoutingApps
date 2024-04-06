@@ -8,10 +8,10 @@ import { useCookies } from 'react-cookie';
 import { Input, InputNumber, Tabs } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 function TeamData(props: any) {
-  const eventname = process.env.REACT_APP_EVENTNAME as string;
+  //const eventname = process.env.REACT_APP_EVENTNAME as string;
   const [cookies] = useCookies(['login', 'theme']);
   const [tabNum, setTabNum] = useState("1");
-  const [fetchedData, setFetchedData] = useState([]);
+  //const [fetchedData, setFetchedData] = useState([]);
   const [items, setItems] = useState([
     {
       key: '1',
@@ -22,28 +22,27 @@ function TeamData(props: any) {
   useEffect(() => { document.title = props.title }, [props.title]);
   useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => { } }, [cookies.login]);
   useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => { } }, [cookies.theme]);
-  useEffect(() => {
-		async function getTeams() {
-			try {
-				const response = await fetch('https://www.thebluealliance.com/api/v3/event/' + eventname + "/teams", {
-					method: "GET",
-					headers: {
-						'X-TBA-Auth-Key': process.env.REACT_APP_TBA_AUTH_KEY as string,
-					}
-				});
-				const data = await response.json();
-				const teamNumbers = data.map((team: any) => <h2><a onClick={async () => {await getComments(team.team_number as number)}}>{team.team_number}</a></h2>);
-				setFetchedData(teamNumbers);
-				console.log(data);
-			}
-			catch (err) {
-				console.log(err);
-				window.alert("Error occured, please do not do leave this message and notify a Webdev member immediately.");
-				window.alert(err);
-			}
-		};
-		getTeams();
-	}, [eventname]);
+  // useEffect(() => {
+	// 	async function getTeams() {
+	// 		try {
+	// 			const response = await fetch('https://www.thebluealliance.com/api/v3/event/' + eventname + "/teams", {
+	// 				method: "GET",
+	// 				headers: {
+	// 					'X-TBA-Auth-Key': process.env.REACT_APP_TBA_AUTH_KEY as string,
+	// 				}
+	// 			});
+	// 			const data = await response.json();
+	// 			const teamNumbers = data.map((team: any) => <h2><a onClick={async () => {await getComments(team.team_number as number)}}>{team.team_number}</a></h2>);
+	// 			setFetchedData(teamNumbers);
+	// 		}
+	// 		catch (err) {
+	// 			console.log(err);
+	// 			window.alert("Error occured, please do not do leave this message and notify a Webdev member immediately.");
+	// 			window.alert(err);
+	// 		}
+	// 	};
+	// 	getTeams();
+	// }, [eventname]);
 
   async function getComments(team_number: number) {
     try {
@@ -138,8 +137,8 @@ function TeamData(props: any) {
       <div>
         <h2>Team Number</h2>
         <InputNumber min={0} max={9999} className="input" id='teamNum' onChange={async (event) => await getComments(event as number)}/>
-        <h2>List of Teams</h2>
-        {fetchedData}
+        {/* <h2>List of Teams</h2>
+        {fetchedData} */}
       </div>
     );
   }
