@@ -12,7 +12,6 @@ import TextArea from 'antd/es/input/TextArea';
 import VerifyLogin from '../verifyToken';
 import { useCookies } from 'react-cookie';
 import { saveAs } from 'file-saver';
-import { ReactSketchCanvas, ReactSketchCanvasRef } from 'react-sketch-canvas';
 import React from 'react';
 import { render } from '@testing-library/react';
 import QRCodes from './qrCodes';
@@ -242,26 +241,26 @@ function MatchScout(props: any) {
         }
       }
       try { //LISA
-        if (!window.navigator.onLine) {
-          window.alert("Your device is currently offline. Redirecting you to a QR Code on another tab.");
+        // if (!window.navigator.onLine) {
+          window.alert("Redirecting you to a QR Code on another tab. Please make sure you scan it :P");
           const qrCodeData = JSON.stringify(body);
           localStorage.setItem('qrCodeData', qrCodeData); 
           window.open('/qrCodes');
           // saveAs(new Blob([JSON.stringify(body)], { type: "text/json" }), event.initials + event.matchnum + ".json");
-        }
-        else { 
-          await fetch(process.env.REACT_APP_MATCH_URL as string, {
-            method: "POST",
-            body: JSON.stringify(body),
-            headers: {
-              "Content-Type": "application/json",
-            }
-          })
-            .then(async (response) => await response.json()).then(async (data) => {
-              window.alert("Successfully submitted with ID: " + data.match.insertedId);
-              saveAs(new Blob([JSON.stringify(body)], { type: "text/json" }), event.initials + event.matchnum + ".json");
-            });
-        }
+        //}
+        // else { 
+        //   await fetch(process.env.REACT_APP_MATCH_URL as string, {
+        //     method: "POST",
+        //     body: JSON.stringify(body),
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //     }
+        //   })
+        //     .then(async (response) => await response.json()).then(async (data) => {
+        //       window.alert("Successfully submitted with ID: " + data.match.insertedId);
+        //       saveAs(new Blob([JSON.stringify(body)], { type: "text/json" }), event.initials + event.matchnum + ".json");
+        //     });
+        // }
       }
       catch (err) {
         console.log(err);

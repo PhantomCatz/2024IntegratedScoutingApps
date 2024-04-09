@@ -1,18 +1,14 @@
 import '../public/stylesheets/style.css';
 import { Form, Input, QRCode } from "antd";
 import { Space } from "antd-mobile";
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../public/stylesheets/style.css';
 import logo from '../public/images/logo.png';
 import back from '../public/images/back.png';
-import { useEffect, useState } from 'react';
 import VerifyLogin from '../verifyToken';
 import { useCookies } from 'react-cookie';
 import MatchScout from "./match";
-import ReactDOM from "react-dom";
 import { useLocation } from 'react-router-dom';
-
-
 
 function QRCodes(props: any) {
     const location = useLocation();
@@ -23,24 +19,19 @@ function QRCodes(props: any) {
     useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
     useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => {}}, [cookies.theme]);
     useEffect(() => {document.title = props.title}, [props.title]);
-    var data = "";
-    var villagerOne = "";
 
     useEffect(() => {
         const qrCodeData = localStorage.getItem('qrCodeData');
         if (qrCodeData) {
           const parsedData = JSON.parse(qrCodeData);
-          data = JSON.stringify(parsedData);
-          console.log(parsedData);
-          console.log(data);
-        }
-        else{
-            console.error();
+          setText(JSON.stringify(parsedData));
+        } else {
+          console.error("QR Code data not found in localStorage");
         }
         localStorage.removeItem('qrCodeData');
       }, []);
 
-	return (
+    return (
         <div>
             <meta name="viewport" content="maximum-scale=1.0" />
                 <div className='banner'>
@@ -63,19 +54,18 @@ function QRCodes(props: any) {
                     </header>
                 </div>
             
-                <div>
-                    
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '40vh' }}>
                     <Space direction="vertical" align="center" justify="center">
                             <QRCode 
-                                value={data} //|| 'Data was Lost: Please contact a Local Web Dev Member'}
-                                size={700} 
+                                value={text} 
+                                size={900} 
                                 color="#FFFFFF"
                                 type="svg"
                             />
                     </Space>
                 </div>
         </div>
-            );
-    }
+    );
+}
 
 export default QRCodes;
