@@ -1,51 +1,22 @@
 import '../public/stylesheets/style.css';
-import '../public/stylesheets/lookup.css';
 import logo from '../public/images/logo.png';
 import back from '../public/images/back.png';
-import { useEffect, useState } from 'react';
-import { Input, Form, InputNumber } from 'antd';
+import { Button } from 'antd';
+import { useEffect } from 'react';
 import VerifyLogin from '../verifyToken';
 import { useCookies } from 'react-cookie';
-
-function DataLookup(props: any) {
-	const eventname = process.env.REACT_APP_EVENTNAME as string;
-	const [form] = Form.useForm();
+function Lookup(props: any) {
+	useEffect(() => { document.title = props.title; return () => { } }, [props.title]);
 	const [cookies] = useCookies(['login', 'theme']);
-	const [fetchedData, setFetchedData] = useState([]);
-	useEffect(() => {document.title = props.title; return () => {}}, [props.title]);
-	useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
-	useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => {}}, [cookies.theme]);
-	useEffect(() => {
-		async function getTeams() {
-			try {
-				const response = await fetch('https://www.thebluealliance.com/api/v3/event/' + eventname + "/teams", {
-					method: "GET",
-					headers: {
-						'X-TBA-Auth-Key': process.env.REACT_APP_TBA_AUTH_KEY as string,
-					}
-				});
-				const data = await response.json();
-				const teamNumbers = data.map((team: any) => <h2><a href={"/scoutingapp/lookup/teamData/" + team.team_number}>{team.team_number}</a></h2>);
-				setFetchedData(teamNumbers);
-				console.log(data);
-			}
-			catch (err) {
-				console.log(err);
-				window.alert("Error occured, please do not do leave this message and notify a Webdev member immediately.");
-				window.alert(err);
-			}
-		};
-		getTeams();
-	}, [eventname]);
+	useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => { } }, [cookies.login]);
+	useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => { } }, [cookies.theme]);
 
 	return (
 		<div>
 			<meta name="viewport" content="maximum-scale=1.0" />
 			<div className='banner'>
 				<header>
-					<a href='/scoutingapp'>
-						<img src={back} style={{ height: 64 + 'px', paddingTop: '5%' }} alt=''></img>
-					</a>
+					<a href='/scoutingapp'><img src={back} style={{ height: 64 + 'px', paddingTop: '5%' }} alt=''></img></a>
 					<table>
 						<tbody>
 							<tr>
@@ -57,6 +28,7 @@ function DataLookup(props: any) {
 								</td>
 							</tr>
 						</tbody>
+
 					</table>
 				</header>
 			</div>
@@ -76,8 +48,9 @@ function DataLookup(props: any) {
 					{fetchedData}
 				</div>
 			</Form>
+
 		</div>
 	);
 }
 
-export default DataLookup;
+export default Lookup;

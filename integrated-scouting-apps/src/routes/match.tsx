@@ -42,18 +42,18 @@ function MatchScout(props: any) {
     teleopMissedSpeakerPieces: 0,
     teleopHoardedPieces: 0,
     numPenalties: 0,
-    pushingRating: 0, 
+    pushingRating: 0,
     counterDefenseRating: 0,
     driverSkillRating: 0,
     timeLeft: 0,
   });
   const eventname = process.env.REACT_APP_EVENTNAME;
-  useEffect(() => { document.title = props.title; return () => {}; }, [props.title]);
+  useEffect(() => { document.title = props.title; return () => { }; }, [props.title]);
   const [cookies] = useCookies(['login', 'theme']);
   const autonCanvasRef = useRef<ReactSketchCanvasRef>(null);
   const autonImageURI = useRef<string>();
-  useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
-  useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => {}}, [cookies.theme]);
+  useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => { } }, [cookies.login]);
+  useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => { } }, [cookies.theme]);
   useEffect(() => {
     if ((document.getElementById("auton_speakerscored") as HTMLInputElement) !== null) {
       (document.getElementById("auton_speakerscored") as HTMLInputElement).value = formValue.autonSpeakerScored.toString();
@@ -111,8 +111,9 @@ function MatchScout(props: any) {
       (document.getElementById("driverskill") as HTMLInputElement).value = formValue.driverSkillRating.toString();
       form.setFieldValue('driverskill', formValue.driverSkillRating);
     }
-    
-    return () => {};
+
+    return () => { };
+
   }, [formValue, form]);
   async function setNewMatchScout(event: any) {
     if (teamNum === 0) {
@@ -232,9 +233,9 @@ function MatchScout(props: any) {
           "OA_hoarded": false,
           "OA_robot_died": false,
           "OA_was_defend": false,
-          "OA_was_defend_team":[],
+          "OA_was_defend_team": [],
           "OA_defend": false,
-          "OA_defend_team":[],
+          "OA_defend_team": [],
           "OA_pushing_rating": -1,
           "OA_counter_defense": -1,
           "OA_numbers_penalties": -1,
@@ -259,18 +260,20 @@ function MatchScout(props: any) {
               "Content-Type": "application/json",
             }
           })
-          .then(async (response) => await response.json()).then(async (data) => {
-            window.alert(data.insertedId);
-          });
+            .then(async (response) => await response.json()).then(async (data) => {
+              window.alert(data.match.insertedId);
+            });
         }
       }
       catch (err) {
         console.log(err);
         window.alert("Error occured, please do not do leave this message and notify a Webdev member!");
         window.alert(err);
+        window.alert("Please download the following .json file and give it to a Webdev member.");
+        saveAs(new Blob([JSON.stringify(body)], { type: "text/json" }), event.initials + event.matchnum + ".json");
       }
     }
-    
+
   };
   async function updateTeamNumber() {
     try {
@@ -452,120 +455,120 @@ function MatchScout(props: any) {
     return (
       <div>
         <div style={{ alignContent: 'center' }}>
-        <h2>Starting Location</h2>
-        <Form.Item<FieldType> name="startingloc" rules={[{ required: true, message: 'Please input the starting location!' }]}>
-          <Select options={startingloc} className="input" />
-        </Form.Item>
-        <h2>Auton Path</h2>
-        <ReactSketchCanvas
-          ref={autonCanvasRef}
-          strokeWidth={8}
-          height='882px'
-          strokeColor='#32a7dc'
-          backgroundImage={color ? field_red : field_blue}
-          exportWithBackgroundImage
-          svgStyle={{width: '882px', height: '882px'}}
-          style={{ marginBottom: '5%' }}
-        />
-        <Flex justify='in-between'>
-          <Button onClick={() => autonCanvasRef.current?.undo()} className='pathbutton'>Undo</Button>
-          <Button onClick={() => autonCanvasRef.current?.redo()} className='pathbutton'>Redo</Button>
-          <Button onClick={() => autonCanvasRef.current?.clearCanvas()} className='pathbutton'>Clear</Button>
-        </Flex>
-        <h2>Leave</h2>
-        <Form.Item<FieldType> name="leavespawn" valuePropName="checked">
-          <Checkbox className='input_checkbox' />
-        </Form.Item>
-        <h2>Speaker Scored</h2>
-        <Form.Item<FieldType> name="auton_speakerscored" rules={[{ required: true, message: 'Please input the number of speaker notes scored!' }]}>
-          <InputNumber
-            id="auton_speakerscored"
-            type='number'
-            pattern="\d*"
-            disabled
-            onWheel={(event) => (event.target as HTMLInputElement).blur()}
-            min={0}
-            className="input"
-            addonAfter={<Button onClick={() => {
-              setFormValue({...formValue, autonSpeakerScored: formValue.autonSpeakerScored + 1});
-            }} className='incrementbutton'>+</Button>}
-            addonBefore={<Button onClick={() => {
-              if (Number(formValue.autonSpeakerScored) > 0) {
-                setFormValue({...formValue, autonSpeakerScored: formValue.autonSpeakerScored - 1});
-              }
-            }} className='decrementbutton'>-</Button>}
+          <h2>Starting Location</h2>
+          <Form.Item<FieldType> name="startingloc" rules={[{ required: true, message: 'Please input the starting location!' }]}>
+            <Select options={startingloc} className="input" />
+          </Form.Item>
+          <h2>Auton Path</h2>
+          <ReactSketchCanvas
+            ref={autonCanvasRef}
+            strokeWidth={8}
+            height='882px'
+            strokeColor='#fff'
+            backgroundImage={color ? field_red : field_blue}
+            exportWithBackgroundImage
+            svgStyle={{ width: '882px', height: '882px' }}
+            style={{ marginBottom: '5%' }}
           />
-        </Form.Item>
-        <h2>Missed Speaker Pieces</h2>
-        <Form.Item<FieldType> name="auton_missedpiecesspeaker" rules={[{ required: true, message: 'Please input the number of misssed speaker pieces!' }]}>
-          <InputNumber
-            type='number'
-            pattern="\d*"
-            disabled
-            onWheel={(event) => (event.target as HTMLElement).blur()}
-            min={0}
-            className="input"
-            addonAfter={<Button onClick={() => {
-              setFormValue({...formValue, autonMissedSpeakerPieces: formValue.autonMissedSpeakerPieces + 1});
-            }} className='incrementbutton'>+</Button>}
-            addonBefore={<Button onClick={() => {
-              if (Number(formValue.autonMissedSpeakerPieces) > 0) {
-                setFormValue({...formValue, autonMissedSpeakerPieces: formValue.autonMissedSpeakerPieces - 1});
-                (document.getElementById("auton_ampscored") as HTMLInputElement).value = formValue.autonAmpScored.toString();
-              }
-            }} className='decrementbutton'>-</Button>}
-          />
-        </Form.Item>
-        <h2>Amp Scored</h2>
-        <Form.Item<FieldType> name="auton_ampscored" rules={[{ required: true, message: 'Please input the number of amp notes scored!' }]}>
-          <InputNumber
-            type='number'
-            pattern="\d*"
-            disabled
-            onWheel={(event) => (event.target as HTMLElement).blur()}
-            min={0}
-            className="input"
-            addonAfter={<Button onClick={() => {
-              setFormValue({...formValue, autonAmpScored: formValue.autonAmpScored + 1});
-            }} className='incrementbutton'>+</Button>}
-            addonBefore={<Button onClick={() => {
-              if (Number(formValue.autonAmpScored) > 0) {
-                setFormValue({...formValue, autonAmpScored: formValue.autonAmpScored - 1});
-              }
-            }} className='decrementbutton'>-</Button>}
-          />
-        </Form.Item>
-        <h2>Missed Amp Pieces</h2>
-        <Form.Item<FieldType> name="auton_missedpiecesamp" rules={[{ required: true, message: 'Please input the number of missed amp pieces!' }]}>
-          <InputNumber
-            type='number'
-            pattern="\d*"
-            disabled
-            onWheel={(event) => (event.target as HTMLElement).blur()}
-            min={0}
-            className="input"
-            addonAfter={<Button onClick={() => {
-              setFormValue({...formValue, autonMissedAmpPieces: formValue.autonMissedAmpPieces + 1});
-            }} className='incrementbutton'>+</Button>}
-            addonBefore={<Button onClick={() => {
-              if (Number(formValue.autonMissedAmpPieces) > 0) {
-                setFormValue({...formValue, autonMissedAmpPieces: formValue.autonMissedAmpPieces - 1});
-              }
-            }} className='decrementbutton'>-</Button>}
-          />
-        </Form.Item>
-        <h2>Scoring Location</h2>
-        <Form.Item<FieldType> name="auton_scoringloc" rules={[{ required: true, message: 'Please input the scoring location!' }]}>
-          <Select options={scoringloc} className='input' />
-        </Form.Item>
-        <h2>Pieces Picked</h2>
-        <Form.Item<FieldType> name="piecespicked">
-          <Select mode='multiple' options={piecespicked} className='input' showSearch={false} />
-        </Form.Item>
-        <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
-          <Button onClick={async () => {setTabNum("1"); await autonCanvasRef.current?.exportImage('png').then( (data) => {autonImageURI.current = data;})}} className='tabbutton'>Back</Button>
-          <Button onClick={async () => {setTabNum("3"); await autonCanvasRef.current?.exportImage('png').then( (data) => {autonImageURI.current = data;})}} className='tabbutton'>Next</Button>
-        </Flex>
+          <Flex justify='in-between'>
+            <Button onClick={() => autonCanvasRef.current?.undo()} className='pathbutton'>Undo</Button>
+            <Button onClick={() => autonCanvasRef.current?.redo()} className='pathbutton'>Redo</Button>
+            <Button onClick={() => autonCanvasRef.current?.clearCanvas()} className='pathbutton'>Clear</Button>
+          </Flex>
+          <h2>Leave</h2>
+          <Form.Item<FieldType> name="leavespawn" valuePropName="checked">
+            <Checkbox className='input_checkbox' />
+          </Form.Item>
+          <h2>Speaker Scored</h2>
+          <Form.Item<FieldType> name="auton_speakerscored" rules={[{ required: true, message: 'Please input the number of speaker notes scored!' }]}>
+            <InputNumber
+              id="auton_speakerscored"
+              type='number'
+              pattern="\d*"
+              disabled
+              onWheel={(event) => (event.target as HTMLInputElement).blur()}
+              min={0}
+              className="input"
+              addonAfter={<Button onClick={() => {
+                setFormValue({ ...formValue, autonSpeakerScored: formValue.autonSpeakerScored + 1 });
+              }} className='incrementbutton'>+</Button>}
+              addonBefore={<Button onClick={() => {
+                if (Number(formValue.autonSpeakerScored) > 0) {
+                  setFormValue({ ...formValue, autonSpeakerScored: formValue.autonSpeakerScored - 1 });
+                }
+              }} className='decrementbutton'>-</Button>}
+            />
+          </Form.Item>
+          <h2>Missed Speaker Pieces</h2>
+          <Form.Item<FieldType> name="auton_missedpiecesspeaker" rules={[{ required: true, message: 'Please input the number of misssed speaker pieces!' }]}>
+            <InputNumber
+              type='number'
+              pattern="\d*"
+              disabled
+              onWheel={(event) => (event.target as HTMLElement).blur()}
+              min={0}
+              className="input"
+              addonAfter={<Button onClick={() => {
+                setFormValue({ ...formValue, autonMissedSpeakerPieces: formValue.autonMissedSpeakerPieces + 1 });
+              }} className='incrementbutton'>+</Button>}
+              addonBefore={<Button onClick={() => {
+                if (Number(formValue.autonMissedSpeakerPieces) > 0) {
+                  setFormValue({ ...formValue, autonMissedSpeakerPieces: formValue.autonMissedSpeakerPieces - 1 });
+                  (document.getElementById("auton_ampscored") as HTMLInputElement).value = formValue.autonAmpScored.toString();
+                }
+              }} className='decrementbutton'>-</Button>}
+            />
+          </Form.Item>
+          <h2>Amp Scored</h2>
+          <Form.Item<FieldType> name="auton_ampscored" rules={[{ required: true, message: 'Please input the number of amp notes scored!' }]}>
+            <InputNumber
+              type='number'
+              pattern="\d*"
+              disabled
+              onWheel={(event) => (event.target as HTMLElement).blur()}
+              min={0}
+              className="input"
+              addonAfter={<Button onClick={() => {
+                setFormValue({ ...formValue, autonAmpScored: formValue.autonAmpScored + 1 });
+              }} className='incrementbutton'>+</Button>}
+              addonBefore={<Button onClick={() => {
+                if (Number(formValue.autonAmpScored) > 0) {
+                  setFormValue({ ...formValue, autonAmpScored: formValue.autonAmpScored - 1 });
+                }
+              }} className='decrementbutton'>-</Button>}
+            />
+          </Form.Item>
+          <h2>Missed Amp Pieces</h2>
+          <Form.Item<FieldType> name="auton_missedpiecesamp" rules={[{ required: true, message: 'Please input the number of missed amp pieces!' }]}>
+            <InputNumber
+              type='number'
+              pattern="\d*"
+              disabled
+              onWheel={(event) => (event.target as HTMLElement).blur()}
+              min={0}
+              className="input"
+              addonAfter={<Button onClick={() => {
+                setFormValue({ ...formValue, autonMissedAmpPieces: formValue.autonMissedAmpPieces + 1 });
+              }} className='incrementbutton'>+</Button>}
+              addonBefore={<Button onClick={() => {
+                if (Number(formValue.autonMissedAmpPieces) > 0) {
+                  setFormValue({ ...formValue, autonMissedAmpPieces: formValue.autonMissedAmpPieces - 1 });
+                }
+              }} className='decrementbutton'>-</Button>}
+            />
+          </Form.Item>
+          <h2>Scoring Location</h2>
+          <Form.Item<FieldType> name="auton_scoringloc" rules={[{ required: true, message: 'Please input the scoring location!' }]}>
+            <Select options={scoringloc} className='input' />
+          </Form.Item>
+          <h2>Pieces Picked</h2>
+          <Form.Item<FieldType> name="piecespicked">
+            <Select mode='multiple' options={piecespicked} className='input' showSearch={false} />
+          </Form.Item>
+          <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
+            <Button onClick={async () => { setTabNum("1"); await autonCanvasRef.current?.exportImage('png').then((data) => { autonImageURI.current = data; }) }} className='tabbutton'>Back</Button>
+            <Button onClick={async () => { setTabNum("3"); await autonCanvasRef.current?.exportImage('png').then((data) => { autonImageURI.current = data; }) }} className='tabbutton'>Next</Button>
+          </Flex>
         </div>
       </div>
     );
@@ -602,7 +605,7 @@ function MatchScout(props: any) {
       { label: "St", value: 'Stage' },
       { label: "LT", value: 'Lower Truss' },
       { label: "LOT", value: 'Lower Opponent Truss' },
-      { label: "P", value: 'Podium'},
+      { label: "P", value: 'Podium' },
     ];
     const intake = [
       { label: "Ground", value: "Ground" },
@@ -622,11 +625,11 @@ function MatchScout(props: any) {
             min={0}
             className="input"
             addonAfter={<Button onClick={() => {
-              setFormValue({...formValue, teleopSpeakerScored: formValue.teleopSpeakerScored + 1});
+              setFormValue({ ...formValue, teleopSpeakerScored: formValue.teleopSpeakerScored + 1 });
             }} className='incrementbutton'>+</Button>}
             addonBefore={<Button onClick={() => {
               if (Number(formValue.teleopSpeakerScored) > 0) {
-                setFormValue({...formValue, teleopSpeakerScored: formValue.teleopSpeakerScored - 1});
+                setFormValue({ ...formValue, teleopSpeakerScored: formValue.teleopSpeakerScored - 1 });
               }
             }} className='decrementbutton'>-</Button>}
           />
@@ -641,14 +644,14 @@ function MatchScout(props: any) {
             min={0}
             className="input"
             addonAfter={<Button onClick={() => {
-              setFormValue({...formValue, teleopMissedSpeakerPieces: formValue.teleopMissedSpeakerPieces + 1});
+              setFormValue({ ...formValue, teleopMissedSpeakerPieces: formValue.teleopMissedSpeakerPieces + 1 });
             }} className='incrementbutton'>+</Button>}
             addonBefore={<Button onClick={() => {
               if (Number(formValue.teleopMissedSpeakerPieces) > 0) {
-                setFormValue({...formValue, teleopMissedSpeakerPieces: formValue.teleopMissedSpeakerPieces - 1});
+                setFormValue({ ...formValue, teleopMissedSpeakerPieces: formValue.teleopMissedSpeakerPieces - 1 });
               }
             }} className='decrementbutton'>-</Button>}
-            />
+          />
         </Form.Item>
         <h2>Amp Scored</h2>
         <Form.Item<FieldType> name="tele_ampscored" rules={[{ required: true, message: 'Please input the number of amp notes scored!' }]}>
@@ -660,11 +663,11 @@ function MatchScout(props: any) {
             min={0}
             className="input"
             addonAfter={<Button onClick={() => {
-              setFormValue({...formValue, teleopAmpScored: formValue.teleopAmpScored + 1});
+              setFormValue({ ...formValue, teleopAmpScored: formValue.teleopAmpScored + 1 });
             }} className='incrementbutton'>+</Button>}
             addonBefore={<Button onClick={() => {
               if (Number(formValue.teleopAmpScored) > 0) {
-                setFormValue({...formValue, teleopAmpScored: formValue.teleopAmpScored - 1});
+                setFormValue({ ...formValue, teleopAmpScored: formValue.teleopAmpScored - 1 });
               }
             }} className='decrementbutton'>-</Button>}
           />
@@ -679,11 +682,11 @@ function MatchScout(props: any) {
             min={0}
             className="input"
             addonAfter={<Button onClick={() => {
-              setFormValue({...formValue, teleopMissedAmpPieces: formValue.teleopMissedAmpPieces + 1});
+              setFormValue({ ...formValue, teleopMissedAmpPieces: formValue.teleopMissedAmpPieces + 1 });
             }} className='incrementbutton'>+</Button>}
             addonBefore={<Button onClick={() => {
               if (Number(formValue.teleopMissedAmpPieces) > 0) {
-                setFormValue({...formValue, teleopMissedAmpPieces: formValue.teleopMissedAmpPieces - 1});
+                setFormValue({ ...formValue, teleopMissedAmpPieces: formValue.teleopMissedAmpPieces - 1 });
               }
             }} className='decrementbutton'>-</Button>}
           />
@@ -698,15 +701,15 @@ function MatchScout(props: any) {
             min={0}
             className="input"
             addonAfter={<Button onClick={() => {
-              setFormValue({...formValue, teleopHoardedPieces: formValue.teleopHoardedPieces + 1});
+              setFormValue({ ...formValue, teleopHoardedPieces: formValue.teleopHoardedPieces + 1 });
             }} className='incrementbutton'>+</Button>}
             addonBefore={<Button onClick={() => {
               if (Number(formValue.teleopHoardedPieces) > 0) {
-                setFormValue({...formValue, teleopHoardedPieces: formValue.teleopHoardedPieces - 1});
+                setFormValue({ ...formValue, teleopHoardedPieces: formValue.teleopHoardedPieces - 1 });
               }
             }} className='decrementbutton'>-</Button>}
-            />
-          </Form.Item>
+          />
+        </Form.Item>
         <h2>Ground/Source Intake</h2>
         <Form.Item<FieldType> name="intake" rules={[{ required: true, message: 'Please input the intake type!' }]}>
           <Select options={intake} className="input" />
@@ -748,14 +751,14 @@ function MatchScout(props: any) {
             min={0}
             className="input"
             addonAfter={<Button onClick={() => {
-              setFormValue({...formValue, timeLeft: formValue.timeLeft + 1});
+              setFormValue({ ...formValue, timeLeft: formValue.timeLeft + 1 });
             }} className='incrementbutton'>+</Button>}
             addonBefore={<Button onClick={() => {
               if (Number(formValue.timeLeft) > 0) {
-                setFormValue({...formValue, timeLeft: formValue.timeLeft - 1});
+                setFormValue({ ...formValue, timeLeft: formValue.timeLeft - 1 });
               }
             }} className='decrementbutton'>-</Button>}
-            />
+          />
         </Form.Item>
         <h2>Climbed</h2>
         <Form.Item<FieldType> name="climbed" valuePropName="checked">
@@ -810,14 +813,13 @@ function MatchScout(props: any) {
             min={0} max={4}
             className="input"
             addonAfter={<Button onClick={() => {
-              if(Number(formValue.pushingRating) < 4)
-              {
-                setFormValue({...formValue, pushingRating: formValue.pushingRating + 1});
+              if (Number(formValue.pushingRating) < 4) {
+                setFormValue({ ...formValue, pushingRating: formValue.pushingRating + 1 });
               }
             }} className='incrementbutton'>+</Button>}
             addonBefore={<Button onClick={() => {
               if (Number(formValue.pushingRating) > 0) {
-                setFormValue({...formValue, pushingRating: formValue.pushingRating - 1});
+                setFormValue({ ...formValue, pushingRating: formValue.pushingRating - 1 });
               }
             }} className='decrementbutton'>-</Button>}
           />
@@ -832,12 +834,12 @@ function MatchScout(props: any) {
             className="input"
             addonAfter={<Button onClick={() => {
               if (Number(formValue.counterDefenseRating) < 4) {
-                setFormValue({...formValue, counterDefenseRating: formValue.counterDefenseRating + 1});
+                setFormValue({ ...formValue, counterDefenseRating: formValue.counterDefenseRating + 1 });
               }
             }} className='incrementbutton'>+</Button>}
             addonBefore={<Button onClick={() => {
               if (Number(formValue.counterDefenseRating) > 0) {
-                setFormValue({...formValue, counterDefenseRating: formValue.counterDefenseRating - 1});
+                setFormValue({ ...formValue, counterDefenseRating: formValue.counterDefenseRating - 1 });
               }
             }} className='decrementbutton'>-</Button>}
           />
@@ -852,12 +854,12 @@ function MatchScout(props: any) {
             className="input"
             addonAfter={<Button onClick={() => {
               if (Number(formValue.driverSkillRating) < 4) {
-                setFormValue({...formValue, driverSkillRating: formValue.driverSkillRating + 1});
+                setFormValue({ ...formValue, driverSkillRating: formValue.driverSkillRating + 1 });
               }
             }} className='incrementbutton'>+</Button>}
             addonBefore={<Button onClick={() => {
               if (Number(formValue.driverSkillRating) > 0) {
-                setFormValue({...formValue, driverSkillRating: formValue.driverSkillRating - 1});
+                setFormValue({ ...formValue, driverSkillRating: formValue.driverSkillRating - 1 });
               }
             }} className='decrementbutton'>-</Button>}
           />
@@ -887,11 +889,11 @@ function MatchScout(props: any) {
             min={0}
             className="input"
             addonAfter={<Button onClick={() => {
-              setFormValue({...formValue, numPenalties: formValue.numPenalties + 1});
+              setFormValue({ ...formValue, numPenalties: formValue.numPenalties + 1 });
             }} className='incrementbutton'>+</Button>}
             addonBefore={<Button onClick={() => {
               if (Number(formValue.numPenalties) > 0) {
-                setFormValue({...formValue, numPenalties: formValue.numPenalties - 1});
+                setFormValue({ ...formValue, numPenalties: formValue.numPenalties - 1 });
               }
             }} className='decrementbutton'>-</Button>}
           />
@@ -995,7 +997,7 @@ function MatchScout(props: any) {
               teleopMissedSpeakerPieces: 0,
               teleopHoardedPieces: 0,
               numPenalties: 0,
-              pushingRating: 0, 
+              pushingRating: 0,
               counterDefenseRating: 0,
               driverSkillRating: 0,
               timeLeft: 0,
@@ -1009,6 +1011,8 @@ function MatchScout(props: any) {
             form.setFieldValue("matchnum", matchnum + 1);
             form.setFieldValue("matchlevel", matchlevel);
             form.setFieldValue("robotpos", robotpos);
+            setWasDefendedIsVisible(false);
+            setDefendedIsVisible(false);
             await calculateMatchLevel();
             await updateTeamNumber();
             await updateDefendedList();
@@ -1023,7 +1027,7 @@ function MatchScout(props: any) {
           }
         }}
       >
-        <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} className='tabs' centered onChange={async (key) => { if ((Number(key) === 1 || Number(key) === 3) && Number(tabNum) === 2) {await autonCanvasRef.current?.exportImage('png').then( (data) => {autonImageURI.current = data;})} setTabNum(key); }} />
+        <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} className='tabs' centered onChange={async (key) => { if ((Number(key) === 1 || Number(key) === 3) && Number(tabNum) === 2) { await autonCanvasRef.current?.exportImage('png').then((data) => { autonImageURI.current = data; }) } setTabNum(key); }} />
       </Form>
     </div>
   );

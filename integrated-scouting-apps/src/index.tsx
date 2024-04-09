@@ -12,13 +12,16 @@ import MatchScout from './routes/match';
 import DTF from './routes/dtf';
 import DTFTeams from './routes/dtfteams';
 import StrategicScout from './routes/strategic';
-import StrategicComment from './routes/strategicComment';
-import DriverSkill from './routes/driverSkill';
+// import DriverSkill from './routes/driverSkill';
+import Lookup from './routes/lookup';
+import StrategicLookup from './routes/strategicLookup';
+import PitLookup from './routes/pitLookup';
+
 import PitScout from './routes/pit';
 import Buh from './routes/buh';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import DataLookup from './routes/lookup';
-import TeamData from './routes/teamData';
+import DataLookup from './routes/matchLookup';
+import TeamData from './routes/matchData';
 import Picklist from './routes/picklists';
 import Watchlist from './routes/watchlist';
 import WatchlistGet from './routes/watchlistdata';
@@ -34,15 +37,17 @@ export default function App() {
         <Route path="/scoutingapp" element={<ScoutingApp title="2637 Scouting App" />} />
         <Route path="/scoutingapp/match" element={<MatchScout title="2637 Match Scout" />} />
         <Route path="/scoutingapp/strategic" element={<StrategicScout title="2637 Strategic Scout" />} />
-        <Route path="/scoutingapp/strategic/comment" element={<StrategicComment title="2637 Strategic Scout" />} />
-        <Route path="/scoutingapp/strategic/driverskill" element={<DriverSkill title="2637 Driver Skill" />} />
+        {/* <Route path="/scoutingapp/strategic/driverskill" element={<DriverSkill title="2637 Driver Skill" />} /> */}
+        <Route path="/scoutingapp/lookup/" element={<Lookup title="2637 Lookup" />} />
+        <Route path="/scoutingapp/lookup/strategic" element={<StrategicLookup title="2637 Strategic Lookup" />} />
+        <Route path="/scoutingapp/lookup/match" element={<DataLookup title="2637 Data Lookup" />} />
+        <Route path="/scoutingapp/lookup/pit" element={<PitLookup title="2637 Data Lookup" />} />
+        <Route path="/scoutingapp/lookup/teamData/:team_number" element={<TeamData title="2637 Data Lookup" />} />
         <Route path="/scoutingapp/pit" element={<PitScout title="2637 Pit Scout" />} />
-        <Route path="/scoutingapp/lookup" element={<DataLookup title="2637 Data Lookup" />} />        
-        <Route path="/scoutingapp/lookup/teamData/:team_number" element ={<TeamData title="2637 Data Lookup" />} />
         <Route path="/scoutingapp/picklists" element={<Picklist title="2637 Picklists" />} />
         <Route path="/dtf" element={<DTF title="2637 Drive Team Feeder" />} />
         <Route path="/dtf/:team_number" element={<DTFTeams title="2637 Drive Team Feeder" />} />
-        <Route path="/watchlist" element = {<Watchlist title="2637 Watch List"/>}/>
+        <Route path="/watchlist" element={<Watchlist title="2637 Watch List" />} />
         <Route path="/watchlist/:team_number" element={<WatchlistGet title="2637 Watch List" />} />
         <Route path="/watchlist/update/:question_info" element={<WatchlistUpdate title="2637 Watch List" />} />
         <Route path="/buh" element={<Buh/>} />

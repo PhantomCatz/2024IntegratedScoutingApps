@@ -18,9 +18,9 @@ function Watchlist(props: any) {
   };
   const [tabNum, setTabNum] = useState("1");
   const [cookies] = useCookies(['login', 'theme']);
-  useEffect(() => {document.title = props.title}, [props.title]);
+  useEffect(() => { document.title = props.title }, [props.title]);
   useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); }, [cookies.login]);
-  useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => {}}, [cookies.theme]);
+  useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => { } }, [cookies.theme]);
 
   async function sendNewWatchlistData(event: FieldType) {
     try {
@@ -32,20 +32,18 @@ function Watchlist(props: any) {
           isPit: event.isPit,
         },
       };
-      const response = await fetch(process.env.REACT_APP_WATCHLIST_SEND_URL as string, {
+      console.log(requestBody)
+      await fetch(process.env.REACT_APP_WATCHLIST_SEND_URL as string, {
         method: "POST",
         body: JSON.stringify(requestBody),
         headers: {
           "Content-Type": "application/json",
         },
+      }).then((response) => response).then(data => {
+        console.log(data)
+        console.log("Data has been sent");
       });
-      if (response.ok) {
-        const responseData = await response.json();
-        console.log("Data sent successfully:", responseData);
-      } else {
-        const errorData = await response.json();
-        console.error("Error sending data:", errorData.message);
-      }
+      
     } catch (error) {
       console.error("An unexpected error occurred:", error);
     }
@@ -64,9 +62,15 @@ function Watchlist(props: any) {
     return (
       <div>
         <Form
+        initialValues={{
+          team_number: null,
+          question: "", 
+          isPit: null,
+        }}
           onFinish={async event => {
             try {
               await sendNewWatchlistData(event);
+              window.location.reload();
             }
             catch (err) {
               console.log(err);
@@ -84,12 +88,12 @@ function Watchlist(props: any) {
           </Form.Item>
           <h2>Custom Question</h2>
           <Form.Item<FieldType> name="question" rules={[{ required: true, message: 'Please input a question!' }]}>
-            <TextArea className="textbox_input"/>
+            <TextArea className="textbox_input" />
           </Form.Item>
           <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
             <Button onClick={() => { setTabNum("2"); }} className='tabbutton'>Next</Button>
             <Input type="submit" value="Submit" className='submitbutton' />
-          </Flex>            
+          </Flex>
         </Form>
       </div>
     );
@@ -108,7 +112,7 @@ function Watchlist(props: any) {
           }}
         >
           <Form.Item<FieldType> name="team_number" rules={[{ required: true, message: 'Please input the team number!' }]}>
-            <InputNumber controls min={0} className="input"/>
+            <InputNumber controls min={0} className="input" />
           </Form.Item>
           <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
             <Button onClick={() => { setTabNum("1"); }} className='tabbutton'>Back</Button>
@@ -139,17 +143,17 @@ function Watchlist(props: any) {
             <tbody>
               <tr>
                 <td>
-                  <img src={logo} style={{height: 256 + 'px'}} alt=''></img>
+                  <img src={logo} style={{ height: 256 + 'px' }} alt=''></img>
                 </td>
                 <td>
-                  <h1 style={{display: 'inline-block', textAlign: 'center'}}>2637 Watchlist</h1>
-               </td>
+                  <h1 style={{ display: 'inline-block', textAlign: 'center' }}>2637 Watchlist</h1>
+                </td>
               </tr>
             </tbody>
           </table>
         </header>
       </div>
-      <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} className='tabs' centered onChange={async (key) => {setTabNum(key);}}/>
+      <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} className='tabs' centered onChange={async (key) => { setTabNum(key); }} />
     </div>
   );
 }

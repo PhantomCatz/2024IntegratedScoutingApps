@@ -10,6 +10,7 @@
     color: white !important;
     text-align: center !important;
 }
+
 .input_checkbox {
     width: 294px !important;
     min-width: 100%;
@@ -24,6 +25,7 @@
     color: white !important;
     text-align: center !important;
 }
+
 .input_checkbox_filled {
     width: 294px !important;
     min-width: 100%;
@@ -38,6 +40,7 @@
     color: white !important;
     text-align: center !important;
 }
+
 .textbox_input {
     width: 100%;
     min-width: 100%;
@@ -45,7 +48,7 @@
     min-height: 1000px !important;
     border: 4px solid white !important;
     border-radius: 25px;
-    background-color: #433C3C;
+    background-color: #A9A9A9;
     font-size: 500% !important;
     font-family: Figtree !important;
     font-weight: bold;
@@ -54,6 +57,7 @@
     background: transparent !important;
     margin-bottom: 5%;
 }
+
 .summary_text {
     text-align: center !important;
 }
