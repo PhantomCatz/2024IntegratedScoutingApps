@@ -247,10 +247,12 @@ function Strategic(props: any) {
             const initials = form.getFieldValue('initials');
             const matchnum = form.getFieldValue('matchnum');
             const matchlevel = form.getFieldValue('matchlevel');
+            const robotpos = form.getFieldValue('robotpos');
             form.resetFields();
             form.setFieldValue('initials', initials);
             form.setFieldValue('matchnum', matchnum + 1);
             form.setFieldValue('matchlevel', matchlevel);
+            form.setFieldValue('robotpos', robotpos);
             await calculateMatchLevel();
             await updateTeamNumber();
           }

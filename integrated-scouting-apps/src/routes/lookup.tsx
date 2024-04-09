@@ -32,23 +32,13 @@ function Lookup(props: any) {
 					</table>
 				</header>
 			</div>
-			<Form
-				form={form}
-				onFinish={async event => {
-					window.location.href = "/scoutingapp/lookup/teamData/" + event.teamNum;
-				}}
-			>
-				<div>
-					<h2>Team Number</h2>
-					<Form.Item name="teamNum" rules={[{ required: true, message: "Please input the team number!" }]}>
-						<InputNumber min={0} className="input" />
-					</Form.Item>
-					<Input type="submit" value="Submit" className='submit'/>
-					<h2>List of Teams</h2>
-					{fetchedData}
-				</div>
-			</Form>
-
+			<div>
+				<Button className='mainbutton' href='/scoutingapp/lookup/match'>Match</Button>
+				<Button className='mainbutton' href='/scoutingapp/lookup/strategic'>Strategic</Button>
+				<Button className='mainbutton' href='/scoutingapp/lookup/pit'>Pit</Button>
+				<Button className='mainbutton' href='/scoutingapp/lookup/pitpicture'>Pit Picture</Button>
+				{/* <Button className='mainbutton' href='/scoutingapp/strategic/driverskill'>Driver Skill</Button> */}
+			</div>
 		</div>
 	);
 }

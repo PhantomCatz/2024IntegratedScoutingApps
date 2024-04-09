@@ -82,13 +82,13 @@ function TeamData(props: any) {
         <h2 style={{ whiteSpace: 'pre-line' }}>{loading ? "Loading..." : 'Data for ' + team_number}</h2>
         <Table dataSource={fetchedData} >
           <ColumnGroup title="Match Identifier">
-            <Column title="Match #" dataIndex="match_number" key="match_number" fixed="left" />
-            <Column title="Match Level" dataIndex="match_level" key="match_level" fixed="left" />
+            <Column title="Match #" dataIndex="match_number" key="match_number" />
+            <Column title="Match Level" dataIndex="match_level" key="match_level" />
           </ColumnGroup>
           <ColumnGroup title="Auton">
             <Column title="Preload Scored" dataIndex="auto_preload_scored" key="auto_preload_scored" />
             <Column title="Leave" dataIndex="auto_leave" key="auto_leave" />
-            <Column title="Amp Scored" dataIndex="auto_amps_scored" key="auto_amps_scored" />
+            <Column title="Amp Scored" dataIndex="auto_amps_scored" key="auto_amps_scored" /> 
             <Column title="Speaker Scored" dataIndex="auto_speaker_scored" key="auto_speaker_scored" />
             <Column title="Scoring Location" dataIndex="auto_scoring_location" key="auto_scoring_location" />
             <Column title="Pieces Picked" dataIndex="auto_pieces_picked" key="auto_pieces_picked" />

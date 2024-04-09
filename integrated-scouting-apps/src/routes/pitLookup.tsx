@@ -4,8 +4,8 @@ import back from '../public/images/back.png';
 import { useEffect, useState } from 'react';
 import VerifyLogin from '../verifyToken';
 import { useCookies } from 'react-cookie';
-import { Checkbox, Input, InputNumber, Tabs } from 'antd';
-function TeamData(props: any) {
+import { Checkbox, Input, InputNumber, Tabs, Image } from 'antd';
+function Teamresponse(props: any) {
   const [cookies] = useCookies(['login', 'theme']);
   const [tabNum, setTabNum] = useState("1");
   const [items, setItems] = useState([
@@ -22,11 +22,12 @@ function TeamData(props: any) {
   async function getComments(team_number: number) {
     try {
       if (team_number !== 0) {
-        const response = await fetch(process.env.REACT_APP_PIT_LOOKUP_URL as string + "?team_number=" + team_number);
-        const data = await response.json();
+        const response = await(await fetch(process.env.REACT_APP_PIT_LOOKUP_URL as string + "?team_number=" + team_number)).json();
+        const robot_images = await(await fetch(process.env.REACT_APP_PIT_GRAPH_LOOKUP_URL as string + "?team_number=" + team_number)).json();
+        console.log(robot_images.documents[0].images);
         const match: { key: string; label: string; children: JSX.Element; }[] = [];
         let index = 2;
-        for (const pitLookup of data['documents']) {
+        for (const pitLookup of response['documents']) {
           match.push({
             key: index.toString(),
             label: pitLookup.initial.toUpperCase() + ": " + pitLookup.team_number,
@@ -56,8 +57,13 @@ function TeamData(props: any) {
                 <Input className="input" disabled value={pitLookup.robot_climbing_capabilities} />
                 <h2>Robot Trap</h2>
                 <Checkbox className={pitLookup.robot_trap_detail ? "input_checkbox_filled" : "input_checkbox"} disabled />
-                <h2>Auton Path</h2>
-                <img src='' alt=''></img>
+                <h2>Robot Images</h2>
+                <Image.PreviewGroup items={[robot_images.documents[0].images]} >
+                  <Image
+                    width={'100%'}
+                    src={robot_images.documents[0].images[0]}
+                  />
+                </Image.PreviewGroup>
               </div>
             )
           });
@@ -107,4 +113,4 @@ function TeamData(props: any) {
     </div>
   );
 };
-export default TeamData;
+export default Teamresponse;

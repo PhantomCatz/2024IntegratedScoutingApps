@@ -2,10 +2,10 @@ import '../public/stylesheets/style.css';
 import '../public/stylesheets/match.css';
 import logo from '../public/images/logo.png';
 import back from '../public/images/back.png';
-import field_blue from '../public/images/field_blue.png';
-import field_red from '../public/images/field_red.png';
+// import field_blue from '../public/images/field_blue.png';
+// import field_red from '../public/images/field_red.png';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { Tabs, Input, Form, Select, Checkbox, InputNumber, Flex, Button } from 'antd';
 import type { TabsProps } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
@@ -16,9 +16,6 @@ import { ReactSketchCanvas, ReactSketchCanvasRef } from 'react-sketch-canvas';
 import React from 'react';
 import { render } from '@testing-library/react';
 import QRCodes from './qrCodes';
-
-
-
 
 function MatchScout(props: any) {
   const [form] = Form.useForm();
@@ -50,8 +47,8 @@ function MatchScout(props: any) {
   const eventname = process.env.REACT_APP_EVENTNAME;
   useEffect(() => { document.title = props.title; return () => { }; }, [props.title]);
   const [cookies] = useCookies(['login', 'theme']);
-  const autonCanvasRef = useRef<ReactSketchCanvasRef>(null);
-  const autonImageURI = useRef<string>();
+  // const autonCanvasRef = useRef<ReactSketchCanvasRef>(null);
+  // const autonImageURI = useRef<string>();
   useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => { } }, [cookies.login]);
   useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => { } }, [cookies.theme]);
   useEffect(() => {
@@ -139,7 +136,7 @@ function MatchScout(props: any) {
           "auto_pieces_picked": event.piecespicked,
           "auto_missed_pieces_amp": event.auton_missedpiecesamp,
           "auto_missed_pieces_speaker": event.auton_missedpiecesspeaker,
-          "auto_path": autonImageURI.current,
+          // "auto_path": autonImageURI.current,
           "auto_total_points": 0,
         },
         "teleop": {
@@ -261,7 +258,8 @@ function MatchScout(props: any) {
             }
           })
             .then(async (response) => await response.json()).then(async (data) => {
-              window.alert(data.match.insertedId);
+              window.alert("Successfully submitted with ID: " + data.match.insertedId);
+              saveAs(new Blob([JSON.stringify(body)], { type: "text/json" }), event.initials + event.matchnum + ".json");
             });
         }
       }
@@ -459,7 +457,7 @@ function MatchScout(props: any) {
           <Form.Item<FieldType> name="startingloc" rules={[{ required: true, message: 'Please input the starting location!' }]}>
             <Select options={startingloc} className="input" />
           </Form.Item>
-          <h2>Auton Path</h2>
+          {/* <h2>Auton Path</h2>
           <ReactSketchCanvas
             ref={autonCanvasRef}
             strokeWidth={8}
@@ -474,7 +472,7 @@ function MatchScout(props: any) {
             <Button onClick={() => autonCanvasRef.current?.undo()} className='pathbutton'>Undo</Button>
             <Button onClick={() => autonCanvasRef.current?.redo()} className='pathbutton'>Redo</Button>
             <Button onClick={() => autonCanvasRef.current?.clearCanvas()} className='pathbutton'>Clear</Button>
-          </Flex>
+          </Flex> */}
           <h2>Leave</h2>
           <Form.Item<FieldType> name="leavespawn" valuePropName="checked">
             <Checkbox className='input_checkbox' />
@@ -565,9 +563,13 @@ function MatchScout(props: any) {
           <Form.Item<FieldType> name="piecespicked">
             <Select mode='multiple' options={piecespicked} className='input' showSearch={false} />
           </Form.Item>
-          <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
+          {/* <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
             <Button onClick={async () => { setTabNum("1"); await autonCanvasRef.current?.exportImage('png').then((data) => { autonImageURI.current = data; }) }} className='tabbutton'>Back</Button>
             <Button onClick={async () => { setTabNum("3"); await autonCanvasRef.current?.exportImage('png').then((data) => { autonImageURI.current = data; }) }} className='tabbutton'>Next</Button>
+          </Flex> */}
+          <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
+            <Button onClick={async () => { setTabNum("1") }} className='tabbutton'>Back</Button>
+            <Button onClick={async () => { setTabNum("3") }} className='tabbutton'>Next</Button>
           </Flex>
         </div>
       </div>
@@ -900,11 +902,11 @@ function MatchScout(props: any) {
         </Form.Item>
         <h2>Penalties Incurred</h2>
         <Form.Item<FieldType> name="penaltiesincurred">
-          <TextArea style={{ verticalAlign: 'center' }} className='input' />
+          <TextArea style={{ verticalAlign: 'center' }} className='textbox_input' />
         </Form.Item>
         <h2>Comments</h2>
         <Form.Item<FieldType> name="comments">
-          <TextArea style={{ verticalAlign: 'center' }} className='input' />
+          <TextArea style={{ verticalAlign: 'center' }} className='textbox_input' />
         </Form.Item>
         <h2 style={{ display: isLoading ? 'inherit' : 'none' }}>Submitting data...</h2>
         <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
@@ -1013,6 +1015,7 @@ function MatchScout(props: any) {
             form.setFieldValue("robotpos", robotpos);
             setWasDefendedIsVisible(false);
             setDefendedIsVisible(false);
+            // autonCanvasRef.current?.clearCanvas();
             await calculateMatchLevel();
             await updateTeamNumber();
             await updateDefendedList();
@@ -1027,7 +1030,8 @@ function MatchScout(props: any) {
           }
         }}
       >
-        <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} className='tabs' centered onChange={async (key) => { if ((Number(key) === 1 || Number(key) === 3) && Number(tabNum) === 2) { await autonCanvasRef.current?.exportImage('png').then((data) => { autonImageURI.current = data; }) } setTabNum(key); }} />
+        {/* <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} className='tabs' centered onChange={async (key) => { if ((Number(key) === 1 || Number(key) === 3) && Number(tabNum) === 2) { await autonCanvasRef.current?.exportImage('png').then((data) => { autonImageURI.current = data; }) } setTabNum(key); }} /> */}
+        <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} className='tabs' centered onChange={async (key) => {setTabNum(key)}} />
       </Form>
     </div>
   );
