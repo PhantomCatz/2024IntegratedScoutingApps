@@ -8,7 +8,7 @@ import { useCookies } from 'react-cookie';
 import { Input, InputNumber, Tabs } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 function TeamData(props: any) {
-  //const eventname = process.env.REACT_APP_EVENTNAME as string;
+
   const [cookies] = useCookies(['login', 'theme']);
   const [tabNum, setTabNum] = useState("1");
   //const [fetchedData, setFetchedData] = useState([]);
