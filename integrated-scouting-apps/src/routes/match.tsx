@@ -25,7 +25,6 @@ function MatchScout(props: any) {
   const [defendedIsVisible, setDefendedIsVisible] = useState(false);
   const [wasDefendedIsVisible, setWasDefendedIsVisible] = useState(false);
   const [opposingTeamNum, setOpposingTeamNum] = useState([""]);
-  const [text, setText] = React.useState("");
   const [formValue, setFormValue] = useState({
     autonSpeakerScored: 0,
     autonAmpScored: 0,
@@ -1030,8 +1029,6 @@ function MatchScout(props: any) {
           }
           catch (err) {
             console.log(err);
-            window.alert("Error occured, Please Do Not Do Leave this Message and Notify a Webdev Member Immediately.");
-            window.alert(err);
           }
           finally {
             setLoading(false);
