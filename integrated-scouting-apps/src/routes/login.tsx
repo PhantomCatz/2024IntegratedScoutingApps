@@ -1,17 +1,20 @@
 import '../public/stylesheets/login.css';
 import logo from '../public/images/logo.png';
-import back from '../public/images/back.png';
+import VerifyLogin from '../verifyToken';
+import no_image from '../public/images/no_image.png';
 import { useEffect, useState } from 'react';
 import { Form, Input } from 'antd';
-import { useParams } from 'react-router-dom';
 import { base64url, SignJWT } from 'jose';
 import { useCookies } from 'react-cookie';
 
 function LoginPage(props: any) {
-	const { msg } = useParams();
+	const [msg, setMsg] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
-	const [cookies, setCookies, removeCookies] = useCookies(['login']);
-	useEffect(() => {document.title = props.title; return () => {}}, [props.title]);
+	// eslint-disable-next-line
+	const [cookies, setCookies, removeCookies] = useCookies(['login', 'theme']);
+	useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => { } }, [cookies.login]);
+	useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => { } }, [cookies.theme]);
+	useEffect(() => { document.title = props.title; return () => { } }, [props.title]);
 
 	type FieldType = {
 		username: string,
@@ -19,12 +22,10 @@ function LoginPage(props: any) {
 	};
 	return (
 		<div>
-			<meta name="viewport" content="maximum-scale=1.0" />
 			<div className='banner'>
-				<meta name="viewport" content="user-scalable=no" />
 				<header>
 					<a href='/'>
-						<img src={back} style={{ height: 64 + 'px', paddingTop: '5%' }} alt='' />
+						<img src={no_image} style={{ height: 64 + 'px', paddingTop: '5%' }} alt='' />
 					</a>
 					<table>
 						<tbody>
@@ -37,14 +38,13 @@ function LoginPage(props: any) {
 								</td>
 							</tr>
 						</tbody>
-
 					</table>
 				</header>
 			</div>
 			<Form onFinish={async (event) => {
 				try {
 					setIsLoading(true);
-					await fetch((process.env.REACT_APP_LOGIN_URL as string) + "?user_name=" + event.username + "&password=" + event.password, {
+					await fetch((process.env.REACT_APP_LOGIN_URL as string) + "?user_name=" + event.username.toLowerCase() + "&password=" + event.password, {
 						method: "GET",
 						headers: {
 							"Content-Type": "application/json",
@@ -54,22 +54,24 @@ function LoginPage(props: any) {
 						console.log(response);
 						if (response.toString() === "true") {
 							const hash = base64url.decode(process.env.REACT_APP_HASH as string);
-							const signed = await new SignJWT({ username: event.username, password: event.password }).setExpirationTime(new Date(new Date().getTime() + 5 * 60 * 60 * 100)).setProtectedHeader({ alg: 'HS256' }).sign(hash);
+							const signed = await new SignJWT({ username: event.username, password: event.password }).setExpirationTime("5hrs").setProtectedHeader({ alg: 'HS256' }).sign(hash);
 							removeCookies("login");
 							setCookies("login", signed);
 							window.location.href = "/home";
 						}
-						else if (response.login === "nullData") {
-							window.location.href = "/Incorrect%20Login";
+						else if (response[process.env.REACT_APP_RESPONSE as string]) {
+							setMsg("Incorrect login");
 						}
 						else {
-							window.location.href = "/Fatal%20Error";
+							setMsg("Fatal error; tell a WebDev member immediately!");
 						}
 						setIsLoading(false);
 					});
 				}
 				catch (err) {
 					console.log(err);
+					window.alert("Error occured, please do not do leave this message and notify a Webdev member immediately.");
+					window.alert(err);
 				}
 			}}>
 				<h2 style={{ color: "red" }}>{msg}</h2>
@@ -81,7 +83,7 @@ function LoginPage(props: any) {
 				<Form.Item<FieldType> name="password" rules={[{ required: true, message: 'Please input your password!' }]}>
 					<Input.Password className='input' autoComplete='current-password' />
 				</Form.Item>
-				<Input type="submit" value="Submit" className='submit' style={{marginTop: '5%'}} />
+				<Input type="submit" value="Submit" className='submit' style={{ marginTop: '5%' }} />
 				<h2 style={{ display: isLoading ? 'inherit' : 'none' }}>Submitting data...</h2>
 			</Form>
 		</div>

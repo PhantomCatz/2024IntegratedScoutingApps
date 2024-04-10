@@ -1,27 +1,22 @@
 import '../public/stylesheets/style.css';
-import '../public/stylesheets/lookup.css';
 import logo from '../public/images/logo.png';
 import back from '../public/images/back.png';
+import { Button } from 'antd';
 import { useEffect } from 'react';
-import { Input, Form, InputNumber } from 'antd';
 import VerifyLogin from '../verifyToken';
 import { useCookies } from 'react-cookie';
-
-function DataLookup(props: any) {
-	const [form] = Form.useForm();
-	useEffect(() => {document.title = props.title; return () => {}}, [props.title]);
+function Lookup(props: any) {
+	useEffect(() => { document.title = props.title; return () => { } }, [props.title]);
 	const [cookies] = useCookies(['login', 'theme']);
-	useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
-	useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => {}}, [cookies.theme]);
+	useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => { } }, [cookies.login]);
+	useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => { } }, [cookies.theme]);
 
 	return (
 		<div>
 			<meta name="viewport" content="maximum-scale=1.0" />
 			<div className='banner'>
 				<header>
-					<a href='/scoutingapp'>
-						<img src={back} style={{ height: 64 + 'px', paddingTop: '5%' }} alt=''></img>
-					</a>
+					<a href='/scoutingapp'><img src={back} style={{ height: 64 + 'px', paddingTop: '5%' }} alt=''></img></a>
 					<table>
 						<tbody>
 							<tr>
@@ -33,25 +28,19 @@ function DataLookup(props: any) {
 								</td>
 							</tr>
 						</tbody>
+
 					</table>
 				</header>
 			</div>
-			<Form
-				form={form}
-				onFinish={async event => {
-					window.location.href = "/scoutingapp/lookup/teamData/" + event.teamNum;
-				}}
-			>
-				<div>
-					<h2>Team Number</h2>
-					<Form.Item name="teamNum" rules={[{ required: true, message: "Please input the team number!" }]}>
-						<InputNumber min={0} className="input" />
-					</Form.Item>
-					<Input type="submit" value="Submit" className='submit' />
-				</div>
-			</Form>
+			<div>
+				<Button className='mainbutton' href='/scoutingapp/lookup/match'>Match</Button>
+				<Button className='mainbutton' href='/scoutingapp/lookup/strategic'>Strategic</Button>
+				<Button className='mainbutton' href='/scoutingapp/lookup/pit'>Pit</Button>
+				<Button className='mainbutton' href='/scoutingapp/lookup/pitpicture'>Pit Picture</Button>
+				{/* <Button className='mainbutton' href='/scoutingapp/strategic/driverskill'>Driver Skill</Button> */}
+			</div>
 		</div>
 	);
 }
 
-export default DataLookup;
+export default Lookup;

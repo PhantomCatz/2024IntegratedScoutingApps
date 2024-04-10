@@ -9,17 +9,20 @@
     font-family: Audiowide;
     src: url('../fonts/Audiowide-Regular.woff') format('woff');
 }
+
 @font-face {
     font-family: Figtree;
     src: url('../fonts/Figtree-VariableFont_wght.ttf') format('woff');
 }
+
 h2 {
     color: white;
-    font-family: Figtree;
+    font-family: Figtree !important;
     font-weight: bold;
     font-size: 60px !important;
     margin-bottom: 0 !important;
 }
+
 body {
     margin: 0;
     font-family: Audiowide !important;
@@ -28,28 +31,48 @@ body {
     padding-right: 5%;
     color: white;
 }
+
 a {
     text-decoration: none;
     color: white;
 }
+
+.ant-btn-default:hover,
+.ant-input-outlined:hover {
+    background-color: transparent !important;
+}
+
+.ant-select-item {
+    height: 120px !important;
+}
+
+.ant-tabs-ink-bar-animated {
+    transition: width 0.2s, left 0.2s, right 0.2s !important;
+}
+
 .banner {
     font-size: 50px;
     vertical-align: top;
 }
-.mainbutton, .mainbutton:focus-within {
+
+.mainbutton,
+.mainbutton:hover {
     width: 100%;
     min-width: 100%;
-    height: 15%;
-    min-height: 15%;
+    height: 25% !important;
+    min-height: 25% !important;
     margin-top: 10%;
     border: 4px solid white !important;
     border-radius: 25px;
+    background: transparent !important;
     background-color: transparent !important;
-    font-size: 500%;
+    font-size: 500% !important;
     font-family: Audiowide;
     color: white !important;
 }
-.homebutton {
+
+.homebutton,
+.homebutton:hover {
     width: 100%;
     min-width: 100%;
     height: 33%;
@@ -67,11 +90,12 @@ a {
     text-decoration: none;
     transition: none !important;
 }
-.submit{
+
+.submit {
     width: 100%;
     max-width: 50%;
     height: 20% !important;
-    min-height: 20% !important; 
+    min-height: 20% !important;
     border: 4px solid white !important;
     border-radius: 25px;
     background-color: transparent;
@@ -82,7 +106,24 @@ a {
     text-align: center !important;
     align-items: center !important;
     margin-left: 25%;
+    font-weight: bold;
 }
+
 .died {
     color: red;
+}
+
+.input {
+    width: 100%;
+    min-width: 100%;
+    height: 120px !important;
+    min-height: 120px !important;
+    border: 4px solid white !important;
+    border-radius: 25px;
+    background-color: transparent !important;
+    font-size: 500% !important;
+    font-family: Figtree !important;
+    font-weight: bold;
+    color: white !important;
+    text-align: center !important;
 }

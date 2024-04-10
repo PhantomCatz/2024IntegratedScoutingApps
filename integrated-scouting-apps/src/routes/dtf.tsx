@@ -7,10 +7,10 @@ import VerifyLogin from '../verifyToken';
 import { useCookies } from 'react-cookie';
 function DTF(props: any) {
 	const [form] = Form.useForm();
-	useEffect(() => {document.title = props.title; return () => {}}, [props.title]);
+	useEffect(() => { document.title = props.title; return () => { } }, [props.title]);
 	const [cookies] = useCookies(['login', 'theme']);
-	useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => {}}, [cookies.login]);
-  useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => {}}, [cookies.theme]);
+	useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => { } }, [cookies.login]);
+	useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => { } }, [cookies.theme]);
 
 	return (
 		<div>
