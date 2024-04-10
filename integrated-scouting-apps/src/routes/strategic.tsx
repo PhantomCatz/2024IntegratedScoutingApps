@@ -173,7 +173,7 @@ function Strategic(props: any) {
         <Form.Item<FieldType> name="robotpos" rules={[{ required: true, message: 'Please input the robot position!' }]}>
           <Select options={robotpos} onChange={() => { updateTeamNumber(); }} className="input" />
         </Form.Item>
-        <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
+        <Flex justify='in-between' style={{ paddingBottom : '5%' }}>
           <Button onClick={() => setTabNum("2")} className='tabbutton'>Next</Button>
         </Flex>
       </div>
@@ -195,7 +195,7 @@ function Strategic(props: any) {
           <InputNumber type='number' pattern="\d*" onWheel={(event) => (event.target as HTMLInputElement).blur()} min={0} className="input" />
         </Form.Item>
         <h2 style={{ display: isLoading ? 'inherit' : 'none' }}>Submitting data...</h2>
-        <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
+        <Flex justify='in-between' style={{ paddingBottom : '5%' }}>
           <Button onClick={() => { setTabNum("1"); }} className='tabbutton'>Back</Button>
           <Input type="submit" value="Submit" className='submitbutton' />
         </Flex>

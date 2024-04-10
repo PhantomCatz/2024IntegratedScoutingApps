@@ -6,15 +6,13 @@ import back from '../public/images/back.png';
 // import field_red from '../public/images/field_red.png';
 
 import { useEffect, useState } from 'react';
-import { Tabs, Input, Form, Select, Checkbox, InputNumber, Flex, Button } from 'antd';
+import { Tabs, Input, Form, Select, Checkbox, InputNumber, Flex, Button, QRCode } from 'antd';
 import type { TabsProps } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import VerifyLogin from '../verifyToken';
 import { useCookies } from 'react-cookie';
-import { saveAs } from 'file-saver';
-import React from 'react';
-import { render } from '@testing-library/react';
-import QRCodes from './qrCodes';
+// import { saveAs } from 'file-saver';
+// import { ReactSketchCanvas, ReactSketchCanvasRef } from 'react-sketch-canvas';
 
 function MatchScout(props: any) {
   const [form] = Form.useForm();
@@ -23,6 +21,7 @@ function MatchScout(props: any) {
   const [isLoading, setLoading] = useState(false);
   const [tabNum, setTabNum] = useState("1");
   const [teamNum, setTeamNum] = useState(0);
+  const [qrValue, setQrValue] = useState("1718969195195299979519362225801952801133"); //placeholder
   const [defendedIsVisible, setDefendedIsVisible] = useState(false);
   const [wasDefendedIsVisible, setWasDefendedIsVisible] = useState(false);
   const [opposingTeamNum, setOpposingTeamNum] = useState([""]);
@@ -240,15 +239,12 @@ function MatchScout(props: any) {
           "OA_comments": "test",
         }
       }
-      try { //LISA
+      try {
         // if (!window.navigator.onLine) {
-          window.alert("Redirecting you to a QR Code on another tab. Please make sure you scan it :P");
-          const qrCodeData = JSON.stringify(body);
-          localStorage.setItem('qrCodeData', qrCodeData); 
-          window.open('/qrCodes');
-          // saveAs(new Blob([JSON.stringify(body)], { type: "text/json" }), event.initials + event.matchnum + ".json");
-        //}
-        // else { 
+        //   window.alert("Your device is offline; please download the following .json file and give it to a Webdev member.");
+        //   saveAs(new Blob([JSON.stringify(body)], { type: "text/json" }), event.initials + event.matchnum + ".json");
+        // }
+        // else {
         //   await fetch(process.env.REACT_APP_MATCH_URL as string, {
         //     method: "POST",
         //     body: JSON.stringify(body),
@@ -261,13 +257,25 @@ function MatchScout(props: any) {
         //       saveAs(new Blob([JSON.stringify(body)], { type: "text/json" }), event.initials + event.matchnum + ".json");
         //     });
         // }
+        setQrValue(JSON.stringify(body));
+        await fetch(process.env.REACT_APP_MATCH_URL as string, {
+          method: "POST",
+          body: JSON.stringify(body),
+          headers: {
+            "Content-Type": "application/json",
+          }
+        })
+          .then(async (response) => await response.json()).then(async (data) => {
+            window.alert("Successfully submitted with ID: " + data.match.insertedId);
+            // saveAs(new Blob([JSON.stringify(body)], { type: "text/json" }), event.initials + event.matchnum + ".json");
+          });
       }
       catch (err) {
         console.log(err);
         window.alert("Error occured, please do not do leave this message and notify a Webdev member!");
         window.alert(err);
         window.alert("Please download the following .json file and give it to a Webdev member.");
-        saveAs(new Blob([JSON.stringify(body)], { type: "text/json" }), event.initials + event.matchnum + ".json");
+        // saveAs(new Blob([JSON.stringify(body)], { type: "text/json" }), event.initials + event.matchnum + ".json");
       }
     }
 
@@ -385,7 +393,7 @@ function MatchScout(props: any) {
    
     return (
       <div>
-        <h2 style={{ color: 'white', paddingBottom: '35px' }}>Team: {teamNum}</h2>
+        <h2>Team: {teamNum}</h2>
         <h2>Scouter Initials</h2>
         <Form.Item<FieldType> name="initials" rules={[{ required: true, message: 'Please input your initials!' }]}>
           <Input maxLength={2} className="input" />
@@ -406,7 +414,7 @@ function MatchScout(props: any) {
         <Form.Item<FieldType> name="robotpos" rules={[{ required: true, message: 'Please input the robot position!' }]}>
           <Select options={robotpos} onChange={updateTeamNumber} className="input" />
         </Form.Item>
-        <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
+        <Flex justify='in-between' style={{ paddingBottom : '5%' }}>
           <Button onClick={() => setTabNum("2")} className='tabbutton'>Next</Button>
         </Flex>
       </div>
@@ -562,11 +570,11 @@ function MatchScout(props: any) {
           <Form.Item<FieldType> name="piecespicked">
             <Select mode='multiple' options={piecespicked} className='input' showSearch={false} />
           </Form.Item>
-          {/* <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
+          {/* <Flex justify='in-between' style={{ paddingBottom : '5%' }}>
             <Button onClick={async () => { setTabNum("1"); await autonCanvasRef.current?.exportImage('png').then((data) => { autonImageURI.current = data; }) }} className='tabbutton'>Back</Button>
             <Button onClick={async () => { setTabNum("3"); await autonCanvasRef.current?.exportImage('png').then((data) => { autonImageURI.current = data; }) }} className='tabbutton'>Next</Button>
           </Flex> */}
-          <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
+          <Flex justify='in-between' style={{ paddingBottom : '5%' }}>
             <Button onClick={async () => { setTabNum("1") }} className='tabbutton'>Back</Button>
             <Button onClick={async () => { setTabNum("3") }} className='tabbutton'>Next</Button>
           </Flex>
@@ -723,7 +731,7 @@ function MatchScout(props: any) {
         <Form.Item<FieldType> name="shootingloc">
           <Select mode='multiple' options={shootingloc} className='input' showSearch={false} />
         </Form.Item>
-        <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
+        <Flex justify='in-between' style={{ paddingBottom : '5%' }}>
           <Button onClick={() => setTabNum("2")} className='tabbutton'>Back</Button>
           <Button onClick={() => setTabNum("4")} className='tabbutton'>Next</Button>
         </Flex>
@@ -777,7 +785,7 @@ function MatchScout(props: any) {
         <Form.Item<FieldType> name="harmony" valuePropName="checked">
           <Checkbox className='input_checkbox' />
         </Form.Item>
-        <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
+        <Flex justify='in-between' style={{ paddingBottom : '5%' }}>
           <Button onClick={() => setTabNum("3")} className='tabbutton'>Back</Button>
           <Button onClick={() => setTabNum("5")} className='tabbutton'>Next</Button>
         </Flex>
@@ -908,10 +916,11 @@ function MatchScout(props: any) {
           <TextArea style={{ verticalAlign: 'center' }} className='textbox_input' />
         </Form.Item>
         <h2 style={{ display: isLoading ? 'inherit' : 'none' }}>Submitting data...</h2>
-        <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
+        <Flex justify='in-between' style={{ paddingBottom: '5%' }}>
           <Button onClick={() => setTabNum("4")} className='tabbutton'>Back</Button>
           <Input type="submit" value="Submit" className='submitbutton' />
         </Flex>
+        <QRCode value={qrValue} bgColor="transparent" color='white' style={{ width: '100%', height: '100%', marginBottom: '5%' }} />
       </div>
     )
   }
@@ -1030,7 +1039,7 @@ function MatchScout(props: any) {
         }}
       >
         {/* <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} className='tabs' centered onChange={async (key) => { if ((Number(key) === 1 || Number(key) === 3) && Number(tabNum) === 2) { await autonCanvasRef.current?.exportImage('png').then((data) => { autonImageURI.current = data; }) } setTabNum(key); }} /> */}
-        <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} className='tabs' centered onChange={async (key) => {setTabNum(key)}} />
+        <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} className='tabs' centered onChange={async (key) => { setTabNum(key) }} />
       </Form>
     </div>
   );
