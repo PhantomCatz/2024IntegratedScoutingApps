@@ -185,7 +185,7 @@ function WatchlistUpdate(props: any) {
                   <textarea className="watchlistComment" name="eventNum" rows={3} />
                 </label>
               </Form.Item>
-              <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
+              <Flex justify='in-between' style={{ paddingBottom : '5%' }}>
                 <Input type="submit" value="Submit" className='submit'/>
               </Flex>
             </div>
@@ -351,7 +351,7 @@ export default WatchlistUpdate;
 //                   <textarea className="watchlistComment" name="eventNum" rows={3} />
 //                 </label>
 //               </Form.Item>
-//               <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
+//               <Flex justify='in-between' style={{ paddingBottom : '5%' }}>
 //                 <Input type="submit" value="Submit" className='submit'/>
 //               </Flex>
 //             </div>

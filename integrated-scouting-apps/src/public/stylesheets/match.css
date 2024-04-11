@@ -16,9 +16,8 @@ h2 {
 .ant-input {
     height: 120px;
     min-height: 120px;
-    padding-top: 13px;
-    padding-bottom: 13px;
     background-color: transparent;
+    font-size: 64px !important;
 }
 
 .ant-form-item-control-input {
