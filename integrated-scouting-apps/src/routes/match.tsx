@@ -11,6 +11,7 @@ import type { TabsProps } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import VerifyLogin from '../verifyToken';
 import { useCookies } from 'react-cookie';
+import saveAs from 'file-saver';
 // import { saveAs } from 'file-saver';
 // import { ReactSketchCanvas, ReactSketchCanvasRef } from 'react-sketch-canvas';
 
@@ -21,7 +22,7 @@ function MatchScout(props: any) {
   const [isLoading, setLoading] = useState(false);
   const [tabNum, setTabNum] = useState("1");
   const [teamNum, setTeamNum] = useState(0);
-  const [qrValue, setQrValue] = useState("1718969195195299979519362225801952801133"); //placeholder
+  // const [qrValue, setQrValue] = useState("1718969195195299979519362225801952801133"); //placeholder
   const [defendedIsVisible, setDefendedIsVisible] = useState(false);
   const [wasDefendedIsVisible, setWasDefendedIsVisible] = useState(false);
   const [opposingTeamNum, setOpposingTeamNum] = useState([""]);
@@ -134,6 +135,7 @@ function MatchScout(props: any) {
           "auto_missed_pieces_amp": event.auton_missedpiecesamp,
           "auto_missed_pieces_speaker": event.auton_missedpiecesspeaker,
           // "auto_path": autonImageURI.current,
+          "auto_path": "1718969195 1952999795 1936222580 1952801133",
           "auto_total_points": 0,
         },
         "teleop": {
@@ -239,45 +241,43 @@ function MatchScout(props: any) {
         }
       }
       try {
-        // if (!window.navigator.onLine) {
-        //   window.alert("Your device is offline; please download the following .json file and give it to a Webdev member.");
-        //   saveAs(new Blob([JSON.stringify(body)], { type: "text/json" }), event.initials + event.matchnum + ".json");
-        // }
-        // else {
-        //   await fetch(process.env.REACT_APP_MATCH_URL as string, {
-        //     method: "POST",
-        //     body: JSON.stringify(body),
-        //     headers: {
-        //       "Content-Type": "application/json",
-        //     }
-        //   })
-        //     .then(async (response) => await response.json()).then(async (data) => {
-        //       window.alert("Successfully submitted with ID: " + data.match.insertedId);
-        //       saveAs(new Blob([JSON.stringify(body)], { type: "text/json" }), event.initials + event.matchnum + ".json");
-        //     });
-        // }
-        setQrValue(JSON.stringify(body));
-        await fetch(process.env.REACT_APP_MATCH_URL as string, {
-          method: "POST",
-          body: JSON.stringify(body),
-          headers: {
-            "Content-Type": "application/json",
-          }
-        })
-          .then(async (response) => await response.json()).then(async (data) => {
-            window.alert("Successfully submitted with ID: " + data.match.insertedId);
-            // saveAs(new Blob([JSON.stringify(body)], { type: "text/json" }), event.initials + event.matchnum + ".json");
-          });
+        if (!window.navigator.onLine) {
+          window.alert("Your device is offline; please download the following .json file and give it to a Webdev member.");
+          saveAs(new Blob([JSON.stringify(body)], { type: "text/json" }), event.initials + event.matchnum + ".json");
+        }
+        else {
+          await fetch(process.env.REACT_APP_MATCH_URL as string, {
+            method: "POST",
+            body: JSON.stringify(body),
+            headers: {
+              "Content-Type": "application/json",
+            }
+          })
+            .then(async (response) => await response.json()).then(async (data) => {
+              window.alert("Successfully submitted with ID: " + data.match.insertedId);
+              // saveAs(new Blob([JSON.stringify(body)], { type: "text/json" }), event.initials + event.matchnum + ".json");
+            });
+        }
+        // // setQrValue(JSON.stringify(body));
+        // await fetch(process.env.REACT_APP_MATCH_URL as string, {
+        //   method: "POST",
+        //   body: JSON.stringify(body),
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   }
+        // })
+        //   .then(async (response) => await response.json()).then(async (data) => {
+        //     window.alert("Successfully submitted with ID: " + data.match.insertedId);
+        //     // saveAs(new Blob([JSON.stringify(body)], { type: "text/json" }), event.initials + event.matchnum + ".json");
+        //   });
       }
       catch (err) {
         console.log(err);
-        window.alert("Error occured, please do not do leave this message and notify a Webdev member!");
+        window.alert("Error occured, please do not do leave this message, download the file (not a virus), and notify a Webdev member!");
         window.alert(err);
-        window.alert("Please download the following .json file and give it to a Webdev member.");
-        // saveAs(new Blob([JSON.stringify(body)], { type: "text/json" }), event.initials + event.matchnum + ".json");
+        saveAs(new Blob([JSON.stringify(body)], { type: "text/json" }), event.initials + event.matchnum + ".json");
       }
     }
-
   };
   async function updateTeamNumber() {
     try {
@@ -919,7 +919,7 @@ function MatchScout(props: any) {
           <Button onClick={() => setTabNum("4")} className='tabbutton'>Back</Button>
           <Input type="submit" value="Submit" className='submitbutton' />
         </Flex>
-        <QRCode value={qrValue} bgColor="transparent" color='white' style={{ width: '100%', height: '100%', marginBottom: '5%' }} />
+        {/* <QRCode value={qrValue} bgColor="transparent" color='#433C3C' style={{ width: '100%', height: '100%', marginBottom: '5%' }} /> */}
       </div>
     )
   }
