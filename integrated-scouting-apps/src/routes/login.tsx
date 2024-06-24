@@ -52,6 +52,7 @@ function LoginPage(props: any) {
 					}).then(response => response.json()).then(async data => {
 						let response = data;
 						console.log(response);
+						response = "true"; //REMOVE THIS LINE WHEN DONE TESTING
 						if (response.toString() === "true") {
 							const hash = base64url.decode(process.env.REACT_APP_HASH as string);
 							const signed = await new SignJWT({ username: event.username, password: event.password }).setExpirationTime("5hrs").setProtectedHeader({ alg: 'HS256' }).sign(hash);
