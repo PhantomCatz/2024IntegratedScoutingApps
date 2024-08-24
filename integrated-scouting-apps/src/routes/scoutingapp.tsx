@@ -8,7 +8,6 @@ import { useCookies } from 'react-cookie';
 function ScoutingPage(props: any) {
   useEffect(() => { document.title = props.title; return () => { } }, [props.title]);
   const [cookies, setCookies] = useCookies(['login', 'theme']);
-  const colorThemes = ["og", "看", "dc", "lg" + new Date().getMinutes() + new Date().getSeconds(), "ds"];
   useEffect(() => { VerifyLogin.VerifyLogin(cookies.login); return () => { } }, [cookies.login]);
   useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => { } }, [cookies.theme]);
 
@@ -25,7 +24,7 @@ function ScoutingPage(props: any) {
                   <img src={logo} style={{ height: 256 + 'px' }} alt=''></img>
                 </td>
                 <td>
-                  <h1 style={{ display: 'inline-block', textAlign: 'center' }}>Scouting Ap<a href='/scoutingapp' onClick={() => { setCookies('theme', colorThemes[Math.floor(Math.random() * colorThemes.length)]) }}>p</a></h1>
+                  <h1 style={{ display: 'inline-block', textAlign: 'center' }}>Scouting Ap<a href='/scoutingapp' onClick={() => { setCookies('theme', "og") }}>p</a></h1>
                 </td>
               </tr>
             </tbody>

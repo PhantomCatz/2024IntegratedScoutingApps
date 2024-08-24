@@ -26,7 +26,7 @@ h2 {
 body {
     margin: 0;
     font-family: Audiowide !important;
-    background-color: #433C3C;
+    background-color: #433D3C;
     padding-left: 5%;
     padding-right: 5%;
     color: white;
@@ -36,7 +36,11 @@ a {
     text-decoration: none;
     color: white;
 }
-
+.ant-layout-footer {
+    background-color: #433D3C !important;
+    padding: 0 !important;
+    border-top: 8px dotted white;
+}
 .ant-btn-default:hover,
 .ant-input-outlined:hover {
     background-color: transparent !important;
@@ -47,7 +51,7 @@ a {
 }
 
 .ant-tabs-ink-bar-animated {
-    transition: width 0.2s, left 0.2s, right 0.2s !important;
+    transition: 0.25s !important;
 }
 
 .banner {

@@ -75,7 +75,6 @@ function TeamData(props: any) {
                   <h1 style={{ display: 'inline-block', textAlign: 'center' }}>Team {team_number}</h1>
                 </td>
               </tr>
-
             </tbody>
           </table>
         </header>
@@ -88,14 +87,13 @@ function TeamData(props: any) {
           <ColumnGroup title="Auton">
             <Column title="Preload Scored" dataIndex="auto_preload_scored" key="auto_preload_scored" />
             <Column title="Leave" dataIndex="auto_leave" key="auto_leave" />
-            <Column title="Amp Scored" dataIndex="auto_amps_scored" key="auto_amps_scored" /> 
+            <Column title="Amp Scored" dataIndex="auto_amps_scored" key="auto_amps_scored" />
             <Column title="Speaker Scored" dataIndex="auto_speaker_scored" key="auto_speaker_scored" />
             <Column title="Scoring Location" dataIndex="auto_scoring_location" key="auto_scoring_location" />
             <Column title="Pieces Picked" dataIndex="auto_pieces_picked" key="auto_pieces_picked" />
             <Column title="Missed Amp Pieces" dataIndex="auto_missed_pieces_amp" key="auto_misssed_pieces_amp" />
             <Column title="Missed Speaker Pieces" dataIndex="auto_missed_pieces_speaker" key="auto_missed_pieces_speaker" />
             <Column title="Total Points" dataIndex="auto_total_points" key="auto_total_points" />
-            <Column title="Auto Path" dataIndex="auto_path" key="auto_path" />
           </ColumnGroup>
           <ColumnGroup title="Teleop">
             <Column title="Coopertition Pressed" dataIndex="teleop_coop_pressed" key="teleop_coop_pressed" />

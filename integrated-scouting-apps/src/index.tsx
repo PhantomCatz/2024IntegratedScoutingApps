@@ -28,7 +28,6 @@ import Picklist from './routes/picklists';
 import Watchlist from './routes/watchlist';
 import WatchlistGet from './routes/watchlistdata';
 import WatchlistUpdate from './routes/watchlistupdate';
-import QRCodes from './routes/qrCodes';
 
 export default function App() {
   return (
@@ -54,7 +53,6 @@ export default function App() {
         <Route path="/watchlist/:team_number" element={<WatchlistGet title="2637 Watch List" />} />
         <Route path="/watchlist/update/:question_info" element={<WatchlistUpdate title="2637 Watch List" />} />
         <Route path="/buh" element={<Buh/>} />
-        <Route path="/qrCodes" element = {<QRCodes title="2637 QR Codes"/>}/>
       </Routes>
     </BrowserRouter>
   );

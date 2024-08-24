@@ -90,7 +90,7 @@ function Watchlist(props: any) {
           <Form.Item<FieldType> name="question" rules={[{ required: true, message: 'Please input a question!' }]}>
             <TextArea className="textbox_input" />
           </Form.Item>
-          <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
+          <Flex justify='in-between' style={{ paddingBottom : '5%' }}>
             <Button onClick={() => { setTabNum("2"); }} className='tabbutton'>Next</Button>
             <Input type="submit" value="Submit" className='submitbutton' />
           </Flex>
@@ -114,7 +114,7 @@ function Watchlist(props: any) {
           <Form.Item<FieldType> name="team_number" rules={[{ required: true, message: 'Please input the team number!' }]}>
             <InputNumber controls min={0} className="input" />
           </Form.Item>
-          <Flex justify='in-between' style={{ paddingBottom: '10%' }}>
+          <Flex justify='in-between' style={{ paddingBottom : '5%' }}>
             <Button onClick={() => { setTabNum("1"); }} className='tabbutton'>Back</Button>
             <Input type="submit" value="Submit" className='submitbutton' />
           </Flex>

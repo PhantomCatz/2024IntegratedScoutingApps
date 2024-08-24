@@ -25,19 +25,8 @@ async function ChangeTheme(cookie: any) {
     if (cookie === "og") {
       document.body.style.backgroundColor = "#32a7dc";
     }
-    else if (cookie === "看") {
-      document.body.style.backgroundColor = "#000000";
-    }
-    else if (cookie === "dc") {
-      document.body.style.backgroundColor = "#5865F2";
-    }
-    else if (cookie.substring(0, 2) === "lg") {
-      setInterval(() => {
-        document.body.style.backgroundColor = `rgb(${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)})`;
-      }, Number(cookie.substring(2)));
-    }
-    else if (cookie === "ds") {
-      document.body.style.backgroundColor = "#4A412A";
+    else {
+      document.body.style.backgroundColor = "#433D3C";
     }
   }
   catch (err) {
