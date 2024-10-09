@@ -52,7 +52,7 @@ export default function App() {
         <Route path="/watchlist" element={<Watchlist title="2637 Watch List" />} />
         <Route path="/watchlist/:team_number" element={<WatchlistGet title="2637 Watch List" />} />
         <Route path="/watchlist/update/:question_info" element={<WatchlistUpdate title="2637 Watch List" />} />
-        <Route path="/buh" element={<Buh/>} />
+        <Route path="/buh" element={<Buh title="monkey"/>} />
       </Routes>
     </BrowserRouter>
   );
