@@ -84,7 +84,7 @@ function LoginPage(props: any) {
 				<Form.Item<FieldType> name="password" rules={[{ required: true, message: 'Please input your password!' }]}>
 					<Input.Password className='input' autoComplete='current-password' />
 				</Form.Item>
-				<Input type="submit" value="Submit" className='submit' style={{ marginTop: '5%' }} />
+				<Input type="submit" value="Submit" className='submit' />
 				<h2 style={{ display: isLoading ? 'inherit' : 'none' }}>Submitting data...</h2>
 			</Form>
 		</div>
