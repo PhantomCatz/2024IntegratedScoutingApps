@@ -1,31 +1,16 @@
-import lisa from '../public/images/lisa.png';
-import ethan from '../public/images/ethan.png';
-import hyoungjun from '../public/images/hyoungjun.png';
-import juwon from '../public/images/juwon.png';
-import nathan from '../public/images/nathan.png';
-import loren from '../public/images/loren.png';
-import robin from '../public/images/robin.png';
-import annie from '../public/images/annie.png';
+import React, { useEffect } from 'react';
+import { Button } from 'antd';
+import VerifyLogin from '../verifyToken';
+import { useCookies } from 'react-cookie';
 
-function Buh() {
+function Buh(props: any) {
+	const [cookies] = useCookies(['theme']);
+	useEffect(() => { document.title = props.title; return () => { }; }, [props.title]);
+  useEffect(() => { VerifyLogin.ChangeTheme(cookies.theme); return () => { } }, [cookies.theme]);
+	useEffect(() => { setInterval(() => { new Date().getSeconds() % 2 === 0 ? document.title = "💀" : document.title = "buh"}, 1000); return () => { } }, []);
 	return (
 		<div>
-			<h1>Team President</h1>
-			<img width="100%" height="25%" src={annie} alt=""></img>
-			<h1>Programming Lead</h1>
-			<img width="100%" height="25%" src={lisa} alt=""></img>
-			<h1>Strategy Captain</h1>
-			<img width="100%" height="25%" src={ethan} alt=""></img>
-			<h1>tOwOt</h1>
-			<img width="100%" height="25%" src={juwon} alt=""></img>
-			<h1>Backend Dev</h1>
-			<img width="100%" height="25%" src={loren} alt="" />
-			<h1>Front End Developer</h1>
-			<img width="100%" height="25%" src={nathan} alt=""></img>
-			<h1>Pit Scout Developer</h1>
-			<img width="100%" height="25%" src={robin} alt=""></img>
-			<h1>DTF Developer</h1>
-			<img width="100%" height="25%" src={hyoungjun} alt=""></img>
+			<Button onClick={() => { window.alert("🗣️🗣️🔥🔥"); }}>CLICK HERE TO GET A FREE COPY OF LETHAL COMPANY</Button>
 		</div>
 	);
 }
