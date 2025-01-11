@@ -16,6 +16,7 @@ import { Footer } from 'antd/es/layout/layout';
 // import { ReactSketchCanvas, ReactSketchCanvasRef } from 'react-sketch-canvas';
 
 function MatchScout(props: any) {
+  console.log(document.body.style.backgroundColor);
   const [form] = Form.useForm();
   const [color, setColor] = useState(true);
   const [roundIsVisible, setRoundIsVisible] = useState(false);
@@ -986,7 +987,7 @@ function MatchScout(props: any) {
       children: overall(),
     },
   ];
-
+ 
   return (
     <div>
       <div className='banner'>
@@ -1073,7 +1074,7 @@ function MatchScout(props: any) {
       >
         {/* <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} className='tabs' centered onChange={async (key) => { if ((Number(key) === 1 || Number(key) === 3) && Number(tabNum) === 2) { await autonCanvasRef.current?.exportImage('png').then((data) => { autonImageURI.current = data; }) } setTabNum(key); }} /> */}
         <Tabs defaultActiveKey="1" activeKey={tabNum} items={items} className='tabs' centered onChange={async (key) => { setTabNum(key) }} />
-        <Footer style={{ position: "sticky", bottom: "0", backgroundColor: document.body.style.backgroundColor.toString() }}>
+        <Footer style={{ position: "sticky", bottom: "0", backgroundColor: 'white' }}>
           <Flex justify='in-between' style={{ paddingBottom: '5%' }}>
             {Number(tabNum) !== 1 && (
               <Button onClick={async () => { setTabNum((Number(tabNum) - 1).toString()) }} className='tabbutton'>Back</Button>

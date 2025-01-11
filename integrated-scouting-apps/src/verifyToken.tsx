@@ -26,7 +26,7 @@ async function ChangeTheme(cookie: any) {
       document.body.style.backgroundColor = "#32a7dc";
     }
     else {
-      document.body.style.backgroundColor = "#433D3C";
+      document.body.style.backgroundColor = "#32a7dc";
     }
   }
   catch (err) {
